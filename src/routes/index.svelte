@@ -24,6 +24,7 @@
 		text-decoration: none;
 	}
 	.grid {
+		padding-top: 3rem;
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		grid-gap: 4rem 1rem;
