@@ -3,18 +3,20 @@ student_name: Anouk Beckers
 project_title: Audio Octo
 context: Applied Context
 year: 2020—2021
-main_image: /images/schermafbeelding-2021-06-25-om-14.55.09.jpg
+main_image: 'https://ucarecdn.com/89477dcb-b1b3-41ea-8448-97501a9e6874/'
 bio: >-
   Anouk Beckers, Digital Product Designer
 
 
-  I'm fascinated by how things work and how people think. I love writing, creative thinking and solving design problems. 
+  I'm fascinated by how things work and how people think. I love writing,
+  creative thinking and solving design problems. 
 images:
-  - /images/schermafbeelding-2021-06-25-om-14.54.55.jpg
+  - 'https://ucarecdn.com/3cf5de87-020e-42a8-9198-56bc3c72d3b2/'
 social_links:
-  - "https://www.figma.com/proto/sLTz5y01WWfKWt8TzOy1Lf/CASE?page-id=0%3A1&node\
-    -id=1%3A2&scaling=min-zoom "
-  - https://www.figma.com/proto/qdWXWXKMKji2FX6KeMWkWC/Prototype?page-id=1%3A4317&node-id=1%3A5888&scaling=scale-down
+  - >-
+    https://www.figma.com/proto/sLTz5y01WWfKWt8TzOy1Lf/CASE?page-id=0%3A1&node-id=1%3A2&scaling=min-zoom 
+  - >-
+    https://www.figma.com/proto/qdWXWXKMKji2FX6KeMWkWC/Prototype?page-id=1%3A4317&node-id=1%3A5888&scaling=scale-down
 ---
 Concept & UX design of an app with audiobooks for children. 
 

@@ -3,25 +3,35 @@ student_name: Larissa Merzthal
 project_title: The Mestiza Memory
 context: Socio-Political Context
 year: 2020-2021
-main_image: /images/img_0312.jpg
+main_image: 'https://ucarecdn.com/f403e9e0-464f-42c7-856a-8d13c5a2ee94/'
 bio: >
   I am an illustrator and infographics designer who is currently a master’s
   student at Sint Lucas School of Arts Antwerp. I've worked in several editorial
 
-  studios in Lima and worked for Peruvian government institutions regarding communication, education and politics. I have also studied illustration and children’s books illustration in Barcelona during 2015 and 2017. During 2018, I started my own erotic illustration project called Pornosotras, which was focused on female sexuality and body image, I made exhibitions in
+  studios in Lima and worked for Peruvian government institutions regarding
+  communication, education and politics. I have also studied illustration and
+  children’s books illustration in Barcelona during 2015 and 2017. During 2018,
+  I started my own erotic illustration project called Pornosotras, which was
+  focused on female sexuality and body image, I made exhibitions in
 
-  Berlin, Barcelona, Malmo, Santa Cruz de la Sierra and Lima. My art practice nowadays (and master project) is focused on identity and memory following the visual logic of Andean textiles and it’s cosmovision and philosophy.
+  Berlin, Barcelona, Malmo, Santa Cruz de la Sierra and Lima. My art practice
+  nowadays (and master project) is focused on identity and memory following the
+  visual logic of Andean textiles and it’s cosmovision and philosophy.
 
 
-  I position myself as a Latin American mestiza woman within an artistic cultural environment mostly dominated by western white men. Giving a voice to decolonization, which is a subject not yet widely spoken in my country and showing it within art, which does not need words to be read, from an original voice and an andean vision; without having Western intermediaries who speak for my work and myself.
+  I position myself as a Latin American mestiza woman within an artistic
+  cultural environment mostly dominated by western white men. Giving a voice to
+  decolonization, which is a subject not yet widely spoken in my country and
+  showing it within art, which does not need words to be read, from an original
+  voice and an andean vision; without having Western intermediaries who speak
+  for my work and myself.
 images:
-  - /images/img_0271.jpg
-  - /images/img_0295.jpg
-  - /images/img_0306.jpg
+  - 'https://ucarecdn.com/e66ce5ca-19dd-4643-b2d7-db0ec24fc979/'
+  - 'https://ucarecdn.com/d8e6b06b-7b48-4544-983a-2d7832a1dc3a/'
+  - 'https://ucarecdn.com/c2ebab9b-994d-4ce2-a120-40ac9a1e4aef/'
 social_links:
   - www.instagram.com/themestizamemory
 ---
-
 When I started this research, I focused on andean textiles, which are pieces that carry ancestral knowledge and traditions. These elements are an essential part of andean cosmovision, since alphabets and writing are a more eurocentric concept of keeping and transmitting information. Despite the lack of written sources, there’s another type of sources like oral tradition, collective subconscious, the religious and ritual symbolic universe and the efforts from indigenous people in the last years.
 
 Quechua philosophy and cosmovision are the main topics that are represented in these pieces. Being the concept of Pacha the most shown. This concept is the main pillar and stands for time-space, both being the same total being in contrast with western conception as two different notions. Philosopher and theologian Josef Estermann defines this as “each one is not a unit but is something related to the everything”. Time in quechua philosophy is cyclical, in contrast of western concept of time which is linear, every end and start of the cycle is a cosmic cataclysm, everything is born in pacha and goes back to pacha (never dies). Therefore we all start and end in a cycle in time and space.

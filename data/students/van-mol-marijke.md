@@ -3,7 +3,7 @@ student_name: Van Mol Marijke
 project_title: Rat Race
 context: Digital Context
 year: 2020—2021
-main_image: /images/gstart.png
+main_image: 'https://ucarecdn.com/8fa2995d-c74e-4422-8caa-2bb0ef59ce36/'
 bio: >-
   This project is made by Marijke Van Mol. She did her bachelor in graphic
   design and her master project was made within the digital context. The work is
@@ -11,13 +11,15 @@ bio: >-
   she designed and coded it.
 
 
-  This (https://rat-race.netlify.app/) is the link for the website where you can both play the game and read through my process.
+  This (https://rat-race.netlify.app/) is the link for the website where you can
+  both play the game and read through my process.
 
-  If you'd rather read a (short) description of the work and the meaning behind several choices I made, then you might want to read the text below! 
+  If you'd rather read a (short) description of the work and the meaning behind
+  several choices I made, then you might want to read the text below! 
 images:
-  - /images/vid_site.gif
+  - 'https://ucarecdn.com/9434e164-f42b-4c19-ad3a-73ab5f522273/'
 social_links:
-  - https://www.instagram.com/marijkevanmol15/
+  - 'https://www.instagram.com/marijkevanmol15/'
 ---
 Rat Race is a game that is both inspired by the concept Rat Race and my own research. My research was about stimuli and especially the negative ‘side-effects’ one would experience from having too little or too much. We live in a very busy and demanding world, where the amount of stimuli has quintupled and expectations have raised significantly. You are, after all, responsible for your own failures and successes.
 Except for the hustling, zero-to-hero culture, there’s another place where winning is highly valued. This is in the game-world. As an ex-rat racer irl, I thought it’d be fun to make a Rat Race game, where spoiler(!!) winning is literally impossible and you’re just another rat chasing cheese. But, as we all know, one cannot simply have enough cheese.

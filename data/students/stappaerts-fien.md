@@ -3,20 +3,24 @@ student_name: Stappaerts Fien
 project_title: ArchiVox
 context: Digital Context
 year: 2020-2021
-main_image: /images/fien_stappaerts_archivox1.jpg
+main_image: 'https://ucarecdn.com/6bd453d2-d4dc-47e5-b5c4-2586935f946b/'
 bio: >-
   I'm Fien a digital context masterstudent with a love for architecture and
   anything geometric. 
 
 
-  For my masterproject I created ArchiVox. ArchiVox is a project in which I explored what architecture would look like, were you to loosen its function. With research into the relationship between 2D and 3D, utopian architecture and the creation of its own digital language system, structures and compositions were created.  
+  For my masterproject I created ArchiVox. ArchiVox is a project in which I
+  explored what architecture would look like, were you to loosen its function.
+  With research into the relationship between 2D and 3D, utopian architecture
+  and the creation of its own digital language system, structures and
+  compositions were created.  
 images:
-  - /images/fien_stappaerts_archivox2.jpg
-  - /images/fien_stappaerts_archivox4.jpg
-  - /images/fien_stappaerts_archivox5.png
+  - 'https://ucarecdn.com/64dfe887-b63a-4b4b-9fa0-c7a66ee60495/'
+  - 'https://ucarecdn.com/906f943d-5ce1-4962-9ad9-724bb483f39f/'
+  - 'https://ucarecdn.com/7c3e2fe0-1748-4ef5-bc85-db6851a06a6a/'
 social_links:
-  - https://www.linkedin.com/in/fien-stappaerts-675a70209/
-  - https://masterpagearchivox.netlify.app/
+  - 'https://www.linkedin.com/in/fien-stappaerts-675a70209/'
+  - 'https://masterpagearchivox.netlify.app/'
 ---
 ArchiVox is a project in which I explored what architecture would look like, were you to loosen its function. With research into the relationship between 2D and 3D, utopian architecture and the creation of its own digital language system, structures and compositions were created.
 

@@ -3,7 +3,7 @@ student_name: Hannah Luyten
 project_title: THE VERB Magazine
 context: Applied Context
 year: 2020—2021
-main_image: /images/1_hannah_luyten_-0-the-local-issue.jpg
+main_image: 'https://ucarecdn.com/696cd6c2-d4a5-49cd-8fc3-6e528c047cc8/'
 bio: >-
   Hannah Luyten is a 23 year old graphic designer based in Antwerp. She learned
   a lot of her drawing and painting skills during her time at Sint Lucas High
@@ -11,17 +11,21 @@ bio: >-
   her bachelor's at AP University College in Antwerp.
 
 
-  Today, during her master’s at Sint Lucas Antwerp, Hannah aims to combine both of these worlds. Her best work starts manually (painting, drawing, collages...) and gets finished digitally. "I love how precise and direct I can create using my hands, while I also love the different altering techniques Photoshop and Illustrator provide."
+  Today, during her master’s at Sint Lucas Antwerp, Hannah aims to combine both
+  of these worlds. Her best work starts manually (painting, drawing,
+  collages...) and gets finished digitally. "I love how precise and direct I can
+  create using my hands, while I also love the different altering techniques
+  Photoshop and Illustrator provide."
 images:
-  - /images/2_hannah_luyten_our-mission.jpg
-  - /images/3_hannah_luyten_a-look-inside.jpg
-  - /images/4_hannah_luyten_the-photoshoot.jpg
-  - /images/5_hannah_luyten_-2-the-plastic-issue.jpg
-  - /images/6_hannah_luyten_our-website-and-instagram-page.jpg
+  - 'https://ucarecdn.com/6df10281-4489-4a14-971a-8978efe11729/'
+  - 'https://ucarecdn.com/63c0aa45-4e54-4582-9725-1fc6c536a267/'
+  - 'https://ucarecdn.com/d3b78296-86fa-4fd9-954e-6054cf2d8d17/'
+  - 'https://ucarecdn.com/bda299c2-9c0c-4b96-97a6-0e820ead0b1a/'
+  - 'https://ucarecdn.com/5eb12fb5-06f4-4976-be6f-d5aea532e4a4/'
 social_links:
-  - https://hannahluyten.com/
-  - https://www.instagram.com/theverbmagazine/
-  - https://www.instagram.com/hannah.luyten/
+  - 'https://hannahluyten.com/'
+  - 'https://www.instagram.com/theverbmagazine/'
+  - 'https://www.instagram.com/hannah.luyten/'
 ---
 <!--\[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>

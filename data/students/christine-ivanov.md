@@ -3,16 +3,17 @@ student_name: Christine Ivanov
 project_title: (un)design
 context: Socio-Political Context
 year: 2020—2021
-main_image: /images/02_ivanov-undesign-postcard_2021.jpg
-bio: I'm a graphic designer from Brussels. I have worked as a graphic designer
-  for a few years now. My professional background led me to a frustrating but
+main_image: 'https://ucarecdn.com/8f957ec3-b44a-490c-8732-597bca9b03ec/'
+bio: >-
+  I'm a graphic designer from Brussels. I have worked as a graphic designer for
+  a few years now. My professional background led me to a frustrating but
   inquiring position on how to reconcile my practice with my ethical values.
   Part of my research is about how graphic designers can become agents for
   social change by questioning our role and responsibilities to develop a more
   conscious practice through a participatory and inclusive way of working.
 images:
-  - /images/04_ivanov-undesign-box-otherside-_2021.jpg
-  - /images/01_ivanov_undesign-platform-wip_2021.jpg
+  - 'https://ucarecdn.com/5fd2757f-f6cd-420a-b72b-af1f84189191/'
+  - 'https://ucarecdn.com/430bc85a-2d32-4a27-b605-6bcdb2436abb/'
 ---
 *(un)design* is a **collaborative space** that takes the form of a workshop. It is a pedagogical tool for expanding knowledge and deconstructing social norms through design. It aims to democratize the practice of design by making it accessible to everyone. Anyone who feels the need to exchange ideas and raise awareness about ethical issues related to design can participate.
 

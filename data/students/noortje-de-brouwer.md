@@ -1,18 +1,18 @@
 ---
 student_name: Noortje de Brouwer
-project_title: "     A curation of living stories"
+project_title: '     A curation of living stories'
 context: Autonomous Context
 year: 2020-2021
-main_image: /images/schermafbeelding-2021-06-27-om-11.25.12.png
-bio: "*************************************************************************\
-  ************************"
+main_image: 'https://ucarecdn.com/78057601-c2ad-4425-b53b-1c0cad7800a6/'
+bio: >-
+  *************************************************************************************************
 images:
-  - /images/digging.jpeg
-  - /images/whatsapp-image-2021-06-17-at-11.55.16.jpeg
+  - 'https://ucarecdn.com/4e52a3b4-a0b1-4b8e-aed5-de34e31d6503/'
+  - 'https://ucarecdn.com/51d58c1b-7c82-4c57-b2b0-353c071f4daa/'
 social_links:
   - www.noortjedebrouwer.nl
-  - http://www.noortjedebrouwer.nl/
-  - https://www.instagram.com/noortje.debrouwer/
+  - 'http://www.noortjedebrouwer.nl/'
+  - 'https://www.instagram.com/noortje.debrouwer/'
 ---
 A plot of land, fifteen by fifteen meters, a blank canvas to start or not really blank it had already a shape, a place, a system, a context. So how to work with these givens? 
 

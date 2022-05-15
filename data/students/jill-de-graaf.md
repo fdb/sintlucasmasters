@@ -1,9 +1,9 @@
 ---
 student_name: Jill de Graaf
-project_title: "Non Consensual Healing "
+project_title: 'Non Consensual Healing '
 context: Socio-Political Context
 year: 2020—2021
-main_image: /images/jill_degraaf.jpg
+main_image: 'https://ucarecdn.com/56c90e7f-3e21-4ec3-9e16-402c93544fb8/'
 bio: >-
   Jill de Graaf (1994) is an Antwerp-based illustrator and graphic designer /
   visual artist. She combines colorful and aesthetic art with educational
@@ -11,9 +11,11 @@ bio: >-
   she will always try to reach people through positive provocation to create a
   more sustainable, accepting environment.
 
-  Jill also works under the pseudonym Jillostrations. Where bright and bold colors do not deter her, she goes for a positive body image and strives for self-acceptance.
+  Jill also works under the pseudonym Jillostrations. Where bright and bold
+  colors do not deter her, she goes for a positive body image and strives for
+  self-acceptance.
 social_links:
-  - https://www.instagram.com/jillostrations
+  - 'https://www.instagram.com/jillostrations'
 ---
 Conversations about trauma are difficult for numerous reasons. How can you ease into such a delicate topic of conversation and how can I be of assistance as a visual artist?
 

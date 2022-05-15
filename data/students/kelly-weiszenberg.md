@@ -1,28 +1,29 @@
 ---
 student_name: Kelly Weiszenberg
-project_title: "Planten vrienden "
+project_title: 'Planten vrienden '
 context: Applied Context
 year: 2020—2021
-main_image: /images/kelly_weiszenberg_monstera-thai_.jpg
-bio: "Hi I'm Kelly Weiszenberg, born and raised in Antwerp. During my master
-  year at Sint Lucas Antwerp I wanted to combine my love for houseplants and
-  graphic design. I knew for myself why I became so passionate about plants and
-  I was very curious about why others love plants so much. I started an
-  Instagram page called 'Greenplantmom' in 2019 and a blog was born in 2020. I
-  discovered that I love informing people and this is something I definitely
-  wanted to continue in the master's program. "
+main_image: 'https://ucarecdn.com/7fdb0888-de18-4267-8265-9b81b70b7eea/'
+bio: >-
+  Hi I'm Kelly Weiszenberg, born and raised in Antwerp. During my master year at
+  Sint Lucas Antwerp I wanted to combine my love for houseplants and graphic
+  design. I knew for myself why I became so passionate about plants and I was
+  very curious about why others love plants so much. I started an Instagram page
+  called 'Greenplantmom' in 2019 and a blog was born in 2020. I discovered that
+  I love informing people and this is something I definitely wanted to continue
+  in the master's program. 
 images:
-  - /images/a3-karton-fit.jpg
-  - /images/kellyweiszenberg3.jpg
-  - /images/a2-poster-philo.jpg
-  - /images/kellyweiszenberg1.jpg
-  - /images/kellyweiszenberg2.jpg
+  - 'https://ucarecdn.com/12919645-f327-4266-a366-43d6056c8c78/'
+  - 'https://ucarecdn.com/19e15b80-8da0-4b30-b4bf-cfe85c9f68a9/'
+  - 'https://ucarecdn.com/a757df99-d492-40ca-b4e8-6a65ed5258c9/'
+  - 'https://ucarecdn.com/2cdbc7fc-084e-49c7-a1ce-6819c32bea90/'
+  - 'https://ucarecdn.com/312cce92-b717-4488-9b5c-cf7803c9f9cc/'
 social_links:
-  - https://www.instagram.com/greenplantmom/
-  - https://greenplantmom.weebly.com
-  - https://www.instagram.com/weiszenbergkelly/
-  - https://weiszenberg.weebly.com
-  - https://www.linkedin.com/in/kelly-weiszenberg/
+  - 'https://www.instagram.com/greenplantmom/'
+  - 'https://greenplantmom.weebly.com'
+  - 'https://www.instagram.com/weiszenbergkelly/'
+  - 'https://weiszenberg.weebly.com'
+  - 'https://www.linkedin.com/in/kelly-weiszenberg/'
 ---
 Everything started from the question "what is the influence of plants on our (emotional) well-being?". This then became my research question for the paper. I built the blog further and better and appealed to the plant community, guest speakers were featured, and brands noticed me to highlight their products on the blog page. 
 

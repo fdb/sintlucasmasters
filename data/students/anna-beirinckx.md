@@ -1,28 +1,29 @@
 ---
 student_name: Anna Beirinckx
-project_title: " / ə ʊ m /  ━ A Story About Light and Sound "
+project_title: ' / ə ʊ m /  ━ A Story About Light and Sound '
 context: Digital Context
 year: 2020—2021
-main_image: /images/anna_beirinckx_caption4.png
+main_image: 'https://ucarecdn.com/1caeb923-a9d5-4b33-86c9-bcea92a8bb28/'
 bio: >
   Anna Beirinckx is an Antwerp based graphic designer with a passion for 3D
   practicing in the areas of Branding, 3D Modeling & Visualizations, 3D Printing
   and Interaction Design. 
 
-  For any queries or if you would like to get in touch, please send an email to beirinckxanna@hotmail.com.
+  For any queries or if you would like to get in touch, please send an email to
+  beirinckxanna@hotmail.com.
 
   Website in development, please contact me for full portfolio/CV.
 images:
-  - /images/light_gif-1-.gif
-  - /images/highresscreenshot00001.png
-  - /images/ezgif.com-gif-maker-6-.gif
-  - /images/spacy.png
-  - /images/highresscreenshot00004.png
+  - 'https://ucarecdn.com/9d2cfed2-77b2-4600-a4a2-638e8ba07ba7/'
+  - 'https://ucarecdn.com/a95d8f1e-5625-4cdc-b497-8573975d731e/'
+  - 'https://ucarecdn.com/53daea8b-15aa-4bdc-b04f-1f4717f13b45/'
+  - 'https://ucarecdn.com/dae8f6ea-49ed-4412-b10f-46b2ccad9ae4/'
+  - 'https://ucarecdn.com/cba86a72-9d29-43b3-8f11-b22da6ebc958/'
 social_links:
-  - https://www.instagram.com/anna_beirinckx/
-  - https://annabeirinckx.webflow.io/
-  - https://www.linkedin.com/in/anna-beirinckx-2510011b2/
-  - https://www.youtube.com/channel/UC1omU1dlWvAq1HUq8I-WQGg
+  - 'https://www.instagram.com/anna_beirinckx/'
+  - 'https://annabeirinckx.webflow.io/'
+  - 'https://www.linkedin.com/in/anna-beirinckx-2510011b2/'
+  - 'https://www.youtube.com/channel/UC1omU1dlWvAq1HUq8I-WQGg'
 ---
 *What if light lost its way and ended up in darkness? This immersive experience plays with our expectation of light as a means of making things visible. Here, the opposite happens: you are the light and continuous exploration will lead you to unseen environments, new sights, sounds, things, thoughts...*
 

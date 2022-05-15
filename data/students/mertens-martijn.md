@@ -3,27 +3,28 @@ student_name: Mertens Martijn
 project_title: Tumtu Market
 context: Applied Context
 year: 2020-2021
-main_image: /images/web-renders-6.jpg
-bio: Martijn M. Mertens is a Belgian brand identity designer and
-  typographer.  He was born and raised in Brasschaat, Belgium.  He interned at
-  Today Agency and Base Design, and worked as a graphic designer at Duval
-  Branding. Martijn founded Antwerp-based graphic design studio MMCreated in
-  2016 while he was studying at Sint Lucas Antwerpen. This is where he creates
-  or updates brand strategy and visual identity, and deals with plenty of other
-  graphic design related inquiries.
+main_image: 'https://ucarecdn.com/baee77de-380f-4be0-b17b-fbf699aa7f44/'
+bio: >-
+  Martijn M. Mertens is a Belgian brand identity designer and typographer.  He
+  was born and raised in Brasschaat, Belgium.  He interned at Today Agency and
+  Base Design, and worked as a graphic designer at Duval Branding. Martijn
+  founded Antwerp-based graphic design studio MMCreated in 2016 while he was
+  studying at Sint Lucas Antwerpen. This is where he creates or updates brand
+  strategy and visual identity, and deals with plenty of other graphic design
+  related inquiries.
 images:
-  - /images/web-renders-front.jpg
-  - /images/web-renders-4.jpg
-  - /images/fake-mock-3-view-2.jpg
-  - /images/web-renders-2.jpg
-  - /images/fake-mockup-view-1.jpg
+  - 'https://ucarecdn.com/0408a303-e775-4f7a-bb5f-933ae6d32dc2/'
+  - 'https://ucarecdn.com/f41ec015-895c-4d95-9c86-5f9fa09bd98f/'
+  - 'https://ucarecdn.com/96ace49d-6bcd-4858-aff5-548432ec005a/'
+  - 'https://ucarecdn.com/98ce66c1-8a45-4a26-b2d7-663cec882e39/'
+  - 'https://ucarecdn.com/844ff2b2-18c5-40c7-8e76-a5c2924162af/'
 social_links:
-  - https://mmcreated.com
-  - https://behance.net/mmcreated
-  - https://twitter.com/mmcreated
-  - https://instagram.com/mmcreated
-  - https://facebook.com/mmcreated
-  - https://linkedin.com/in/mmcreated
+  - 'https://mmcreated.com'
+  - 'https://behance.net/mmcreated'
+  - 'https://twitter.com/mmcreated'
+  - 'https://instagram.com/mmcreated'
+  - 'https://facebook.com/mmcreated'
+  - 'https://linkedin.com/in/mmcreated'
 ---
 What am I looking at? You may find yourself asking this when navigating these shelves. Perchance the better question is; Do you know what you’re looking for?
 

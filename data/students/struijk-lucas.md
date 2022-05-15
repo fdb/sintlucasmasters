@@ -3,7 +3,7 @@ student_name: Struijk Lucas
 project_title: Triggers
 context: Digital Context
 year: 2020-2021
-main_image: /images/triggers_thumbnail.png
+main_image: 'https://ucarecdn.com/0ca86a19-5e36-45bc-b42c-0969e151bc1f/'
 bio: >-
   I consider myself a multidisciplinary Graphic designer and artist. Oil on
   canvas, pencil on paper, graphic design, digital art, and Virtual Reality are
@@ -11,12 +11,12 @@ bio: >-
 
   My current work explores mental health, stress, and the human body.
 images:
-  - /images/vlcsnap-2021-06-22-15h53m45s210.png
-  - /images/vlcsnap-2021-06-22-15h54m20s571.png
-  - /images/vlcsnap-2021-06-22-15h51m49s164.png
-  - /images/20210621_133025.jpg
+  - 'https://ucarecdn.com/b4acf6be-f9bf-4a9a-a39c-9864c24098e8/'
+  - 'https://ucarecdn.com/ba98faea-5d3b-4fac-860a-e09a7ae180b0/'
+  - 'https://ucarecdn.com/49c0f7c7-7dc9-49a1-96d1-6574820d5401/'
+  - 'https://ucarecdn.com/0bf077fc-1909-4d1f-9cd2-89c5177adca3/'
 social_links:
-  - https://www.instagram.com/lucas.makes.stuff/
+  - 'https://www.instagram.com/lucas.makes.stuff/'
   - lucasstruijk@gmail.com
 ---
 *Triggers* is a Virtual Reality therapy sandbox made to combat *Misophonia* through counter-conditioning. 
