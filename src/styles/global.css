@@ -1,0 +1,20 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: #f7f7f7;
+	color: #1f2937;
+	font: 14px/1.5 'Roboto Mono', monospace;
+}
+
+a {
+	color: inherit;
+}
+
+img {
+	max-width: 100%;
+}
