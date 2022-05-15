@@ -2,6 +2,8 @@
 	import '../styles/global.css';
 </script>
 
+<svelte:head><title>Sint Lucas Masters</title></svelte:head>
+
 <div id="wrapper">
 	<header>
 		<h1><a href="/">Sint Lucas Masters</a></h1>
