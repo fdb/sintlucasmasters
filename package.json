@@ -19,8 +19,10 @@
   },
   "type": "module",
   "dependencies": {
+    "animejs": "3.2.1",
     "dotenv": "16.0.1",
     "front-matter": "4.0.2",
-    "marked": "4.0.15"
+    "marked": "4.0.15",
+    "three": "0.140.2"
   }
 }

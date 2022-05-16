@@ -1,8 +1,11 @@
 <script>
+	import Artboard from '../components/artboard.svelte';
 	export let students;
 </script>
 
-<div class="grid">
+<Artboard {students} />
+
+<!-- <div class="grid">
 	{#each students as student}
 		<div class="student">
 			<a href={`/students/${student.slug}`}>
@@ -17,8 +20,7 @@
 			>
 		</div>
 	{/each}
-</div>
-
+</div> -->
 <style>
 	.student a {
 		text-decoration: none;

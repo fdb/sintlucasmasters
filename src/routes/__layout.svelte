@@ -24,7 +24,9 @@
 		align-items: center;
 		background: #111827;
 		color: #f3f4f6;
-		padding: 1rem 2rem;
+		height: 4rem;
+		line-height: 4rem;
+		padding: 0 2rem;
 	}
 
 	header h1 {
