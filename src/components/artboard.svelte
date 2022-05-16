@@ -26,9 +26,13 @@
 	let activePlane;
 	let activeStudent;
 
+	let canvasWidth, canvasHeight;
+
 	onMount(() => {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
+		canvasWidth = canvas.width;
+		canvasHeight = canvas.height;
 
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color(0xffffff);
@@ -83,16 +87,18 @@
 	const resize = () => {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
-		renderer.setSize(canvas.width, canvas.height);
-		camera.aspect = canvas.width / canvas.height;
+		canvasWidth = canvas.width;
+		canvasHeight = canvas.height;
+		renderer.setSize(canvasWidth, canvasHeight);
+		camera.aspect = canvasWidth / canvasHeight;
 		camera.updateProjectionMatrix();
 	};
 
 	const onClick = (e) => {
 		const raycaster = new THREE.Raycaster();
 		const mouse = new THREE.Vector2();
-		mouse.x = (e.clientX / canvas.width) * 2 - 1;
-		mouse.y = -(e.clientY / canvas.height) * 2 + 1;
+		mouse.x = (e.clientX / canvasWidth) * 2 - 1;
+		mouse.y = -(e.clientY / canvasHeight) * 2 + 1;
 		raycaster.setFromCamera(mouse, camera);
 		const intersects = raycaster.intersectObjects(thumbnailsGroup.children);
 		if (intersects.length > 0) {
@@ -137,8 +143,8 @@
 	};
 
 	const onMouseMove = (e) => {
-		mouse.x = (e.clientX / canvas.width) * 2 - 1;
-		mouse.y = -(e.clientY / canvas.height) * 2 + 1;
+		mouse.x = (e.clientX / canvasWidth) * 2 - 1;
+		mouse.y = -(e.clientY / canvasHeight) * 2 + 1;
 	};
 
 	const zoomIntoPlane = (object) => {
