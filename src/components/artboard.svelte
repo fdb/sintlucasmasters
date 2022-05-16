@@ -3,7 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import * as THREE from 'three';
-	import anime from 'animejs/lib/anime';
+	import anime from 'animejs/lib/anime.js';
 
 	const STATE_GRID = 'grid';
 	const STATE_DETAIL = 'detail';
