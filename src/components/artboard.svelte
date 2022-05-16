@@ -168,6 +168,7 @@
 
 	const zoomOut = () => {
 		currentState = STATE_GRID;
+		activeStudent = null;
 		anime({
 			targets: activePlane.position,
 			x: activePlane.oldPosition.x,
@@ -215,7 +216,7 @@
 
 	const setLayout = (layout) => {
 		currentLayout = layout;
-		shuffleImages();
+		activeStudent = null;
 		if (currentLayout === LAYOUT_RANDOM) {
 			shuffleImages();
 			anime({
