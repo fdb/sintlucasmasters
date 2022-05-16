@@ -5,7 +5,7 @@
 <div class="grid">
 	{#each students as student}
 		<div class="student">
-			<a href={`/students/${student.student_name.toLowerCase().replace(' ', '-')}`}>
+			<a href={`/students/${student.slug}`}>
 				<img
 					src={`${student.main_image}/-/smart_resize/600x600/`}
 					alt={student.project_title}
