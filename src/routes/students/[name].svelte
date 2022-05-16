@@ -17,9 +17,11 @@
 	{@html marked.parse(body)}
 </article>
 
-{#each attributes.images as image}
-	<img src={image} alt={attributes.project_title} />
-{/each}
+{#if attributes.images}
+	{#each attributes.images as image}
+		<img src={image} alt={attributes.project_title} />
+	{/each}
+{/if}
 
 <style>
 	article {
