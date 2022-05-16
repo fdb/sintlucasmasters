@@ -109,8 +109,6 @@
 		} else {
 			if (currentState === STATE_DETAIL) {
 				zoomOut();
-			} else {
-				shuffleImages();
 			}
 		}
 	};
@@ -267,7 +265,6 @@
 		height: 100vh;
 		z-index: 0;
 	}
-	a {
 		position: fixed;
 		top: 4rem;
 		left: 0;
