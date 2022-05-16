@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import * as THREE from 'three';
 	import anime from 'animejs/lib/anime';
@@ -25,6 +26,7 @@
 	let currentLayout = LAYOUT_RANDOM;
 	let activePlane;
 	let activeStudent;
+	let activeStudentLink;
 
 	let canvasWidth, canvasHeight;
 
@@ -81,6 +83,21 @@
 		camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.1);
 		camera.lookAt(scene.position);
 		renderer.render(scene, camera);
+
+		// Project camera to canvas
+		if (activeStudentLink) {
+			// Take position of plane and move down a bit.
+			const vector = activePlane.position.clone();
+			vector.y -= 0.6;
+			// Convert world space to screen space.
+			vector.project(camera);
+			// Convert screen space [0-1] to canvas space [0-width].
+			let translateX = vector.x * canvasWidth * 0.5;
+			let translateY = -vector.y * canvasHeight * 0.5;
+			// Set the transform on the active link.
+			activeStudentLink.style.transform = `translate(${translateX}px, ${translateY}px)`;
+		}
+
 		requestAnimationFrame(animate);
 	};
 
@@ -238,7 +255,6 @@
 			});
 		} else if (currentLayout === LAYOUT_LINE) {
 			shuffleImages();
-
 			anime({
 				targets: camera.position,
 				x: 2,
@@ -260,7 +276,9 @@
 </div>
 <canvas bind:this={canvas} on:click={onClick} on:mousewheel={onWheel} on:mousemove={onMouseMove} />
 {#if activeStudent}
-	<a href={`/students/${activeStudent.slug}`}>{activeStudent.student_name}</a>
+	<div class="activeStudent" bind:this={activeStudentLink} transition:fade>
+		<a href={`/students/${activeStudent.slug}`}>{activeStudent.student_name}</a>
+	</div>
 {/if}
 
 <style>
@@ -272,13 +290,20 @@
 		height: 100vh;
 		z-index: 0;
 	}
+	.activeStudent {
 		position: fixed;
-		top: 4rem;
-		left: 0;
-		background: rgb(0 0 0 / 0.2);
+		top: 50%;
+		left: 50%;
+		z-index: 10;
+		transform: translate(0, 0);
+		user-select: none;
+	}
+	.activeStudent a {
+		transform: translate(-50%, -50%);
 		display: inline-block;
 		padding: 0.5rem;
-		z-index: 10;
+		background: rgb(0 0 0 / 0.8);
+		color: white;
 	}
 	.layouts {
 		position: fixed;
