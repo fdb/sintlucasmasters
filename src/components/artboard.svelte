@@ -277,7 +277,9 @@
 <canvas bind:this={canvas} on:click={onClick} on:mousewheel={onWheel} on:mousemove={onMouseMove} />
 {#if activeStudent}
 	<div class="activeStudent" bind:this={activeStudentLink} transition:fade>
-		<a href={`/students/${activeStudent.slug}`}>{activeStudent.student_name}</a>
+		<a href={`/students/${activeStudent.slug}`}
+			>{activeStudent.project_title} — {activeStudent.student_name}</a
+		>
 	</div>
 {/if}
 
