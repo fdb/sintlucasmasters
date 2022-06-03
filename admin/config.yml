@@ -1,8 +1,10 @@
 backend:
   name: git-gateway
   branch: main
-media_folder: 'images'
-publics_folder: '/2022/images'
+media_library:
+  name: uploadcare
+  config:
+    publicKey: a2ddae113b0813f64a20
 collections:
   - name: 'students'
     label: 'Students'
@@ -18,14 +20,20 @@ collections:
           name: 'context',
           widget: 'select',
           options:
-            ['Digital Context', 'Autonomous Context', 'Applied Context', 'Socio-Political Context']
+            [
+              'Digital Context',
+              'Autonomous Context',
+              'Applied Context',
+              'Socio-Political Context',
+              'Jewelry Context'
+            ]
         }
       - {
           label: 'Academic year',
           name: 'year',
           widget: 'select',
-          options: ['2020—2021'],
-          default: '2020—2021'
+          options: ['2021—2022'],
+          default: '2021—2022'
         }
       - { label: 'Main image', name: 'main_image', widget: 'image' }
       - { label: 'Bio', name: 'bio', widget: 'text', hint: 'Describe yourself and your work' }
