@@ -3,7 +3,13 @@ student_name: Alexandra Fraser
 project_title: Maureen and I
 context: Socio-Political Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/c73fe618-ab96-486e-b11c-f35188a21a9b/'
+main_image: https://ucarecdn.com/c73fe618-ab96-486e-b11c-f35188a21a9b/
+images:
+  - https://ucarecdn.com/c5d147e0-85ab-4469-83dc-1055202bc406/
+  - https://ucarecdn.com/912d925b-06ae-438e-9d88-e0f93ccaee1c/
+  - https://ucarecdn.com/3812c2cb-9835-4f92-9a73-9dc0ad283610/
+  - https://ucarecdn.com/5c92faed-d38a-43c1-885b-39f49eb00616/
+  - https://ucarecdn.com/2715fc89-e473-454d-8d0a-e6a3140f9168/
 social_links:
   - https://www.alexandrafraser.eu
 ---
