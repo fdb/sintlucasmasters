@@ -1,7 +1,6 @@
 [build]
-base = "2021/"
-command = "npm run build"
 publish = "_site"
+command = "npm run build"
 
 [[redirects]]
 from = "/"
