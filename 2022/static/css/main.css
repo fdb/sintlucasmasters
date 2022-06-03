@@ -96,7 +96,7 @@ footer {
 }
 
 .students-grid img {
-	visibility: hidden;
+	opacity: 0;
 }
 
 .student a {
