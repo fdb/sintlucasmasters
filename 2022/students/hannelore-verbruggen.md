@@ -1,11 +1,11 @@
 ---
-student_name: "Hannelore Verbruggen"
-project_title: "Malus Lupus"
+student_name: Hannelore Verbruggen
+project_title: Malus Lupus
 context: Applied Context
 year: 2021-2022
-main_image: hannelore-verbruggen.jpg
+main_image: 'https://ucarecdn.com/8a41b8d0-9577-4664-a15d-764af41d2a0c/'
 social_links:
-  - "https://hanneloreverbruggen.cargo.site/"
+  - 'https://hanneloreverbruggen.cargo.site/'
 ---
 Malus Lupus is een kritiek op de verdeeldheid die de wolf veroorzaakt in Belgische gemeenschappen. Ik ontdekte door middel van een literatuuronderzoek dat veel houdingen uit de 16e- 18e eeuw die ervoor zorgden dat wolven tot uitsterven bejaagd werden opnieuw opduiken nu wolven zijn teruggekeerd naar België. Ik bundelde mijn onderzoek tot een verhaal over een fictieve onderzoeker die de oorsprong van het Grote Boze Wolf archetype probeert te achterhalen.
 

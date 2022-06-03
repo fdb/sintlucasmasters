@@ -1,11 +1,11 @@
 ---
-student_name: "Catarina Martins"
-project_title: "A Safe Space for Bad Type"
+student_name: Catarina Martins
+project_title: A Safe Space for Bad Type
 context: Autonomous Context
 year: 2021-2022
-main_image: catarina-martins.jpg
+main_image: 'https://ucarecdn.com/c329daa8-736e-4d64-b0e7-ce705db2817d/'
 social_links:
-  - "catarinaregomartins.com"
+  - catarinaregomartins.com
 ---
 Typography has an impact on our daily life. What is the impact of fonts on a social construct? A typographic exploration of how type affects our impressions of the world, authority, and trust.
 

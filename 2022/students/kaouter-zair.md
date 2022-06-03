@@ -1,11 +1,11 @@
 ---
-student_name: "Kaouter Zair"
-project_title: "The History of Why: A love letter to the unlucky opal"
+student_name: Kaouter Zair
+project_title: 'The History of Why: A love letter to the unlucky opal'
 context: Jewelry Context
 year: 2021-2022
-main_image: kaouter-zair.jpg
+main_image: 'https://ucarecdn.com/628e1b25-c443-4cc3-a87d-e11b8ef681de/'
 social_links:
-  - ""
+  - ''
 ---
 The History of Why is a project where I explore the forgotten and lost stories about jewellery.    I dive into the history of the symbolism used in jewellery and I reintroduce these stories to a contemporary audience.
 

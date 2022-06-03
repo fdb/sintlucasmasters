@@ -1,11 +1,11 @@
 ---
-student_name: "Lucas Suykens"
-project_title: "De tijger die geen vlees lust"
+student_name: Lucas Suykens
+project_title: De tijger die geen vlees lust
 context: Applied Context
 year: 2021-2022
-main_image: lucas-suykens.jpg
+main_image: 'https://ucarecdn.com/056383ef-8e0a-41aa-9d79-f30efc78785d/'
 social_links:
-  - "https://www.instagram.com/lucas.suykens/"
+  - 'https://www.instagram.com/lucas.suykens/'
 ---
 Een vrolijk en kleurrijk kinderboek dat de focus legt op het plezier rond tuinieren. Het verhaal motiveert de kinderen om zelf planten te groeien en te verzorgen. 
 

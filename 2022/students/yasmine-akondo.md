@@ -1,11 +1,11 @@
 ---
-student_name: "Yasmine Akondo"
-project_title: "Kroniek: 0"
+student_name: Yasmine Akondo
+project_title: 'Kroniek: 0'
 context: Autonomous Context
 year: 2021-2022
-main_image: yasmine-akondo.jpg
+main_image: 'https://ucarecdn.com/d23014d2-d40c-4e77-8c77-0e5f2fc23a0e/'
 social_links:
-  - "https://www.yasmine-akondo.be/"
+  - 'https://www.yasmine-akondo.be/'
 ---
 There is this thing we call the unknown.
 It goes beyond existence

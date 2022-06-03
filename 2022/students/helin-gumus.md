@@ -1,11 +1,11 @@
 ---
-student_name: "Helin Gümüs"
-project_title: "Gümüs Index"
+student_name: Helin Gümüs
+project_title: Gümüs Index
 context: Autonomous Context
 year: 2021-2022
-main_image: helin-gumus.jpg
+main_image: 'https://ucarecdn.com/2df7951e-e332-40fe-9075-af604623fd9c/'
 social_links:
-  - "https://www.instagram.com/gumushelinnn/"
+  - 'https://www.instagram.com/gumushelinnn/'
 ---
 The project explores the search for a personal identity through a created visual language that is based on the heritage of the designer and the patterns of middle eastern carpets. She created a new identity true shapes and colors. 
 

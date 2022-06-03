@@ -1,12 +1,12 @@
 ---
-student_name: "Manu Van Guijze"
-project_title: "(Un)controlled Colors"
+student_name: Manu Van Guijze
+project_title: (Un)controlled Colors
 context: Autonomous Context
 year: 2021-2022
-main_image: manu-van-guijze.jpg
+main_image: 'https://ucarecdn.com/10ada3cb-55c5-44a2-a9d1-bc0607db42f8/'
 social_links:
-  - ""
 ---
+
 (Un)controlled Colors is a research project that explores ways to dye textiles naturally. The result is a series of cotton and linen cloths, measuring 841 mm x 594 mm, with interesting color effects achieved by extracting pigment from beets, onion peels, red cabbage, turmeric and red wine.
 
 I studied interior design at the Royal Academy of Fine Arts in Ghent (KASK). I spent the last two years of my education specializing in furniture design. Even though designing a home is my passion, I often felt frustrated during my education. Sleek interiors with straight lines and discreet colors were the norm. My teachers used to discourage me when I designed organic shaped, colorful interiors. Everything had to be rigid and precise, while I believe that humans thrive better in a soft, open minded environment. With the (Pre-)Master program here at Sint-Lucas, I want to explore how I can make contemporary living more joyful, grounding and creative. When I was specializing in furniture design I experimented with textile. I admire this material and the femininity it carries. It is soft, yet strong, comforting and warm. This flexible material allows me to envelop an interior with softness. There was no question in my mind that this material was perfectly suited to my quest for wellbeing. However, the textile industry is a troubled one. In particular, the color process of textiles is problematic since it is a highly environmentally polluting process. To me it was evident that it is meaningful and worthwhile to conduct research on other coloring techniques. I discovered natural ways to dye textile. Plants, vegetables and herbs can be used to dye fabric naturally. A technique that has been around for centuries, but has been forgotten because of the popularity of cheaper, synthetic dyes. I conducted research on natural products and their dye possibilities and on different dyeing techniques. Finally I created a personal dyeing technique combining ancient and experimental techniques. The result is a series of cotton and linen cloths, measuring 841 mm x 594 mm, with interesting color effects achieved by extracting pigment from beets, onion peels, red cabbage, turmeric and red wine.

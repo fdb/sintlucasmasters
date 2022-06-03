@@ -1,12 +1,13 @@
 ---
-student_name: "Johan Minnebo"
-project_title: "Art is Rocket Science"
+student_name: Johan Minnebo
+project_title: Art is Rocket Science
 context: Socio-Political Context
 year: 2021-2022
-main_image: johan-minnebo.jpg
+main_image: 'https://ucarecdn.com/c45e6d61-319f-494e-8174-29c27be90809/'
 social_links:
-  - "http://johanminnebo.com"
+  - 'https://johanminnebo.com'
 ---
+
 Imagine you could soar past your fears. Journey to worlds beyond understanding.
 Pull dust out of thin air, and turn it into gold … Johan Minnebo explores the artistic process in search of a theory that makes creativity more accessible, fun & kind for everyone.
 

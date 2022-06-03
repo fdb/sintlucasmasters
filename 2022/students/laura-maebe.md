@@ -1,11 +1,11 @@
 ---
-student_name: "Laura Maebe"
-project_title: "You by Laura Maebe"
+student_name: Laura Maebe
+project_title: You by Laura Maebe
 context: Digital Context
 year: 2021-2022
-main_image: laura-maebe.jpg
+main_image: 'https://ucarecdn.com/42761163-4165-47c3-b548-b411d6955750/'
 social_links:
-  - "https://youbylauramaebe.netlify.app"
+  - 'https://youbylauramaebe.netlify.app'
 ---
 A fashion collection based on your preferences and personality.
 

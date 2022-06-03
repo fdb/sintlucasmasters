@@ -1,11 +1,11 @@
 ---
-student_name: "Justine Lambrechts"
-project_title: "State of Matter"
+student_name: Justine Lambrechts
+project_title: State of Matter
 context: Autonomous Context
 year: 2021-2022
-main_image: justine-lambrechts.jpg
+main_image: 'https://ucarecdn.com/2f944041-8779-42a1-b702-b84793e95395/'
 social_links:
-  - "https://justinelambrechts.com/"
+  - 'https://justinelambrechts.com/'
 ---
 As a painter I researched materiality by translating abstract sculptural elements to canvas. This causes friction between media as well as alienation of the painted subject. In a practice where sculpture and painting are intertwined, I am building an earthly world infiltrated by the artificial. 
 

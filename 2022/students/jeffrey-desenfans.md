@@ -1,11 +1,11 @@
 ---
-student_name: "Jeffrey Desenfans"
-project_title: "Enclosure"
+student_name: Jeffrey Desenfans
+project_title: Enclosure
 context: Digital Context
 year: 2021-2022
-main_image: jeffrey-desenfans.jpg
+main_image: 'https://ucarecdn.com/98f6b6d9-bb80-46a9-a931-a8d267607722/'
 social_links:
-  - "https://www.instagram.com/jeffrey_desenfans_graphical/"
+  - 'https://www.instagram.com/jeffrey_desenfans_graphical/'
 ---
 Enclosure vertrekt vanuit observaties gemaakt vanuit een woonkamer tijdens de lockdown. Het licht dat door het raam binnen sluipt. Een voorbijrijdende auto's tijdens de nacht. Een eindeloze zee, gezien vanuit een besloten kamer. Vrijheid zoeken in een gesloten ruimte is wat Enclosure toont aan de hand van een digitale kortfilm.
 

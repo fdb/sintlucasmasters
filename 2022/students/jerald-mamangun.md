@@ -1,11 +1,11 @@
 ---
-student_name: "Jerald Mamangun"
-project_title: "はじめまして (I am glad to meet you)."
+student_name: Jerald Mamangun
+project_title: はじめまして (I am glad to meet you).
 context: Applied Context
 year: 2021-2022
-main_image: jerald-mamangun.jpg
+main_image: 'https://ucarecdn.com/9598e7d2-8082-471b-b1bf-aa87f5e284b1/'
 social_links:
-  - ""
+  - ''
 ---
 Memories illuminate much of our rich life as human beings. It gives us potential to learn, tell stories, and immortalize each other by reflecting or remembering loved ones. Using my bachelor project as a beginning phase in my research around memories, I decided to expand it to include the question, "How do we represent the past to ourselves and to others?
 

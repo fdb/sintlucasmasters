@@ -1,11 +1,11 @@
 ---
-student_name: "Elise Hoebeke"
-project_title: "Transmutation d'une brique"
+student_name: Elise Hoebeke
+project_title: Transmutation d'une brique
 context: Jewelry Context
 year: 2021-2022
-main_image: elise-hoebeke.jpg
+main_image: 'https://ucarecdn.com/105aab5e-cf0e-4b4a-841b-13a2486c1843/'
 social_links:
-  - "https://www.instagram.com/elise.hoebeke/"
+  - 'https://www.instagram.com/elise.hoebeke/'
 ---
 Can be placed in various alignments and therefore make very versatile components of jewelry. Sparkle less than brilliant-cut diamonds and thus might not be the optimal choice.
 

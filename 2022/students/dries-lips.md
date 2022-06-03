@@ -1,12 +1,11 @@
 ---
-student_name: "Dries Lips"
-project_title: "Egg of the Sages"
+student_name: Dries Lips
+project_title: Egg of the Sages
 context: Autonomous Context
 year: 2021-2022
-main_image: dries-lips.jpg
+main_image: 'https://ucarecdn.com/b7613e98-a4b0-452b-a4c4-f1865761c880/'
 social_links:
-  - "drieslips.com"
+  - https://drieslips.com
 ---
-2022
 
-www.drieslips.com
+2022

@@ -1,11 +1,11 @@
 ---
-student_name: "Carla Da Cruz Pereira"
-project_title: "Saudade "
+student_name: Carla Da Cruz Pereira
+project_title: 'Saudade '
 context: Applied Context
 year: 2021-2022
-main_image: carla-da-cruz-pereira.jpg
+main_image: 'https://ucarecdn.com/78251622-0a8d-4117-9a1d-4de688d212ec/'
 social_links:
-  - ""
+  - ''
 ---
 Steeds meer zijn er leeglopende dorpen. Dorpen waarvan wij niet meer weten hoe het leven en de samenleving daar ooit was. Het dorpje waar ik elk jaar op reis ga in Portugal begint stilletjes aan leeg te lopen maar ik wil niet dat zijn identiteit mee vergaat, ik wil niet dat het nog een leeglopende dorp word zoals zo veel andere.
 

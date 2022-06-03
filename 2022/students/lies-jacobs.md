@@ -1,11 +1,11 @@
 ---
-student_name: "Lies Jacobs"
-project_title: "Tu Dois Faire Des Choses"
+student_name: Lies Jacobs
+project_title: Tu Dois Faire Des Choses
 context: Socio-Political Context
 year: 2021-2022
-main_image: lies-jacobs.jpg
+main_image: 'https://ucarecdn.com/f8cb8710-ce7d-4bea-a458-4a6ea5ab1ee9/'
 social_links:
-  - "https://www.instagram.com/lies___jacobs"
+  - 'https://www.instagram.com/lies___jacobs'
 ---
 Lies Jacobs richt haar blik op  dingen, verhalen, herinneringen, en mensen die vaak onopgemerkt blijven. In ‘Tu Dois Faire Des Choses‘ bevraagt ze waarom we als maatschappij vervreemd geraakt zijn van het zorgdragen. . Elk object is uniek. In ruimtes die vaak vergeten worden, maakt ze draagplaatsen. Waar ze met de  objecten  nieuwe constellaties  maakt. 
 Het is een ode aan het zorgdragen waardoor de dingen er weer toe doen

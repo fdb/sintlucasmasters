@@ -1,11 +1,11 @@
 ---
-student_name: "Violeta Chouciño Veiga"
-project_title: "Anterpen, Anwers, Antwetpen"
+student_name: Violeta Chouciño Veiga
+project_title: 'Anterpen, Anwers, Antwetpen'
 context: Socio-Political Context
 year: 2021-2022
-main_image: violeta-choucino-veiga.jpg
+main_image: 'https://ucarecdn.com/8871670c-8253-4485-9e3e-dceaec5e9b1f/'
 social_links:
-  - "https://www.instagram.com/setevioletas/"
+  - 'https://www.instagram.com/setevioletas/'
 ---
 By confronting the city’s true image against my preconception, I question our cultural codes and how they shape the way we interpretate different realities. I photographed my first contact with my neighborhood for a start, with the final aim of dismantling the myth and propaganda directed to poorer countries that creates the imagery of the european dream.
 

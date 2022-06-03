@@ -1,11 +1,11 @@
 ---
-student_name: "Lubna Alzoubaydi"
-project_title: "شيء من الذاكره(iets uit het geheugen)"
+student_name: Lubna Alzoubaydi
+project_title: شيء من الذاكره(iets uit het geheugen)
 context: Autonomous Context
 year: 2021-2022
-main_image: lubna-alzoubaydi.jpg
+main_image: 'https://ucarecdn.com/1378f48d-b55c-4bb4-98d7-18c117e91629/'
 social_links:
-  - "https://lubna-alzoubaydi0.webnode.be/"
+  - 'https://lubna-alzoubaydi0.webnode.be/'
 ---
 Mijn werk gaat over het gevolgen van de oorlog op vrouwen in Irak. Ik heb gekeken naar de problemen die vrouwen meemaken in Irak en dat genomen als een startpunt voor mijn werk. In Oktober 2021 ben ik gereisd naar Irak, Babylon om daar vrouwen te filmen en zien wat ze meemaken op dagelijkse basis en wat voor problemen ze tegenkomen.
 

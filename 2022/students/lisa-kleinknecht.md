@@ -1,11 +1,11 @@
 ---
-student_name: "Lisa Kleinknecht"
-project_title: "Landscape of Letters"
+student_name: Lisa Kleinknecht
+project_title: Landscape of Letters
 context: Applied Context
 year: 2021-2022
-main_image: lisa-kleinknecht.jpg
+main_image: 'https://ucarecdn.com/8f1923bc-b4cb-42a4-9f54-ef42f7165f01/'
 social_links:
-  - "https://www.instagram.com/graphics_by_lisa/"
+  - 'https://www.instagram.com/graphics_by_lisa/'
 ---
 Typography in urban spaces can tell about the culture, history and ultimately the identity of a city. Yet, we normally do not pay attention to this landscape of letters stretching before our eyes. This project aims to shed light on the richness and beauty found in urban typography in Antwerp and provides an insight into the stories hidden behind the letters.
 
