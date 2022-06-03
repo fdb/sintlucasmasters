@@ -18,7 +18,12 @@ void main() {
     vUv = uv;
     vec4 thumbState = modelMatrix * vec4(position, 1.0);
     vec4 fullState = vec4(position, 1.0);
-    gl_Position = projectionMatrix * viewMatrix * thumbState;
+    // fullState.x *= uQuadSize.x;
+    // fullState.y *= uQuadSize.y;
+    fullState.x *= uResolution.x;
+    fullState.y *= uResolution.y;
+    vec4 finalState = mix(thumbState, fullState, uProgress);
+    gl_Position = projectionMatrix * viewMatrix * finalState;
 }
 `;
 
@@ -49,7 +54,6 @@ function setup() {
 	g_renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 	g_renderer.setSize(g_width, g_height);
 
-	// g_renderer.setSize(g_width, g_height);
 	g_container.appendChild(g_renderer.domElement);
 
 	if (document.location.hash === '#debug') {
@@ -70,7 +74,7 @@ function createShaderMaterial(texture) {
 		uCorners: { value: new THREE.Vector4(0, 0, 0, 0) },
 		uTexture: { value: new THREE.TextureLoader().load(texture) },
 		uTextureSize: { value: new THREE.Vector2(100, 100) },
-		uResolution: { value: new THREE.Vector2(this.width, this.height) },
+		uResolution: { value: new THREE.Vector2(g_width, g_height) },
 		uQuadSize: { value: new THREE.Vector2(300, 300) } // Size of the plane
 	};
 	const material = new THREE.ShaderMaterial({
@@ -121,6 +125,11 @@ function onScroll() {
 
 function animate() {
 	requestAnimationFrame(animate);
+	const images = document.querySelectorAll('.students-grid img');
+	for (const image of images) {
+		if (!image._mesh) continue;
+		image._mesh.material.uniforms.uProgress.value = g_settings.progress;
+	}
 	g_renderer.render(g_scene, g_camera);
 }
 
