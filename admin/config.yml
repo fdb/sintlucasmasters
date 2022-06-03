@@ -30,7 +30,7 @@ collections:
         field: 'context'
         pattern: 'Socio-Political Context'
     fields:
-      - { label: 'Student name', name: 'student_name', widget: 'string', hint: 'Surname Name' }
+      - { label: 'Student name', name: 'student_name', widget: 'string' }
       - { label: 'Master project title', name: 'project_title', widget: 'string' }
 
       - {
@@ -54,7 +54,13 @@ collections:
           default: '2021—2022'
         }
       - { label: 'Main image', name: 'main_image', widget: 'image' }
-      - { label: 'Bio', name: 'bio', widget: 'text', hint: 'Describe yourself and your work' }
+      - {
+          label: 'Bio',
+          name: 'bio',
+          widget: 'text',
+          hint: 'Describe yourself and your work',
+          required: false
+        }
       - { label: 'Body', name: 'body', widget: 'markdown', hint: 'Describe your project' }
       - {
           label: 'Images',
