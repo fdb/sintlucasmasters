@@ -59,10 +59,9 @@ collections:
       - {
           label: 'Images',
           name: 'images',
-          widget: 'list',
+          widget: 'image',
           label_singular: 'image',
-          summary: '{{fields.image}}',
-          field: { label: Image, name: image, widget: image }
+          media_library: { config: { multiple: true } }
         }
       - {
           label: 'Social links',
