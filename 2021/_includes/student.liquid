@@ -1,0 +1,72 @@
+{% comment %} aparte student page {% endcomment %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ student_name }} &mdash; {{project_title}} </title>
+    <meta name="description" content=" {{ student_name }} &mdash; {{project_title}} " />
+    <meta property="og:url" content="www.sintlucasmasters.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ student_name }}" />
+    <meta property="og:description" content=" {{ body|shorten(50)}}" />
+    <meta property="og:image" content="{{ main_image }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+    <body>
+    <header>
+      <div class="home"><a href="/index.html" class="home" >&#10229;&nbsp;all&nbsp;&nbsp;projects&nbsp;</a></div>
+      <div class="context-year">
+            <p class="page-year" > {{ year }} </p>
+            <p class="page-context" > {{ context }} </p>
+          </div>
+  
+    </header>
+    <main>
+        <div class="page-student">
+          <p class="page-name" >{{ student_name }}</p>
+          </br>
+          <p class="page-text-brood" >{{ bio }}</p>
+          <img class="page-img" src="{{ main_image }}"/>
+          
+          <p class="page-project" ><mark>{{ project_title }}</mark></p>
+          <p class="page-text-brood">{{ content }}</p>
+          </br>
+          </br>
+          {% for image in images %}
+          <img class="page-img" src="{{ image }}" alt="" />
+          {% endfor %}
+          
+          {% comment %} <p class="page-bio">social links</p> {% endcomment %}
+          {% for link in social_links %}
+          <div class="link-wrap"><a class="social_links" target="_blank" href="{{ link }}">{{ link }}</a></div>
+          {% endfor %}
+        </div>
+      </main>
+
+      <script>      //hamburger button
+      function myFunction() {
+        var x = document.getElementById("intro");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+      }</script>
+        <footer>
+    <img class="logo" src="/images/sla-logo.png" />
+    <div class="contact">
+      <a class="sla-link" href="https://www.sintlucasantwerpen.be/">Sint Lucas Antwerpen</a>
+      <a class="sla-link" href="https://www.sintlucasantwerpen.be/">Van Schoonbekestraat 143</a>
+      <a class="sla-link" href="https://www.sintlucasantwerpen.be/">2018 Antwerpen</a>
+      </br>
+      <a class="sla-link" href="https://www.sintlucasantwerpen.be/">www.sintlucasantwerpen.be</a>
+    </div>
+  </footer>
+
+    </body>
+
+</html>
