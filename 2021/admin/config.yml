@@ -1,72 +1,48 @@
 backend:
   name: git-gateway
   branch: main
-media_folder: "images"
-publics_folder: "/images"
+media_folder: 'images'
+publics_folder: '/2021/images'
 collections:
-  - name: "students"
-    label: "Students"
-    folder: "students"
+  - name: 'students'
+    label: 'Students'
+    folder: 'students'
     create: true
-    slug: "{{student_name}}"
+    slug: '{{student_name}}'
     fields:
-      - {
-          label: "Student name",
-          name: "student_name",
-          widget: "string",
-          hint: "Surname Name",
-        }
-      - {
-          label: "Master project title",
-          name: "project_title",
-          widget: "string",
-        }
+      - { label: 'Student name', name: 'student_name', widget: 'string', hint: 'Surname Name' }
+      - { label: 'Master project title', name: 'project_title', widget: 'string' }
 
       - {
-          label: "Context",
-          name: "context",
-          widget: "select",
+          label: 'Context',
+          name: 'context',
+          widget: 'select',
           options:
-            [
-              "Digital Context",
-              "Autonomous Context",
-              "Applied Context",
-              "Socio-Political Context",
-            ],
+            ['Digital Context', 'Autonomous Context', 'Applied Context', 'Socio-Political Context']
         }
       - {
-          label: "Academic year",
-          name: "year",
-          widget: "select",
-          options: ["2020—2021"],
-          default: "2020—2021",
+          label: 'Academic year',
+          name: 'year',
+          widget: 'select',
+          options: ['2020—2021'],
+          default: '2020—2021'
         }
-      - { label: "Main image", name: "main_image", widget: "image" }
+      - { label: 'Main image', name: 'main_image', widget: 'image' }
+      - { label: 'Bio', name: 'bio', widget: 'text', hint: 'Describe yourself and your work' }
+      - { label: 'Body', name: 'body', widget: 'markdown', hint: 'Describe your project' }
       - {
-          label: "Bio",
-          name: "bio",
-          widget: "text",
-          hint: "Describe yourself and your work",
-        }
-      - {
-          label: "Body",
-          name: "body",
-          widget: "markdown",
-          hint: "Describe your project",
+          label: 'Images',
+          name: 'images',
+          widget: 'list',
+          label_singular: 'image',
+          summary: '{{fields.image}}',
+          field: { label: Image, name: image, widget: image }
         }
       - {
-          label: "Images",
-          name: "images",
-          widget: "list",
-          label_singular: "image",
-          summary: "{{fields.image}}",
-          field: { label: Image, name: image, widget: image },
-        }
-      - {
-          label: "Social links",
-          name: "social_links",
-          widget: "list",
-          hint: "add links to your Social Media, Portfolio, ...",
-          label_singular: "link",
-          field: { label: Url, name: url, widget: string },
+          label: 'Social links',
+          name: 'social_links',
+          widget: 'list',
+          hint: 'add links to your Social Media, Portfolio, ...',
+          label_singular: 'link',
+          field: { label: Url, name: url, widget: string }
         }

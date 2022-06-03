@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/main.css" />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap");
-    </style>
-    <title>Sint Lucas Masters</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <div class="progress">
-      <a href="https://instagram.com/sintlucasma?utm_medium"
-        >Website in progress</a
-      >
-      <br />
-      <img class="img-progress" src="/images/progress.jpg" />
-    </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/2021/css/main.css" />
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow&display=swap');
+		</style>
+		<title>Sint Lucas Masters</title>
+		<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+	</head>
+	<body>
+		<div class="progress">
+			<a href="https://instagram.com/sintlucasma?utm_medium">Website in progress</a>
+			<br />
+			<img class="img-progress" src="/2021/images/progress.jpg" />
+		</div>
 
-    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
+		<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+		<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+		<script>
+			if (window.netlifyIdentity) {
+				window.netlifyIdentity.on('init', (user) => {
+					if (!user) {
+						window.netlifyIdentity.on('login', () => {
+							document.location.href = '/admin/';
+						});
+					}
+				});
+			}
+		</script>
 
-    <script>
-      tippy(".progress", {
-        content: '<img src="/images/progress.jpg"/>',
-        allowHTML: true,
-        followCursor: true,
-      });
-    </script>
-  </body>
+		<script>
+			tippy('.progress', {
+				content: '<img src="/2021/images/progress.jpg"/>',
+				allowHTML: true,
+				followCursor: true
+			});
+		</script>
+	</body>
 </html>
