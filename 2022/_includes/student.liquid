@@ -1,0 +1,26 @@
+---
+layout: base
+---
+
+<div class="meta">
+	<h2>{{ student_name }} — {{ project_title }}</h2>
+	<p class="year">{{ year }}</p>
+</div>
+
+<div class="full-width">
+	<img class="main-image" src="{{ main_image }}" alt="{{ project_title }}" />
+</div>
+
+<article>
+	{{ content }}
+</article>
+
+{%- for image in images -%}
+<img class="image" src="{{ image }}" alt="" />
+{%- endfor -%}
+<hr />
+{% for link in social_links %}
+<div class="link-wrap">
+	<a class="social_links" target="_blank" href="{{ link }}">{{ link }}</a>
+</div>
+{% endfor %}

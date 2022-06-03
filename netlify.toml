@@ -4,4 +4,4 @@ command = "npm run build"
 
 [[redirects]]
 from = "/"
-to = "/2021"
+to = "/2022"
