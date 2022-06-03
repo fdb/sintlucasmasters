@@ -7,3 +7,4 @@ package/
 .env.*
 !.env.example
 _site/
+uploadcare-files.json
