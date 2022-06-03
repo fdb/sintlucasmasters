@@ -1,8 +1,8 @@
 module.exports = function (eleventyConfig) {
-	eleventyConfig.addPassthroughCopy('images');
-	eleventyConfig.addPassthroughCopy('css');
-	eleventyConfig.addPassthroughCopy('fonts');
-	eleventyConfig.addPassthroughCopy('admin/config.yml');
+	eleventyConfig.addPassthroughCopy('2021/images');
+	eleventyConfig.addPassthroughCopy('2021/css');
+	eleventyConfig.addPassthroughCopy('2021/fonts');
+	eleventyConfig.addPassthroughCopy('2021/admin/config.yml');
 
 	eleventyConfig.addCollection('digitalContext', (collectionApi) => {
 		return collectionApi.getAll().filter((item) => item.data.context === 'Digital Context');
