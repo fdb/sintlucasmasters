@@ -1,12 +1,12 @@
 {
-	"name": "exposing",
+	"name": "master-website",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
 	"scripts": {
-		"build": "npm run build:2021",
-		"build:2021": "eleventy --input=2021 --output=_site/2021",
-		"start": "eleventy --serve"
+		"start": "eleventy --serve",
+		"build": "npm run clean && npm run build:2021",
+		"build:2021": "eleventy --config=2021/.eleventy.js --input=2021 --output=_site/2021",
+		"clean": "rm -rf _site"
 	},
 	"keywords": [],
 	"author": "",
