@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build_2021": "eleventy --input=2021 --output=_site/2021",
+		"build": "npm run build:2021",
+		"build:2021": "eleventy --input=2021 --output=_site/2021",
 		"start": "eleventy --serve"
 	},
 	"keywords": [],
