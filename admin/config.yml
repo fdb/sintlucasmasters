@@ -8,7 +8,8 @@ media_library:
 collections:
   - name: 'students'
     label: 'Students'
-    folder: 'students'
+    label_singular: 'Student'
+    folder: '2022/students'
     create: true
     slug: '{{student_name}}'
     fields:
