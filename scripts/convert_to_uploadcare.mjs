@@ -51,7 +51,7 @@ async function findFileOnUploadcare(filename) {
 
 async function convertStudentPage(filename) {
 	// Load the file
-	const fullFilename = `data/students/${filename}`;
+	const fullFilename = `2022/students/${filename}`;
 	const text = await readFile(fullFilename, 'utf8');
 
 	// Parse the front matter
@@ -78,7 +78,7 @@ async function convertStudentPage(filename) {
 
 export async function main() {
 	await getAllFilesOnUploadcare();
-	let files = await readdir('data/students');
+	let files = await readdir('2022/students');
 	files = files.filter((file) => file.endsWith('.md'));
 
 	for (const filename of files) {

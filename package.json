@@ -17,6 +17,10 @@
 	"devDependencies": {
 		"@11ty/eleventy": "1.0.1",
 		"concurrently": "7.2.1",
-		"serve": "13.0.2"
+		"d3-dsv": "3.0.1",
+		"dotenv": "16.0.1",
+		"front-matter": "4.0.2",
+		"serve": "13.0.2",
+		"slugify": "1.6.5"
 	}
 }
