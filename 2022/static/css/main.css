@@ -59,6 +59,10 @@ header h1 a {
 	text-decoration: none;
 }
 
+header nav a {
+	margin-left: 1rem;
+}
+
 main {
 	padding: 1rem 2rem;
 	min-height: 100vh;
@@ -125,4 +129,20 @@ p {
 .image {
 	display: block;
 	margin: 4rem auto;
+}
+
+.social-links__wrapper {
+	margin-left: -2rem;
+	margin-right: -2rem;
+	padding: 5rem 2rem;
+	background: #f3f3f3;
+}
+
+.social-links {
+	max-width: 80ch;
+	margin: 0 auto;
+}
+
+.social-link {
+	display: block;
 }
