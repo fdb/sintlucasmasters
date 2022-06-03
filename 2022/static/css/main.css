@@ -64,8 +64,19 @@ header nav a {
 }
 
 main {
+	position: relative;
 	padding: 1rem 2rem;
 	min-height: 100vh;
+}
+
+.webgl-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	/* background: rgba(0, 0, 0, 0.5); */
+	z-index: -1;
 }
 
 footer {
@@ -82,6 +93,10 @@ footer {
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 4rem 1rem;
 	text-decoration: none;
+}
+
+.students-grid img {
+	visibility: hidden;
 }
 
 .student a {
