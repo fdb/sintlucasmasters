@@ -6,7 +6,7 @@ barba.init({
 			leave(data) {
 				// return gsap.timeline().to(data.current.container, { opacity: 0, duration: 1.0 });
 				const { trigger } = data;
-				if (trigger.className === 'student__link') {
+				if (trigger.className === 'student__link' && false) {
 					g_selectedImage = trigger.querySelector('img');
 					console.log(data);
 					let uCorners = g_selectedImage._mesh.material.uniforms.uCorners.value;
@@ -31,9 +31,16 @@ barba.init({
 			},
 			enter(data) {
 				console.log('enter', data);
-				//window.scrollTo(0, 0);
+				// window.scrollTo(0, 0, { behavior: 'smooth' });
+				return gsap
+					.timeline()
+					.delay(0.2)
+					.add(() => {
+						window.scrollTo(0, 0);
+					})
+					.from(data.next.container, { opacity: 0, duration: 0.5 });
 
-				return gsap.from(data.next.container, { opacity: 0, duration: 0.5, delay: 1.0 });
+				// return gsap.from(data.next.container, { opacity: 0, duration: 0.5, delay: 0.2 });
 			}
 		}
 	]
