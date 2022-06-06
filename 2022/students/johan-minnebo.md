@@ -2,7 +2,7 @@
 student_name: Johan Minnebo
 project_title: Art is Rocket Science
 context: Socio-Political Context
-year: 2021-2022
+year: 2021—2022
 main_image: https://ucarecdn.com/aa6b868d-0e7b-4814-9f0b-a659394f5dfe/
 images:
   - https://ucarecdn.com/330b077f-e157-45a9-94c8-53567c22eb4a/
