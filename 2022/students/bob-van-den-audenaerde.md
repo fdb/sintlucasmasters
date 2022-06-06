@@ -3,7 +3,7 @@ student_name: Bob Van den Audenaerde
 project_title: ETHEREAL MATTER
 context: Digital Context
 year: 2021-2022
-main_image: https://ucarecdn.com/a915b3c8-4826-4adb-bafa-adda12ed29a9/
+main_image: https://ucarecdn.com/30fab231-e5b3-4703-968b-c5b49aad7d60/
 images:
   - https://ucarecdn.com/40de0d65-0afa-463a-b28d-817026eb3f78/
   - https://ucarecdn.com/e84b05a9-94ca-4ce0-8318-0a77699a37ec/
