@@ -6,7 +6,7 @@ year: 2021-2022
 main_image: https://ucarecdn.com/30fab231-e5b3-4703-968b-c5b49aad7d60/
 images:
   - https://ucarecdn.com/40de0d65-0afa-463a-b28d-817026eb3f78/
-  - https://ucarecdn.com/e84b05a9-94ca-4ce0-8318-0a77699a37ec/
+  - https://ucarecdn.com/d5a1b904-bd6e-460e-b82a-b5025aa3c825/
 social_links:
   - https://www.instagram.com/bxbvda/
 ---
