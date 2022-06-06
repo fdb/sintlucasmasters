@@ -32,6 +32,7 @@ barba.init({
 			enter(data) {
 				console.log('enter', data);
 				// window.scrollTo(0, 0, { behavior: 'smooth' });
+				setupGridFilter();
 				return gsap
 					.timeline()
 					.delay(0.2)

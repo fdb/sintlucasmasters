@@ -2,9 +2,26 @@
 layout: base.liquid
 ---
 
-<ul class="students-grid">
+<button class="filter" data-filter-key="context" data-value="*">All Contexts</button>
+<button class="filter" data-filter-key="context" data-value="Applied Context">
+	Applied Context
+</button>
+<button class="filter" data-filter-key="context" data-value="Autonomous Context">
+	Autonomous Context
+</button>
+<button class="filter" data-filter-key="context" data-value="Digital Context">
+	Digital Context
+</button>
+<button class="filter" data-filter-key="context" data-value="Jewelry Context">
+	Jewelry Context
+</button>
+<button class="filter" data-filter-key="context" data-value="Socio-Political Context">
+	Socio-Political Context
+</button>
+
+<div class="students-grid">
 	{% for student in collections.students %}
-	<div class="student">
+	<div class="student" data-context="{{student.data.context}}">
 		<a href="/2022{{ student.url }}" class="student__link">
 			<img
 				class="student__image"
@@ -20,6 +37,4 @@ layout: base.liquid
 		</a>
 	</div>
 	{% endfor %}
-</ul>
-
-<!-- <script src="/2022/static/js/grid.js" defer></script> -->
+</div>

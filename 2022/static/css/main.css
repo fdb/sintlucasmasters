@@ -100,14 +100,26 @@ footer {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 4rem 1rem;
+	grid-auto-flow: dense;
 	text-decoration: none;
+}
+
+.student {
+	overflow: hidden;
+	position: relative;
+}
+
+.grid--hidden {
+	display: none !important;
 }
 
 .students-grid img {
 	opacity: 1;
+	transition: transform 1s;
 }
 
 .student a {
+	display: block;
 	text-decoration: none;
 }
 
