@@ -2,13 +2,17 @@
 layout: base
 ---
 
-<div class="meta">
-	<h2>{{ student_name }} — {{ project_title }}</h2>
-	<p class="year">{{ year }}</p>
+<div class="full-width">
+	<img class="main-image" src="{{ main_image }}-/preview/2000x2000/" alt="{{ project_title }}" />
 </div>
 
-<div class="full-width">
-	<img class="main-image" src="{{ main_image }}" alt="{{ project_title }}" />
+<div class="meta">
+	<div>
+		<h2>{{ student_name }} — {{ project_title }}</h2>
+	</div>
+	<div>
+		<p class="year">{{ year }}</p>
+	</div>
 </div>
 
 <article>
@@ -16,7 +20,7 @@ layout: base
 </article>
 
 {%- for image in images -%}
-<img class="image" src="{{ image }}" alt="" />
+<img class="image" src="{{ image }}-/preview/2000x2000/" alt="" />
 {%- endfor -%}
 
 <div class="social-links__wrapper">

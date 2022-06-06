@@ -13,13 +13,13 @@
 		/>
 		<link rel="stylesheet" href="/2022/static/css/main.css" />
 	</head>
-	<body>
+	<body data-barba="wrapper">
 		<div id="wrapper">
 			<header>
 				<h1><a href="/2022/">Sint Lucas Masters</a></h1>
 				<nav><a href="/2022/">Home</a><a href="/2022/about">About</a></nav>
 			</header>
-			<main>
+			<main data-barba="container">
 				<div class="webgl-container"></div>
 				{{ content }}
 			</main>
@@ -29,6 +29,9 @@
 		</div>
 		<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/three@0.141.0/build/three.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/gsap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/lil-gui@0.16.1/dist/lil-gui.umd.min.js"></script>
+		<script src="/2022/static/js/transitions.js"></script>
 	</body>
 </html>
