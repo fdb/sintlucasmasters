@@ -2,22 +2,24 @@
 layout: base.liquid
 ---
 
-<button class="filter" data-filter-key="context" data-value="*">All Contexts</button>
-<button class="filter" data-filter-key="context" data-value="Applied Context">
-	Applied Context
-</button>
-<button class="filter" data-filter-key="context" data-value="Autonomous Context">
-	Autonomous Context
-</button>
-<button class="filter" data-filter-key="context" data-value="Digital Context">
-	Digital Context
-</button>
-<button class="filter" data-filter-key="context" data-value="Jewelry Context">
-	Jewelry Context
-</button>
-<button class="filter" data-filter-key="context" data-value="Socio-Political Context">
-	Socio-Political Context
-</button>
+<div class="filter-buttons">
+	<button class="filter" data-filter-key="context" data-value="*">All Contexts</button>
+	<button class="filter" data-filter-key="context" data-value="Applied Context">
+		Applied Context
+	</button>
+	<button class="filter" data-filter-key="context" data-value="Autonomous Context">
+		Autonomous Context
+	</button>
+	<button class="filter" data-filter-key="context" data-value="Digital Context">
+		Digital Context
+	</button>
+	<button class="filter" data-filter-key="context" data-value="Jewelry Context">
+		Jewelry Context
+	</button>
+	<button class="filter" data-filter-key="context" data-value="Socio-Political Context">
+		Socio-Political Context
+	</button>
+</div>
 
 <div class="students-grid">
 	{% for student in collections.students %} {% if student.data.thumb_image %} {% assign thumb_image

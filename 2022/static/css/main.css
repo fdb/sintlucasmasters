@@ -196,3 +196,9 @@ p {
 .social-link {
 	display: block;
 }
+
+.filter-buttons {
+	position: absolute;
+	right: 0;
+	background-color: white;
+}
