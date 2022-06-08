@@ -54,7 +54,12 @@ collections:
           default: '2021—2022'
         }
       - { label: 'Main image', name: 'main_image', widget: 'image' }
-      - { label: 'Thumbnail image', name: 'thumb_image', widget: 'image', hint: 'Please use a square thumbnail. If you don\'t provide a thumbnail, the main image will be used.' }
+      - {
+          label: 'Thumbnail image',
+          name: 'thumb_image',
+          widget: 'image',
+          hint: "Please use a square thumbnail. If you don't provide a thumbnail, the main image will be used."
+        }
       - {
           label: 'Bio',
           name: 'bio',
