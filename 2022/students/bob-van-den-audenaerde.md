@@ -4,7 +4,7 @@ project_title: ETHEREAL MATTER
 context: Digital Context
 year: 2021-2022
 main_image: https://ucarecdn.com/e2044f70-2358-4feb-8d4f-db89e96c053e/
-thumb_image: https://ucarecdn.com/cebffd0d-15ef-4fb7-87b1-0632fa2d93b5/
+thumb_image: https://ucarecdn.com/1a8e3568-c0d0-4640-9438-cb5a27e70a9b/
 images:
   - https://ucarecdn.com/ce33fc3f-f697-4f6a-be00-9f77846940fd/
   - https://ucarecdn.com/56b4a249-5ae0-4735-a0df-e786cc553f05/
