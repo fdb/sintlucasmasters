@@ -116,6 +116,9 @@ footer {
 .students-grid img {
 	opacity: 1;
 	transition: transform 1s;
+	width: 300px;
+	height: 300px;
+	object-fit: contain;
 }
 
 .student a {
