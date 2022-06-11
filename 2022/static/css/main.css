@@ -28,7 +28,7 @@ body {
 	margin: 0;
 	background: #f7f7f7;
 	color: #1f2937;
-	font: 1rem/1.5 'Roboto Mono', monospace;
+	font: 1rem/1.5 'Arial', monospace;
 }
 
 a {
@@ -44,8 +44,7 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: #111827;
-	color: #f3f4f6;
+	color: black;
 	height: 4rem;
 	line-height: 4rem;
 	padding: 0 2rem;
@@ -96,7 +95,7 @@ footer {
 /* INDEX PAGE */
 
 .students-grid {
-	padding-top: 3rem;
+	padding-top: 10rem;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 4rem 1rem;
@@ -130,6 +129,7 @@ footer {
 	font-size: 1rem;
 	font-weight: bold;
 	margin-top: 0.5rem;
+	color: #bbdb62;
 }
 .student__name {
 	font-size: 0.8rem;
@@ -147,8 +147,7 @@ footer {
 	display: inline-block;
 	font-size: 1.5rem;
 	margin-bottom: 1rem;
-	background: #222;
-	color: #f7f7f7;
+	color: #bbdb62;
 	margin: 0 -0.5rem;
 	padding: 0 0.5rem;
 }
@@ -198,7 +197,15 @@ p {
 }
 
 .filter-buttons {
-	position: absolute;
 	right: 0;
-	background-color: white;
+}
+
+.filter {
+	border-style: none;
+	background-color: #bbdb62;
+	padding: 10px;
+	color: white;
+	border-radius: 15px;
+	margin-top: 20px;
+	margin-left: 25px;
 }
