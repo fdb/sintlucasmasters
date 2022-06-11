@@ -32,7 +32,6 @@ collections:
     fields:
       - { label: 'Student name', name: 'student_name', widget: 'string' }
       - { label: 'Master project title', name: 'project_title', widget: 'string' }
-
       - {
           label: 'Context',
           name: 'context',
@@ -52,6 +51,30 @@ collections:
           widget: 'select',
           options: ['2021—2022'],
           default: '2021—2022'
+        }
+      - {
+          label: 'Tags',
+          name: 'tags',
+          widget: 'select',
+          multiple: true,
+          options:
+            [
+              'audio',
+              'ceramic',
+              'clay',
+              'digital',
+              'ink',
+              'installation',
+              'metal',
+              'paint',
+              'paper',
+              'performance',
+              'photography'
+              'screenprinting',
+              'sculpture',
+              'textile',
+              'video',
+            ]
         }
       - { label: 'Main image', name: 'main_image', widget: 'image' }
       - {
