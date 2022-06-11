@@ -69,11 +69,11 @@ collections:
               'paint',
               'paper',
               'performance',
-              'photography'
+              'photography',
               'screenprinting',
               'sculpture',
               'textile',
-              'video',
+              'video'
             ]
         }
       - { label: 'Main image', name: 'main_image', widget: 'image' }
