@@ -1,17 +1,11 @@
 let selectedContext = '*';
-let selectedTags = new Set();
+let selectedTag = '*';
 
 function filterStudents() {
-	const tagList = Array.from(selectedTags);
 	document.querySelectorAll('.students-grid .student').forEach((student) => {
 		const inContext = selectedContext === '*' || student.dataset.context === selectedContext;
-		const studentTags = new Set(student.dataset.tags.split(','));
-		const intersectedTags = tagList.filter((t) => studentTags.has(t));
-		if (student.querySelector('.student__name').textContent.includes('Eva')) {
-			console.log(student, selectedTags, intersectedTags);
-		}
-		const inTags = selectedTags.size === 0 || selectedTags.size === intersectedTags.length;
-
+		const studentTags = student.dataset.tags.length === 0 ? [] : student.dataset.tags.split(',');
+		const inTags = selectedTag === '*' || studentTags.includes(selectedTag);
 		if (inContext && inTags) {
 			student.classList.remove('grid--hidden');
 			student.style.display = 'block';
@@ -35,22 +29,10 @@ function setupGridFilter() {
 				document.querySelectorAll('button.filter[data-key=context]').forEach((b) => b.classList.remove('active'));
 				button.classList.add('active');
 			} else if (filterKey === 'tags') {
-				if (filterValue === '*') {
-					selectedTags.clear();
-					document.querySelectorAll('button.filter[data-key=tags]').forEach((b) => b.classList.remove('active'));
-					button.classList.add('active');
-				} else {
-					document.querySelector('button.filter[data-key=tags][data-value="*"]').classList.remove('active');
-					if (selectedTags.has(filterValue)) {
-						selectedTags.delete(filterValue);
-						button.classList.remove('active');
-					} else {
-						selectedTags.add(filterValue);
-						button.classList.add('active');
-					}
-				}
+				selectedTag = filterValue;
+				document.querySelectorAll('button.filter[data-key=tags]').forEach((b) => b.classList.remove('active'));
+				button.classList.add('active');
 			}
-			console.log(selectedContext, selectedTags);
 			filterStudents();
 		});
 	});
