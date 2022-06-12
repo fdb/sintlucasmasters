@@ -1,6 +1,5 @@
 module.exports = function (eleventyConfig) {
 	eleventyConfig.addPassthroughCopy('2022/static');
-	eleventyConfig.addPassthroughCopy('2021/admin/config.yml');
 
 	eleventyConfig.addCollection('digitalContext', (collectionApi) => {
 		return collectionApi.getAll().filter((item) => item.data.context === 'Digital Context');
