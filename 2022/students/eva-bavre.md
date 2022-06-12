@@ -9,9 +9,9 @@ tags:
   - digital
   - photography
 main_image: https://ucarecdn.com/3f5eaffd-e599-4b2d-9178-5bfafc292b1d/
-thumb_image: https://ucarecdn.com/7ee31aff-dcd9-4400-b378-aa38ecca1a86/
+thumb_image: https://ucarecdn.com/933f1cb6-0598-4eb0-a2a9-476b8c0ead19/
 images:
-  - https://ucarecdn.com/535c9afe-5f05-47ca-84d3-9ffd0b5b797b/
+  - https://ucarecdn.com/406c2439-eccf-46de-a908-3cf1888c3c98/
 social_links:
   - www.evabavre.com
 ---
