@@ -33,7 +33,7 @@ layout: base.liquid
 	{% for student in collections.students %} {% if student.data.thumb_image %} {% assign thumb_image = student.data.thumb_image %} {% else %}
 	{% assign thumb_image = student.data.main_image %} {% endif %}
 
-	<div class="student" data-context="{{student.data.context}}">
+	<div class="student" data-context="{{student.data.context}}" data-tags="{{student.data.tags | join: ","}}">
 		<a href="/2022{{ student.url }}" class="student__link">
 			<img
 				class="student__image"
