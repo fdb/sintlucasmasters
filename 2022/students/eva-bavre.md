@@ -3,9 +3,15 @@ student_name: Eva Bavré
 project_title: Realms of Memory
 context: Digital Context
 year: 2021—2022
-main_image: https://ucarecdn.com/6dd33663-2fc5-47c4-b58a-97675d884650/
+tags:
+  - audio
+  - video
+  - digital
+  - photography
+main_image: https://ucarecdn.com/3f5eaffd-e599-4b2d-9178-5bfafc292b1d/
+thumb_image: https://ucarecdn.com/7ee31aff-dcd9-4400-b378-aa38ecca1a86/
 images:
-  - https://ucarecdn.com/f8c6f601-725c-438c-b38f-1bf8e4752540/
+  - https://ucarecdn.com/535c9afe-5f05-47ca-84d3-9ffd0b5b797b/
 social_links:
   - www.evabavre.com
 ---
