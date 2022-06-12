@@ -2,9 +2,17 @@ let selectedContext = '*';
 let selectedTags = new Set();
 
 function filterStudents() {
+	const tagList = Array.from(selectedTags);
 	document.querySelectorAll('.students-grid .student').forEach((student) => {
 		const inContext = selectedContext === '*' || student.dataset.context === selectedContext;
-		if (inContext) {
+		const studentTags = new Set(student.dataset.tags.split(','));
+		const intersectedTags = tagList.filter((t) => studentTags.has(t));
+		if (student.querySelector('.student__name').textContent.includes('Eva')) {
+			console.log(student, selectedTags, intersectedTags);
+		}
+		const inTags = selectedTags.size === 0 || selectedTags.size === intersectedTags.length;
+
+		if (inContext && inTags) {
 			student.classList.remove('grid--hidden');
 			student.style.display = 'block';
 		} else {
