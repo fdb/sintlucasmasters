@@ -209,3 +209,7 @@ p {
 	margin-top: 20px;
 	margin-left: 25px;
 }
+
+.filter.active {
+	background-color: black;
+}

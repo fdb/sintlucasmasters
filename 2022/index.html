@@ -3,79 +3,35 @@ layout: base.liquid
 ---
 
 <div class="filter-buttons">
-	<button class="filter" data-filter-key="context" data-value="*">&#35;all contexts</button>
-	<button class="filter" data-filter-key="context" data-value="Applied Context">
-		&#35;applied context
-	</button>
-	<button class="filter" data-filter-key="context" data-value="Autonomous Context">
-		&#35;autonomous context
-	</button>
-	<button class="filter" data-filter-key="context" data-value="Digital Context">
-		&#35;digital context
-	</button>
-	<button class="filter" data-filter-key="context" data-value="Jewelry Context">
-		&#35;jewelry context
-	</button>
-	<button class="filter" data-filter-key="context" data-value="Socio-Political Context">
-		&#35;socio-political context
-	</button>
-	</div>
-	<div class="filter-buttons">
-		<button class="filter" data-filter-key="context" data-value="all matters">
-			&#35;all matters
-		</button>
-	<button class="filter" data-filter-key="context" data-value="paper">
-		&#35;paper
-	</button>
-	<button class="filter" data-filter-key="context" data-value="textile">
-		&#35;textile
-	</button>
-	<button class="filter" data-filter-key="context" data-value="ceramic">
-		&#35;ceramic
-	</button>
-	<button class="filter" data-filter-key="context" data-value="digital">
-		&#35;digital
-	</button>
-	<button class="filter" data-filter-key="context" data-value="performance">
-		&#35;performance
-	</button>
-	<button class="filter" data-filter-key="context" data-value="paint">
-		&#35;paint
-	</button>
-	<button class="filter" data-filter-key="context" data-value="ink">
-		&#35;ink
-	</button>
-	<button class="filter" data-filter-key="context" data-value="metal">
-		&#35;metal
-	</button>
-	<button class="filter" data-filter-key="context" data-value="clay">
-		&#35;clay
-	</button>
-	<button class="filter" data-filter-key="context" data-value="sculpture">
-		&#35;sculpture
-	</button>
-	<button class="filter" data-filter-key="context" data-value="audio">
-		&#35;audio
-	</button>
-	<button class="filter" data-filter-key="context" data-value="screenprinting">
-		&#35;screenprinting
-	</button>
-	<button class="filter" data-filter-key="context" data-value="photography">
-		&#35;photography
-	</button>
-	<button class="filter" data-filter-key="context" data-value="installation">
-		&#35;installation
-	</button>
-	<button class="filter" data-filter-key="context" data-value="video">
-		&#35;video
-	</button>
-
+	<button class="filter active" data-key="context" data-value="*">&#35;all contexts</button>
+	<button class="filter" data-key="context" data-value="Applied Context">&#35;applied context</button>
+	<button class="filter" data-key="context" data-value="Autonomous Context">&#35;autonomous context</button>
+	<button class="filter" data-key="context" data-value="Digital Context">&#35;digital context</button>
+	<button class="filter" data-key="context" data-value="Jewelry Context">&#35;jewelry context</button>
+	<button class="filter" data-key="context" data-value="Socio-Political Context">&#35;socio-political context</button>
+</div>
+<div class="filter-buttons">
+	<button class="filter active" data-key="tags" data-value="*">&#35;all matters</button>
+	<button class="filter" data-key="tags" data-value="paper">&#35;paper</button>
+	<button class="filter" data-key="tags" data-value="textile">&#35;textile</button>
+	<button class="filter" data-key="tags" data-value="ceramic">&#35;ceramic</button>
+	<button class="filter" data-key="tags" data-value="digital">&#35;digital</button>
+	<button class="filter" data-key="tags" data-value="performance">&#35;performance</button>
+	<button class="filter" data-key="tags" data-value="paint">&#35;paint</button>
+	<button class="filter" data-key="tags" data-value="ink">&#35;ink</button>
+	<button class="filter" data-key="tags" data-value="metal">&#35;metal</button>
+	<button class="filter" data-key="tags" data-value="clay">&#35;clay</button>
+	<button class="filter" data-key="tags" data-value="sculpture">&#35;sculpture</button>
+	<button class="filter" data-key="tags" data-value="audio">&#35;audio</button>
+	<button class="filter" data-key="tags" data-value="screenprinting">&#35;screenprinting</button>
+	<button class="filter" data-key="tags" data-value="photography">&#35;photography</button>
+	<button class="filter" data-key="tags" data-value="installation">&#35;installation</button>
+	<button class="filter" data-key="tags" data-value="video">&#35;video</button>
 </div>
 
 <div class="students-grid">
-	{% for student in collections.students %} {% if student.data.thumb_image %} {% assign thumb_image
-	= student.data.thumb_image %} {% else %} {% assign thumb_image = student.data.main_image %} {%
-	endif %}
+	{% for student in collections.students %} {% if student.data.thumb_image %} {% assign thumb_image = student.data.thumb_image %} {% else %}
+	{% assign thumb_image = student.data.main_image %} {% endif %}
 
 	<div class="student" data-context="{{student.data.context}}">
 		<a href="/2022{{ student.url }}" class="student__link">
