@@ -15,7 +15,7 @@ images:
   - https://ucarecdn.com/23c9dc6b-17a2-44f5-8511-addb1deef8e4/
   - https://ucarecdn.com/f91ae404-f569-4f5c-a5d2-7fc270b8a71e/
 social_links:
-  - www.evabavre.com
+  - https://www.evabavre.com/
 ---
 **Realms of Memory (2022) | video | 10 min.**
 
