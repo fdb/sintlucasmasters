@@ -6,7 +6,7 @@ year: 2021—2022
 tags:
   - silver
 main_image: https://ucarecdn.com/a62d3b50-b204-469e-9465-e091fda92183/
-thumb_image: https://ucarecdn.com/e2d6f749-d11d-48d9-afad-a6cd29223437/-/crop/4000x4199/0,450/-/preview/
+thumb_image: https://ucarecdn.com/46b7b8e1-79c4-45e4-a49f-ec73b0557fea/
 images:
   - https://ucarecdn.com/c8598a1e-83b6-431e-aa09-01e1f7395f6c/
   - https://ucarecdn.com/11a5ba08-36c4-4813-ba88-c5093e321207/
