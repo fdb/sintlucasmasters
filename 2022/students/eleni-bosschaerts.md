@@ -11,7 +11,7 @@ thumb_image: https://ucarecdn.com/71045595-0750-4d41-9d2e-e64426c772d9/
 images:
   - https://ucarecdn.com/798b8b7b-0b81-468f-9297-6836dfaa452d/
 social_links:
-  - www.eleni.work
+  - http://eleni.work
   - http://www.instagram.com/eleni.work/
 ---
 
