@@ -12,6 +12,7 @@ images:
   - https://ucarecdn.com/798b8b7b-0b81-468f-9297-6836dfaa452d/
 social_links:
   - www.eleni.work
+  - http://www.instagram.com/eleni.work/
 ---
 
 The ephemerality of a moment. By taking the sand of the place with me, I try to keep the connected memory alive and eternalize it. I take you on an imaginary journey through time and space.
