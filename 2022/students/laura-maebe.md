@@ -6,7 +6,7 @@ year: 2021—2022
 tags:
   - digital
   - textile
-main_image: https://ucarecdn.com/99a746fc-19d2-42f2-babc-15d93e10076a/
+main_image: https://ucarecdn.com/17072a94-9732-4e0c-95f1-3355f9a72e59/
 thumb_image: https://ucarecdn.com/73c86c5c-f965-40c3-b769-1e869a52032a/
 images:
   - https://ucarecdn.com/c4651248-e7a8-430e-83e4-e25cf7c0b93f/
