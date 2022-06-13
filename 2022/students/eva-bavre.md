@@ -23,7 +23,7 @@ social_links:
 
 *Realms of Memory is een audiovisuele ervaring waarin het veranderlijke, valse en ongrijpbare karakter van herinneringen wordt getoond via de inhoud van een persoonlijk gearchiveerd fotoalbum uit mijn kindertijd.*
 
-Satellietbeelden en fragmenten van het archief worden afgewisseld met het dwalen door een 3D-stad. Dit worden ondersteund door een narratief dat verteld wordt vanuit verschillende vertelperspectieven. Het is als het ware een audiovisualisatie van het oprakelen van herinneringen tijdens het doorbladeren van een fotoalbum. 
+Satellietbeelden en fragmenten van het archief worden afgewisseld met het dwalen door een 3D-stad. Dit wordt ondersteund door een narratief dat verteld wordt vanuit verschillende vertelperspectieven. Het is als het ware een audiovisualisatie van het oprakelen van herinneringen tijdens het doorbladeren van een fotoalbum. 
 
 **EN**
 
