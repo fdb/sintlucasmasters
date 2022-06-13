@@ -1,11 +1,33 @@
 ---
 student_name: Yasmine Akondo
-project_title: 'Kroniek: 0'
+project_title: "Kroniek: 0"
 context: Autonomous Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/d23014d2-d40c-4e77-8c77-0e5f2fc23a0e/'
+tags:
+  - metal
+  - clay
+  - ceramic
+  - installation
+  - sculpture
+  - paint
+  - performance
+main_image: https://ucarecdn.com/d23014d2-d40c-4e77-8c77-0e5f2fc23a0e/
+thumb_image: https://ucarecdn.com/86d0a895-8334-4adb-b3b8-874a1be2d5b4/
+bio: |-
+  °2000 Arendonk
+
+  web:    yasmine-akondo.be
+  insta:   the_house_of_mauss
+images:
+  - https://ucarecdn.com/9d4fe22f-fe47-4434-b144-035b81e61a2e/
+  - https://ucarecdn.com/57266cf2-e0e4-4e1a-9487-faf4fd9ecd10/
+  - https://ucarecdn.com/0a3177cb-fc5a-4a2b-b886-aa1822087e5f/
+  - https://ucarecdn.com/3e3f54ac-47aa-4a26-921d-6d7d0dd06283/
+  - https://ucarecdn.com/5e96596c-618f-4804-b548-7f696b9a93bc/
+  - https://ucarecdn.com/58fee91f-0b7c-4361-8fcc-b42b8339aed5/
 social_links:
-  - 'https://www.yasmine-akondo.be/'
+  - https://www.yasmine-akondo.be/
+  - https://www.instagram.com/the_house_of_mauss/
 ---
 There is this thing we call the unknown.
 It goes beyond existence
