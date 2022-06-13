@@ -17,8 +17,8 @@ social_links:
   - https://justinelambrechts.com/
   - https://www.instagram.com/lambrechts_justine/
 ---
-As a painter, the starting point for my project was research on materiality by translating sculptural elements to canvas. More specifically, these sculptures ranged from abstract still lives out of clay to carved and painted stones. 
+As a painter, the starting point for my practice was my research on materiality by translating sculptural elements to canvas. More specifically, these sculptures ranged from abstract still lives out of clay to carved stones.
 
-This translation of a sculptural medium with its own properties and logic to a flat surface causes friction between media as well as a feeling of alienation of the painted subject. Moreover, this estrangement is emphasized by enlarging compositions and placing them out of context.
+This translation of a sculptural medium with its own tangeable properties and logic to a flat surface causes friction between media as well as a feeling of alienation of the painted subject itself. Characteristics of sculptural media become internalized by a 2D surface. Moreover, this estrangement is emphasized by enlarging their scale and putting them out of context.
 
-In a practice where sculpture and painting are intertwined, I am building an earthly world infiltrated by the artificial.
+In a practice where sculpture and painting are intertwined, I am building a visual world with an affinity for the natural, subtly infiltrated by the artificial.
