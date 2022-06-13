@@ -2,10 +2,19 @@
 student_name: Stefan Kolgen
 project_title: gemene ruimte
 context: Socio-Political Context
-year: 2021-2022
-main_image: 'https://ucarecdn.com/655af897-fde1-471c-9f27-01339a9fa03c/'
+year: 2021—2022
+tags:
+  - audio
+  - installation
+  - digital
+main_image: https://ucarecdn.com/60307754-faa0-4933-99e1-506bce2df392/
+thumb_image: https://ucarecdn.com/6991dab5-c42c-4172-b004-40396dbaa3f0/-/crop/1200x1076/0,0/-/preview/
+images:
+  - https://ucarecdn.com/6d1510d8-4621-4489-8b1a-dec10a22487b/
+  - https://ucarecdn.com/8d1692f5-79a2-42e9-b471-0c5ae90a4beb/
 social_links:
-  - 'https://stefankolgen.wordpress.com'
+  - https://stefankolgen.wordpress.com
+  - https://instagram.com/skolgen
 ---
 
 “We kijken te vaak zonder te zien, we gebruiken te vaak zonder te beseffen.” (in italics)
