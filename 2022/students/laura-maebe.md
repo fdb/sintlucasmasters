@@ -17,8 +17,8 @@ images:
   - https://ucarecdn.com/41b64185-1333-4fc8-ad99-4a995356cf0b/
   - https://ucarecdn.com/5856bfd6-78f6-4122-b82e-1ce24aff4c21/
 social_links:
-  - "Website: https://youbylauramaebe.netlify.app"
-  - "Instagram: https://www.instagram.com/youbylauramaebe/"
+  - https://youbylauramaebe.netlify.app
+  - https://www.instagram.com/youbylauramaebe/
 ---
 ##### *YOU by Laura Maebe* is a fashion collection based on your preferences and personality.
 
