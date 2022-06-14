@@ -27,6 +27,6 @@ Satellietbeelden en fragmenten van het archief worden afgewisseld met het dwalen
 
 **EN**
 
-*Realms of Memory is an audiovisual experience in which the changing, false and elusive character of memory is shown through the content of a personal archived photo album from my childhood.*
+*Realms of Memory is an audiovisual experience in which the changing, false and elusive nature of memory is shown through the content of a personal archived photo album from my childhood.*
 
 Satellite images and fragments of the archive alternate with a wandering through a 3D-city. This is supported by a narrative that it being told from different viewpoints. It is, as it were, an audio visualization of recollecting memories during the flipping through a photo album.
