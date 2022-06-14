@@ -9,9 +9,11 @@ tags:
 main_image: https://ucarecdn.com/f27bdd72-e022-4f6e-a723-9e9880d7ed5b/
 thumb_image: https://ucarecdn.com/fb555f04-324b-491c-a48e-9abec9de709b/
 images:
-  - https://ucarecdn.com/15fe733c-99fb-47ca-a456-f07b3c2f6c01/
-  - https://ucarecdn.com/d58e50a8-fd46-412c-b6c9-0c67ed941ec7/
-  - https://ucarecdn.com/ce09fede-1055-4a40-b438-9fb81ccbbb8d/
+  - https://ucarecdn.com/e9cd7f07-8230-4779-9963-811fdc8ea1b4/
+  - https://ucarecdn.com/4843580b-1d57-40a7-ae43-dc174a41acca/
+  - https://ucarecdn.com/fb08cbeb-7718-44c9-b776-a241af7dec95/
+  - https://ucarecdn.com/f9237c5d-49a3-4435-a947-d8da5358b3dd/
+  - https://ucarecdn.com/f3a7cca2-65dc-43d3-b94c-47576c5d97f7/
 social_links:
   - https://www.instagram.com/anchugovamaria/
 ---
