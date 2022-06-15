@@ -61,6 +61,6 @@ This then became the outline of a book, and a mini-exhibition inspired by the vi
 
 ### **Why I believe this is relevant for you**
 
-The worlds of creativity and artistry are on the verge of an AI-driven revolution, Tools and resources like DALL-E, Lumniar, Github CoPilot, TouchDesigner, School Of Motion, Skillshare, Pexels, Unsplash, Fiverr, Miro, Figma, Blender, ... or even Canvas are giving every one of us creative superpowers none of the great masters could have dreamt of. In the coming decade, more than ever, the pressure will be on the thinking, and how we tell our stories. "Aaand when everyone's an artist ... no one is ..."
+The worlds of creativity and artistry are on the verge of an AI-driven revolution, Tools and resources like DALL-E, Lumniar, Github CoPilot, TouchDesigner, School Of Motion, Skillshare, Pexels, Unsplash, Fiverr, Miro, Figma, Blender, ... or even Canvas are giving every one of us creative superpowers none of the great masters could have dreamt of. In the coming decade, more than ever, the pressure will be on the thinking, and how we tell our stories. "Aaand when everyone's super ... no one is." —Syndrome, Incredibles, the.
 
 With Art is Rocket Science, I aspire to share what I have learnt in my lucky, privileged career so far—and what my students continue to teach me, every day—so we can all become more interesting, empathic, and caring creatives. Pushing our species and our planet forward. Or, alternatively, at the very least you'll get a somewhat entertaining peek into my mind.
