@@ -7,7 +7,7 @@ tags:
   - paper
   - digital
   - textile
-main_image: https://ucarecdn.com/a3af3509-95e1-43d4-ae58-3f12429641f8/
+main_image: https://ucarecdn.com/b9dfd9b5-1b2e-43aa-9327-5a5bd332b1cd/
 thumb_image: https://ucarecdn.com/aab7f30e-3250-431d-8295-c4c20f54f581/
 bio: "Helin Gümüs is a graphic designer with Kurdish roots.  "
 images:
