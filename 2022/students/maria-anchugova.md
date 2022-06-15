@@ -11,9 +11,7 @@ thumb_image: https://ucarecdn.com/fb555f04-324b-491c-a48e-9abec9de709b/
 images:
   - https://ucarecdn.com/e9cd7f07-8230-4779-9963-811fdc8ea1b4/
   - https://ucarecdn.com/4843580b-1d57-40a7-ae43-dc174a41acca/
-  - https://ucarecdn.com/fb08cbeb-7718-44c9-b776-a241af7dec95/
   - https://ucarecdn.com/f9237c5d-49a3-4435-a947-d8da5358b3dd/
-  - https://ucarecdn.com/f3a7cca2-65dc-43d3-b94c-47576c5d97f7/
 social_links:
   - https://www.instagram.com/anchugovamaria/
 ---
