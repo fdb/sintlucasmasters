@@ -6,7 +6,7 @@ year: 2021—2022
 tags:
   - video
   - installation
-main_image: https://ucarecdn.com/6f1a6af0-629b-4f85-b6f9-221efde86c0d/
+main_image: https://ucarecdn.com/e18d82b9-bbf2-420d-ba50-c1575157a47e/
 thumb_image: https://ucarecdn.com/de2c251c-a991-457a-8907-02ee6d3b0a29/
 images:
   - https://ucarecdn.com/77b4f559-0ddc-40e9-8e72-4ccfb9f1c5dc/
