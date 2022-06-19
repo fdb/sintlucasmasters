@@ -11,7 +11,9 @@ main_image: https://ucarecdn.com/b440834d-bb26-439d-b8e2-0d3cc5942646/
 thumb_image: https://ucarecdn.com/aab7f30e-3250-431d-8295-c4c20f54f581/
 bio: "Helin Gümüs is a graphic designer with Kurdish roots.  "
 images:
-  - https://ucarecdn.com/9c37a9fc-7727-4691-8c85-9a4757310c15/-/preview/-/rotate/270/
+  - https://ucarecdn.com/40de85ac-6292-41d6-be8d-000fd49fee28/
+  - https://ucarecdn.com/e0436765-345f-4d32-859d-2de1711fb114/
+  - https://ucarecdn.com/5dd7e312-395c-4ad1-be3e-74d75b516c92/
 social_links:
   - https://www.instagram.com/gumushelinnn/
 ---
