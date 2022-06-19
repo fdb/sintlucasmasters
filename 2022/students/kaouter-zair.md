@@ -8,7 +8,7 @@ tags:
   - paper
   - photography
 main_image: https://ucarecdn.com/628e1b25-c443-4cc3-a87d-e11b8ef681de/
-thumb_image: https://ucarecdn.com/7e8c38c8-6b6c-4e68-87d4-dcf4459dfbad/
+thumb_image: https://ucarecdn.com/fecdb5d2-8e2c-4d50-9bf5-f091810817df/
 images:
   - https://ucarecdn.com/1a49ebdd-e4ae-403c-8873-2ae27cccebf1/
   - https://ucarecdn.com/01f7def6-4fd7-4495-94d3-73606a17227f/
