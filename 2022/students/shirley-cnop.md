@@ -9,7 +9,7 @@ tags:
 main_image: https://ucarecdn.com/2650747d-3458-481d-afca-ac2b49b24286/
 thumb_image: https://ucarecdn.com/de2c251c-a991-457a-8907-02ee6d3b0a29/
 images:
-  - https://ucarecdn.com/1066c933-d7d9-47b0-8eb0-9ac05e3a6b13/
+  - https://ucarecdn.com/77b4f559-0ddc-40e9-8e72-4ccfb9f1c5dc/
 social_links:
   - https://shirleycnop.wixsite.com/fotofolio/
 ---
