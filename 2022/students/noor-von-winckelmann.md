@@ -1,10 +1,22 @@
 ---
-student_name: 'Noor von Winckelmann '
+student_name: "Noor von Winckelmann "
 project_title: Blanda
 context: Autonomous Context
-year: 2021-2022
-main_image: 'https://ucarecdn.com/e4342b5e-8b72-4bff-8d89-c06f4d794b38/'
+year: 2021—2022
+tags:
+  - screenprinting
+  - installation
+  - photography
+  - textile
+main_image: https://ucarecdn.com/e4342b5e-8b72-4bff-8d89-c06f4d794b38/
+thumb_image: https://ucarecdn.com/1e3c35d6-bb5e-4a88-ad7e-8a4e605e6738/
+images:
+  - https://ucarecdn.com/194aa42a-2f82-4b13-ba55-4c1ce654e109/
+  - https://ucarecdn.com/1fc2ebba-8cee-4610-9c69-e249f35f2c4d/
+  - https://ucarecdn.com/79c617fc-7c9f-43af-9079-a7286a55a398/
+  - https://ucarecdn.com/3ce647f9-185b-49c5-957b-e16691efb647/
 social_links:
+  - https://www.instagram.com/nov.a.rt/
 ---
 
 I tell the story of my family history by bringing together the 2 cultures of colonial Indonesia and noble Germany in an artistic way that forms a harmony where there was none before. I do this by experimenting and combining with traditional techniques such as batik and etching in a personal way.
