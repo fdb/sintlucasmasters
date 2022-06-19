@@ -4,10 +4,10 @@ project_title: شيء من الذاكره(iets uit het geheugen)
 context: Autonomous Context
 year: 2021—2022
 tags:
-  - metal
+  - installation
 main_image: https://ucarecdn.com/1378f48d-b55c-4bb4-98d7-18c117e91629/
 thumb_image: https://ucarecdn.com/13609186-46ff-4461-a04d-ba24e47c0294/
-bio: "Mijn werk gaat over het gevolgen van de oorlog op vrouwen in Irak. "
+bio: ""
 images:
   - https://ucarecdn.com/1df7dda2-0a2e-43a7-b92c-1048f4f80ad9/
 social_links:
