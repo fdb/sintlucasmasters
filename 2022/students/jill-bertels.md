@@ -27,7 +27,9 @@ social_links:
 
 ```
 
-The multimedia installation 'Untied' combines textile sculptures, ceramics and audio, and is activated at intervals by a performance of dancer Isabella Tovar. Rooted in art history research, the work shows the tongue as a symbol of both the immense power of women and the condemning voices that try to contain it.
+The multimedia installation 'Untied' combines sculptures, video and audio, and is activated at intervals by dancer Isabella Tovar. Rooted in art history research, the work shows the tongue as a symbol of both the immense power of women and the condemning voices that try to contain it.
+
+
 
 When Greek soldiers went to war, they wore shields on which Medusa's head was painted. Even more provocative than her staring eyes and the serpents that encircled her head like curls, was her large outstretched tongue.
 
