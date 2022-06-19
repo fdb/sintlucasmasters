@@ -27,11 +27,11 @@ social_links:
 
 ```
 
-Her multimedia installation 'Untied' combines textile sculptures, ceramics and audio, and is activated at intervals by a performance of dancer Isabella Tovar. Rooted in art history research, the work shows the tongue as a symbol of both the immense power of women and the condemning voices that try to contain it.
+The multimedia installation 'Untied' combines textile sculptures, ceramics and audio, and is activated at intervals by a performance of dancer Isabella Tovar. Rooted in art history research, the work shows the tongue as a symbol of both the immense power of women and the condemning voices that try to contain it.
 
 When Greek soldiers went to war, they wore shields on which Medusa's head was painted. Even more provocative than her staring eyes and the serpents that encircled her head like curls, was her large outstretched tongue.
 
-For the Indian goddess Kali, her tongue is her greatest weapon, a gigantic organ that devours everything. In the well-known patriarchal version of her story, Shiva makes her bite her teeth out of shame, to curb its power. In the original story, however, Kali destroys everything; she is all-consuming (like time and darkness, 'kaal' in Sanskrit) and her red protruding tongue symbolises this. Kali also stands for 'shakti', the female energy, both creative and destructive.
+For the Indian goddess Kali, her tongue is her greatest weapon, a gigantic organ that devours everything. In the well-known patriarchal version of her story, Shiva makes her bite her tongue out of shame, to curb its power. In the original story, however, Kali destroys everything; she is all-consuming (like time and darkness, 'kaal' in Sanskrit) and her red protruding tongue symbolises this. Kali also stands for 'shakti', the female energy, both creative and destructive.
 
 In ancient Egypt, there was one god who was always depicted frontally and with his tongue out (like Medusa): Bes. This male god was the protector of women during childbirth and is also said to have prevented sexual diseases. He was a popular bedroom deity and was tattooed on the thighs of women of all ranks.
 To this protective yet fearful figures I add Venus, the goddess of carnal love and beauty. Venus never protrudes her tongue, but in images of the Middle Ages she often carries a flaming heart, the flames resembling tongues. In the Middle Ages, moreover, Venus is not a positive symbol. She’s equated with Luxuria, the capital sin of lust. Bruegel the Elder places his Venus-Luxuria in a landscape of sodomy, naked and tongue kissing with a demon. One could say: as some kind of witch.
