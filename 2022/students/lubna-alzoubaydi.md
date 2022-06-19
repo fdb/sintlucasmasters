@@ -1,10 +1,13 @@
 ---
 student_name: Lubna Alzoubaydi
-project_title: شيء من الذاكره(iets uit het geheugen)
+project_title: شيء من الذاكره  ( iets uit het geheugen )
 context: Autonomous Context
 year: 2021—2022
 tags:
-  - installation
+  - video
+  - sculpture
+  - paint
+  - textile
 main_image: https://ucarecdn.com/1378f48d-b55c-4bb4-98d7-18c117e91629/
 thumb_image: https://ucarecdn.com/13609186-46ff-4461-a04d-ba24e47c0294/
 bio: ""
