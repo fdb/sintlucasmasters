@@ -17,7 +17,6 @@ bio: >
   photography and video. Her work often has a strong narrative character.
 images:
   - https://ucarecdn.com/b565c78b-b7c5-4335-90d4-6d2b9084edc5/
-  - https://ucarecdn.com/9fea6f1a-516e-47bc-b70d-4912bfc1d367/
   - https://ucarecdn.com/5750c7c3-2eb5-4ae3-8808-95d2d3c25c23/
 social_links:
   - https://billieq.art
