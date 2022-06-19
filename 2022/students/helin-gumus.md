@@ -14,6 +14,8 @@ images:
   - https://ucarecdn.com/40de85ac-6292-41d6-be8d-000fd49fee28/
   - https://ucarecdn.com/e0436765-345f-4d32-859d-2de1711fb114/
   - https://ucarecdn.com/5dd7e312-395c-4ad1-be3e-74d75b516c92/
+  - https://ucarecdn.com/dec2f01d-aa68-40e2-a8b4-6c7ffdd1158c/
+  - https://ucarecdn.com/e9daad7e-017c-42bb-8d57-45b65272de45/
 social_links:
   - https://www.instagram.com/gumushelinnn/
 ---
