@@ -14,4 +14,4 @@ For more information:
 
 ## Archive
 
-2020-2021: <https://www.sintlucasmasters.com/2021/>
+2020-2021: <a href="https://www.sintlucasmasters.com/2021/" data-barba-prevent>https://sintlucasmasters.com/2021/</a>
