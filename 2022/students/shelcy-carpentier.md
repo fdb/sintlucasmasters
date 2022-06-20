@@ -1,5 +1,5 @@
 ---
-student_name: shelcy carpentier
+student_name: Shelcy Carpentier
 project_title: Experiments within limits and constraints
 context: Applied Context
 year: 2021—2022
