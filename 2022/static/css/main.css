@@ -69,7 +69,7 @@ header h1 a {
 
 header nav a {
 	margin-left: 1rem;
-	color:#bbdb62;
+	color: #bbdb62;
 	font-weight: 500;
 }
 
@@ -93,15 +93,49 @@ main {
 }
 
 footer {
-	padding: 1rem 2rem;
-	font-size: 0.8rem;
+	max-width: 80ch;
+	margin: 2rem auto;
 	color: #374151;
+}
+
+footer.full-width {
+	width: 100%;
+	max-width: inherit;
+	padding: 0 2rem;
+}
+
+footer > div {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	font-size: 0.8rem;
+}
+
+@media (min-width: 768px) {
+	footer > div {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 }
 
 /* INDEX PAGE */
 
+.explain-wrapper {
+	margin: 2rem 0;
+	padding: 2rem;
+	background-color: #f4fae3;
+	border-radius: 5px;
+}
+
+.explain-wrapper p {
+	margin: 0;
+	font-size: 1.4rem;
+}
+
 .students-grid {
 	padding-top: 4.5rem;
+	padding-bottom: 4.5rem;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 4rem 1rem;
@@ -169,7 +203,9 @@ footer {
 }
 article {
 	max-width: 80ch;
-	margin: 5rem auto;
+	margin: 0 auto;
+	padding: 5rem 0;
+	min-height: calc(100vh - 200px);
 }
 p {
 	margin-bottom: 1rem;

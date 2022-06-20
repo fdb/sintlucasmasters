@@ -1,5 +1,6 @@
 ---
 layout: base.liquid
+id: index
 ---
 
 <div class="filter-buttons">
@@ -29,6 +30,10 @@ layout: base.liquid
 	<button class="filter" data-key="tags" data-value="video">&#35;video</button>
 </div>
 
+<div class="explain-wrapper">
+	<p class="explain"><strong>Matter Matters</strong> are the graduation projects of the 2021-2022 Masters in Art and Design at <a href="https://www.sintlucasantwerpen.be/" target="_blank">Sint&nbsp;Lucas&nbsp;Antwerpen.</a></p>
+</div>
+
 <div class="students-grid">
 	{% for student in collections.students %} {% if student.data.thumb_image %} {% assign thumb_image = student.data.thumb_image %} {% else %}
 	{% assign thumb_image = student.data.main_image %} {% endif %}
@@ -50,3 +55,12 @@ layout: base.liquid
 	</div>
 	{% endfor %}
 </div>
+
+<footer class="full-width">
+	<div>
+		<a href="https://www.sintlucasantwerpen.be/" target="_blank">
+			<img src="/2022/static/img/sla-logo.svg" alt="Logo Sint Lucas Antwerpen" />
+		</a>
+		<p>Interested in the Master? More info at <a href="https://www.sintlucasantwerpen.be/" target="_blank">sintlucasantwerpen.be</a>.</p>
+	</div>
+</footer>

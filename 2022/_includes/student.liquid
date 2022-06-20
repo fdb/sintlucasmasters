@@ -26,12 +26,9 @@ layout: base
 <div class="social-links__wrapper">
 	<div class="social-links">
 		{% for link in social_links %}
-		<a
-			class="social-link"
-			target="_blank"
-			href="{{ link }}"
-			>{{ link | replace: "https://", "" }}</a
-		>
+		<a class="social-link" target="_blank" href="{{ link }}">{{ link | replace: "https://", "" }}</a>
 		{% endfor %}
 	</div>
 </div>
+
+{% include 'footer' %}
