@@ -13,6 +13,8 @@ images:
 social_links:
   - https://shirleycnop.wixsite.com/fotofolio/
 ---
-*Met 'See the forest for the trees, I'll promise you'll make it' neem ik de stereotiepe beeldvorming over autismespectrumstoornis met een korreltje zout. Aan de hand van bewegend beeld in een intieme setting voer ik een parallel onderzoek naar één van de meest baanbrekende films in de geschiedenis. Zelf zie ik deze artistieke praktijk als aanvang van mijn acceptatieproces.*
+Met 'See the forest for the trees, I'll promise you'll make it' neem ik de stereotiepe beeldvorming over autismespectrumstoornis met een korreltje zout. Aan de hand van bewegend beeld in een intieme setting voer ik een parallel onderzoek naar één van de meest baanbrekende films in de geschiedenis. Zelf zie ik deze artistieke praktijk als aanvang van mijn acceptatieproces.
 
-Dit is een greep van twee bewegende beelden dat ik in de vorm van evenveel televisieschermen in mijn installatie implementeer. Het linkse beeld stamt af van de film ‘Rain Man’, het rechtse beeld die van mijn artistiek project. Door deze twee documentaties naast elkaar te leggen in een setting waar vreemden zich anders niet snel begeven wil ik ons onwetend onderbewustzijn over autismespectrumstoornis activeren en in vraag stellen.
+
+
+Onderste beeld: © Sarah-Dona Manev
