@@ -12,6 +12,9 @@ bio: Tool waar men niet enkel succesvolle/zwarte rolmodellen kunnen vinden maar
   willen studeren.
 images:
   - https://ucarecdn.com/73d26a90-51c8-47fe-816b-560754cdfd26/
+social_links:
+  - https://www.christopheripayo.com
+  - https://www.instagram.com/christopher.creations/
 ---
 Tool waar men niet enkel succesvolle/zwarte rolmodellen kunnen vinden maar ook motivatie en inspiratie kunnen krijgen om te studeren wat dat we echt willen studeren.
 
