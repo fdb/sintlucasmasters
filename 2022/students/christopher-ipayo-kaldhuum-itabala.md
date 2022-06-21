@@ -13,4 +13,6 @@ bio: Tool waar men niet enkel succesvolle/zwarte rolmodellen kunnen vinden maar
 images:
   - https://ucarecdn.com/73d26a90-51c8-47fe-816b-560754cdfd26/
 ---
+Tool waar men niet enkel succesvolle/zwarte rolmodellen kunnen vinden maar ook motivatie en inspiratie kunnen krijgen om te studeren wat dat we echt willen studeren.
+
 **Blext** is een app waar zwarte studenten de mogelijkheid krijgen om zwarte rolmodellen te vinden. Hiervoor krijgen ze een beter en uitgebreid beeld van niet alleen hun studies maar ook over de verschillende mogelijkheden dat ze hebben na hun studies. De app beschikt ook van een podcast waarin je steeds de laatste nieuws krijgt van upcoming rolmodellen en of projecten, en een platform waarin rolmodellen in detail hun inspiraties en motivaties delen aan de volgende generatie.
