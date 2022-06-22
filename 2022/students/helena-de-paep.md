@@ -6,8 +6,8 @@ year: 2021—2022
 tags:
   - paper
   - digital
-main_image: https://ucarecdn.com/ff733879-803a-4b81-b153-21fb5ca3b695/
-thumb_image: https://ucarecdn.com/a961500f-ac85-4e3c-99d0-fc5d573572ed/
+main_image: https://ucarecdn.com/ffd2ad81-c820-4525-8340-a222de053562/
+thumb_image: https://ucarecdn.com/eebc0ba5-18fb-47fe-a198-a101b686ae0b/
 bio: >
   The cow has always been a real muse to me. They inspire me with how they grow
   up, how they become mothers and how they are ready for the dairy farmer, day
