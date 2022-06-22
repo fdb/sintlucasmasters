@@ -19,16 +19,15 @@ bio: >
 
   Each cow is unique and has its own character. In addition, each cow has its own spots. These marks are as unique as people’s fingerprints.  I am very proud as a farmer’s daughter and am very happy that I can portray these animals in this book. The book can always be extended because animals are added all the time.
 images:
-  - https://ucarecdn.com/39d360a6-1a63-4cf2-9123-c3a73da81585/
+  - https://ucarecdn.com/391265ce-0f1a-4ee6-bd7a-63ab47fcbec2/
   - https://ucarecdn.com/d3889697-c687-4046-94bd-832936fb22a0/
+  - https://ucarecdn.com/1dc239f0-c387-465b-9b5c-429df672c256/
   - https://ucarecdn.com/58d9d5ab-b38f-4050-b991-fcc7d14afb7a/
   - https://ucarecdn.com/dd06a5a1-6310-434c-8dbf-b2f6c9de04f1/
-  - https://ucarecdn.com/391265ce-0f1a-4ee6-bd7a-63ab47fcbec2/
-  - https://ucarecdn.com/5093ea16-4cb2-4f32-ab81-35b48008db17/
   - https://ucarecdn.com/2324f5fe-c82c-4da7-90ff-32d2d8d589de/
-  - https://ucarecdn.com/1dc239f0-c387-465b-9b5c-429df672c256/
-  - https://ucarecdn.com/aef343c8-ba6f-4f76-8269-39ec25d32f4f/
+  - https://ucarecdn.com/5093ea16-4cb2-4f32-ab81-35b48008db17/
   - https://ucarecdn.com/aa42e068-f8bf-4aa3-9edf-46518039ff9b/
+  - https://ucarecdn.com/aef343c8-ba6f-4f76-8269-39ec25d32f4f/
 social_links:
   - https://www.instagram.com/helena_graphic_design_/
 ---
