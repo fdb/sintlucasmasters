@@ -33,3 +33,5 @@ This book is divided into three chapters, each focusing on a phase in their life
 The concept, design and all illustrations are by Noortje Lenaerts, the accompanying texts are written by Hubert Tuyishime.
 
 This book was printed using a risograph at [kabinet.studio](https://www.kabinet.studio) in Antwerp with  black and white ink on Curious Matter Black Truffle paper by Arjowiggins,  Smoke paper and White Frost paper by Colorplan. An edition of 25 books.
+
+https://www.instagram.com/lenaerts.noortje/
