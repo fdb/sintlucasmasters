@@ -22,17 +22,13 @@ social_links:
 ---
 *Can be placed in various alignments and therefore make very versatile components of jewelry. Sparkle less than brilliant-cut diamonds and thus might not be the optimal choice.*
 
-
-
-
-
-<!--\[if gte mso 9]><xml>
+<!--\\[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>
   <o:AllowPNG/>
  </o:OfficeDocumentSettings>
-</xml><!\[endif]-->
+</xml><!\\[endif]-->
 
-<!--\[if gte mso 9]><xml>
+<!--\\[if gte mso 9]><xml>
  <w:WordDocument>
   <w:View>Normal</w:View>
   <w:Zoom>0</w:Zoom>
@@ -72,9 +68,9 @@ social_links:
    <m:intLim m:val="subSup"/>
    <m:naryLim m:val="undOvr"/>
   </m:mathPr></w:WordDocument>
-</xml><!\[endif]-->
+</xml><!\\[endif]-->
 
-<!--\[if gte mso 9]><xml>
+<!--\\[if gte mso 9]><xml>
  <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
   DefSemiHidden="false" DefQFormat="false" DefPriority="99"
   LatentStyleCount="376">
@@ -653,9 +649,9 @@ social_links:
   <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
    Name="Smart Link"/>
  </w:LatentStyles>
-</xml><!\[endif]-->
+</xml><!\\[endif]-->
 
-<!--\[if gte mso 10]>
+<!--\\[if gte mso 10]>
 <style>
  /* Style Definitions */
  table.MsoNormalTable
@@ -683,11 +679,9 @@ social_links:
 	mso-ansi-language:NL-BE;
 	mso-fareast-language:EN-US;}
 </style>
-<!\[endif]-->
+<!\\[endif]-->
 
 <!--StartFragment-->
-
-
 
 De keuze om met baksteen aan de slag te gaan, is ongewoon binnen de wereld van het sieraad. Afgelopen jaar volgde ik een workshop (edel)steen slijpen in Finland en ik merkte dat dit procedé net anders verloopt dan het goudsmeden: bij het stenen slijpen wordt juist materiaal weggenomen in plaats van toegevoegd en tot een geheel opgebouwd. Deze nieuwe manier van werken bleek een gedroomde uitdaging voor mij; dit resulteerde in een reeks steen-slijpsels die een onverwachte brug slaan tussen architectuur en sieraden.
 
@@ -702,10 +696,8 @@ Tijdens mijn zoektocht naar andere manieren dan architectuur om de baksteen waar
 
 Ik heb de bakstenen met de hand geslepen - wat een trage, precieze en intensieve werkmethode is. Ik gebruikte daarbij zowel handgevormde, ambachtelijk gemaakte bakstenen als (in contrast) machinaal geproduceerde. Naast een vormelijke transformatie vond ook een materiële verandering plaats. Aanvullend aan de serie bakstenen heb ik een aantal edelstenen in baksteenformaat geslepen; uit een kristal gelijkend op rode jaspis.
 
-Een groot sjabloon van oranje acrylaat is mijn uiteindelijke manier om aan te tonen hoe verwant architectuur en sieraden met elkaar zijn. De lat, het fictieve ‘meetinstrument’, verwijst in zijn uitvoering naar het gereedschap dat nodig is bij de analoge uitwerking van een plan of sieraad. De twintig uitsparingen – transmutaties – in het sjabloon verwijzen dan weer naar de gelijkaardige verhouding tussen baksteen en edelsteen.
+Een sjabloon van oranje acrylaat is mijn uiteindelijke manier om aan te tonen hoe verwant architectuur en sieraden met elkaar zijn. De lat, het fictieve ‘meetinstrument’, verwijst in zijn uitvoering naar het gereedschap dat nodig is bij de analoge uitwerking van een plan of sieraad. De twintig uitsparingen – transmutaties – in het sjabloon verwijzen dan weer naar de gelijkaardige verhouding tussen baksteen en edelsteen.
 
-Mijn onderzoek resulteerde als dusdanig in een serie gemanipuleerde, ‘getransmuteerde’ (bak)stenen met een directe link naar het lichaam (hand), het ambacht (slijpen), edelstenen (facettering) en sieraden (waardering) in het algemeen. Daarnaast worden gestandariseerde maatsystemen onderzocht en bevraagd. De mate van fictie en verbeelding is een metafoor voor het opzoeken van nieuwe mogelijkheden en het ontsnappen aan opgelegde standaardisatie.
-
-
+Mijn onderzoek resulteerde in een serie gemanipuleerde, ‘getransmuteerde’ (bak)stenen met een directe link naar het lichaam (hand), het ambacht (slijpen), edelstenen (facettering) en sieraden (waardering) in het algemeen. Daarnaast worden gestandariseerde maatsystemen onderzocht en bevraagd. De mate van fictie en verbeelding is een metafoor voor het opzoeken van nieuwe mogelijkheden en het ontsnappen aan opgelegde standaardisatie.
 
 <!--EndFragment-->
