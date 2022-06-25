@@ -15,6 +15,7 @@ images:
   - https://ucarecdn.com/bc7df456-31d1-431f-aed1-87469d440b4c/
   - https://ucarecdn.com/73d016fe-8ff9-42c8-ad75-f70382fe588e/
   - https://ucarecdn.com/0cb09021-eefc-41ae-9c5c-99b21e773cc9/
+  - https://ucarecdn.com/ad9504f3-6e45-47f5-be9e-5926d77ae314/
 social_links:
   - https://www.raquelnobreg.com/
 ---
