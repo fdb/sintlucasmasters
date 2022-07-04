@@ -22,13 +22,15 @@ social_links:
 ---
 *Can be placed in various alignments and therefore make very versatile components of jewelry. Sparkle less than brilliant-cut diamonds and thus might not be the optimal choice.*
 
-<!--\\[if gte mso 9]><xml>
+
+
+<!--\[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>
   <o:AllowPNG/>
  </o:OfficeDocumentSettings>
-</xml><!\\[endif]-->
+</xml><!\[endif]-->
 
-<!--\\[if gte mso 9]><xml>
+<!--\[if gte mso 9]><xml>
  <w:WordDocument>
   <w:View>Normal</w:View>
   <w:Zoom>0</w:Zoom>
@@ -41,7 +43,7 @@ social_links:
   <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
   <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
   <w:DoNotPromoteQF/>
-  <w:LidThemeOther>NL-BE</w:LidThemeOther>
+  <w:LidThemeOther>FR-BE</w:LidThemeOther>
   <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
   <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
   <w:Compatibility>
@@ -68,9 +70,9 @@ social_links:
    <m:intLim m:val="subSup"/>
    <m:naryLim m:val="undOvr"/>
   </m:mathPr></w:WordDocument>
-</xml><!\\[endif]-->
+</xml><!\[endif]-->
 
-<!--\\[if gte mso 9]><xml>
+<!--\[if gte mso 9]><xml>
  <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
   DefSemiHidden="false" DefQFormat="false" DefPriority="99"
   LatentStyleCount="376">
@@ -649,9 +651,9 @@ social_links:
   <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
    Name="Smart Link"/>
  </w:LatentStyles>
-</xml><!\\[endif]-->
+</xml><!\[endif]-->
 
-<!--\\[if gte mso 10]>
+<!--\[if gte mso 10]>
 <style>
  /* Style Definitions */
  table.MsoNormalTable
@@ -676,28 +678,25 @@ social_links:
 	mso-hansi-theme-font:minor-latin;
 	mso-bidi-font-family:"Times New Roman";
 	mso-bidi-theme-font:minor-bidi;
-	mso-ansi-language:NL-BE;
 	mso-fareast-language:EN-US;}
 </style>
-<!\\[endif]-->
+<!\[endif]-->
 
 <!--StartFragment-->
 
-De keuze om met baksteen aan de slag te gaan, is ongewoon binnen de wereld van het sieraad. Afgelopen jaar volgde ik een workshop (edel)steen slijpen in Finland en ik merkte dat dit procedé net anders verloopt dan het goudsmeden: bij het stenen slijpen wordt juist materiaal weggenomen in plaats van toegevoegd en tot een geheel opgebouwd. Deze nieuwe manier van werken bleek een gedroomde uitdaging voor mij; dit resulteerde in een reeks steen-slijpsels die een onverwachte brug slaan tussen architectuur en sieraden.
+Bricks are made to build a house, a building, a future and dreams. However, when they have served their time, no other use is given to these stones and they are often kept as a pile. Even though the brick is important within our Belgian culture, it has little value as an element in itself. Rather, they are given meaning when stacked together: one brick becomes meaningful thanks to another.
 
-Bakstenen worden gemaakt om er een huis, een gebouw, een toekomst en dromen mee op te bouwen - tot er slechts een ruïne of een hoop bouwafval overblijft, vaak eindigend als een stapeltje afgedankte stenen achteraan in de tuin. Ook al is de baksteen belangrijk binnen onze cultuur, als element op zich heeft het weinig waarde. De nadruk ligt op hoe ze samen worden gestapeld: de ene baksteen wordt zinvol dankzij de andere.
+The dimensions of the mass-produced brick that seamlessly relate to human proportions (and especially a hand) captured my imagination. The three holes in the brick made me curious and I wanted to study the brick from the inside out. The hole in the stone became a bracelet. That simple act of cutting and filing the stone, convinced me to further study the brick as a connecting element between architecture and jewelry.
 
-De massa-geproduceerde baksteen met drie cirkelvormige uitsparingen trok mijn aandacht toen ik voelde hoe goed deze in de hand lag. De afmetingen van de baksteen die zich naadloos verhouden tot het lichaam, spraken tot mijn verbeelding: de uitsparingen in de baksteen lokten mijn nieuwsgierigheid om die binnenin af te tasten en te bestuderen. Het duurde niet lang of het gat in de baksteen werd een armband.\
-Die eenvoudige handeling overtuigde me om de baksteen verder te bestuderen. Wie weet kon de baksteen niet alleen fungeren als maat voor het lichaam, maar ook als maat voor het sieraad? De baksteen als verbindend element tussen architectuur en sieraad leek mij een bijzondere uitdaging voor een onderzoek.
+I was even more convinced by the subtitle from "L'ordre de la brique" by Alain Guiheux: « L'architecture, c'est la transmutation d'une brique sans valeur en une brique en or. »\
+Such a title that directly referred to the combination of these two worlds no longer seemed to be a coincidence.
 
-Ik werd nog meer overtuigd door de ondertitel uit ‘L’ordre de la brique’ van Alain Guiheux: « L’architecture, c'est la transmutation d'une brique sans valeur en une brique en or.» Een dergelijke titel die rechtstreeks verwees naar de combinatie van deze twee werelden, leek geen toeval meer te zijn.
+During my search for ways other than architecture to give value to a brick, I discovered one with a cutout that visually reminded me of a baguette cut. It also struck me as an interesting similarity that both the brick and the baguette cut gemstone do not have a function or value in themselves; their value depends on the broader picture, with more stones. Moreover, the similarity in "facets" prompted me to transform one "stone" into another - and to highlight its various stages. Thus was born a series of stone-cuts that create an unexpected bridge between architecture and jewelry.
 
-Tijdens mijn zoektocht naar andere manieren dan architectuur om de baksteen waarde toe te kennen, ontdekte ik een baksteen met een uitsparing die me visueel aan een baguette slijpsel deed denken. Het leek mij ook een interessante overeenkomst dat zowel de baksteen als de baguette geslepen edelsteen de eigenschap heeft niet solitair te functioneren, maar enkel in een groter geheel. Bovendien zette de gelijkenis in ‘facetten’ mij aan om de ene ‘steen’ in de andere te transformeren – en de verschillende stadia daarvan in de verf te zetten.
+I cut the bricks by hand - which is a slow, precise and intensive working method. In doing so, I used both handmade bricks and (in contrast) machine-made ones. In addition to a transformation in form, a material change also took place. Complementary to the brick series, I cut a number of gemstones in brick format; from a crystal similar to red jasper.
 
-Ik heb de bakstenen met de hand geslepen - wat een trage, precieze en intensieve werkmethode is. Ik gebruikte daarbij zowel handgevormde, ambachtelijk gemaakte bakstenen als (in contrast) machinaal geproduceerde. Naast een vormelijke transformatie vond ook een materiële verandering plaats. Aanvullend aan de serie bakstenen heb ik een aantal edelstenen in baksteenformaat geslepen; uit een kristal gelijkend op rode jaspis.
+A template of orange acrylic is my final way of showing how architecture and jewelry are related to one another. The stencil, the fictitious "measuring instrument," refers to the tools needed in making analog plans or drawing ornaments. The twenty cutouts - transmutations - in the template refer to the similar proportions between brick and gemstone.
 
-Een sjabloon van oranje acrylaat is mijn uiteindelijke manier om aan te tonen hoe verwant architectuur en sieraden met elkaar zijn. De lat, het fictieve ‘meetinstrument’, verwijst in zijn uitvoering naar het gereedschap dat nodig is bij de analoge uitwerking van een plan of sieraad. De twintig uitsparingen – transmutaties – in het sjabloon verwijzen dan weer naar de gelijkaardige verhouding tussen baksteen en edelsteen.
-
-Mijn onderzoek resulteerde in een serie gemanipuleerde, ‘getransmuteerde’ (bak)stenen met een directe link naar het lichaam (hand), het ambacht (slijpen), edelstenen (facettering) en sieraden (waardering) in het algemeen. Daarnaast worden gestandariseerde maatsystemen onderzocht en bevraagd. De mate van fictie en verbeelding is een metafoor voor het opzoeken van nieuwe mogelijkheden en het ontsnappen aan opgelegde standaardisatie.
+My research resulted in a series of manipulated, 'transmuted' stones with a direct link to the body (hand), craft (grinding), gemstones (faceting) and jewelry (value) in general. In addition, standardized measurement systems are explored and questioned. The use of fiction and imagination is a metaphor for seeking out new possibilities and escaping imposed standardization.
 
 <!--EndFragment-->
