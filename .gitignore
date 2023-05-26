@@ -8,3 +8,4 @@ package/
 !.env.example
 _site/
 uploadcare-files.json
+_uploads/
