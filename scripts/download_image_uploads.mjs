@@ -1,4 +1,8 @@
-// Convert student's submissions to Markdown files.
+// Automatically download all image uploads from the Google Drive links in the CSV file
+// Usage: node scripts/download_image_uploads.mjs <filename>
+// Example: node scripts/download_image_uploads.mjs _data/2021.csv
+// This script will create a _uploads directory and download all images to it.
+// This will not always work because Google Drive will block the download if it detects too many requests.
 
 import { stat, readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { csvParse } from 'd3-dsv';
