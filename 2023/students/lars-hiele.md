@@ -1,12 +1,12 @@
 ---
-student_name: "Lars Hiele"
-project_title: "R.A.V.E "
+student_name: Lars Hiele
+project_title: 'R.A.V.E '
 context: Applied Context
 year: 2022-2023
-main_image: lars-hiele.jpg
+main_image: 'https://ucarecdn.com/83cc4885-3e5a-46a6-b26f-742072666f09/'
 social_links:
-  - "https://www.instagram.com/larshiele/"
-  - "https://www.instagram.com/@rokersruimte / @larshiele "
+  - 'https://www.instagram.com/larshiele/'
+  - 'https://www.instagram.com/@rokersruimte / @larshiele '
 ---
 R.A.V.E is an audiovisual exploration and music event. Showcasing an evening of electronic music curated by GRID inside S.M.A.K museum. This event doubles as a co-creation for an audiovisual art piece by designer and master student and researcher Lars Hiele. Giving guests not only the ability to experience a night of music inside the art institute but also be a part of a new work. The project researches new ways to reach a new young audience by making subcultures collide with the museum. 
 

@@ -1,11 +1,11 @@
 ---
-student_name: "Tetiana Bushevska"
-project_title: "The sound of home"
+student_name: Tetiana Bushevska
+project_title: The sound of home
 context: Applied Context
 year: 2022-2023
-main_image: tetiana-bushevska.jpg
+main_image: 'https://ucarecdn.com/80377bd5-0bbf-4f29-84c7-223d1feec41e/'
 social_links:
-  - "https://www.instagram.com/tanya.bushevska"
+  - 'https://www.instagram.com/tanya.bushevska'
 ---
 Dit project gaat over de specifieke geluiden van een (mijn) huis en hun betekenis voor een gevoel van veiligheid en rust. De impuls voor dit onderzoek was mijn ervaring met migratie want tijdens het eerste half jaar droomde ik nog over de geluiden van mijn vorig huis. In de publicatie verzamel ik subtiele monoprints over mijn huis, gevoelens en klanken. En in de stopframe-animatie breng ik de klanken tot leven die voor mij een gevoel van "thuis zijn" vertegenwoordigen.
 

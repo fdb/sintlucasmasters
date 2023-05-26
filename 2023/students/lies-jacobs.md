@@ -1,12 +1,13 @@
 ---
-student_name: "Lies Jacobs"
-project_title: "From Beneath the Moss"
+student_name: Lies Jacobs
+project_title: From Beneath the Moss
 context: Autonomous Context
 year: 2022-2023
-main_image: lies-jacobs.jpg
+main_image: 'https://ucarecdn.com/f8cb8710-ce7d-4bea-a458-4a6ea5ab1ee9/'
 social_links:
-  - "http://liesjacobs.berta.me"
-  - "https://www.instagram.com/https://instagram.com/lies___jacobs?igshid=YmMyMTA2M2Y="
+  - 'http://liesjacobs.berta.me'
+  - >-
+    https://www.instagram.com/https://instagram.com/lies___jacobs?igshid=YmMyMTA2M2Y=
 ---
 September 25, 2022, at dusk, my elderly mother passed away.    
 The molecules in the room behaved strangely. Dying happened as suddenly as new life gasping for breath. In which direction do these forces go? Everything happens, everything moves on, and we don't know where we are going, only this:  Nature never goes back; it always moves on.

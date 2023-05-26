@@ -1,12 +1,12 @@
 ---
-student_name: "Liselore Baerts"
-project_title: "Maud"
+student_name: Liselore Baerts
+project_title: Maud
 context: Applied Context
 year: 2022-2023
-main_image: liselore-baerts.jpg
+main_image: 'https://ucarecdn.com/47898378-7259-4d9e-a6c7-d77f797420f2/'
 social_links:
-  - "liselorebaerts.squarespace.com"
-  - "https://www.instagram.com/foert_studio"
+  - liselorebaerts.squarespace.com
+  - 'https://www.instagram.com/foert_studio'
 ---
 "Maud" is het verhaal van een moedig tienermeisje die worstelt met de uitdagingen van haar seksuele geaardheid en het moeizame proces om voor haar ouders en vrienden uit de kast te komen.
 

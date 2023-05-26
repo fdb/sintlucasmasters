@@ -1,11 +1,11 @@
 ---
-student_name: "Joke Christiaansen"
-project_title: "Final recollection"
+student_name: Joke Christiaansen
+project_title: Final recollection
 context: Autonomous Context
 year: 2022-2023
-main_image: joke-christiaansen.jpg
+main_image: 'https://ucarecdn.com/3bdf4332-dd20-4bad-91ad-02be2916cb28/'
 social_links:
-  - "https://www.instagram.com/jokechristiaansen"
+  - 'https://www.instagram.com/jokechristiaansen'
 ---
 Omdat de weg er naar toe belangrijker is dan een afgewerkt product.
 

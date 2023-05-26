@@ -1,12 +1,12 @@
 ---
-student_name: "Jeanne de Preter"
-project_title: "A tower under construction, een toren in aanbouw, une tour en construction"
+student_name: Jeanne de Preter
+project_title: 'A tower under construction, een toren in aanbouw, une tour en construction'
 context: Autonomous Context
 year: 2022-2023
-main_image: jeanne-de-preter.jpg
+main_image: 'https://ucarecdn.com/e8be6e80-4407-4414-a863-77312c2a20bc/'
 social_links:
-  - "www.jeannedepreter.com"
-  - "https://www.instagram.com/mitsi.be"
+  - www.jeannedepreter.com
+  - 'https://www.instagram.com/mitsi.be'
 ---
 The heart of the iron tower is iron, solid mass, but the multitude of stories and people is already bending the tower from within; how to look for pliable structures without undermining ourselves, for shapes open to shifting meaning without adapting or deforming appearances?
 

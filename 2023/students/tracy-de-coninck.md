@@ -3,7 +3,7 @@ student_name: "Tracy De Coninck"
 project_title: "ANY BODY"
 context: Autonomous Context
 year: 2022-2023
-main_image: tracy-de-coninck.jpg
+main_image: 'https://ucarecdn.com/7adf6a17-6e3b-43a7-a6fa-952f1270eff5/'
 social_links:
   - "https://www.instagram.com/tracyecho/"
   - "https://www.instagram.com/@tracyecho"

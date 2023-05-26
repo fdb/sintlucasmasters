@@ -1,12 +1,12 @@
 ---
-student_name: "Susanna Ingignoli"
-project_title: "How much space do you need?"
+student_name: Susanna Ingignoli
+project_title: How much space do you need?
 context: Digital Context
 year: 2022-2023
-main_image: susanna-ingignoli.jpg
+main_image: 'https://ucarecdn.com/6c330a6d-efbd-4eb4-a898-edd4454a0927/'
 social_links:
-  - "suszenne.art"
-  - "https://www.instagram.com/@suszenne"
+  - suszenne.art
+  - 'https://www.instagram.com/@suszenne'
 ---
 Transformations in the urban environment are constantly present in our daily lives, often going unnoticed, particularly when they happen gradually. However, when these changes start to restrict our freedom and diminish the availability of public spaces within the city, they have significant repercussions on our behaviour and the dynamics of our relationships with others.
 

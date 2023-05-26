@@ -1,12 +1,12 @@
 ---
-student_name: "Melina Miglionico "
-project_title: "COuRsE of a MEMORY"
+student_name: 'Melina Miglionico '
+project_title: COuRsE of a MEMORY
 context: Autonomous Context
 year: 2022-2023
-main_image: melina-miglionico.jpg
+main_image: 'https://ucarecdn.com/e1b6429b-ed12-4558-b1cb-bc6fc49fcb31/'
 social_links:
-  - "https://www.notion.so/Melina-Miglionico-6ae92117f23a46b58bebbdd47ea34c40"
-  - "https://www.instagram.com/CuteKittyMelina"
+  - 'https://www.notion.so/Melina-Miglionico-6ae92117f23a46b58bebbdd47ea34c40'
+  - 'https://www.instagram.com/CuteKittyMelina'
 ---
 My work contains a playful twist, it started with trying to work around subjects most people consider as taboo. To make it more ‘digestible’ I started to create my own sense of humor I intertwine into my art. A short documentation and reflection of my own feelings and how my memories affect them. To ask the question: How are you feeling? and what?
 

@@ -1,11 +1,11 @@
 ---
-student_name: "Lisa Gunst"
-project_title: "Ode to Oscar"
+student_name: Lisa Gunst
+project_title: Ode to Oscar
 context: Applied Context
 year: 2022-2023
-main_image: lisa-gunst.jpg
+main_image: 'https://ucarecdn.com/8ac8b514-ed10-40a9-b399-5e66b49448e6/'
 social_links:
-  - "https://lisagunst.myportfolio.com/welcome"
+  - 'https://lisagunst.myportfolio.com/welcome'
 ---
 Oscar Wilde, the Irish playwright and poet, is still relatively well known today.
 Most people, however, stop at “writer” and “dandy” when trying to describe him.

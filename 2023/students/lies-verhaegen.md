@@ -1,12 +1,12 @@
 ---
-student_name: "Lies Verhaegen"
-project_title: "The Church Of Climate"
+student_name: Lies Verhaegen
+project_title: The Church Of Climate
 context: Applied Context
 year: 2022-2023
-main_image: lies-verhaegen.jpg
+main_image: 'https://ucarecdn.com/ddda3b68-ce9b-4517-a1ba-c9d718c1c95d/'
 social_links:
-  - "https://liesverhaegen.wixsite.com/my-site-2"
-  - "https://www.instagram.com/@lies.verhaegen"
+  - 'https://liesverhaegen.wixsite.com/my-site-2'
+  - 'https://www.instagram.com/@lies.verhaegen'
 ---
 What happens when you combine the empirical reality of the climate crisis with the profound dogmas and organizational framework of a religion? By intertwining science and spirituality, This project aims to bring the urgent need for attention and unwavering dedication to the climate crisis in a new light. 
 

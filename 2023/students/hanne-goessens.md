@@ -1,12 +1,12 @@
 ---
-student_name: "Hanne Goessens"
-project_title: "Obsidian"
+student_name: Hanne Goessens
+project_title: Obsidian
 context: Applied Context
 year: 2022-2023
-main_image: hanne-goessens.jpg
+main_image: 'https://ucarecdn.com/8e03f131-c41a-4636-896c-84d0dd7c73dd/'
 social_links:
-  - "https://hannegoessens.myportfolio.com"
-  - "https://www.instagram.com/soft_peachfuzz"
+  - 'https://hannegoessens.myportfolio.com'
+  - 'https://www.instagram.com/soft_peachfuzz'
 ---
 "Obsidian" is a graphic novel that follows a young girl's journey to confront her inner demons and shadow self, inspired by Jungian psychology. Through her struggles, the story explores the theme of shadow work and the importance of self-awareness and growth.
 

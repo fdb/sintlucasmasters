@@ -1,11 +1,11 @@
 ---
-student_name: "Elisa Nieze"
-project_title: "Forgotten Flowers "
+student_name: Elisa Nieze
+project_title: 'Forgotten Flowers '
 context: Applied Context
 year: 2022-2023
-main_image: elisa-nieze.jpg
+main_image: 'https://ucarecdn.com/dff133e8-877c-4c7a-881c-45c56b9ab87d/'
 social_links:
-  - "https://www.instagram.com/@illu_elisa"
+  - 'https://www.instagram.com/@illu_elisa'
 ---
 Bloemen inspireren al eeuwenlang met hun schoonheid en symboliek in kunst, mode en religie. Helaas worden ze bedreigd door ontbossing, klimaatverandering en pesticiden, wat hun voortbestaan aantast. Met mijn prints op textiel wil ik bewustzijn creëren voor 'vergeten' bloemen en bijdragen aan de bescherming van bedreigde bloemen.
 

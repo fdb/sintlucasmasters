@@ -1,11 +1,11 @@
 ---
-student_name: "Annelies Jacobs"
-project_title: "As if the earth had swallowed you"
+student_name: Annelies Jacobs
+project_title: As if the earth had swallowed you
 context: Applied Context
 year: 2022-2023
-main_image: annelies-jacobs.jpg
+main_image: 'https://ucarecdn.com/531ed6a7-7390-471e-94d6-f2ac9b5c1863/'
 social_links:
-  - "https://www.instagram.com/j.annelies"
+  - 'https://www.instagram.com/j.annelies'
 ---
 As if the earth had swallowed you is a poetic and multi-layered reflection on the cycle of the seasons, life, death and rebirth, loss, transformation and a girl’s coming-of-age. The graphic novel / poem is a personal reinterpretation of the Greek myth of Persephone, a myth through which the ancient Greeks attempted to explain the existence of the seasons.
 

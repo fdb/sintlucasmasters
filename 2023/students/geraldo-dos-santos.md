@@ -1,12 +1,12 @@
 ---
-student_name: "Geraldo Dos Santos"
-project_title: "The End of Highlights "
+student_name: Geraldo Dos Santos
+project_title: 'The End of Highlights '
 context: Autonomous Context
 year: 2022-2023
-main_image: geraldo-dos-santos.jpg
+main_image: 'https://ucarecdn.com/8019748b-3109-4ff6-a0a0-0a6bdacb1363/'
 social_links:
-  - "https://www.geraldodossantos.nl/"
-  - "https://www.instagram.com/@geraldodossantos.nl"
+  - 'https://www.geraldodossantos.nl/'
+  - 'https://www.instagram.com/@geraldodossantos.nl'
 ---
 Geraldo Dos Santos explores the multifaceted use of candles as a "ritual artifact," revealing their symbolic significance in contemporary society. He delves into four contemporary frameworks: Coping-mechanism, heritages, popular identity, and solemnity, shedding light on their diverse roles. Dos Santos highlights the metaphorical significance of candles, expressing devotion, sensuality, and esoteric rites. His work evokes human emotions, regulating cultural systems, fostering a connection to the past, present, and future of tradition.
 

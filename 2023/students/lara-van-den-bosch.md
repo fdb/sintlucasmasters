@@ -1,12 +1,14 @@
 ---
-student_name: "Lara Van den Bosch"
-project_title: "The Everyday Philosopher"
+student_name: Lara Van den Bosch
+project_title: The Everyday Philosopher
 context: Applied Context
 year: 2022-2023
-main_image: lara-van-den-bosch.jpg
+main_image: 'https://ucarecdn.com/9b23b694-a462-4274-b541-10cbf1308922/'
 social_links:
-  - "https://laravandenbosch.myportfolio.com/"
-  - "https://www.instagram.com/@tep_antwerp / @lara.vandenbosch / @mistakes_or_masterpieces"
+  - 'https://laravandenbosch.myportfolio.com/'
+  - >-
+    https://www.instagram.com/@tep_antwerp / @lara.vandenbosch /
+    @mistakes_or_masterpieces
 ---
 The Everyday Philosopher is an anonymous creator that gives social and light philosophical criticism. The work displays itself in everyday public spaces as posters, stickers and postcards that show texts and images. It invites people to reflect on issues we no longer give attention to in our turbulent, overstimulated times.
 

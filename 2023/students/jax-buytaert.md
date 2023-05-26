@@ -1,12 +1,12 @@
 ---
-student_name: "Jax Buytaert"
-project_title: "Wistful Thinking - Weemoedig Denken"
+student_name: Jax Buytaert
+project_title: Wistful Thinking - Weemoedig Denken
 context: Autonomous Context
 year: 2022-2023
-main_image: jax-buytaert.jpg
+main_image: 'https://ucarecdn.com/25eeea95-91a6-457c-afd0-a8aea9d13bf3/'
 social_links:
-  - "www.jaxbuytaert.com"
-  - "https://www.instagram.com/swekg"
+  - www.jaxbuytaert.com
+  - 'https://www.instagram.com/swekg'
 ---
 Wistful Thinking - Weemoedig Denken verwijst naar melancholisch verlangen naar het verleden. Foto’s en video’s roepen collectief gedeelde herinneringen met impliciete verhalen op.
 

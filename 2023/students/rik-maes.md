@@ -1,12 +1,12 @@
 ---
-student_name: "Rik Maes"
-project_title: "Waking up to the Moon"
+student_name: Rik Maes
+project_title: Waking up to the Moon
 context: Applied Context
 year: 2022-2023
-main_image: rik-maes.jpg
+main_image: 'https://ucarecdn.com/8a98db1c-5355-4678-bfd3-91a26ce06849/'
 social_links:
-  - "https://rikmaesf45d.myportfolio.com/"
-  - "https://www.instagram.com/rik.maes.77"
+  - 'https://rikmaesf45d.myportfolio.com/'
+  - 'https://www.instagram.com/rik.maes.77'
 ---
 Het jaar is 2101, de mens heeft de Aarde verlaten en een nieuwe ruimtekolonie rond de Maan ontwikkeld. Een toekomstbeeld dat geïnspireerd is op de 'Gateway' van NASA, dat inmiddels werkelijkheid is geworden. In deze kortfilm volgen we de dagdagelijkse routine van een eenzame arbeider die probeert de natuur met zich mee te nemen.
 

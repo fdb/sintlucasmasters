@@ -1,11 +1,11 @@
 ---
-student_name: "Daphne Govaerts"
-project_title: "The beast I call Grief"
+student_name: Daphne Govaerts
+project_title: The beast I call Grief
 context: Applied Context
 year: 2022-2023
-main_image: daphne-govaerts.jpg
+main_image: 'https://ucarecdn.com/e4854384-89dd-4b86-82c5-d90c09c476df/'
 social_links:
-  - "https://www.instagram.com/My.name.is.daphne"
+  - 'https://www.instagram.com/My.name.is.daphne'
 ---
 In deze graphic novel deel ik door een persoonlijke blik de rauwe emoties na het tragische verlies van een dierbare vriendin na zelfdoding. Met poëtische beelden, oprechte teksten en rauwe emoties ontvouwen de pagina’s zich om de complexiteit van verdriet, de onwrikbare innerlijke veerkracht en de diepgaande genezing weer te geven. 
 

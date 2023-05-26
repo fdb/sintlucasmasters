@@ -1,12 +1,12 @@
 ---
-student_name: "Rubeyda Yilmaz"
-project_title: "VAN BLANCO NAAR BOEK"
+student_name: Rubeyda Yilmaz
+project_title: VAN BLANCO NAAR BOEK
 context: Applied Context
 year: 2022-2023
-main_image: rubeyda-yilmaz.jpg
+main_image: 'https://ucarecdn.com/1f0893f5-088a-451c-b5ba-a36ba355e5c7/'
 social_links:
-  - "https://www.instagram.com/yilmaz.rubeyda/"
-  - "https://www.instagram.com/yilmaz.rubeyda"
+  - 'https://www.instagram.com/yilmaz.rubeyda/'
+  - 'https://www.instagram.com/yilmaz.rubeyda'
 ---
 Door de opkomst van de machines is het ambacht van het maken van boeken met de hand aan het verdwijnen. De machines zullen de taken overnemen en boekbinden zal een verloren ambacht worden.
 

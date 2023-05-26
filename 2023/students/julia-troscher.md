@@ -1,14 +1,13 @@
 ---
-student_name: "Julia Tröscher"
-project_title: "Venus transit (herald)  WIP whip smack "
+student_name: Julia Tröscher
+project_title: 'Venus transit (herald)  WIP whip smack '
 context: Autonomous Context
 year: 2022-2023
-main_image: julia-troscher.jpg
+main_image: 'https://ucarecdn.com/bbcd0765-a7fc-422a-9ca2-d877e15a3ae4/'
 social_links:
-  - "https://juliatroscher.com/"
-  - "https://www.instagram.com/@juliatr.o.scher"
+  - 'https://juliatroscher.com/'
+  - 'https://www.instagram.com/@juliatr.o.scher'
 ---
-
 Venus transit, title of a poem, an installation in progress and film to be. Venus transit is galactically slow: it takes time to expand, become, to reshape from dust. Wip whip Smack it is fast, full energy, an explosion coming up. This is a herald, listen close.
 
 
