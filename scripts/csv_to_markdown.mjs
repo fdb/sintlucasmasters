@@ -7,6 +7,13 @@ import slugify from 'slugify';
 async function parseCsvFile(filename) {
 	const text = await readFile(filename, 'utf8');
 	let rows = csvParse(text);
+	// Check all required fields are present
+	const requiredFields = ['name', 'project_title', 'context', 'summary', 'description', 'website', 'instagram'];
+	for (const field of requiredFields) {
+		if (!rows[0][field]) {
+			throw new Error(`Missing field: ${field}`);
+		}
+	}
 	// Remove test submissions
 	rows = rows.filter((row) => row.title !== 'test');
 	return rows;
@@ -14,6 +21,7 @@ async function parseCsvFile(filename) {
 
 const CONTEXT_MAP = {
 	'Premaster Autonome Context / Autonomous Context': 'Autonomous Context',
+	'Premaster Digitale Context / Digital Context': 'Applied Context',
 	'Premaster Socio-politieke Context / Socio-political Context': 'Socio-Political Context',
 	'Premaster Toegepaste Context / Applied Context': 'Applied Context',
 	'Master Socio-politieke Context / Socio-political Context': 'Socio-Political Context',
@@ -24,12 +32,13 @@ const CONTEXT_MAP = {
 };
 
 async function createJsonLayoutFile() {
-	const filename = '2022/students/students.json';
+	const filename = '2023/students/students.json';
 	const text = `{ "layout": "student.liquid" }`;
 	await writeFile(filename, text);
 }
 
 async function processStudent(student) {
+	console.log(student);
 	const slug = slugify(student.name, { lower: true });
 
 	console.log(student.name, slug);
@@ -41,16 +50,23 @@ async function processStudent(student) {
 	md += `student_name: "${student.name}"\n`;
 	md += `project_title: "${student.project_title}"\n`;
 	md += `context: ${context}\n`;
-	md += `year: 2021-2022\n`;
+	md += `year: 2022-2023\n`;
 	md += `main_image: ${slug}.jpg\n`;
 	md += `social_links:\n`;
-	md += `  - "${student.website}"\n`;
+	if (student.website) {
+		md += `  - "${student.website}"\n`;
+	}
+	if (student.instagram) {
+		const handleWithoutAt = student.instagram.startsWith('@') ? student.instagram.slice(1) : student.instagram;
+		const instagramLink = student.instagram.startsWith('@') ? `https://www.instagram.com/${student.instagram.slice(1)}` : student.instagram;
+		md += `  - "https://www.instagram.com/${student.instagram}"\n`;
+	}
 	md += '---\n';
 	md += `${student.summary}`;
 	md += '\n\n';
 	md += `${student.description}`;
 
-	const filename = `2022/students/${slug}.md`;
+	const filename = `2023/students/${slug}.md`;
 	await writeFile(filename, md);
 }
 

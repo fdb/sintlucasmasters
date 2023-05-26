@@ -1,0 +1,34 @@
+---
+layout: base
+---
+
+<div class="full-width">
+	<img class="main-image" src="{{ main_image }}-/preview/2000x2000/" alt="{{ project_title }}" />
+</div>
+
+<div class="meta">
+	<div>
+		<h2>{{ project_title }} — {{ student_name }}</h2>
+	</div>
+	<div>
+		<p class="year">{{ context }}&nbsp;&nbsp;{{ year }}</p>
+	</div>
+</div>
+
+<article>
+	{{ content }}
+</article>
+
+{%- for image in images -%}
+<img class="image" src="{{ image }}-/preview/2000x2000/" alt="" />
+{%- endfor -%}
+
+<div class="social-links__wrapper">
+	<div class="social-links">
+		{% for link in social_links %}
+		<a class="social-link" target="_blank" href="{{ link }}">{{ link | replace: "https://", "" }}</a>
+		{% endfor %}
+	</div>
+</div>
+
+{% include 'footer' %}

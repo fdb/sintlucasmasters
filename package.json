@@ -4,11 +4,12 @@
 	"description": "",
 	"scripts": {
 		"start": "concurrently \"npm run watch\" \"npm run serve\"",
-		"watch": "eleventy --config=2022/.eleventy.js --input=2022 --output=_site/2022 --watch",
+		"watch": "eleventy --config=2023/.eleventy.js --input=2023 --output=_site/2023 --watch",
 		"serve": "serve _site",
-		"build": "npm run clean && npm run build:admin && npm run build:2021 && npm run build:2022",
+		"build": "npm run clean && npm run build:admin && npm run build:2021 && npm run build:2022 && npm run build:2023",
 		"build:2021": "eleventy --config=2021/.eleventy.js --input=2021 --output=_site/2021",
 		"build:2022": "eleventy --config=2022/.eleventy.js --input=2022 --output=_site/2022",
+		"build:2023": "eleventy --config=2023/.eleventy.js --input=2023 --output=_site/2023",
 		"build:admin": "mkdir _site && cp -r admin _site/admin",
 		"clean": "rm -rf _site"
 	},
