@@ -20,7 +20,7 @@ h6,
 p,
 ol,
 ul {
-	margin: 0;
+	margin: 1px;
 	padding: 0;
 	font-weight: normal;
 }
@@ -30,9 +30,20 @@ ul {
 	list-style: none;
 }
 
-img {
-	max-width: 100%;
-	height: auto;
+p {
+    display: block;
+    margin-block-start: 0.5px;
+    margin-block-end: 17.5px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+
+
+}
+
+	img {
+		max-width: 100%;
+		height: auto;
+		margin: 10px;
 }
 
 body {
@@ -42,6 +53,8 @@ body {
 
 a {
 	color: inherit;
+	text-decoration: none;
+
 }
 
 /* HEADER */
@@ -58,6 +71,11 @@ nav {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 1000;
+	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'XTRA' 600;
+	margin: 2px;
 }
 
 /* IMAGE GRID */
@@ -115,6 +133,11 @@ nav {
 	margin-top: 0.5rem;
 	padding-top: 2rem;
 	top: -1rem;
+
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 1000;
+	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'XTRA' 600;
 }
 
 .student__name {
@@ -124,6 +147,11 @@ nav {
 	background-color: rgb(255, 255, 255);
 	top: -1rem;
 	padding-bottom: 1rem;
+
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 100;
+	font-variation-settings: 'wdth' 151;
+	color: grey;
 }
 
 /* DETAIL PAGE */
@@ -164,4 +192,60 @@ main {
 	font-family: 'Roboto Flex', sans-serif;
 	font-variation-settings: 'wght' 100;
 	font-variation-settings: 'wdth' 151;
+	color: grey;
+}
+
+.meta p {
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 100;
+	font-variation-settings: 'wdth' 151;
+
+}
+
+
+p.explain{
+
+	font-family: 'Roboto Flex', sans-serif;
+    font-variation-settings: 'wght' 100;
+    font-variation-settings: 'wdth' 151;
+    font-size: 100px;
+    color: black;
+	line-height: 100px;
+}
+
+button {
+    -webkit-appearance: button;
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: buttontext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    cursor: default;
+    background-color: buttonface;
+    box-sizing: border-box;
+    margin: 0em;
+    font: 400 45px system-ui;
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 100;
+	font-variation-settings: 'wdth' 151;
+	color: grey;
+    padding: 1px 7px 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-image: initial;
+}
+
+a.home {
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 1000;
+	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'XTRA' 600;
+	
 }
