@@ -3,7 +3,7 @@ student_name: Lisa Gunst
 project_title: Ode to Oscar
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/8ac8b514-ed10-40a9-b399-5e66b49448e6/'
+main_image: 'https://ucarecdn.com/f06be65e-9968-4d90-9c4f-31427b346190/'
 social_links:
   - 'https://lisagunst.myportfolio.com/welcome'
 ---

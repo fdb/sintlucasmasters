@@ -3,7 +3,7 @@ student_name: Lin De Vos
 project_title: 'love for letters '
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/93c94781-6771-4d21-81d4-35c03938b001/'
+main_image: 'https://ucarecdn.com/7aaf005f-1a1f-4d4a-b69b-09e51d92334b/'
 social_links:
   - 'https://lindevos.myportfolio.com'
   - 'https://www.instagram.com/https://www.instagram.com/_devos__lin/'

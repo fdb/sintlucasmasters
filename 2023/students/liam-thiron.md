@@ -3,7 +3,7 @@ student_name: Liam Thiron
 project_title: The Cypher Box
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/40e29c6c-1c6a-42f3-a761-d239bc62a7ae/'
+main_image: 'https://ucarecdn.com/dbadce54-22fd-44a6-aea3-1a99eeab0eab/'
 social_links:
   - 'https://liamthiron.wixsite.com/portfolio/contact'
   - 'https://www.instagram.com/liam_bd'

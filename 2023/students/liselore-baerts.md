@@ -3,7 +3,7 @@ student_name: Liselore Baerts
 project_title: Maud
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/47898378-7259-4d9e-a6c7-d77f797420f2/'
+main_image: 'https://ucarecdn.com/ae1cd872-130f-4d3e-acdb-27ff417a67a6/'
 social_links:
   - liselorebaerts.squarespace.com
   - 'https://www.instagram.com/foert_studio'

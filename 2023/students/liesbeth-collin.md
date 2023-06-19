@@ -3,7 +3,7 @@ student_name: Liesbeth Collin
 project_title: In Bloom
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/8dc3f6b6-ab94-4ca7-9bcf-8bb0fc21f652/'
+main_image: 'https://ucarecdn.com/e7185b7d-b78f-4186-b51b-61c1f5d829b1/'
 social_links:
   - 'https://www.liesbethcollin.com'
   - 'https://www.instagram.com/liesbeth.collin'

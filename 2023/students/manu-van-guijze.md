@@ -5,7 +5,7 @@ context: Autonomous Context
 year: 2022-2023
 main_image: 'https://ucarecdn.com/10ada3cb-55c5-44a2-a9d1-bc0607db42f8/'
 social_links:
-  - 'https://www.instagram.com/https://www.instagram.com/manuvanguijze/'
+  - 'https://www.instagram.com/@manuvanguijze'
 ---
 Chou Chou (Rouge) is a series of textile pieces, inspired by and developed in collaboration with vegetables. The project consists of 5 tufted works that have been dyed naturally with red cabbage, beets, red wine and black beans. The shapes give a gentle nod to growth forms found in nature. 
 

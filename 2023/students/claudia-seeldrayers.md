@@ -1,16 +1,11 @@
 ---
 student_name: Claudia Seeldrayers
-project_title: Een inkijk in van Eycks Arnolfini-perspectief
+project_title: laatste wijziging beelden
 context: Digital Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/0cb4369c-1b88-4292-82f1-7526e606adfb/'
-social_links:
-  - 'https://claudia-ioa-seeldrayers.netlify.app/'
-  - 'https://www.instagram.com/ioa.psd/'
+main_image: 'https://ucarecdn.com/db81e92c-bfd5-4a50-96f5-e1a0f6c89f30/'
+social_links: null
 ---
+laatste wijziging beelden
 
-Ik heb een digitale, driedimensionale vertaling gemaakt van het complexe, subjectieve perspectief in het Arnolfini-portret van Jan van Eyck. Het perspectief in dit schilderij lijkt op het eerste zicht te kloppen, maar doordat je het schilderij in mijn 3D versie uit verschillende hoeken kunt zien, zie je al snel dat dit in de werkelijkheid niet het geval is.
-
-Een inkijk in van Eycks Arnolfini-perspectief
-
-Ik heb een digitale, driedimensionale vertaling gemaakt van het complexe, subjectieve perspectief in het Arnolfini-portret van Jan van Eyck. Het perspectief in dit schilderij lijkt op het eerste zicht te kloppen, maar doordat je het schilderij in mijn 3D versie uit verschillende hoeken kunt zien, zie je al snel dat dit in de werkelijkheid niet het geval is.
+laatste wijziging beelden

@@ -3,7 +3,7 @@ student_name: Elisa Nieze
 project_title: 'Forgotten Flowers '
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/dff133e8-877c-4c7a-881c-45c56b9ab87d/'
+main_image: 'https://ucarecdn.com/37daff82-17d4-4384-b388-398fbed3c165/'
 social_links:
   - 'https://www.instagram.com/@illu_elisa'
 ---

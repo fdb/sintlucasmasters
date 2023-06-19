@@ -3,7 +3,7 @@ student_name: Eva Geldof
 project_title: PULSATING IRON
 context: Jewelry Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/f51fb94c-61e9-4623-abcb-07495486720c/'
+main_image: 'https://ucarecdn.com/eb19b9aa-7031-4b6b-b1e8-a905fcfb11fe/'
 social_links:
   - 'https://www.instagram.com/@geldofuleva'
 ---

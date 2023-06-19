@@ -3,7 +3,7 @@ student_name: Raquel Nobre G
 project_title: Dissection Room
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/11d9cdfd-66d8-4f7e-8755-0891036b0a17/'
+main_image: 'https://ucarecdn.com/2ad0cd27-07eb-4db8-bc42-7ae72cc420af/'
 social_links:
   - 'https://www.raquelnobreg.com/'
   - 'https://www.instagram.com/raquel.nobre.g'

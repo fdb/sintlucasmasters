@@ -3,7 +3,7 @@ student_name: Manou Raeves
 project_title: Garden of Her's
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/9d1a5850-bb92-4839-aca0-51b9f1021cb1/'
+main_image: 'https://ucarecdn.com/06441e1e-273e-4fd9-af5e-cfa82a7c6429/'
 social_links:
   - 'https://manouraeves.myportfolio.com/'
   - 'https://www.instagram.com/@raevesmanou'

@@ -3,7 +3,7 @@ student_name: Annelies Jacobs
 project_title: As if the earth had swallowed you
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/531ed6a7-7390-471e-94d6-f2ac9b5c1863/'
+main_image: 'https://ucarecdn.com/d0a0760d-0fc4-47da-9146-051bd244f206/'
 social_links:
   - 'https://www.instagram.com/j.annelies'
 ---

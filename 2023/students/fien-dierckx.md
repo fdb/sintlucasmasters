@@ -3,7 +3,7 @@ student_name: Fien Dierckx
 project_title: The Deceptive Palette
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/74a37b49-e164-42d5-9391-4baab626b840/'
+main_image: 'https://ucarecdn.com/ed94b9bc-da6d-40ce-b98a-2245779b715e/'
 social_links: null
 ---
 A captivating project intertwining color, perception, and creative coding. Immerse yourself in an enchanting realm where colors play tricks on the eye, provoking introspection and challenging our understanding of reality. Explore the limitless possibilities of creative coding, as the deceptive palette unveils the mesmerizing dance between perception and illusion.

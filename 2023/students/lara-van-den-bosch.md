@@ -3,7 +3,7 @@ student_name: Lara Van den Bosch
 project_title: The Everyday Philosopher
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/9b23b694-a462-4274-b541-10cbf1308922/'
+main_image: 'https://ucarecdn.com/5d23ba30-e72e-45a8-bca7-a1c3eab9f87b/'
 social_links:
   - 'https://laravandenbosch.myportfolio.com/'
   - >-

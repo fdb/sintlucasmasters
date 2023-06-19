@@ -3,7 +3,7 @@ student_name: Susanna Ingignoli
 project_title: How much space do you need?
 context: Digital Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/6c330a6d-efbd-4eb4-a898-edd4454a0927/'
+main_image: 'https://ucarecdn.com/69ce16b0-02a6-4dcd-b54a-21d284cdb79e/'
 social_links:
   - suszenne.art
   - 'https://www.instagram.com/@suszenne'

@@ -3,7 +3,7 @@ student_name: Hanne Goessens
 project_title: Obsidian
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/8e03f131-c41a-4636-896c-84d0dd7c73dd/'
+main_image: 'https://ucarecdn.com/60f0af8b-4782-4b23-ab56-180f9b46d34b/'
 social_links:
   - 'https://hannegoessens.myportfolio.com'
   - 'https://www.instagram.com/soft_peachfuzz'

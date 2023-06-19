@@ -3,7 +3,7 @@ student_name: Lars Hiele
 project_title: 'R.A.V.E '
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/83cc4885-3e5a-46a6-b26f-742072666f09/'
+main_image: 'https://ucarecdn.com/c7c2184e-7dd5-4279-9146-075070152d2d/'
 social_links:
   - 'https://www.instagram.com/larshiele/'
   - 'https://www.instagram.com/@rokersruimte / @larshiele '

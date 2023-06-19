@@ -3,12 +3,11 @@ student_name: çifel huseyin
 project_title: Visible Invisible or mental-health embodiments
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/46aedc94-6d82-4299-82dd-95005650f5a3/'
+main_image: 'https://ucarecdn.com/1a52bafb-f390-493c-b828-c2f8bf9db855/'
 social_links:
   - 'https://cifelhuseyin.wixsite.com/artist'
-  - 'https://instagram.com/cifel'
+  - 'https://www.instagram.com/https://instagram.com/cifel'
 ---
-
 Humans have senses to communicate with their surroundings.
 
 Spaces have dimensions to communicate with their passers-by.

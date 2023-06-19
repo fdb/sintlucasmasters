@@ -3,7 +3,7 @@ student_name: Rubeyda Yilmaz
 project_title: VAN BLANCO NAAR BOEK
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/1f0893f5-088a-451c-b5ba-a36ba355e5c7/'
+main_image: 'https://ucarecdn.com/0d5156e3-d47d-489d-b4f8-1831361adf23/'
 social_links:
   - 'https://www.instagram.com/yilmaz.rubeyda/'
   - 'https://www.instagram.com/yilmaz.rubeyda'

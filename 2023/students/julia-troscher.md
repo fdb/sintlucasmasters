@@ -3,7 +3,7 @@ student_name: Julia Tröscher
 project_title: 'Venus transit (herald)  WIP whip smack '
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/bbcd0765-a7fc-422a-9ca2-d877e15a3ae4/'
+main_image: 'https://ucarecdn.com/e84661b3-6d30-47cf-8081-8afa7ea3b6bd/'
 social_links:
   - 'https://juliatroscher.com/'
   - 'https://www.instagram.com/@juliatr.o.scher'

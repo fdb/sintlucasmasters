@@ -3,7 +3,7 @@ student_name: Rik Maes
 project_title: Waking up to the Moon
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/8a98db1c-5355-4678-bfd3-91a26ce06849/'
+main_image: 'https://ucarecdn.com/420e127c-a62e-400f-a84b-34bcbd4177ac/'
 social_links:
   - 'https://rikmaesf45d.myportfolio.com/'
   - 'https://www.instagram.com/rik.maes.77'

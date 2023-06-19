@@ -3,7 +3,7 @@ student_name: Daphne Govaerts
 project_title: The beast I call Grief
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/e4854384-89dd-4b86-82c5-d90c09c476df/'
+main_image: 'https://ucarecdn.com/b9880439-b416-4f17-a28f-c59370ff60b6/'
 social_links:
   - 'https://www.instagram.com/My.name.is.daphne'
 ---
