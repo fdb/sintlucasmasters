@@ -31,7 +31,7 @@ ul {
 }
 
 p {
-    display: block;
+    display: grid;
     margin-block-start: 0.5px;
     margin-block-end: 17.5px;
     margin-inline-start: 0px;
@@ -226,7 +226,7 @@ button {
     display: inline-block;
     text-align: center;
     align-items: flex-start;
-    cursor: default;
+    cursor: pointer;
     background-color: buttonface;
     box-sizing: border-box;
     margin: 0em;
@@ -236,7 +236,7 @@ button {
 	font-variation-settings: 'wdth' 151;
 	color: grey;
     padding: 1px 7px 2px;
-    border-width: 1px;
+    border-width: 3px;
     border-style: solid;
     border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
     border-image: initial;
