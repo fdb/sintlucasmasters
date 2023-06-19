@@ -152,3 +152,16 @@ main {
 	display: flex;
 	justify-content: center;
 }
+
+.meta h2 {
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 1000;
+	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'XTRA' 600;
+}
+
+.meta h3 {
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 100;
+	font-variation-settings: 'wdth' 151;
+}
