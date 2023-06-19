@@ -35,6 +35,15 @@ img {
 	height: auto;
 }
 
+body {
+	background: black;
+	color: white;
+}
+
+a {
+	color: inherit;
+}
+
 /* HEADER */
 
 header {
@@ -64,12 +73,17 @@ nav {
 }
 
 .student {
-	overflow: hidden;
+	/* overflow: hidden; */
 	position: relative;
 }
 
 .grid--hidden {
 	display: none !important;
+}
+
+.student__image-wrap {
+	width: 300px;
+	/* overflow: hidden; */
 }
 
 .students-grid img {
@@ -78,6 +92,12 @@ nav {
 	width: 300px;
 	height: 300px;
 	object-fit: contain;
+	transform: rotate(33deg);
+	transition: 0.3s;
+}
+
+.students-grid img:hover {
+	transform: rotate(0deg);
 }
 
 .student a {
@@ -86,22 +106,39 @@ nav {
 }
 
 .student__title {
-	font-size: 1rem;
+	position: relative;
+	z-index: 10;
+	background-color: black;
+	font-size: 1.2rem;
 	font-weight: bold;
 	margin-top: 0.5rem;
-	color: #bbdb62;
+	padding-top: 2rem;
+	top: -1rem;
 }
+
 .student__name {
-	font-size: 0.8rem;
+	font-size: 1rem;
+	position: relative;
+	z-index: 10;
+	background-color: black;
+	top: -1rem;
+	padding-bottom: 1rem;
 }
 
 /* DETAIL PAGE */
 
+#wrapper {
+	width: 100vw;
+}
+
+#fake-scroll {
+	height: 800vh;
+}
+
 main {
 	position: relative;
-	max-width: 80ch;
+	max-width: 1200px;
 	margin: 0 auto;
-	padding: 5rem 0;
 }
 
 .full-width {
