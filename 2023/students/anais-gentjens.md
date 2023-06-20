@@ -7,6 +7,7 @@ tags:
   - digital
   - installation
   - performance
+  - video
 main_image: https://ucarecdn.com/5b888321-9552-49dd-a6e9-5bbd776a0c1a/
 thumb_image: https://ucarecdn.com/c8d12933-0aa0-40c8-8e89-6d3eeaa83ef5/
 images:
