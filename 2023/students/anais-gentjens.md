@@ -6,7 +6,7 @@ year: 2022-2023
 main_image: 'https://ucarecdn.com/97820b1c-7aff-4b30-b902-083d4236bbb0/'
 social_links:
   - 'https://anaisgen.myportfolio.com/'
-  - 'https://www.instagram.com/https://www.instagram.com/anaisgen_/'
+  - 'https://www.instagram.com/anaisgen_/'
 ---
 Choreographic Co-Creation is een danstool die op basis van een video verschillende visuele vormen aanneemt. Een danser of choreograaf kan deze gebruiken om via eigen materiaal nieuwe inzichten te verkrijgen en geïnspireerd te worden door een eigen bewegingstaal. De danser improviseert aan de hand van de resultaten die gecreëerd worden via de danstool.
 

@@ -6,7 +6,7 @@ year: 2022-2023
 main_image: 'https://ucarecdn.com/12d856b9-3eb6-44ed-b828-5f85f6e5f40b/'
 social_links:
   - 'https://www.thorvermin.com/'
-  - 'https://www.instagram.com/https://www.instagram.com/thor.jpg/'
+  - 'https://www.instagram.com/thor.jpg/'
 ---
 "Het Atelier" consists of two video projections that display two perspectives of the same moment in space: one view towards two broken windows and the other towards the opposite wall. The room is depicted with a day and night cycle, and over the course of six hours, subtle shifts in light, color, and atmosphere transform the spirit of the room. 
 

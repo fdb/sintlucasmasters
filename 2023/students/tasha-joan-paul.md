@@ -6,7 +6,7 @@ year: 2022-2023
 main_image: 'https://ucarecdn.com/948bf391-f0b8-4175-acaa-682a7a32c00e/'
 social_links:
   - 'https://tasha-research.com'
-  - 'https://www.instagram.com/https://www.instagram.com/acid_candycandy'
+  - 'https://www.instagram.com/acid_candycandy'
 ---
 Wu = no, not, nought, nonbeing, emptiness, nothingness, nothing, no thing
 武 Wǔ = war, warrior, warlike

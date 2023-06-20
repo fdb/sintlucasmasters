@@ -5,7 +5,7 @@ context: Autonomous Context
 year: 2022-2023
 main_image: 'https://ucarecdn.com/8871670c-8253-4485-9e3e-dceaec5e9b1f/'
 social_links:
-  - 'https://www.instagram.com/https://www.instagram.com/setevioletas/'
+  - 'https://www.instagram.com/setevioletas/'
 ---
 Spanish nationalism has been using different ways of indoctrination for centuries, in order to build a sense of pride among the country's population. Since gastronomy played a significant role in shaping the national identity, being used as a means of control, I focus on the propaganda campaign that made Tortilla an agent for national Spanish unification.
 

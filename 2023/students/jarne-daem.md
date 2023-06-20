@@ -6,7 +6,7 @@ year: 2022-2023
 main_image: 'https://ucarecdn.com/add1ad36-c15f-4f91-b67f-1e9ac45537b1/'
 social_links:
   - 'https://jarnedaemillustraties.myportfolio.com/'
-  - 'https://www.instagram.com/https://www.instagram.com/jarne_d._illustrations/'
+  - 'https://www.instagram.com/jarne_d._illustrations/'
 ---
 In de taverne ‘t Konijnenhol komen er elke dag allerlei mensen over de vloer, gaande van ridders tot kunstenaars, van handelaars tot pelgrims. 
 

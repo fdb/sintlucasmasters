@@ -6,7 +6,7 @@ year: 2022-2023
 main_image: 'https://ucarecdn.com/7aaf005f-1a1f-4d4a-b69b-09e51d92334b/'
 social_links:
   - 'https://lindevos.myportfolio.com'
-  - 'https://www.instagram.com/https://www.instagram.com/_devos__lin/'
+  - 'https://www.instagram.com/_devos__lin/'
 ---
 Digital communication takes up a prominent part in our current society. In ‘love for letters’, the written word is brought back to the surface. This collection of love letters seeks to appreciate manual communication.
 
