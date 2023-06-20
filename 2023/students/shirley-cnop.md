@@ -13,7 +13,7 @@ social_links:
 ---
 **E﻿N:**
 
-The power of words can be both meaningful and meaningless. While I carry on facing the mystery of societal invisibility, I'm developing a visual language from my autistic, personal perspective. Don't trap the ordinariness of those sensorial and cognitive stimuli, for it has more influence on everyday life than you think.
+The power of words can be both meaningful and meaningless. While I carry on facing the mystery of being socially unnoticed, I'm developing a visual language of stimuli that possess an equal level of elusiveness. Don't trap the ordinariness of those sensorial and cognitive stimuli, for it has more influence on everyday life than you think.
 
 With a combination of digital and analogue photography, I create a duality of flexibility and mindfulness. I could be a cartographer, mapping things that others can not see or have never witnessed.
 
@@ -21,11 +21,9 @@ Through dialogues, I invite the public to look at these aspects in another way, 
 
 For the installation of the work, an atmosphere of cosiness and safety will be essential, to reach a state of openness to express and reflect freely. Often it is a challenge to allow yourself to be sensitive, curious, and interested in the unknown stories of people.
 
-Through the paradox and the invisibility, in Shirley’s photographic work, she addresses sensorial stimuli and executive functions as powerfulness at all levels:
+Through the paradox and the invisibility, in my photographic work, I address sensorial stimuli and executive functions as powerfulness at all levels:
 
 > “That is the importance of my work because people do not see that, and they feel free to make prejudices and stigmas about that. With my work, I want to tell people to look further than what their eyes can see.“
-
-
 
 **N﻿L:**
 
