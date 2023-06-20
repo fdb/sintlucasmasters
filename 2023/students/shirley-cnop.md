@@ -5,7 +5,7 @@ context: Socio-Political Context
 year: 2022-2023
 main_image: https://ucarecdn.com/f6780f5c-90dd-486f-9b26-80204a9a4df8/
 images:
-  - https://ucarecdn.com/5bd4baa1-d1a2-443f-a77e-91296710fb3e/
+  - https://ucarecdn.com/b61609e7-01c4-482e-94ca-1ab0e1aecaea/
 social_links:
   - http://shirleycnop.wix.com/fotofolio/
   - http://www.instagram.com/shirleycnop
