@@ -13,7 +13,7 @@ social_links:
 ---
 **E﻿N:**
 
-The power of words can be both meaningful and meaningless. While I carry on facing the mystery of being socially unnoticed, I'm developing a visual language of stimuli that possess an equal level of elusiveness. Don't trap the ordinariness of those sensorial and cognitive stimuli, for it has more influence on everyday life than you think.
+The power of words can be both meaningful and meaningless. While I carry on facing the mystery of being socially unnoticed, I'm developing a visual language of stimuli that possesses an equal level of elusiveness. Don't trap the ordinariness of those sensorial and cognitive stimuli, for it has more influence on everyday life than you think.
 
 With a combination of digital and analogue photography, I create a duality of flexibility and mindfulness. I could be a cartographer, mapping things that others can not see or have never witnessed.
 
