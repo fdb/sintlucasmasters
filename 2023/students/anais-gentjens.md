@@ -12,9 +12,6 @@ main_image: https://ucarecdn.com/5b888321-9552-49dd-a6e9-5bbd776a0c1a/
 thumb_image: https://ucarecdn.com/c8d12933-0aa0-40c8-8e89-6d3eeaa83ef5/
 images:
   - https://ucarecdn.com/a3817783-bd54-466a-9cf8-21edc7def44b/
-  - https://ucarecdn.com/32484698-091e-4ad0-b785-458547dd4d26/
-  - https://ucarecdn.com/dedc054e-bc8d-4192-aa16-d2486319b444/
-  - https://ucarecdn.com/95d76703-e753-4182-850a-f10f40228ac5/
 social_links:
   - https://anaisgen.myportfolio.com/
   - https://www.instagram.com/anaisgen_/
