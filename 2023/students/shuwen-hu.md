@@ -3,6 +3,10 @@ student_name: Shuwen Hu
 project_title: Smile! You're being watched.
 context: Digital Context
 year: 2022-2023
+tags:
+  - installation
+  - digital
+  - video
 main_image: https://ucarecdn.com/b5f45525-9f36-453d-a58a-3d3839484709/
 images:
   - https://ucarecdn.com/28d9708f-f5ef-4c01-8745-24a8bc74b193/
