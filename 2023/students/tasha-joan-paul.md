@@ -1,5 +1,5 @@
 ---
-student_name: Tasha
+student_name: Tasha Joan Paul
 project_title: THE MEANING OF WU
 context: Autonomous Context
 year: 2022—2023
@@ -23,6 +23,6 @@ social_links: []
 
 Wu = no, not, nought, nonbeing, emptiness, nothingness, nothing, no thing
 
-**T B  PERFORMING THE MAKING OF THE BLACK CUBE** / THE DESTRUCTION OF THE WHITE CUBE
+**PERFORMING THE MAKING OF THE BLACK CUBE** / THE DESTRUCTION OF THE WHITE CUBE
 
 https://www.e-flux.com/journal/80/101727/on-being-present-where-you-wish-to-disappear/
