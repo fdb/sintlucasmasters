@@ -44,6 +44,7 @@ collections:
           name: 'tags',
           widget: 'select',
           multiple: true,
+          required: false,
           options:
             [
               'audio',
@@ -69,7 +70,8 @@ collections:
           label: 'Thumbnail image',
           name: 'thumb_image',
           widget: 'image',
-          hint: "Please use a square thumbnail. If you don't provide a thumbnail, the main image will be used."
+          hint: "Please use a square thumbnail. If you don't provide a thumbnail, the main image will be used.",
+          required: false
         }
       - { label: 'Bio', name: 'bio', widget: 'text', hint: 'Describe yourself and your work', required: false }
       - { label: 'Body', name: 'body', widget: 'markdown', hint: 'Describe your project' }
