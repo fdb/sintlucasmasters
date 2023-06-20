@@ -1,7 +1,8 @@
 html {
 	box-sizing: border-box;
 	font-size: 16px;
-	font-family: sans-serif;
+	font-family: 'Roboto Flex', sans-serif;
+	font-variation-settings: 'wght' 100, 'wdth' 151;
 }
 
 *,
@@ -22,7 +23,7 @@ ol,
 ul {
 	margin: 1px;
 	padding: 0;
-	font-weight: normal;
+	font-weight: 100;
 }
 
 ol,
@@ -31,7 +32,6 @@ ul {
 }
 
 p {
-    display: grid;
     margin-block-start: 0.5px;
     margin-block-end: 17.5px;
     margin-inline-start: 0px;
@@ -120,9 +120,11 @@ nav {
 }
 
 .student a {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	text-decoration: none;
-}
+  }
 
 .student__title {
 	position: relative;
@@ -183,22 +185,18 @@ main {
 
 .meta h2 {
 	font-family: 'Roboto Flex', sans-serif;
-	font-variation-settings: 'wght' 1000;
-	font-variation-settings: 'wdth' 151;
-	font-variation-settings: 'XTRA' 600;
+	font-variation-settings: 'wght' 1000, 'wdth' 151, 'XTRA' 600;
 }
 
 .meta h3 {
 	font-family: 'Roboto Flex', sans-serif;
-	font-variation-settings: 'wght' 100;
-	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'wght' 100, 'wdth' 151;
 	color: grey;
 }
 
 .meta p {
 	font-family: 'Roboto Flex', sans-serif;
-	font-variation-settings: 'wght' 100;
-	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'wght' 100, 'wdth' 151;
 
 }
 
@@ -206,12 +204,22 @@ main {
 p.explain{
 
 	font-family: 'Roboto Flex', sans-serif;
-    font-variation-settings: 'wght' 100;
-    font-variation-settings: 'wdth' 151;
+	font-size: 24px;
+    font-variation-settings: 'wght' 650, 'wdth' 151;
     font-size: 100px;
     color: black;
 	line-height: 100px;
 }
+p.explain strong {
+
+    font-variation-settings: 'wght' 870, 'wdth' 150;
+}
+
+@media (min-width: 768px) {
+	p.explain {
+	  font-size: 72pt;
+	}
+  }
 
 button {
     -webkit-appearance: button;
@@ -232,8 +240,7 @@ button {
     margin: 0em;
     font: 400 45px system-ui;
 	font-family: 'Roboto Flex', sans-serif;
-	font-variation-settings: 'wght' 100;
-	font-variation-settings: 'wdth' 151;
+	font-variation-settings: 'wght' 100, 'wdth' 151;
 	color: grey;
     padding: 1px 7px 2px;
     border-width: 3px;
@@ -244,8 +251,12 @@ button {
 
 a.home {
 	font-family: 'Roboto Flex', sans-serif;
-	font-variation-settings: 'wght' 1000;
-	font-variation-settings: 'wdth' 151;
-	font-variation-settings: 'XTRA' 600;
+	font-variation-settings: 'wght' 1000, 'wdth' 151, 'XTRA' 600;
 	
 }
+
+.logo {
+
+	width: 20%;
+}
+
