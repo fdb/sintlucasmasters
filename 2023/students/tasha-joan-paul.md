@@ -15,8 +15,6 @@ social_links: []
 
 # [Wu-Tang Clan Ain't Nuthing Ta F' Wit.](https://www.youtube.com/watch?v=cPRKsKwEdUQ&ab_channel=WuTangClanVEVO)
 
-
-
 Wu = no, not, nought, nonbeing, emptiness, nothingness, nothing, no thing
 
 武 Wǔ = war, warrior, warlike
@@ -25,8 +23,6 @@ Wu = no, not, nought, nonbeing, emptiness, nothingness, nothing, no thing
 
 巫 Wū or Wú = shaman, sorceror, witch
 
-
-
-**T. B  PERFORMING THE MAKING OF THE BLACK CUBE  Y'ALL**
+**T B  PERFORMING THE MAKING OF THE BLACK CUBE  Y'ALL**
 
 https://www.e-flux.com/journal/80/101727/on-being-present-where-you-wish-to-disappear/
