@@ -11,11 +11,19 @@ images:
   - https://ucarecdn.com/ee7aa30e-3dda-49e1-a098-0a57700e055a/
 social_links: []
 ---
+# L﻿isten
+
 # [Wu-Tang Clan Ain't Nuthing Ta F' Wit ](https://www.youtube.com/watch?v=cPRKsKwEdUQ&ab_channel=WuTangClanVEVO)
 
 Wu = no, not, nought, nonbeing, emptiness, nothingness, nothing, no thing
+
+
 武 Wǔ = war, warrior, warlike
+
+
 烏／乌 Wū or Wù = crow, raven, black
+
+
 巫 Wū or Wú = shaman, sorceror, witch
 
 **PERFORMING THE MAKING OF THE BLACK CUBE 4﻿U** 
