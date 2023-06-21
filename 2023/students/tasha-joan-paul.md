@@ -24,6 +24,6 @@ social_links:
 
 Wu = no, not, nought, nonbeing, emptiness, nothingness, nothing, no thing
 
-**EXCLUSIVELY PERFORMING** 
+## **NOW EXCLUSIVELY PERFORMING** 
 
-**THE CREATION OF THE BLACK CUBE** / THE DESTRUCTION OF THE WHITE CUBE
+## **THE CREATION OF THE BLACK CUBE** / THE DESTRUCTION OF THE WHITE CUBE
