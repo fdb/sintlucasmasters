@@ -1,12 +1,21 @@
 ---
 student_name: Lin De Vos
-project_title: 'love for letters '
+project_title: "love for letters "
 context: Applied Context
-year: 2022-2023
-main_image: 'https://ucarecdn.com/7aaf005f-1a1f-4d4a-b69b-09e51d92334b/'
+year: 2022—2023
+tags:
+  - paper
+main_image: https://ucarecdn.com/7aaf005f-1a1f-4d4a-b69b-09e51d92334b/
+images:
+  - https://ucarecdn.com/53296927-3b3f-460f-9c22-81f2c213f4ce/
+  - https://ucarecdn.com/b7f45717-6e0e-4779-9cc1-a172c217d587/
+  - https://ucarecdn.com/dfa3b0de-50fb-4834-8803-792de712aa10/
+  - https://ucarecdn.com/6431762b-0236-4a35-8e56-f9a854a86498/
+  - https://ucarecdn.com/a3e709c6-c845-40e7-b6c8-5aa6a7eff577/
+  - https://ucarecdn.com/22cc0e23-744d-47c4-8e96-e65ccaed4977/
 social_links:
-  - 'https://lindevos.myportfolio.com'
-  - 'https://www.instagram.com/_devos__lin/'
+  - https://lindevos.myportfolio.com
+  - https://www.instagram.com/_devos__lin/
 ---
 Digital communication takes up a prominent part in our current society. In ‘love for letters’, the written word is brought back to the surface. This collection of love letters seeks to appreciate manual communication.
 
