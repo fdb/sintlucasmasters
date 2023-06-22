@@ -289,6 +289,10 @@ a.home {
 
 /* PAGE */
 
+article {
+	margin: 2rem 0;
+}
+
 article h1 {
 	font-family: 'Roboto Flex', sans-serif;
 	font-size: 3rem;
