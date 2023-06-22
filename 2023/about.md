@@ -2,7 +2,7 @@
 layout: page
 ---
 
-## MASTER EXPO
+# MASTER EXPO
 
 Discover the new generation of artists, designers and photographers during the master expo of Sint Lucas Antwerpen.
 

@@ -3,20 +3,19 @@ layout: base.liquid
 id: index
 ---
 
-
-<div class="filter-buttons">
-    <button class="filter active" data-key="context" data-value="*">&#35;all contexts</button>
-    <button class="filter" data-key="context" data-value="Applied Context">&#35;applied context</button>
-    <button class="filter" data-key="context" data-value="Autonomous Context">&#35;autonomous context</button>
-    <button class="filter" data-key="context" data-value="Digital Context">&#35;digital context</button>
-    <button class="filter" data-key="context" data-value="Jewelry Context">&#35;jewelry context</button>
-    <button class="filter" data-key="context" data-value="Socio-Political Context">&#35;socio-political context</button>
+<div class="explain-wrapper">
+    <p class="explain"><strong>Master Expo</strong> — presenting the graduation projects of the 2022-2023 Masters in Art
+        and
+        Design at <a href="https://www.sintlucasantwerpen.be/" target="_blank">Sint Lucas Antwerpen.</a></p>
 </div>
 
-
-<div class="explain-wrapper">
-    <p class="explain"><strong>Master Expo</strong> are the graduation projects of the 2022-2023 Masters in Art and
-        Design at <a href="https://www.sintlucasantwerpen.be/" target="_blank">Sint&nbsp;Lucas&nbsp;Antwerpen.</a></p>
+<div class="filter-buttons">
+    <button class="filter active" data-key="context" data-value="*">all contexts</button>
+    <button class="filter" data-key="context" data-value="Applied Context">applied context</button>
+    <button class="filter" data-key="context" data-value="Autonomous Context">autonomous context</button>
+    <button class="filter" data-key="context" data-value="Digital Context">digital context</button>
+    <button class="filter" data-key="context" data-value="Jewelry Context">jewelry context</button>
+    <button class="filter" data-key="context" data-value="Socio-Political Context">socio-political context</button>
 </div>
 
 <div class="students-grid">
@@ -37,13 +36,3 @@ id: index
     </div>
     {% endfor %}
 </div>
-
-<footer class="full-width">
-    <div>
-        <a href="https://www.sintlucasantwerpen.be/" target="_blank">
-            <img src="/2023/static/img/sla-logo.svg" alt="Logo Sint Lucas Antwerpen" />
-        </a>
-        <p>Interested in the Master? More info at <a href="https://www.sintlucasantwerpen.be/"
-                target="_blank">sintlucasantwerpen.be</a>.</p>
-    </div>
-</footer>
