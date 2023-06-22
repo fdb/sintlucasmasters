@@ -75,7 +75,14 @@ collections:
         }
       - { label: 'Bio', name: 'bio', widget: 'text', hint: 'Describe yourself and your work', required: false }
       - { label: 'Body', name: 'body', widget: 'markdown', hint: 'Describe your project' }
-      - { label: 'Images', name: 'images', widget: 'image', label_singular: 'image', media_library: { config: { multiple: true } } }
+      - {
+          label: 'Images',
+          name: 'images',
+          widget: 'image',
+          label_singular: 'image',
+          required: false,
+          media_library: { config: { multiple: true } }
+        }
       - {
           label: 'Social links',
           name: 'social_links',
