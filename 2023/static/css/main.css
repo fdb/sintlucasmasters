@@ -303,6 +303,15 @@ article h2 {
 	font-family: 'Roboto Flex', sans-serif;
 	font-size: 2rem;
 	font-variation-settings: 'wght' 800, 'wdth' 151, 'XTRA' 600;
+	margin-bottom: 1rem;
+}
+
+article strong {
+	font-variation-settings: 'wght' 800, 'wdth' 151, 'XTRA' 600;
+}
+
+article a {
+	text-decoration: underline;
 }
 
 /* FOOTER */
@@ -317,14 +326,25 @@ footer {
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
-}
-
-footer a {
-	order: 2;
+	font-family: 'Roboto Flex', sans-serif;
+	font-size: 0.8rem;
+	font-variation-settings: 'wght' 800, 'wdth' 151, 'XTRA' 600;
 }
 
 @media (min-width: 768px) {
 	footer {
 		flex-direction: row;
 	}
+	footer p {
+		order: 2;
+	}
+}
+
+footer .sla-logo {
+	width: 230px;
+	height: auto;
+}
+
+footer p a {
+	text-decoration: underline;
 }
