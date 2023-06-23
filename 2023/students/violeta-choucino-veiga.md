@@ -6,6 +6,7 @@ year: 2022-2023
 tags:
   - installation
 main_image: https://ucarecdn.com/66f0ce8e-8376-4b2a-9e11-460c0f77df5d/
+thumb_image: https://ucarecdn.com/ac04e9fe-1eaf-460f-8958-84fae18cdc2d/
 images:
   - https://ucarecdn.com/1385962c-9d81-414d-8b05-644f99729a32/
   - https://ucarecdn.com/51260a07-b1c8-47ab-bc75-ed2ab2966392/
