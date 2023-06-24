@@ -3,13 +3,11 @@ student_name: Rik Maes
 project_title: Waking up to the Moon
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/420e127c-a62e-400f-a84b-34bcbd4177ac/'
+main_image: https://ucarecdn.com/420e127c-a62e-400f-a84b-34bcbd4177ac/
 social_links:
-  - 'https://rikmaesf45d.myportfolio.com/'
-  - 'https://www.instagram.com/rik.maes.77'
+  - https://rikmaesf45d.myportfolio.com/
+  - https://www.instagram.com/rik.maes.77
 ---
-Het jaar is 2101, de mens heeft de Aarde verlaten en een nieuwe ruimtekolonie rond de Maan ontwikkeld. Een toekomstbeeld dat geïnspireerd is op de 'Gateway' van NASA, dat inmiddels werkelijkheid is geworden. In deze kortfilm volgen we de dagdagelijkse routine van een eenzame arbeider die probeert de natuur met zich mee te nemen.
-
 Het jaar is 2101, de mens heeft de Aarde verlaten en een nieuwe ruimtekolonie rond de Maan ontwikkeld. Een toekomstbeeld dat geïnspireerd is op de 'Gateway' van NASA, dat inmiddels werkelijkheid is geworden. In deze kortfilm volgen we de dagdagelijkse routine van een eenzame arbeider die probeert de natuur met zich mee te nemen.
 
 Vertrokken vanuit mijn fascinatie voor ruimtevaart situeerde ik me al snel binnen science-fiction. Wat mij vooral interesseerde in de verhalen binnen dit genre is de geloofwaardigheid dat het met zich kan brengen. Dit wordt bereikt door het onbekende te plaatsen in een herkenbare context die gerelateerd is met de mensheid. Zo krijgen we een gevoel dat het over een aantal jaren werkelijkheid kan worden. Hierdoor ben ik gaan kijken naar huidige ruimteprogramma’s, met name het Artemisprogramma van NASA, waarbij ze een nieuw ruimtestation rond de Maan gaan ontwikkelen, genaamd de ‘Gateway’.  
