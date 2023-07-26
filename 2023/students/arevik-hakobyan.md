@@ -25,6 +25,6 @@ social_links:
 >
 > ###### What is the impact of plastic surgery on our sense of self? Does it offer additional opportunities for self-expression and personal growth, or is it creating a ‘beauty benchmark’ for an emerging social class based on who can afford to participate?
 >
-> ###### A special thanks to [@anne.kurris](https://www.instagram.com/anne.kurris/) for the guidance, [@ingegrognard](https://www.instagram.com/ingegrognard/) for the words, [@rintmennes](https://www.instagram.com/rintmennes/) for the sounds. 
+> ###### A special thanks to [@anne.kurris](https://www.instagram.com/anne.kurris/) for the guidance, [@ingegrognard](https://www.instagram.com/ingegrognard/) for the words, [@rintmennes](https://www.instagram.com/rintmennes/) for the sounds.
 >
 > ###### Made with Blender, Daz3D and UE5.
