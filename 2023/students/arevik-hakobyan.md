@@ -1,19 +1,30 @@
 ---
 student_name: Arevik Hakobyan
-project_title: Plastic Fantastic
+project_title: '"Plastic Fantastic"'
 context: Applied Context
-year: 2022-2023
-main_image: 'https://ucarecdn.com/413e2d34-75d4-4b1a-af8d-6211c08d6210/'
+year: 2022—2023
+tags:
+  - digital
+  - video
+main_image: https://ucarecdn.com/dbcdc880-7b19-4a79-94e2-6fd996cf832f/
+bio: |-
+  Arevik Hakobyan is a graphic designer
+  and 3D artist from Antwerp, based in
+  Berlin with a BA + MA in visual arts.
+images:
+  - https://ucarecdn.com/39ddb9e0-cd1b-441c-af9c-37bfba093742/
+  - https://ucarecdn.com/ee1b3ff5-b372-49d1-8287-6e883879d5a2/
+  - https://ucarecdn.com/468789af-69b0-414f-ad41-1a6b9f6ac0c9/
+  - https://ucarecdn.com/d25141ea-4268-4877-976c-9313fe0a6d82/
+  - https://ucarecdn.com/e98d5c58-a299-4f83-ae1b-0aa4c806bd79/
 social_links:
-  - 'https://www.hakobyan.be'
-  - 'https://www.instagram.com/arevik___hakobyan'
+  - https://www.hakobyan.be
+  - https://www.instagram.com/arevik___hakobyan
 ---
-Nobody seems thin enough, firm enough, smooth enough, or muscular enough. As plastic surgery becomes the norm, our ever-elusive beauty ideal will be more dominant and more global than ever before. What is the impact of plastic surgery on our sense of self? Does it offer additional self-expression and personal growth opportunities, or is it creating a ‘beauty benchmark’ for an emerging social class based on who can afford to participate?
-
-Nobody seems thin enough, firm enough, smooth enough, or muscular enough. As plastic surgery becomes the norm, our ever-elusive beauty ideal will be more dominant and more global than ever before. What is the impact of plastic surgery on our sense of self? Does it offer additional opportunities for self-expression and personal growth, or is it creating a ‘beauty benchmark’ for an emerging social class based on who can afford to participate?
- 
-In South Korea, double eyelid surgery is a common procedure among young women seeking to conform to Western beauty standards. In Brazil, Brazilian but lift (or BBL) is a commonly sought-after surgery, despite the mounting number of deaths resulting from the procedure, and in America, breast enhancement is a sweet sixteen birthday present. Plastic surgery has become mainstream. It’s no longer just for the rich and famous. Procedures that were once considered risky or invasive can now be performed with minimal scarring and downtime, thanks to cutting-edge technology. Welcome to the era of beauty without boundaries.
- 
-The more we connect globally, the more we see a standardized version of what beauty should look like. What happens when this globalization of trends reaches its endpoint? Just as a gentrifying neighborhood starts to lose its charm, similarly our bodies become interchangeable, and our unique features are lost in the pursuit of the perfect pout and pillowed cheeks. We have reduced our bodies to mere commodities. We have turned to science to help us identify and remake any underperforming sectors like a consultant would with a struggling corporation. But what happens when we take this mentality to the extreme? What will become of us when we can predetermine every aspect of our children's appearance? 
- 
-“The body is no longer a given and to possess a flawless one has become the ambition of millions." - Susie Orbach (Bodies)
+> ###### Nobody seems thin enough, firm enough, smooth enough, or muscular enough. As plastic surgery becomes the norm, our ever-elusive beauty ideal will be more dominant and more global than ever before. 
+>
+> ###### What is the impact of plastic surgery on our sense of self? Does it offer additional opportunities for self-expression and personal growth, or is it creating a ‘beauty benchmark’ for an emerging social class based on who can afford to participate?
+>
+> ###### A special thanks to [@anne.kurris](https://www.instagram.com/anne.kurris/) for the guidance, [@ingegrognard](https://www.instagram.com/ingegrognard/) for the words, [@rintmennes](https://www.instagram.com/rintmennes/) for the sounds. 
+>
+> ###### Made with Blender, Daz3D and UE5.
