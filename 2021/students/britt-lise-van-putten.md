@@ -3,17 +3,17 @@ student_name: Britt Lise van Putten
 project_title: The Witch Hunt
 context: Applied Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/c9dadbe9-fc2d-4aba-9384-1901cfe4fe19/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f15b77c4-34bc-4db6-27ca-8ce4c1d04b00'
 bio: >-
   Britt Lise van Putten, is een Nederlandse illustrator met een liefde voor
   animatie. Als een zelfbenoemde feminist maakt Britt vaak werk dat dient om
   bewustwording te creëren voor vrouwen rechten. 
 images:
-  - 'https://ucarecdn.com/02f91a44-da26-49e1-ba64-885bd0a87053/'
-  - 'https://ucarecdn.com/078a9af3-8467-4536-b1c1-f06ec4214ba7/'
-  - 'https://ucarecdn.com/11dc3cfd-d1f0-4588-bfbf-b0e6fc8fdaa4/'
-  - 'https://ucarecdn.com/73a8c941-5d5a-476f-940f-512f198b117d/'
-  - 'https://ucarecdn.com/77eb4bb4-7b21-4456-8bf8-ada3fc38b080/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/327d78ab-8f2e-42dc-5b1c-9f502fd48f00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/92092e48-27ba-4126-f4ca-70fd0b8cdc00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e2dec840-26c8-43be-3b37-d9c55b047e00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/231d6f36-144a-4af3-3ce7-e387ef567a00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/05034899-d26d-468b-058c-25e463155200'
 social_links:
   - 'https://www.instagram.com/britt.lise.illustration/'
   - 'https://blvanputten.wixsite.com/portfolio'

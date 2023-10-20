@@ -3,7 +3,7 @@ student_name: Geraldo Dos Santos
 project_title: 'The End of Highlights '
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/756e7da3-6a95-4fde-9c02-4cbec561f273/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1f4ca36b-4fc9-424e-310d-c4c03825ac00'
 social_links:
   - 'https://www.geraldodossantos.nl/'
   - 'https://www.instagram.com/@geraldodossantos.nl'

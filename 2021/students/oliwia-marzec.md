@@ -3,7 +3,7 @@ student_name: Oliwia Marzec
 project_title: The Geogrids
 context: Applied Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/e5e5d1fa-6e4a-4044-9534-f9ef7488ac6e/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/56c35002-271b-42ed-4ecf-0ba14aa31500'
 bio: >-
   Oliwia Marzec (°1998) is a Polish born Belgian raised designer and is
   researching her own artistic practice within graphic- and editorial design.
@@ -12,12 +12,12 @@ bio: >-
   used to translate into numerous expressions in different art- and design
   disciplines. 
 images:
-  - 'https://ucarecdn.com/92f3ceee-d529-430c-9bc8-48e9ded854c8/'
-  - 'https://ucarecdn.com/366f7050-01e9-4803-b340-54ca8d059afa/'
-  - 'https://ucarecdn.com/1c1daf6e-f4e4-4cd6-bb29-5a1082b8bc1c/'
-  - 'https://ucarecdn.com/d297ab09-1c64-4577-99fb-40473272bb42/'
-  - 'https://ucarecdn.com/aeab7c45-4f9a-4b69-8611-ae7f361941b4/'
-  - 'https://ucarecdn.com/82afb4c9-d3d1-4ac6-9f7c-56f705e9fe70/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e5847828-269c-4d8d-8346-3ed716a13500'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/cd4ac456-d804-43d5-8ab3-9d6c3ee3d600'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/14492676-a16f-4c74-47b8-1af6367bb100'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2a33d71b-e72e-4819-8606-01de1c209900'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6f0929d8-e9d4-4563-e3f2-dc7d6317ca00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/879417c7-a2c3-4b89-5a24-5279a1971a00'
 social_links:
   - 'https://oliwia.webflow.io'
   - 'https://www.instagram.com/ikkandatniet'

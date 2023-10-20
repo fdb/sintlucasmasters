@@ -6,10 +6,10 @@ year: 2021—2022
 tags:
   - paper
   - photography
-main_image: https://ucarecdn.com/e53d8254-0267-42b4-b995-3ca0383ef51c/
-thumb_image: https://ucarecdn.com/71045595-0750-4d41-9d2e-e64426c772d9/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e6c1e13a-0ef3-4ed9-1b09-78b366469000
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dad92d1f-b86c-4ae9-f68d-bf58728b5c00
 images:
-  - https://ucarecdn.com/798b8b7b-0b81-468f-9297-6836dfaa452d/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/508f1dfc-b59f-4fcd-404f-774174e21600
 social_links:
   - http://eleni.work
   - http://www.instagram.com/eleni.work/

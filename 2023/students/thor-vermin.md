@@ -8,13 +8,13 @@ tags:
   - installation
   - photography
   - video
-main_image: https://ucarecdn.com/12d856b9-3eb6-44ed-b828-5f85f6e5f40b/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8c37d53e-5d1d-42de-2d08-d8c914172e00
 images:
-  - https://ucarecdn.com/c5e969a4-9188-40a8-9f11-b596a6bd14fe/
-  - https://ucarecdn.com/2cb20771-ea7c-4974-a242-13be20871a7b/
-  - https://ucarecdn.com/2499b552-906a-487d-a3b4-cf9360d086c6/
-  - https://ucarecdn.com/24a510d9-845d-4b48-ad9b-e584d33ca3d7/
-  - https://ucarecdn.com/174f8322-beb9-4347-9f6e-fea45005fdcb/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/589381a4-0f22-4d0d-197c-415c2c24e300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e37a46d1-b1e9-40cd-9754-96c08bcf3700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/02166b6b-ef50-4c86-ff2d-eddf0dc67800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/504710e8-a15e-4be2-d242-9c87718fa000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/371437c4-4d5d-47ef-07a2-87d3db251200
 social_links:
   - https://www.thorvermin.com/
 ---

@@ -3,7 +3,7 @@ student_name: Robbe Aertssens
 project_title: ROBBE
 context: Autonomous Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/a7bbbedd-6f2f-47fe-8606-055dc7e3883a/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/99c94ad0-bbe4-4c56-7838-a88a9fc58c00'
 social_links:
   - 'https://www.instagram.com/robbe_aertssens/'
 ---

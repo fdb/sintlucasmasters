@@ -6,12 +6,12 @@ year: 2021—2022
 tags:
   - paint
   - paper
-main_image: https://ucarecdn.com/7c3cde8c-f734-4d5d-a030-867d416121a5/
-thumb_image: https://ucarecdn.com/d2bcd91c-2f36-49c8-a689-78b08e615a7a/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6d2bc0fb-8ca8-4f39-7477-41a45efaae00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4e5f58be-7fd7-49d0-acc0-fb9336743d00
 images:
-  - https://ucarecdn.com/1fb689e2-2ce5-480a-bbe2-69824ef6b9b0/
-  - https://ucarecdn.com/d42f13e8-0e69-4426-9e39-ab65b3d19cb5/
-  - https://ucarecdn.com/12d263b3-e3ca-41f4-a918-64b5ca6f9228/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/20df46a3-edf2-4b26-338a-552dfe5b5200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c3eddd89-054b-4ab1-ff9f-4c1cea4c2000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4d1ba592-8164-4ecb-078d-c9151ec5fd00
 social_links:
   - annaurazova.com
   - instagram.com/urazova_ann

@@ -3,7 +3,7 @@ student_name: Van Mol Marijke
 project_title: Rat Race
 context: Digital Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/8fa2995d-c74e-4422-8caa-2bb0ef59ce36/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f810717a-ea03-46aa-640a-5c4dfdfd4e00'
 bio: >-
   This project is made by Marijke Van Mol. She did her bachelor in graphic
   design and her master project was made within the digital context. The work is
@@ -17,7 +17,7 @@ bio: >-
   If you'd rather read a (short) description of the work and the meaning behind
   several choices I made, then you might want to read the text below! 
 images:
-  - 'https://ucarecdn.com/9434e164-f42b-4c19-ad3a-73ab5f522273/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/70ef6858-fddd-432e-b050-7b90f979ab00'
 social_links:
   - 'https://www.instagram.com/marijkevanmol15/'
 ---

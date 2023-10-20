@@ -7,17 +7,17 @@ tags:
   - audio
   - installation
   - sculpture
-main_image: https://ucarecdn.com/2ad0cd27-07eb-4db8-bc42-7ae72cc420af/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8811d13a-584c-4147-90a5-f7a557140100
 images:
-  - https://ucarecdn.com/6d70d836-4e3f-438a-ba9b-bdba1aa38c4d/
-  - https://ucarecdn.com/6a0d90b1-1432-469d-a276-f4bc905d4076/
-  - https://ucarecdn.com/0ca397a6-1b0c-4f24-80b0-05ff8abbee77/
-  - https://ucarecdn.com/fdda2fc2-2b99-43a2-a96e-46eb03756902/
-  - https://ucarecdn.com/7f15baa0-fb58-4178-b19f-a42446679d4c/
-  - https://ucarecdn.com/0c86ad42-ce96-4328-98c5-9cf56bbffb70/
-  - https://ucarecdn.com/6d4af7f3-b61c-4938-962f-4c907f12a692/
-  - https://ucarecdn.com/8b9c3752-3f79-4234-aed3-8faea325799b/
-  - https://ucarecdn.com/02152678-9d00-4b0f-adcc-011f2abdf682/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/75daff54-90d0-4663-f723-598779fb9200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/acb2d4b0-aabb-4146-a88c-4311d237ec00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/aca5da06-dc8b-4402-728a-2da17e438000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/45c615e6-92db-49a6-88bf-2381a1beff00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/83bf5277-da8e-45ef-6c13-31184afaa200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/593559cd-5a7b-4fdf-25e8-1370252c3800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e4db4a96-57fb-47c2-8366-9073045ed000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bd76ef81-2fe6-4a68-a4cc-52d6aeb2c100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ac23565a-1f10-4184-2a84-405cf741a400
 social_links:
   - https://www.raquelnobreg.com/
   - https://www.instagram.com/raquel.nobre.g

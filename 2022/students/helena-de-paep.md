@@ -6,8 +6,8 @@ year: 2021—2022
 tags:
   - paper
   - digital
-main_image: https://ucarecdn.com/ffd2ad81-c820-4525-8340-a222de053562/
-thumb_image: https://ucarecdn.com/eebc0ba5-18fb-47fe-a198-a101b686ae0b/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/83fa532c-4412-4aaf-9a4c-a345ffcb3100
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4d8186b5-0787-4d6f-ef08-a73283010d00
 bio: >
   The cow has always been a real muse to me. They inspire me with how they grow
   up, how they become mothers and how they are ready for the dairy farmer, day
@@ -19,15 +19,15 @@ bio: >
 
   Each cow is unique and has its own character. In addition, each cow has its own spots. These marks are as unique as people’s fingerprints.  I am very proud as a farmer’s daughter and am very happy that I can portray these animals in this book. The book can always be extended because animals are added all the time.
 images:
-  - https://ucarecdn.com/391265ce-0f1a-4ee6-bd7a-63ab47fcbec2/
-  - https://ucarecdn.com/d3889697-c687-4046-94bd-832936fb22a0/
-  - https://ucarecdn.com/1dc239f0-c387-465b-9b5c-429df672c256/
-  - https://ucarecdn.com/58d9d5ab-b38f-4050-b991-fcc7d14afb7a/
-  - https://ucarecdn.com/dd06a5a1-6310-434c-8dbf-b2f6c9de04f1/
-  - https://ucarecdn.com/2324f5fe-c82c-4da7-90ff-32d2d8d589de/
-  - https://ucarecdn.com/5093ea16-4cb2-4f32-ab81-35b48008db17/
-  - https://ucarecdn.com/aa42e068-f8bf-4aa3-9edf-46518039ff9b/
-  - https://ucarecdn.com/aef343c8-ba6f-4f76-8269-39ec25d32f4f/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/14393848-6466-4f60-9db7-1ce018a99a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b6e80ebb-484d-4cf2-c963-653df1a6cf00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b55db9df-74a7-416e-8ab5-6f95807b4200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/019984f5-db32-4295-8a6e-45b79103ee00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/046b02a1-8d9a-4864-504c-8ee59a992c00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4e1b8460-b27a-48ad-97cb-10fa20ce0100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/826f633d-a150-4179-1e7a-38fbc2361500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1609db7a-32f8-4c19-58af-e3f9a4da0f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/314567f3-0ec9-485c-6cc7-cd660bfa9a00
 social_links:
   - https://www.instagram.com/helena_graphic_design_/
 ---

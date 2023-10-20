@@ -3,7 +3,7 @@ student_name: Delphine Spinnox
 project_title: Le petit monde inconnue a travers mes yeux
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/934c95a4-25e5-4865-a793-55049a21da6f/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/04c18b1c-8ee6-4752-1546-06dd11af4900'
 social_links:
   - 'https://www.instagram.com/by.delphinespinnox'
 ---

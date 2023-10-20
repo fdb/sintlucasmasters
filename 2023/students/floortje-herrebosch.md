@@ -3,7 +3,7 @@ student_name: Floortje Herrebosch
 project_title: The leaflet of the birth control pill
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/521e26d4-299b-44d4-bca8-9b6a7cf8b0a1/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3bef2fa5-1d28-4211-9548-7b99126aaa00'
 social_links:
   - 'https://www.instagram.com/herreboschfloortje '
 ---

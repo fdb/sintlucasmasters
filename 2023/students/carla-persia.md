@@ -3,7 +3,7 @@ student_name: Carla Persia
 project_title: Greenwashing - The Ugly Truth of Fashion Industry
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/d464d7d3-76c5-42ab-9429-7c2c2ada41a5/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/27bd6c11-d39f-49b6-dafc-037ca5dd5900'
 social_links:
   - 'https://www.instagram.com/carlapersia_designs/'
 ---

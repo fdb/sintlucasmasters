@@ -3,7 +3,7 @@ student_name: Elise Willems
 project_title: Entering the surface
 context: Autonomous Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/2cc76937-abc4-4120-9fd3-99553e18353c/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1bccb48b-cbf9-4deb-b73e-d8306ada1c00'
 social_links:
   - 'https://www.instagram.com/limeswillees/'
 ---

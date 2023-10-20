@@ -3,7 +3,7 @@ student_name: Thalisa Van Looveren
 project_title: Keramiek of plastic?
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/4e6ffa65-b332-4c06-93f0-9976a6ff2594/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/cff44c50-f73c-403e-3637-af2bde58a000'
 social_links:
   - 'https://www.instagram.com/vanlooverenthalisa/'
 ---

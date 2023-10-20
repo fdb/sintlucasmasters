@@ -3,7 +3,7 @@ student_name: Kinda Ghannoum
 project_title: Kaaf Print
 context: Applied Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/8f17a18c-3d12-4db7-a633-e1a286f7cfcc/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c54568b6-2456-4acc-ddbd-00a01128e700'
 bio: >-
   Kinda Ghannoum is a Syrian Polish graphic designer, currently based in
   Belgium. She earned her Bachelor’s degree in Architecture from Damascus
@@ -14,11 +14,11 @@ bio: >-
   companies and start-ups around the world. Kinda and a small team co-founded
   the @SyrianDesignArchive. 
 images:
-  - 'https://ucarecdn.com/a9e3d486-97cf-422c-8e38-5b281f964c82/'
-  - 'https://ucarecdn.com/5d5398c5-bea2-4a08-96a9-01ef1905b7cb/'
-  - 'https://ucarecdn.com/3a788434-4e9a-40e5-93b5-c979f7e4b4a8/'
-  - 'https://ucarecdn.com/eeb4bc10-f76a-4fa1-b925-efffd80cd8d7/'
-  - 'https://ucarecdn.com/43b708f1-7470-4b25-a0c1-c79b8debca6d/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/14f487d8-023b-48d6-380d-57d5e9f77f00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4282feb4-4c1a-4a2c-6a4d-c872224ef100'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e5ada7ae-30c0-4e17-033e-3eb4b13f2000'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/82579ada-d97f-4f62-a2f0-919d70777d00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2b42b63f-7fc5-4895-4fd4-96efb650dd00'
 social_links:
   - www.kindaghannoum.com/
   - instagram.com/kindaghannoum/

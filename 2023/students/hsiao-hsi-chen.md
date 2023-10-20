@@ -3,7 +3,7 @@ student_name: Hsiao Hsi Chen
 project_title: 'Self-portrait: Eternal I'
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/496caef9-a0d9-45b8-8153-f84f1ba434ec/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a0b7fbb4-07fc-4f1b-edc4-a6bfe1267700'
 social_links:
   - 'https://instagram.com/chenhsiaohsi?igshid=OGQ5ZDc2ODk2ZA=='
   - >-

@@ -26,8 +26,8 @@ id: index
     <div class="student" data-context="{{student.data.context}}" data-tags="{{student.data.tags | join: " ,"}}">
         <a href="/2023{{ student.url }}" class="student__link">
             <div class="student__image-wrap">
-                <img class="student__image" src="{{thumb_image}}-/preview/600x600/"
-                    data-preview-src="{{student.data.main_image}}-/preview/600x600/"
+                <img class="student__image" src="{{thumb_image}}/thumb"
+                    data-preview-src="{{student.data.main_image}}/thumb"
                     alt="{{student.data.project_title}}" width="300" height="300" crossorigin="anonymous" />
             </div>
             <div class="student__title">{{student.data.project_title}}</div>

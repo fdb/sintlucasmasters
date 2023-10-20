@@ -3,14 +3,14 @@ student_name: Leïla El Jamil
 project_title: Short Cuts
 context: Autonomous Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/8308f938-6179-4c41-a335-671a5f63d042/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f880d28b-6eae-469c-f6ab-5d0947802f00'
 bio: >-
   “He who fights with monsters might take care lest he thereby become a monster.
   And if you gaze for long into an abyss, the abyss gazes also into you.” 
 
   ― Friedrich Nietzsche, Beyond Good and Evil
 images:
-  - 'https://ucarecdn.com/d32e5244-ca83-44fd-8519-a372cf226dbf/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/68829b71-775c-491b-420a-154021d94e00'
 social_links:
   - 'https://www.instagram.com/leilaeljamil/'
 ---

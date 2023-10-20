@@ -7,15 +7,15 @@ tags:
   - paper
   - digital
   - textile
-main_image: https://ucarecdn.com/b440834d-bb26-439d-b8e2-0d3cc5942646/
-thumb_image: https://ucarecdn.com/aab7f30e-3250-431d-8295-c4c20f54f581/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/be362103-270e-4cc4-3f4c-579180341000
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d913fe0e-573f-462a-459c-090b0f097400
 bio: "Helin Gümüs is a graphic designer with Kurdish roots.  "
 images:
-  - https://ucarecdn.com/40de85ac-6292-41d6-be8d-000fd49fee28/
-  - https://ucarecdn.com/e0436765-345f-4d32-859d-2de1711fb114/
-  - https://ucarecdn.com/5dd7e312-395c-4ad1-be3e-74d75b516c92/
-  - https://ucarecdn.com/dec2f01d-aa68-40e2-a8b4-6c7ffdd1158c/
-  - https://ucarecdn.com/e9daad7e-017c-42bb-8d57-45b65272de45/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b1eae826-a7eb-4a79-d3bf-cee2d0cf4200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/71b5c688-7c6c-4ab3-fa1b-7999afa8da00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/12c399b8-da5e-4090-7db7-6662b5647a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bd70ed59-eabb-4b42-8363-104c7dbe4e00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0517899b-43a9-4452-5aed-d3445c81d900
 social_links:
   - https://www.instagram.com/gumushelinnn/
 ---

@@ -5,13 +5,13 @@ context: Applied Context
 year: 2022—2023
 tags:
   - paper
-main_image: https://ucarecdn.com/0d5156e3-d47d-489d-b4f8-1831361adf23/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7ed9be51-fa75-4f91-7a02-326434904100
 images:
-  - https://ucarecdn.com/939bd818-9b80-4ec8-a0e5-cc23913ba353/
-  - https://ucarecdn.com/f9d0f7fe-2bf5-44be-a307-0e7872fcb07b/
-  - https://ucarecdn.com/bf5d4a3a-37ef-46ed-aeaf-da021d9aa739/
-  - https://ucarecdn.com/8a72cc01-b7ff-4a3a-8007-f893ae2ca552/
-  - https://ucarecdn.com/5f9ed69a-d07f-4c92-8e16-88d91ed2b982/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f3d070ec-a950-47c3-7eea-9ca81c2afb00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0d6da9e5-6f74-4868-115c-584f78f87100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1102c182-357e-4550-fdc3-6c33c9908100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f6ccf516-7ae6-4077-03ec-c356bc547800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ed8fca1b-c02d-4598-10d8-5e119c91d300
 social_links:
   - https://yilmazrubeyda.myportfolio.com
   - https://www.instagram.com/yilmaz.rubeyda

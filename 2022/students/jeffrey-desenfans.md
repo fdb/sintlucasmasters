@@ -3,7 +3,7 @@ student_name: Jeffrey Desenfans
 project_title: Enclosure
 context: Digital Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/98f6b6d9-bb80-46a9-a931-a8d267607722/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/db234e17-0f68-4253-16d0-d21637592300'
 social_links:
   - 'https://www.instagram.com/jeffrey_desenfans_graphical/'
 ---

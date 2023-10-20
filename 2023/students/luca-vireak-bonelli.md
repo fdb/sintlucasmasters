@@ -3,7 +3,7 @@ student_name: luca vireak bonelli
 project_title: Protection
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/bd4be687-b078-4188-a38c-77023b8fee88/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1453f026-aecf-460a-12a6-715e4dc1da00'
 social_links:
   - >-
     https://lucavireakbonelli.myportfolio.com/?fbclid=PAAaYoRydAtc_8igmkX6P_-29-ziaapl_Nhea5eZqvXkGbWBGIhbnos54hBpc

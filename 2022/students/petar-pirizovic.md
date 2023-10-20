@@ -5,15 +5,15 @@ context: Applied Context
 year: 2021-2022
 tags:
   - paper
-main_image: https://ucarecdn.com/e4e3e050-ad4c-47bc-8ad1-b83e343b4d28/
-thumb_image: https://ucarecdn.com/36c9c900-a1da-4db0-82d3-7aac7d958c8f/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a3c6625e-5ee5-49f8-e061-4b87623ea800
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dd8adf71-48c1-4616-d5fc-545e65cfab00
 images:
-  - https://ucarecdn.com/d4b4252c-cbee-4d3c-9b53-4b306e11f6f8/
-  - https://ucarecdn.com/28ab9b05-bafc-4a56-9b3c-44a8f279b20e/
-  - https://ucarecdn.com/f1564dd6-29e4-4d3a-8f46-54dbb411b591/
-  - https://ucarecdn.com/164bf2ec-bf89-43a9-8b14-d1ab76528e27/
-  - https://ucarecdn.com/6edb5aa9-f281-4ebe-8c19-1271f3415556/
-  - https://ucarecdn.com/31399287-93c7-4a16-bab5-c0e95da8412a/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/80bbf370-6355-401f-f25c-2785a4fde500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a6b6b1ca-2882-4585-953b-75ce2511ef00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/32e23f35-b2b8-4fb6-6e8c-cecbccbe2d00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/aea1453b-99c3-44d9-98a0-c5e0882e2100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8225a259-76a1-47f0-27d9-31ad62a2ef00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/23f00b29-9c99-417c-beed-cd4d8e727000
 social_links:
   - https://pirizovic.com
 ---

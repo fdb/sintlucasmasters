@@ -8,14 +8,14 @@ tags:
   - screenprinting
   - textile
   - ink
-main_image: https://ucarecdn.com/a2ab975b-3517-4672-9d89-3f423644284f/
-thumb_image: https://ucarecdn.com/09953397-d171-44b7-acd8-7e4a13adc85d/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3ffa9363-c2e3-43ff-24c2-b06199660600
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ae9d3c53-e768-44e0-e2a5-58e813637500
 bio: Silke Debandt is a visual artist and costume designer, based in Antwerp.
   With textile, video and text as the main mediums, Silke tries to address
   injustice and political issues in a playful and emotional way.
 images:
-  - https://ucarecdn.com/113f3a2b-177c-4c63-9d93-c870e4dd195e/
-  - https://ucarecdn.com/e597fcb9-12f0-4f83-9eaf-41dfe4b4b8a2/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c9abe3fe-3b6c-4581-81f6-7ea8bc56d100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f237e6da-8005-475a-9926-74b12693ed00
 social_links:
   - www.silkedebandt.com
   - www.instagram.com/silke_debandt

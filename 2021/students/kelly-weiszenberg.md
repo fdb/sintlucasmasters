@@ -3,7 +3,7 @@ student_name: Kelly Weiszenberg
 project_title: 'Planten vrienden '
 context: Applied Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/7fdb0888-de18-4267-8265-9b81b70b7eea/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3c6e65d4-35a9-4f23-4c5e-945d97e31d00'
 bio: >-
   Hi I'm Kelly Weiszenberg, born and raised in Antwerp. During my master year at
   Sint Lucas Antwerp I wanted to combine my love for houseplants and graphic
@@ -13,11 +13,11 @@ bio: >-
   I love informing people and this is something I definitely wanted to continue
   in the master's program. 
 images:
-  - 'https://ucarecdn.com/12919645-f327-4266-a366-43d6056c8c78/'
-  - 'https://ucarecdn.com/19e15b80-8da0-4b30-b4bf-cfe85c9f68a9/'
-  - 'https://ucarecdn.com/a757df99-d492-40ca-b4e8-6a65ed5258c9/'
-  - 'https://ucarecdn.com/2cdbc7fc-084e-49c7-a1ce-6819c32bea90/'
-  - 'https://ucarecdn.com/312cce92-b717-4488-9b5c-cf7803c9f9cc/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2019c3d1-2634-4873-a601-de4a68121600'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dca3fec0-fb6c-4d47-10f8-5c84bd7cce00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8b9fcd8d-7a58-465d-e070-2ed0f244d400'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6ca9ee88-ebae-47b8-5620-02e82e61f500'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0edf26a6-e725-4e12-3367-06cb4124fa00'
 social_links:
   - 'https://www.instagram.com/greenplantmom/'
   - 'https://greenplantmom.weebly.com'

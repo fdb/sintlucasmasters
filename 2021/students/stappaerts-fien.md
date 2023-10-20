@@ -3,7 +3,7 @@ student_name: Stappaerts Fien
 project_title: ArchiVox
 context: Digital Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/6bd453d2-d4dc-47e5-b5c4-2586935f946b/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/513e08cb-f13c-4cb2-835e-3a8cbfb55c00'
 bio: >-
   I'm Fien a digital context masterstudent with a love for architecture and
   anything geometric. 
@@ -15,9 +15,9 @@ bio: >-
   and the creation of its own digital language system, structures and
   compositions were created.  
 images:
-  - 'https://ucarecdn.com/64dfe887-b63a-4b4b-9fa0-c7a66ee60495/'
-  - 'https://ucarecdn.com/906f943d-5ce1-4962-9ad9-724bb483f39f/'
-  - 'https://ucarecdn.com/7c3e2fe0-1748-4ef5-bc85-db6851a06a6a/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1c19babc-2d1a-4a63-928d-ce76c8d65f00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d3080a91-53a3-44b8-69a4-1f1282f41b00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e9e56dfb-febc-4ceb-bdda-7807800a4000'
 social_links:
   - 'https://www.linkedin.com/in/fien-stappaerts-675a70209/'
   - 'https://masterpagearchivox.netlify.app/'

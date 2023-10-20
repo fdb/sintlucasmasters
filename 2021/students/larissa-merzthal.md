@@ -3,7 +3,7 @@ student_name: Larissa Merzthal
 project_title: The Mestiza Memory
 context: Socio-Political Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/f403e9e0-464f-42c7-856a-8d13c5a2ee94/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/57fc3781-be8a-4ab9-70df-5d64086faf00'
 bio: >
   I am an illustrator and infographics designer who is currently a master’s
   student at Sint Lucas School of Arts Antwerp. I've worked in several editorial
@@ -26,9 +26,9 @@ bio: >
   voice and an andean vision; without having Western intermediaries who speak
   for my work and myself.
 images:
-  - 'https://ucarecdn.com/e66ce5ca-19dd-4643-b2d7-db0ec24fc979/'
-  - 'https://ucarecdn.com/d8e6b06b-7b48-4544-983a-2d7832a1dc3a/'
-  - 'https://ucarecdn.com/c2ebab9b-994d-4ce2-a120-40ac9a1e4aef/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bbc62c30-f4ec-44de-d14a-94b375583400'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/74045b58-3558-4ba9-6862-7b152fc27a00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/56aea89d-2cc8-4fbd-be50-203fd1319600'
 social_links:
   - www.instagram.com/themestizamemory
 ---

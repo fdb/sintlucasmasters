@@ -5,17 +5,17 @@ context: Jewelry Context
 year: 2021—2022
 tags:
   - silver
-main_image: https://ucarecdn.com/a62d3b50-b204-469e-9465-e091fda92183/
-thumb_image: https://ucarecdn.com/46b7b8e1-79c4-45e4-a49f-ec73b0557fea/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4b08bb00-4942-4928-edd5-1152b8c3fc00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e8cfe56f-7c63-4703-08d3-39ae427e7800
 images:
-  - https://ucarecdn.com/c8598a1e-83b6-431e-aa09-01e1f7395f6c/
-  - https://ucarecdn.com/11a5ba08-36c4-4813-ba88-c5093e321207/
-  - https://ucarecdn.com/8a1f7ea1-9b33-449e-9a85-3ec4bbc7021d/
-  - https://ucarecdn.com/4cadacf1-6123-4ba1-a92a-4606af9d2d12/
-  - https://ucarecdn.com/71ea8700-e7eb-4e07-bf02-2b4c39393208/
-  - https://ucarecdn.com/a7e4d6d8-6216-4a46-9efb-8bcc5eda488c/
-  - https://ucarecdn.com/8f487654-0058-4cb4-9a8f-f2691cbd7038/
-  - https://ucarecdn.com/6e12a10a-08db-4b10-88c4-e46f48e5d111/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0855f3c0-b671-46bb-56d4-b26d50bfc500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/17338b02-ef45-4f0b-9a9f-9bce1991d800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dab12579-9b99-4bb3-38c1-fc199e2d5f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1abe843d-1cf9-4cf3-a14a-73ac0a1b7800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0d11379c-dd67-41c8-230f-7a81bcee8900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/63d9528c-3a73-4b8b-7320-152da8efb800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3537ed77-242a-4a2d-2cac-63f78b130300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/268a4df0-1bb7-4e25-d8aa-66bff4ee5b00
 social_links: []
 ---
  A collection of jewellery visually inspired by the Kingdom of Fungi.

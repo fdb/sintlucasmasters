@@ -3,7 +3,7 @@ student_name: Jamina Van Maele
 project_title: Hasse D.D.
 context: Applied Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/6c465c8d-f7f8-428f-aac1-b8660bf60728/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/628334f5-f681-4e03-1990-663966933400'
 bio: >-
   Jamina Van Maele (°1999) 
 
@@ -17,13 +17,13 @@ bio: >-
   banen in de illustratieve wereld en startte daarom in 2020 aan de Master in de
   Beeldende Kunsten. 
 images:
-  - 'https://ucarecdn.com/c90ee29c-c0db-4a06-a32e-ea2064ed0513/'
-  - 'https://ucarecdn.com/f1cf5f02-4d0a-46b3-a8d7-271fe2136940/'
-  - 'https://ucarecdn.com/4a4ed224-f60d-4ee0-9a80-87c401c25ea2/'
-  - 'https://ucarecdn.com/a373d054-d37f-4723-bc45-7db6e95c54f1/'
-  - 'https://ucarecdn.com/51c5c1ac-bfb4-492c-a933-51181b8d0b05/'
-  - 'https://ucarecdn.com/c8057137-a29d-40db-b79b-da693b9411c0/'
-  - 'https://ucarecdn.com/b760ae6b-c22e-4910-83d7-c9ba47ee1160/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d09d59dd-21ba-44f2-7bcb-17bcf80e6f00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2f045ff4-6b83-4f92-59dc-305e59095800'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/54cacedd-4ffb-45d9-536f-1ec646e9b800'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/53000f62-9bf1-4dac-5b53-a445fa133200'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/32ce2270-76a6-42d3-3b9c-922af2ecb600'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6902e487-277c-445a-3932-72018c800400'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/acdf766c-cf96-4bc2-c05d-daead612a200'
 social_links:
   - 'https://jaminavanmaele.wixsite.com/website'
   - 'https://www.instagram.com/jamina_illustrations/'

@@ -3,13 +3,13 @@ student_name: Janne Jansen
 project_title: Molding Matters
 context: Applied Context
 year: 2022-2023
-main_image: https://ucarecdn.com/bdd9fa6d-b8c8-4b98-9e1a-cbcb4b5076ad/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5c0528a8-3c3e-4fd8-d504-de38ca386200
 images:
-  - https://ucarecdn.com/b704226c-54fa-4e6b-9c5e-441b89393fb1/
-  - https://ucarecdn.com/01db5f57-47b7-4cda-ad42-35ef98dd5e8b/
-  - https://ucarecdn.com/6334bd3d-dab5-43a6-9a9a-2f64152edb12/
-  - https://ucarecdn.com/a1e99ce8-6c7f-4cdc-894c-49702f3eb5eb/
-  - https://ucarecdn.com/5d1c1ef4-5711-4bfe-b201-72a0c882ff80/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/190414d4-1cea-4761-03c2-d1ffc9316300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/da3cbc56-1e1e-47b4-c4d6-14df478ce800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/12528f27-edca-4fc9-b993-c54ea7203100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0f8f923e-1b32-456f-0d7d-b324a4e7cd00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/435dd71f-5a1e-4ebf-1020-6bad62885e00
 social_links:
   - jansenjanne@gmail.com
 ---

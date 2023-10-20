@@ -3,7 +3,7 @@ student_name: Lucas Suykens
 project_title: De tijger die geen vlees lust
 context: Applied Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/056383ef-8e0a-41aa-9d79-f30efc78785d/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7824295e-c317-419e-3e4e-4d9783654700'
 social_links:
   - 'https://www.instagram.com/lucas.suykens/'
 ---

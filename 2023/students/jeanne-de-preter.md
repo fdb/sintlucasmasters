@@ -3,7 +3,7 @@ student_name: Jeanne de Preter
 project_title: 'A tower under construction, een toren in aanbouw, une tour en construction'
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/c4a2a7fa-a8d8-47de-9dd1-99ed3565d565/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2d85f861-30dd-4963-9ce5-9ac669209f00'
 social_links:
   - www.jeannedepreter.com
   - 'https://www.instagram.com/mitsi.be'

@@ -7,12 +7,12 @@ tags:
   - clay
   - paint
   - sculpture
-main_image: https://ucarecdn.com/3099e377-6421-447e-8354-e67da2c05cbf/
-thumb_image: https://ucarecdn.com/41bccd78-7abd-4cb5-9a6c-224b482bd11b/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a9de7079-324b-4441-46c2-1279692ad000
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a0c776ab-b21e-4e75-ab48-7abb2ca15a00
 images:
-  - https://ucarecdn.com/6baa27ff-878a-45be-adc3-84b7a62bc973/
-  - https://ucarecdn.com/7e78e7f4-53bb-4b06-9e79-154ab6c4b6f6/
-  - https://ucarecdn.com/f945c011-b2c6-4880-8c89-afd410cbd672/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/81eeeb8c-f5ac-44b6-57e9-d748618aef00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/576257de-bc9f-41b9-49c3-06d580343800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b46773d4-38dc-4a9f-917a-c00e05f09100
 social_links:
   - https://justinelambrechts.com/
   - https://www.instagram.com/lambrechts_justine/

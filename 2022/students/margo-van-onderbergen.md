@@ -5,10 +5,10 @@ context: Applied Context
 year: 2021—2022
 tags:
   - digital
-main_image: https://ucarecdn.com/448bb6e2-2df0-4273-b173-4509534f8843/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bccd242a-3834-4b2f-9a2f-63c7bf714400
 thumb_image: https://ucarecdn.com/78d6066c-f45a-41f7-b75c-79e49c218ef1/
 images:
-  - https://ucarecdn.com/a51ffe07-a699-4a55-8bd5-932e4ff3e281/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f4d80d56-dc2b-4954-51c8-37813e5a4f00
 social_links:
   - https://margovanonderbergen.be
 ---
@@ -22,9 +22,9 @@ Multilingualism: The Brussels-Capital Region is one of the most multicultural pl
 
 
 
-![](https://ucarecdn.com/71d7d596-a4ff-4746-a489-a2a886d4df6f/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/54fa14b4-9e14-4782-4bb8-cca872ea4900)
 
-![](https://ucarecdn.com/c009fbd4-3b2f-4571-914d-e6fbfe4dd3be/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/fdfc33a3-5246-4567-8044-82482b26fd00)
 
 
 
@@ -38,7 +38,7 @@ Graphic: The graphic three-letter symbol is the result of an investigation into 
 
 
 
-![](https://ucarecdn.com/00279574-a1fd-44aa-9527-4dcb988f348b/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a37ff371-7878-4fee-aa35-2cc03a810900)
 
 
 
@@ -52,9 +52,9 @@ Black and white: A conscious decision was made not to use color in the context o
 
 
 
-![](https://ucarecdn.com/f19ab3a3-45d9-47bf-afef-c2c81cb02c1a/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/934e82f4-0ae4-40ae-02a0-1a091fa58000)
 
-![](https://ucarecdn.com/44f89e74-6b5d-44b5-b16d-7041ad089ef6/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/cab149dc-d87f-41bb-5e5d-c21ff8639d00)
 
 ![]()
 
@@ -66,6 +66,6 @@ Nothing is more approachable than a simple greeting. The region provides tote ba
 
 
 
-![](https://ucarecdn.com/6e69029e-a150-476b-8118-59a3794c4ea1/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/877cf097-3a7d-4cd2-048e-5064d0390300)
 
-![](https://ucarecdn.com/1efb8467-6c35-49d3-bf70-8af3180baf47/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8a1ef758-5fda-452c-83ce-4ec75ba7b800)

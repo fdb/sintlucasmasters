@@ -3,7 +3,7 @@ student_name: 'Melina Miglionico '
 project_title: COuRsE of a MEMORY
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/c804a3d6-f711-43dc-a58b-ad6db431cb4f/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d4fa9e65-4959-4d11-c3d5-6d26bb3ad700'
 social_links:
   - 'https://www.notion.so/Melina-Miglionico-6ae92117f23a46b58bebbdd47ea34c40'
   - 'https://www.instagram.com/CuteKittyMelina'

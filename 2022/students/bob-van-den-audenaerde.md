@@ -8,11 +8,11 @@ tags:
   - audio
   - installation
   - video
-main_image: https://ucarecdn.com/23bf364e-1c7d-4f8a-b55e-315e62b43cf3/
-thumb_image: https://ucarecdn.com/1a8e3568-c0d0-4640-9438-cb5a27e70a9b/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9867cf4c-00fa-4894-e47a-b3efc2b5cd00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f0a01f51-ae0d-4244-9255-cbdb56167300
 images:
-  - https://ucarecdn.com/b02ecdb2-53d8-42d8-a181-ff2c287e211b/
-  - https://ucarecdn.com/40de0d65-0afa-463a-b28d-817026eb3f78/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d02698d1-c504-499d-e81c-d4c121486b00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/fec8652d-4894-408e-3178-4bd5cfb83100
 social_links:
   - https://www.instagram.com/bxbvda/
 ---

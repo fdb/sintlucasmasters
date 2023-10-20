@@ -8,10 +8,10 @@ tags:
   - installation
   - performance
   - video
-main_image: https://ucarecdn.com/5b888321-9552-49dd-a6e9-5bbd776a0c1a/
-thumb_image: https://ucarecdn.com/c8d12933-0aa0-40c8-8e89-6d3eeaa83ef5/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bf666892-6c85-4a27-b2f2-e46a66740e00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dfdba7f5-9d0d-4f67-5e44-d8a5483d1700
 images:
-  - https://ucarecdn.com/a3817783-bd54-466a-9cf8-21edc7def44b/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/84c53e0b-a621-4c69-724c-9b5c66f91000
 social_links:
   - https://anaisgen.myportfolio.com/
   - https://www.instagram.com/anaisgen_/

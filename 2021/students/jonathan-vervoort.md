@@ -3,7 +3,7 @@ student_name: Jonathan Vervoort
 project_title: Lonely Crowds
 context: Autonomous Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/770154ea-00e0-493c-a38f-a56cc72bdb96/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2b3e7aed-a1ac-424a-7394-ea60f435f100'
 bio: >
   Everywhere we go, whether it is online or offline, there is no escape from
   possible image seduction. The more visual stimulation we get, the less time we
@@ -13,8 +13,8 @@ bio: >
   on the current state of contemporary image culture, questioning the value of
   image and using it as a means to propose a critique. 
 images:
-  - 'https://ucarecdn.com/c52ab616-3bad-40da-8dc0-2ab90f24a2f4/'
-  - 'https://ucarecdn.com/0293bcdb-a067-4cbd-9935-25e9533505f2/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5d784cdc-fb56-40ea-4970-2c3b7710e600'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/745ee5cf-43e2-49c0-e09b-02d6c938e600'
 social_links:
   - 'https://www.instagram.com/jjjjjjjjjjpadrino/'
 ---

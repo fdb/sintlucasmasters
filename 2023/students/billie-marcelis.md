@@ -3,7 +3,7 @@ student_name: Billie Marcelis
 project_title: Absolute beginner
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/5c746c07-764c-46aa-8cf4-c56178689961/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ce724173-41f2-4469-2daf-6d465201ad00'
 social_links:
   - 'https://www.instagram.com/marcelis_billie'
 ---

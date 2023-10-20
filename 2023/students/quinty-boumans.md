@@ -3,7 +3,7 @@ student_name: Quinty Boumans
 project_title: Ticket to DEFQON.1
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/8c66c629-c40f-443b-8e41-e7e580267cac/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/deff58f2-0dbe-48b7-f116-c6aa60130800'
 social_links:
   - 'https://www.instagram.com/boumansquinty'
 ---

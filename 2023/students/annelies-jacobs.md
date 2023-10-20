@@ -6,13 +6,13 @@ year: 2022—2023
 tags:
   - paper
   - ink
-main_image: https://ucarecdn.com/ce9a919d-d765-46c5-9dd6-5e438d18bf9f/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5cf1042d-2968-4fbf-47bb-3fec5eb98000
 images:
-  - https://ucarecdn.com/d971c6a1-f680-4664-811c-a417208681ca/
-  - https://ucarecdn.com/94c915e9-e02b-4f4a-906f-d9f7fe5ef0c0/
-  - https://ucarecdn.com/0e2a352f-fe19-4248-9eb3-a74b726a9728/
-  - https://ucarecdn.com/c71486cc-f553-41d0-a7f3-7a0f2002fca7/
-  - https://ucarecdn.com/69a4ee16-a591-457f-91a0-1a0354d0c026/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6d8e799c-c3a3-4f87-7f36-53a095581d00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6ab06e39-bcc6-487d-50ad-99d21439b800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/20c2cf50-2462-4191-994e-9efb219a1300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/06f19b74-852d-4a09-5654-587142ae3200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/be505f1c-6707-4131-211a-30c7de406a00
 social_links:
   - https://www.instagram.com/j.annelies
 ---

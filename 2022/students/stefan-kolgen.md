@@ -7,12 +7,12 @@ tags:
   - audio
   - installation
   - digital
-main_image: https://ucarecdn.com/60307754-faa0-4933-99e1-506bce2df392/
-thumb_image: https://ucarecdn.com/6991dab5-c42c-4172-b004-40396dbaa3f0/-/crop/1200x1076/0,0/-/preview/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7c453446-5c46-49c7-542d-50bbf1b06100
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f8b2b3f3-6ca6-44d2-cc16-bbb6b769be00-/crop/1200x1076/0,0/-/preview/
 images:
-  - https://ucarecdn.com/6d1510d8-4621-4489-8b1a-dec10a22487b/
-  - https://ucarecdn.com/7309fab8-bb43-419f-8bf9-f667eedc508d/
-  - https://ucarecdn.com/8d1692f5-79a2-42e9-b471-0c5ae90a4beb/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3dd7262d-2717-4c25-1789-e1617b7f4a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a1d31171-30d2-4fed-46f1-a66d77a7cb00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3954baec-cf61-46f6-b92b-bdc07c746500
 social_links:
   - https://stefankolgen.wordpress.com
   - https://instagram.com/skolgen

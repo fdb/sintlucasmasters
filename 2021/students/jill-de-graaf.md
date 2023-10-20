@@ -3,7 +3,7 @@ student_name: Jill de Graaf
 project_title: 'Non Consensual Healing '
 context: Socio-Political Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/56c90e7f-3e21-4ec3-9e16-402c93544fb8/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8e87ec0a-8c08-4810-2012-c80016b85900'
 bio: >-
   Jill de Graaf (1994) is an Antwerp-based illustrator and graphic designer /
   visual artist. She combines colorful and aesthetic art with educational

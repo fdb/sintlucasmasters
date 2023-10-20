@@ -3,7 +3,7 @@ student_name: Charlotte Rother
 project_title: Where are we going?
 context: Socio-Political Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/72052a4d-4383-463c-acb3-346d3352df00/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/54425b8d-0a99-4553-4ebf-4d5ecc599600'
 bio: >-
 
   I am Charlotte, a Designer from Berlin.
@@ -13,10 +13,10 @@ bio: >-
   for both the audience and the participants to gain a sense of belonging, and
   to bring people together as a group.
 images:
-  - 'https://ucarecdn.com/8a886987-6db0-4fdb-9c03-781a3fb679c7/'
-  - 'https://ucarecdn.com/202fb2a3-b9c4-4583-ae3b-797802a12f95/'
-  - 'https://ucarecdn.com/6eb57b55-536b-49ff-b990-d5e8be318905/'
-  - 'https://ucarecdn.com/52f7995b-ff45-4178-8cd0-c105e6f6cf9e/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/89c79cf7-9ee3-41be-c414-deeecad21700'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0f94db71-fe96-41ae-4f5e-a0a4b6732200'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/090e7113-4661-42bf-6a49-7a1249532a00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/aacdd759-599a-4d09-a6bf-872c5f8a5100'
 social_links:
   - 'https://robotexpo.netlify.app/'
   - www.behance.net/charlotterother

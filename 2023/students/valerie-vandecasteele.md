@@ -3,7 +3,7 @@ student_name: Valerie Vandecasteele
 project_title: My mum is an Artist
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/edb7d69a-b595-46d1-8890-a0adee1bc853/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0120c459-a345-405c-8197-83f767d74300'
 social_links:
   - 'https://www.instagram.com/vandecasteelevalerie'
 ---

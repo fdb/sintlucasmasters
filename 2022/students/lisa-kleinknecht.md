@@ -3,7 +3,7 @@ student_name: Lisa Kleinknecht
 project_title: Landscape of Letters
 context: Applied Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/8f1923bc-b4cb-42a4-9f54-ef42f7165f01/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4b633112-84b4-44d0-e42c-737fdbfeea00'
 social_links:
   - 'https://www.instagram.com/graphics_by_lisa/'
 ---

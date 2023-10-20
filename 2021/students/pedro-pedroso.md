@@ -3,7 +3,7 @@ student_name: Pedro Pedroso
 project_title: tarrochi
 context: Applied Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/8ee2e3fa-54df-40df-96d3-949217761a5f/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/63d76b91-c125-4d9f-e6f5-eeecc589bb00'
 bio: >-
   I'm Pedro, I'm twenty-two years old, I arrived from Portugal and was very
   happy to become a student at Sint Lucas. Throughout this difficult year I had
@@ -12,10 +12,10 @@ bio: >-
   narrative idea in the backstage area and I'm always inspired by nature and
   female figures that capture both empathy and beauty.
 images:
-  - 'https://ucarecdn.com/9ec4da8b-bfed-40d9-914b-0a1de407dc04/'
-  - 'https://ucarecdn.com/b4dbd1ab-7d48-43e1-9626-12117bfabdbb/'
-  - 'https://ucarecdn.com/73738e52-774d-4efb-b168-bd7fba24fb88/'
-  - 'https://ucarecdn.com/38e7fe3c-54ad-44cf-8cb6-30cf596554fe/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/85882c58-c2f9-44fa-abfd-bcb2cb47dc00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c052b2e4-8c73-475c-7646-b09961fca300'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c6be4274-f537-4ba8-891e-56a20234c800'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2c4ae0f8-e8b7-49e4-43e7-50d9983ad600'
 social_links:
   - 'http://pedro.roias.tilda.ws'
   - 'https://www.instagram.com/miiasma.art/'

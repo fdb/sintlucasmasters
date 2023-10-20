@@ -6,16 +6,16 @@ year: 2021—2022
 tags:
   - digital
   - textile
-main_image: https://ucarecdn.com/17072a94-9732-4e0c-95f1-3355f9a72e59/
-thumb_image: https://ucarecdn.com/73c86c5c-f965-40c3-b769-1e869a52032a/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d6130e94-ed39-4281-1fc2-20ac0405b700
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/43e8cee1-7c8f-468e-dad1-619056204800
 images:
-  - https://ucarecdn.com/c4651248-e7a8-430e-83e4-e25cf7c0b93f/
-  - https://ucarecdn.com/2d414d0a-34e9-4c21-a6c6-b86024b92715/
-  - https://ucarecdn.com/1733235a-98eb-45f9-a1e4-ca1fe6d186ab/
-  - https://ucarecdn.com/2f340083-4e0a-40b4-9175-d7d2b4b75083/
-  - https://ucarecdn.com/c8b2c113-0ecf-4f8c-a1b3-55bed3713281/
-  - https://ucarecdn.com/41b64185-1333-4fc8-ad99-4a995356cf0b/
-  - https://ucarecdn.com/5856bfd6-78f6-4122-b82e-1ce24aff4c21/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/44da1c4a-8353-4343-075b-0925658e3500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/452f62fa-a566-4297-560d-8b5ee87bb600
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7d6776f5-b183-43c2-6d11-e215a5eaa900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7bf8baa4-6c1f-4c98-bac6-1fd9984f2400
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1550130e-e330-470b-4d0a-cae54c13de00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b8128bad-0999-4de5-d9b0-8b8c29c9f000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dc58720c-e135-4efe-79be-8abebc403700
 social_links:
   - https://youbylauramaebe.netlify.app
   - https://www.instagram.com/youbylauramaebe/

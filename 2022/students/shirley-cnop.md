@@ -6,10 +6,10 @@ year: 2021—2022
 tags:
   - video
   - installation
-main_image: https://ucarecdn.com/e18d82b9-bbf2-420d-ba50-c1575157a47e/
-thumb_image: https://ucarecdn.com/de2c251c-a991-457a-8907-02ee6d3b0a29/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e98f572a-6a6f-4788-32ae-0f8071a2d800
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c2915d20-6211-4c84-78af-8c5a32ef1400
 images:
-  - https://ucarecdn.com/87a6c67d-3b5c-404d-a7e4-677745ef5b19/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/86dbde43-d325-4860-862b-47a5026ddc00
 social_links:
   - https://shirleycnop.wixsite.com/fotofolio/
 ---

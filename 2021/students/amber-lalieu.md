@@ -3,7 +3,7 @@ student_name: Amber Lalieu
 project_title: Friends
 context: Autonomous Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/60bf5e28-75a1-4290-931d-e4568e5ef237/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/12bbfcc5-4cbb-41e5-0fa2-c14ef6dce500'
 bio: >
   Inspired by a certain dream-like state that I experience during walks in urban
   space, I try to explore the boundaries between fiction and reality within my
@@ -12,9 +12,9 @@ bio: >
   images have been emptied from their original purpose (by life) and are now
   existing as a ghost-like residue of themselves.
 images:
-  - 'https://ucarecdn.com/97dcf7bd-5a47-465d-9fe6-b97ae14779e6/'
-  - 'https://ucarecdn.com/b1bac73e-ffc8-4fc4-978c-a2036dda09c7/'
-  - 'https://ucarecdn.com/b8d494df-5193-40ab-a74a-1adf400edd54/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3d01c241-4623-4dca-fefa-0281b3f38000'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9e0ce79d-3c97-4cce-deb3-382914ac0100'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d5751da3-63c5-42d6-7aa9-719b15eba600'
 social_links:
   - 'http://amberlalieu.nl'
   - 'https://www.instagram.com/lalieuamber/?hl=nl'

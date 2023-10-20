@@ -8,12 +8,12 @@ tags:
   - video
   - digital
   - photography
-main_image: https://ucarecdn.com/3f5eaffd-e599-4b2d-9178-5bfafc292b1d/
-thumb_image: https://ucarecdn.com/b7597712-2ac6-4005-9b61-87bb614b3bb2/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/adaef489-85c0-4bae-0747-2a2f16e7d600
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9b251b07-c9d0-47ca-1c74-e5e8a0718a00
 images:
-  - https://ucarecdn.com/0af6e8b3-1bea-4c4d-b735-680e7e66f3cf/
-  - https://ucarecdn.com/23c9dc6b-17a2-44f5-8511-addb1deef8e4/
-  - https://ucarecdn.com/f91ae404-f569-4f5c-a5d2-7fc270b8a71e/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/07691b88-1bdb-4bd8-bdce-79f8cb731200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e8043ce5-f1a6-4f83-6df5-116d237c0f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c6d71339-1eef-40fc-8c2c-c679cf0ce900
 social_links:
   - https://www.evabavre.com/
 ---

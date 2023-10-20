@@ -3,7 +3,7 @@ student_name: Mertens Martijn
 project_title: Tumtu Market
 context: Applied Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/baee77de-380f-4be0-b17b-fbf699aa7f44/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8d587ed0-7778-403e-7efa-40f49b0a3200'
 bio: >-
   Martijn M. Mertens is a Belgian brand identity designer and typographer.  He
   was born and raised in Brasschaat, Belgium.  He interned at Today Agency and
@@ -13,11 +13,11 @@ bio: >-
   strategy and visual identity, and deals with plenty of other graphic design
   related inquiries.
 images:
-  - 'https://ucarecdn.com/0408a303-e775-4f7a-bb5f-933ae6d32dc2/'
-  - 'https://ucarecdn.com/f41ec015-895c-4d95-9c86-5f9fa09bd98f/'
-  - 'https://ucarecdn.com/96ace49d-6bcd-4858-aff5-548432ec005a/'
-  - 'https://ucarecdn.com/98ce66c1-8a45-4a26-b2d7-663cec882e39/'
-  - 'https://ucarecdn.com/844ff2b2-18c5-40c7-8e76-a5c2924162af/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0d5d3ec6-58de-4843-c2b6-1f3108ff9f00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7dff6d3f-a1cb-4fc7-24d7-f973d00f3500'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f3d72a99-46ad-40be-efd9-a366a9648900'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3d582595-b8eb-4aec-3db4-3c050ec5c400'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6c04dbd7-a997-4af8-6a26-a6d04cdc1c00'
 social_links:
   - 'https://mmcreated.com'
   - 'https://behance.net/mmcreated'

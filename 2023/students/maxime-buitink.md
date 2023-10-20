@@ -3,7 +3,7 @@ student_name: Maxime Buitink
 project_title: BRUG 12
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/9c879443-4081-4970-8471-60bf0e300a8d/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/334b000c-4f29-4ace-bcab-7067c718d600'
 social_links:
   - 'https://www.instagram.com/@maxi_buitink'
 ---

@@ -3,7 +3,7 @@ student_name: Lies Appels
 project_title: DATA VASE - the translation of a data-base
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/2b278f0f-8952-4900-aaf6-bf844944cdec/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6d4207de-6c87-44ee-69ef-49a88a0efc00'
 social_links: null
 ---
 Challenging contemporary notions on science communication, this project questions whether art can rank alongside more traditional scientific outputs. In an encounter between the tactile and the digital realm, the project seeks to ensure both appealability, accuracy and readability of data, inviting the beholder to engage with the information being conveyed. 

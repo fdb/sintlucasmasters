@@ -3,7 +3,7 @@ student_name: Kevin Sezgin
 project_title: When The Dust Settles
 context: Applied Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/94f54843-b498-4407-9b7c-418f97cb1a66/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ab3cfe37-b24d-471f-5c83-99d7086cd800'
 bio: >-
   I see myself as a sequential illustrator, I mainly work around stories and
   narratives. Most of my stories are dealing with the relationships we have with
@@ -11,12 +11,12 @@ bio: >-
   who we are, "thanks" to the bad things that happen to us, but rather,
   "despite" of them. 
 images:
-  - 'https://ucarecdn.com/5385f365-0956-4076-a1b0-4390a14f8de9/'
-  - 'https://ucarecdn.com/7ee43318-7406-41e1-9684-d54f19e8e91a/'
-  - 'https://ucarecdn.com/407f672f-956c-430c-9158-e12d5ba3f82f/'
-  - 'https://ucarecdn.com/f2a62cca-9df9-4bab-9f23-fe3460baa1e7/'
-  - 'https://ucarecdn.com/ece21b5a-4ebd-4d47-b9a1-6c384cffbab3/'
-  - 'https://ucarecdn.com/8c7aa757-24ac-4d24-a870-c6b390220d1c/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/597bbeb8-10e2-4266-d030-d3904a355d00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9f6efa42-dee9-4af4-73f6-97e46d2b3c00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1aba351c-3931-4d75-a6df-0fcf0b249b00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/153500e9-4f2f-474b-dab9-6b22bf80d500'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6c2fac12-6ded-45b3-75e9-7600d8ddaa00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f50efe14-14c2-421a-c20f-5d77cf3d3000'
 social_links:
   - 'https://www.instagram.com/mortynet.art/'
 ---

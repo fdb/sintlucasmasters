@@ -3,7 +3,7 @@ student_name: Merlijn Schoone
 project_title: Metamorph
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/2b802471-7222-4204-844b-e2662732f612/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0c1f58e4-ec7f-4c46-9323-90e79234cf00'
 social_links:
   - 'https://www.instagram.com/merlijnschoone'
 ---

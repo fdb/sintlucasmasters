@@ -3,7 +3,7 @@ student_name: Struijk Lucas
 project_title: Triggers
 context: Digital Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/0ca86a19-5e36-45bc-b42c-0969e151bc1f/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/121ed2b0-624b-4caa-b77b-75efc3f7ce00'
 bio: >-
   I consider myself a multidisciplinary Graphic designer and artist. Oil on
   canvas, pencil on paper, graphic design, digital art, and Virtual Reality are
@@ -11,10 +11,10 @@ bio: >-
 
   My current work explores mental health, stress, and the human body.
 images:
-  - 'https://ucarecdn.com/b4acf6be-f9bf-4a9a-a39c-9864c24098e8/'
-  - 'https://ucarecdn.com/ba98faea-5d3b-4fac-860a-e09a7ae180b0/'
-  - 'https://ucarecdn.com/49c0f7c7-7dc9-49a1-96d1-6574820d5401/'
-  - 'https://ucarecdn.com/0bf077fc-1909-4d1f-9cd2-89c5177adca3/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9c0b83bf-8682-4639-423f-cc1032f04800'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4a145b8b-be50-4520-4276-1119b639f300'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/99b85ff2-6ea9-4d6a-8273-6cb77ef0d600'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f3f627c5-cf78-48c8-3ca8-7c05a2386800'
 social_links:
   - 'https://www.instagram.com/lucas.makes.stuff/'
   - lucasstruijk@gmail.com

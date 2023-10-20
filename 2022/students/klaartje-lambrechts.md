@@ -3,7 +3,7 @@ student_name: klaartje lambrechts
 project_title: My Home is your Home
 context: Socio-Political Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/195a23e0-e8ca-47f1-9f8a-42dc12aa38d0/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f6a5a3a5-ca78-4f0e-3a05-374167ca4900'
 social_links:
   - https://www.klaartjelambrechts.com
 ---

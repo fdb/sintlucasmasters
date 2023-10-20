@@ -3,7 +3,7 @@ student_name: Lies Jacobs
 project_title: From Beneath the Moss
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/f8cb8710-ce7d-4bea-a458-4a6ea5ab1ee9/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d1cd6aad-851e-4fbc-5174-9a7b74812400'
 social_links:
   - 'http://liesjacobs.berta.me'
   - >-

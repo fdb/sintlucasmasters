@@ -3,7 +3,7 @@ student_name: Gill Decuypere
 project_title: Synergy in Synthesis
 context: Digital Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/4215dcc0-f5ce-46db-9768-26df27e0c0ae/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/922c33b1-e674-4749-5ccb-5f48d9412600'
 social_links:
   - 'https://www.instagram.com/ygary.grafics'
 ---

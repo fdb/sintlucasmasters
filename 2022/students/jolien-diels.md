@@ -3,7 +3,7 @@ student_name: Jolien Diels
 project_title: Ik migraine? Iedereen migraine!
 context: Applied Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/035d0ea5-5d54-458b-ad00-3e70fa2a3b2a/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6aa1f080-3a11-456e-1221-7bf41033f500'
 social_links:
 ---
 

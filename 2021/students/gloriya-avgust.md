@@ -3,7 +3,7 @@ student_name: Gloriya Avgust
 project_title: Loose ends hiding in the kitchen drawers
 context: Autonomous Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/49b5edea-7171-40b4-8fb4-fe2c0f3c6992/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b7978757-6c08-4faf-04bf-98b2a1e76a00'
 bio: >-
   Gloriya Avgust’s multidisciplinary practice explores the interplay between the
   social, physical and sensible spaces that inhabit us. Borrowing language from

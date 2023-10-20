@@ -6,11 +6,11 @@ year: 2021—2022
 tags:
   - digital
   - installation
-main_image: https://ucarecdn.com/aa6b868d-0e7b-4814-9f0b-a659394f5dfe/
-thumb_image: https://ucarecdn.com/eaf234bf-3836-4ecc-86b6-9d76cb0a035a/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5a2e0342-8f79-4d63-db50-a8988686e500
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a8c57d0d-842d-42c6-cd50-6ede36d40300
 bio: ""
 images:
-  - https://ucarecdn.com/d8f77f4c-9a67-4516-bdff-f2b8d5c05ce5/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2b7a4730-5739-4458-98d3-c7f07a081400
 social_links:
   - https://johanminnebo.com/master
 ---
@@ -19,7 +19,7 @@ social_links:
 Imagine you could soar past your fears. Journey to worlds beyond understanding.
 Pull dust out of thin air, and turn it into gold … Johan Minnebo explores the artistic process in search of a theory that makes the loaded field of creative conceptual thinking more accessible, fun & kind for everyone. Will he ever find it? Scroll down to find out.
 
-![](https://ucarecdn.com/143b7d76-c07c-4ffa-99ad-3d892c038b47/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/79b1e6b8-d04a-4d91-3aa6-e26feab09500)
 
 For as long as I can remember I looked up at the stars. How do they do it? How do they shine so bright? Why do some never fade, while many burn out almost instantly? This Summer I had the opportunity to study under some of the biggest, known in the Western Hemisphere.
 
@@ -29,7 +29,7 @@ New perspectives brought new realities. And ultimately a new mission for me to e
 
 
 
-![](https://ucarecdn.com/6dd455a2-fe93-4476-a3ca-8c05a600d6ec/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/94a0368c-bcd6-46af-e779-30dc95959100)
 
 
 
@@ -57,7 +57,7 @@ This proved to be a lot harder than I thought. Most of us crave simple straightf
 
 This then became the outline of a book, and a mini-exhibition inspired by the visual codes from popular science communication, and surrealist interactive spaces like Meowwolf's "Omega Mart". The entire exhibition is an ongoing conversation that has only just begun, dressed up as a space control center that looks suspiciously similar to the computer classrooms I often teach in.
 
-![](https://ucarecdn.com/65742597-1c80-4d5f-93b1-f0ad0f0f0357/)
+![](https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/15207b42-22ac-417e-bb87-03880ca23200)
 
 ### **Why I believe this is relevant for you**
 

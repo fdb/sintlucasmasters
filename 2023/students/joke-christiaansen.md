@@ -3,7 +3,7 @@ student_name: Joke Christiaansen
 project_title: Final recollection
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/2c27a156-17d7-4100-867a-a9f3c7391b35/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a1f1f88a-8851-4aa2-9b5a-90696c1eaa00'
 social_links:
   - 'https://www.instagram.com/jokechristiaansen'
 ---

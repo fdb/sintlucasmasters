@@ -3,7 +3,7 @@ student_name: Jax Buytaert
 project_title: Wistful Thinking - Weemoedig Denken
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/e283301a-a3a4-468c-86b4-2e0d3ca4c09d/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/17f6905d-4817-4fc1-49a0-f89395a77800'
 social_links:
   - www.jaxbuytaert.com
   - 'https://www.instagram.com/swekg'

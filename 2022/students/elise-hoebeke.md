@@ -5,18 +5,18 @@ context: Jewelry Context
 year: 2021—2022
 tags:
   - sculpture
-main_image: https://ucarecdn.com/105aab5e-cf0e-4b4a-841b-13a2486c1843/
-thumb_image: https://ucarecdn.com/98695c1a-8963-4871-ade7-3ba2abb5b595/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c546ffa8-a672-4194-2ac7-47f239779500
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/94390f78-1499-4773-cd9b-692eaa2de000
 images:
-  - https://ucarecdn.com/cecedb1f-e36f-4c7a-a8fd-96d382bda86b/
-  - https://ucarecdn.com/53af55f0-f706-4951-90d2-eac2c716ec9e/
-  - https://ucarecdn.com/432b2952-180a-49eb-a5fa-c0cd86789651/
-  - https://ucarecdn.com/aef5299a-674e-4704-ae6d-cace9b7a212e/
-  - https://ucarecdn.com/e120f30d-6221-4b64-9b02-66946a4cb1d3/
-  - https://ucarecdn.com/76a9710e-2fb3-4001-99d3-bc297f9b6d0a/
-  - https://ucarecdn.com/f2e626f5-26ef-466f-ab48-fd38193307a3/
-  - https://ucarecdn.com/1014f20f-e47b-4cdd-b83c-34770f2f25ee/
-  - https://ucarecdn.com/5e9895bc-46f5-4049-89f2-dc9d50dacb7b/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f0d0690c-ceb1-43ab-4559-d7bed3652b00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7fa74ec2-08a0-45f2-6a48-f6f26ae50f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/220dd1c3-0cd0-4e73-7e3b-91d586b8ef00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/07f0e006-dd9a-43ce-eb99-e57a5f0b2900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e0c6936b-5203-459e-cd24-3f0952fe2800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9354cfb9-9362-4557-b134-c9e7e1f8e200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2e9b7bfd-8550-4a98-3c2d-9008fec27e00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/db366cdc-8a69-43e0-2c69-5b39fc9a2500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d044ac00-4ef9-4d69-bcc2-85fa48212200
 social_links:
   - https://www.instagram.com/elise.hoebeke/
 ---

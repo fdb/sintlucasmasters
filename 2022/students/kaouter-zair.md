@@ -7,18 +7,18 @@ tags:
   - metal
   - paper
   - photography
-main_image: https://ucarecdn.com/628e1b25-c443-4cc3-a87d-e11b8ef681de/
-thumb_image: https://ucarecdn.com/fecdb5d2-8e2c-4d50-9bf5-f091810817df/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/487f1c3e-c6a2-4720-1acf-52a2ff83f600
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b211134c-05a5-42be-9c42-377ff34e7f00
 images:
-  - https://ucarecdn.com/1a49ebdd-e4ae-403c-8873-2ae27cccebf1/
-  - https://ucarecdn.com/01f7def6-4fd7-4495-94d3-73606a17227f/
-  - https://ucarecdn.com/6d079b93-c725-4148-b65c-7a6abffa0baa/
-  - https://ucarecdn.com/6656d11f-1132-4320-86f9-aad982255695/
-  - https://ucarecdn.com/cf931996-cd57-456d-a9fa-7376d9f69262/
-  - https://ucarecdn.com/dc94bd19-569c-40e5-b92b-4c42b8e84635/
-  - https://ucarecdn.com/81eaf1f6-c362-42c0-bfd4-6ec96d1afa17/
-  - https://ucarecdn.com/7ab38a12-4629-4e1a-bcd3-8ca08c3bac09/
-  - https://ucarecdn.com/d3a72990-5f65-477d-b718-46779ad691e0/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8ed291fd-40b7-4e5a-959d-e1e34db41100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ab7a0d72-a481-49a6-6d65-72ee08299600
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0ff26c55-d69f-47ed-f268-79bfc5fa7400
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/072a005c-e168-4cb7-1e42-f63fd6085200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2b382ef7-9d3a-4257-dceb-5aa875302d00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a1bdd731-28ce-4006-4d60-6e932ebc0800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e4daf14d-4621-4f19-d6a8-1c40b4940100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/388396a7-fa7b-4cdf-46d0-b2ffb2ba4d00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f9a81374-66ab-423d-6df7-51e136b7e100
 social_links: []
 ---
 The History of Why is a project where I explore the forgotten and lost stories about jewellery.    I dive into the history of the symbolism used in jewellery and I reintroduce these stories to a contemporary audience.

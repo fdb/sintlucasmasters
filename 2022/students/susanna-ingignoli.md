@@ -3,7 +3,7 @@ student_name: Susanna Ingignoli
 project_title: Play and reflect
 context: Socio-Political Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/69ce16b0-02a6-4dcd-b54a-21d284cdb79e/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0a27d792-d515-442a-6dc7-f92d188c4900'
 social_links:
 ---
 

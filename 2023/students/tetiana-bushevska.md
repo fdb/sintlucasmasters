@@ -3,7 +3,7 @@ student_name: Tetiana Bushevska
 project_title: The sound of home
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/cada0c34-b51e-4b64-ae6e-8853ffd7b620/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/87f766f4-a67f-4608-972c-e7fef8655900'
 social_links:
   - 'https://www.instagram.com/tanya.bushevska'
 ---

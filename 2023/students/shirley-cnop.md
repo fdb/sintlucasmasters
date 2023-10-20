@@ -3,10 +3,10 @@ student_name: Shirley Cnop
 project_title: Unfold the folds, since they don’t hold the soul
 context: Socio-Political Context
 year: 2022-2023
-main_image: https://ucarecdn.com/f6780f5c-90dd-486f-9b26-80204a9a4df8/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2d624347-d757-4d30-297c-952777049c00
 images:
-  - https://ucarecdn.com/65332125-f383-40fd-868b-eda424b58e17/
-  - https://ucarecdn.com/b61609e7-01c4-482e-94ca-1ab0e1aecaea/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f26936db-abdd-4709-32d0-3dfa44d54f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/77106cc6-bb60-4296-c35b-10be92a36700
 social_links:
   - http://shirleycnop.wix.com/fotofolio/
   - http://www.instagram.com/shirleycnop

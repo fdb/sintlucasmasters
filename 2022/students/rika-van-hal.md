@@ -3,7 +3,7 @@ student_name: Rika Van Hal
 project_title: Menfoutisme
 context: Autonomous Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/8e9839d7-f582-4f93-a3a8-452a64fe9825/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/984d0cff-69b5-417f-e1c9-fe364d524a00'
 social_links:
 ---
 

@@ -3,7 +3,7 @@ student_name: Victor Borgions
 project_title: 'A fleshy body, vile and corrupted'
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/c5635f06-741c-4594-a977-fa82b7eff752/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/679550a8-dde7-4e24-da51-9445fd584700'
 social_links:
   - 'https://www.instagram.com/@victorborgions'
 ---

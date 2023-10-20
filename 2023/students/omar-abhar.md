@@ -3,9 +3,9 @@ student_name: Anonymous
 project_title: To my only l*** / الى ح** الوحيد
 context: Socio-Political Context
 year: 2022-2023
-main_image: https://ucarecdn.com/c52e5a8f-3c76-468b-8037-66b5718dc6ee/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d99c1822-f081-49f3-26ae-3bcbb020b200
 images:
-  - https://ucarecdn.com/ec2999bd-b1c4-424b-beef-637ea2290584/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8b1f938e-3e40-4cdb-221f-36b84ceac100
 social_links: null
 ---
 To my only l**e is an experimental publishing project that questions usage of languages, relationships with mother tongues, and modes of expression for communities that are "unseen" or underrepresented. This first attempt is a personal publication that is inspired from the journey and heritage of Arabic calligraphy, with personal letters addressed to various figures, in a metaphorical sense, including the Arabic language. 

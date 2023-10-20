@@ -5,14 +5,14 @@ context: Autonomous Context
 year: 2022-2023
 tags:
   - installation
-main_image: https://ucarecdn.com/66f0ce8e-8376-4b2a-9e11-460c0f77df5d/
-thumb_image: https://ucarecdn.com/ac04e9fe-1eaf-460f-8958-84fae18cdc2d/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/34eb9d05-b963-41fe-7614-1a20b15db700
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a490e66d-15bb-4400-beb2-1d99907caf00
 images:
-  - https://ucarecdn.com/1385962c-9d81-414d-8b05-644f99729a32/
-  - https://ucarecdn.com/51260a07-b1c8-47ab-bc75-ed2ab2966392/
-  - https://ucarecdn.com/593c006c-fdb8-4294-9d5f-114900dff356/
-  - https://ucarecdn.com/d8947224-2408-4265-a059-07be9e46c9b9/
-  - https://ucarecdn.com/34980d31-b691-4d53-ab73-66ccae2dd402/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/18648fb1-97f5-4d9b-3846-fc582e6bf800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/02e6a2da-d4b5-4476-eb49-474f3a396700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e9748885-0e29-49d3-e396-fb7a9bb62b00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7a157b2d-650f-44ef-2019-8eb05fba6f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b0fb7446-0c41-4358-2b9a-e7be379e1200
 social_links:
   - https://www.instagram.com/setevioletas/
 ---

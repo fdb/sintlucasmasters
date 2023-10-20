@@ -3,7 +3,7 @@ student_name: Hannelore Verbruggen
 project_title: Malus Lupus
 context: Applied Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/8a41b8d0-9577-4664-a15d-764af41d2a0c/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/14c87ff0-6e21-431b-baf0-7ccefd006b00'
 social_links:
   - 'https://hanneloreverbruggen.cargo.site/'
 ---

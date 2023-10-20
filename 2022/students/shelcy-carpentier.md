@@ -9,18 +9,18 @@ tags:
   - paint
   - photography
   - textile
-main_image: https://ucarecdn.com/302ea457-f1ce-445c-bf16-c755e2fe3bd2/
-thumb_image: https://ucarecdn.com/a8272418-582e-40c1-86ba-808232130a28/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ad93c5da-0bf2-469a-ab08-1b0da04ac600
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/92c6d887-825a-4c5c-ae0d-22d33dcb6800
 images:
-  - https://ucarecdn.com/31181795-0312-4e17-b58c-ad8911798f29/
-  - https://ucarecdn.com/9271b61b-1d64-4f8d-a758-d71330aa8ec7/
-  - https://ucarecdn.com/e3940248-c25a-4ab2-b870-daa86fffe524/
-  - https://ucarecdn.com/ca9efea0-e193-4ee6-a8ec-b5444699a735/
-  - https://ucarecdn.com/64f1d145-2b5d-4177-bb40-0f35785852fe/
-  - https://ucarecdn.com/4fae98e3-6fdf-4de6-85eb-1487218127d2/
-  - https://ucarecdn.com/1885945f-d3b8-4bd1-8253-00e2f013b1c6/
-  - https://ucarecdn.com/3d9e9e70-c492-4086-8eed-995b59b1b5e1/
-  - https://ucarecdn.com/833fe8c2-1339-4a74-94fa-fa2f80130f35/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e03e13f4-cf74-4f67-6f05-add25c51ac00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/88a346a6-1851-4bb1-aab8-62f37ee90100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d08143ab-7c5a-4a84-ab49-67db9b6df800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/43eee4ab-1c34-46d0-fac0-769019eb6900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ab325fc6-f308-4704-ba54-b6d498e2e400
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9000cbac-16a4-4690-e2e0-4a8457cf5700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1753c0a9-03dd-40c4-c45d-207c6328f900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a98da787-84c7-4297-70a3-02c39a6df400
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/cac285bd-bf37-412a-cb24-3bd41cc34200
 social_links:
   - https://www.instagram.com/carpentiershelcy.art/
 ---

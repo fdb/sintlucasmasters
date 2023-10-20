@@ -3,16 +3,16 @@ student_name: Eva Geldof
 project_title: PULSE
 context: Jewelry Context
 year: 2022—2023
-main_image: https://ucarecdn.com/eb19b9aa-7031-4b6b-b1e8-a905fcfb11fe/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0b416a2c-00c3-4224-6c16-e8ad58360300
 images:
-  - https://ucarecdn.com/6189c2bb-152f-4937-88e7-2f44151761b8/
-  - https://ucarecdn.com/9a75414e-bbb6-4e2a-8e36-def8d36cfb95/
-  - https://ucarecdn.com/a9d5cc54-23cb-4079-b133-358a6b0ce72d/
-  - https://ucarecdn.com/e7cc6e4d-efb6-463e-abfe-bb57442125a5/
-  - https://ucarecdn.com/8ced0fb3-bf91-4692-98f7-041039d90302/
-  - https://ucarecdn.com/5dfc8dd7-ffe7-45cd-9057-c257d917fee8/
-  - https://ucarecdn.com/1a767259-97ab-4207-8c75-9dafca31fb59/
-  - https://ucarecdn.com/6bcae010-0dfe-4111-ae3e-d70ca96ff539/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/36153324-0af7-4683-c0a7-4142dfc76700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6ff556a9-72c0-4ca5-f78a-8f03a0812b00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c2c3d1bf-c2fb-49b7-46de-608cdea41200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/28685899-71b3-4029-62aa-308769cb7000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/92bd32c1-cab7-4596-ab90-fd2bd5392800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/28e8296a-87dc-4828-5917-d5c31df05100
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d1f7f44e-b4af-4638-95f4-183ad52e3f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f1c0d4e0-3e79-4aa9-6930-4e9729104000
 social_links:
   - https://www.instagram.com/@geldofuleva
 ---

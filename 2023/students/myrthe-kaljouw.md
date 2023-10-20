@@ -3,7 +3,7 @@ student_name: Myrthe Kaljouw
 project_title: A dream doesn't go away
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/ce0f2338-39ed-42c9-8964-c556c30df4a9/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0e9f9286-c4cd-4e56-72e1-2f8795342c00'
 social_links:
   - 'https://www.instagram.com/myrthekaljouw/'
   - 'https://www.instagram.com/Myrthe Kaljouw'

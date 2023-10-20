@@ -11,20 +11,20 @@ tags:
   - sculpture
   - paint
   - performance
-main_image: https://ucarecdn.com/d23014d2-d40c-4e77-8c77-0e5f2fc23a0e/
-thumb_image: https://ucarecdn.com/86d0a895-8334-4adb-b3b8-874a1be2d5b4/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/dcf463db-b733-4e8f-1311-9de04f4f4800
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8c993ca8-430e-444f-6914-b8b86582fb00
 bio: |-
   °2000 Arendonk
 
   web:    yasmine-akondo.be
   insta:   the_house_of_mauss
 images:
-  - https://ucarecdn.com/9d4fe22f-fe47-4434-b144-035b81e61a2e/
-  - https://ucarecdn.com/57266cf2-e0e4-4e1a-9487-faf4fd9ecd10/
-  - https://ucarecdn.com/0a3177cb-fc5a-4a2b-b886-aa1822087e5f/
-  - https://ucarecdn.com/3e3f54ac-47aa-4a26-921d-6d7d0dd06283/
-  - https://ucarecdn.com/5e96596c-618f-4804-b548-7f696b9a93bc/
-  - https://ucarecdn.com/58fee91f-0b7c-4361-8fcc-b42b8339aed5/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/fee9929c-fdbe-45cb-b42d-8a9d8eb5a700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/40b9091f-2ca9-4ff9-61db-33d364c60700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/29f47275-80f3-4caa-e981-df1686115400
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5fbf5811-9f66-4cf3-5238-8260a5d4ce00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/744951a4-5398-4341-d2a3-b177ccb9e300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/129c9a5f-c0dc-453c-0c0d-c7066a518200
 social_links:
   - https://www.yasmine-akondo.be/
   - https://www.instagram.com/the_house_of_mauss/

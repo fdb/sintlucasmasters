@@ -3,7 +3,7 @@ student_name: Daphné Lesuisse
 project_title: Blooming Era
 context: Applied Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/a8065b4b-6352-436a-b7c6-416ed0a5d7c6/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9e7ce73e-f531-4953-0dd8-f22dd426a200'
 bio: >-
 
   Ik ben Daphné Lesuisse en heb grafische vormgeving gestudeerd aan Sint Lucas
@@ -12,13 +12,13 @@ bio: >-
   veel kleur en buiten grafische vormgeving ben ik gefascineerd door de mode en
   interieur wereld en deze passies combineer ik heel graag!
 images:
-  - 'https://ucarecdn.com/b0e3d7c7-ba75-4fd6-b758-0ae2bcc42174/'
-  - 'https://ucarecdn.com/651316a1-71a0-4a1d-acbd-c16b2bd39782/'
-  - 'https://ucarecdn.com/9e1bc7a7-184f-41a8-9caa-816397e8d87e/'
-  - 'https://ucarecdn.com/37543a82-0e30-44c0-8bce-04b3f1a4bbae/'
-  - 'https://ucarecdn.com/edf154af-26c8-4ba8-91ec-a604efc7c92a/'
-  - 'https://ucarecdn.com/8a958fe5-672d-4f52-a6db-7956fcf0b493/'
-  - 'https://ucarecdn.com/5c2d4a60-68ca-42c2-82bf-c4c3568b2df5/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/600f3e3a-e00b-4ff4-f495-86911072fe00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e7af97c6-4bb9-46df-9d52-8a19a2e1bb00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ee3a0737-6ff7-4ab5-b8a3-af6b3c1f5500'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7c5237bd-3906-442d-3a68-66f00e8c8900'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/357b49c5-68d6-4c4e-6a29-bd9f25d76300'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6d20011b-cbd0-4864-2c2a-64a89d67bc00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b127b3fb-981b-47de-ef6f-c2dfcd878400'
 social_links:
   - 'https://daphnelesuisse.myportfolio.com/'
   - 'https://www.instagram.com/lesuissedaphne/?hl=nl'

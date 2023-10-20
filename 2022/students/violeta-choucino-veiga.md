@@ -3,7 +3,7 @@ student_name: Violeta Chouciño Veiga
 project_title: 'Anterpen, Anwers, Antwetpen'
 context: Socio-Political Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/8871670c-8253-4485-9e3e-dceaec5e9b1f/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3425382d-01df-42c5-50bf-b6cbf2dae200'
 social_links:
   - 'https://www.instagram.com/setevioletas/'
 ---

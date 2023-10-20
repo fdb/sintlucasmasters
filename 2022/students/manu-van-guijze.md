@@ -3,7 +3,7 @@ student_name: Manu Van Guijze
 project_title: (Un)controlled Colors
 context: Autonomous Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/10ada3cb-55c5-44a2-a9d1-bc0607db42f8/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0fed0799-6983-4dfb-efe2-65e95230d800'
 social_links:
 ---
 

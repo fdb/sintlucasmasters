@@ -3,7 +3,7 @@ student_name: Jerald Mamangun
 project_title: はじめまして (I am glad to meet you).
 context: Applied Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/9598e7d2-8082-471b-b1bf-aa87f5e284b1/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a08e729d-31c4-4ba8-9156-708d41efd200'
 social_links:
   - ''
 ---

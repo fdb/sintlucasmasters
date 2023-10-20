@@ -3,7 +3,7 @@ student_name: Nastia Krasinskaia
 project_title: Toys we played with as kids
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/41192210-0700-4681-90c7-80d2207d19a7/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e4517afa-df98-4b8d-505a-6ee74c0d7000'
 social_links:
   - >-
     https://www.instagram.com/https://instagram.com/nastia_krasinskaia?igshid=NTc4MTIwNjQ2YQ==

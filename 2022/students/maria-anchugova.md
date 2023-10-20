@@ -6,12 +6,12 @@ year: 2021—2022
 tags:
   - paper
   - screenprinting
-main_image: https://ucarecdn.com/f27bdd72-e022-4f6e-a723-9e9880d7ed5b/
-thumb_image: https://ucarecdn.com/fb555f04-324b-491c-a48e-9abec9de709b/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d5c44b74-6cdc-441a-c8f2-346f2b016f00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/988d865e-b5f0-423d-2665-3652345a7600
 images:
-  - https://ucarecdn.com/e9cd7f07-8230-4779-9963-811fdc8ea1b4/
-  - https://ucarecdn.com/4843580b-1d57-40a7-ae43-dc174a41acca/
-  - https://ucarecdn.com/f9237c5d-49a3-4435-a947-d8da5358b3dd/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/37b03792-b518-4df0-45db-fdb2398e9900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0843621a-ef8c-4470-b351-be964d5ac700
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2a6fe429-a783-4e59-6e53-1037cd575100
 social_links:
   - https://www.instagram.com/anchugovamaria/
 ---

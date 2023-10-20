@@ -6,9 +6,9 @@ year: 2022—2023
 tags:
   - installation
   - performance
-main_image: https://ucarecdn.com/948bf391-f0b8-4175-acaa-682a7a32c00e/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0ac5faca-ba7c-485d-c8ce-2c0a12039b00
 images:
-  - https://ucarecdn.com/ee7aa30e-3dda-49e1-a098-0a57700e055a/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/eacc7ad5-815f-4f10-dfcb-c49adf5cd000
 social_links:
   - https://www.instagram.com/acid_candycandy/
 ---

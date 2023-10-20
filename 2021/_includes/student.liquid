@@ -29,14 +29,14 @@
           <p class="page-name" >{{ student_name }}</p>
           </br>
           <p class="page-text-brood" >{{ bio }}</p>
-          <img class="page-img" src="{{ main_image }}"/>
+          <img class="page-img" src="{{ main_image }}/xl"/>
           
           <p class="page-project" ><mark>{{ project_title }}</mark></p>
           <p class="page-text-brood">{{ content }}</p>
           </br>
           </br>
           {% for image in images %}
-          <img class="page-img" src="{{ image }}" alt="" />
+          <img class="page-img" src="{{ image }}/xl" alt="" />
           {% endfor %}
           
           {% comment %} <p class="page-bio">social links</p> {% endcomment %}

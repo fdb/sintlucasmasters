@@ -10,14 +10,14 @@ tags:
   - performance
   - ceramic
   - video
-main_image: https://ucarecdn.com/48cd013a-9938-47c6-96d3-3596887ba92f/
-thumb_image: https://ucarecdn.com/7f61128f-b121-4212-95d2-2f33bfb31f87/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d09728f6-223d-4462-2b08-bebc3db0d200
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f4afe30e-d7d6-4c39-bac2-2361b0ab5800
 bio: >
   Billie Q is a visual artist, residing in Antwerp. She works mostly with
   photography and video. Her work often has a strong narrative character.
 images:
-  - https://ucarecdn.com/b565c78b-b7c5-4335-90d4-6d2b9084edc5/
-  - https://ucarecdn.com/5750c7c3-2eb5-4ae3-8808-95d2d3c25c23/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/94e14141-5d7f-4b8c-1a82-48bb24494000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/58729fde-1674-4123-b12c-a190408f8300
 social_links:
   - https://billieq.art
   - https://www.instagram.com/billie__q

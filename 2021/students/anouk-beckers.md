@@ -3,7 +3,7 @@ student_name: Anouk Beckers
 project_title: Audio Octo
 context: Applied Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/89477dcb-b1b3-41ea-8448-97501a9e6874/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0dad20b1-abe1-43d6-767f-7de6b1e7b900'
 bio: >-
   Anouk Beckers, Digital Product Designer
 
@@ -11,7 +11,7 @@ bio: >-
   I'm fascinated by how things work and how people think. I love writing,
   creative thinking and solving design problems. 
 images:
-  - 'https://ucarecdn.com/3cf5de87-020e-42a8-9198-56bc3c72d3b2/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/213100cb-74b5-4284-08ed-1b9a8df82700'
 social_links:
   - >-
     https://www.figma.com/proto/sLTz5y01WWfKWt8TzOy1Lf/CASE?page-id=0%3A1&node-id=1%3A2&scaling=min-zoom 

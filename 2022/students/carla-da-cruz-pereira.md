@@ -3,7 +3,7 @@ student_name: Carla Da Cruz Pereira
 project_title: 'Saudade '
 context: Applied Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/78251622-0a8d-4117-9a1d-4de688d212ec/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7fd1f25f-8ee7-4085-70a3-bf1437782800'
 social_links:
   - ''
 ---

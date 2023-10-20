@@ -5,14 +5,14 @@ context: Applied Context
 year: 2022—2023
 tags:
   - paper
-main_image: https://ucarecdn.com/7aaf005f-1a1f-4d4a-b69b-09e51d92334b/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f86feb05-db28-4ac9-d6ac-afa2dad41900
 images:
-  - https://ucarecdn.com/53296927-3b3f-460f-9c22-81f2c213f4ce/
-  - https://ucarecdn.com/b7f45717-6e0e-4779-9cc1-a172c217d587/
-  - https://ucarecdn.com/dfa3b0de-50fb-4834-8803-792de712aa10/
-  - https://ucarecdn.com/6431762b-0236-4a35-8e56-f9a854a86498/
-  - https://ucarecdn.com/a3e709c6-c845-40e7-b6c8-5aa6a7eff577/
-  - https://ucarecdn.com/22cc0e23-744d-47c4-8e96-e65ccaed4977/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6a9519ca-ef81-4c51-5c5d-beeaccb18600
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5e5c2f79-8fc2-4cbe-322f-3c7179e89f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/06af333b-8495-4e9c-a6c3-36774388f800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b0383a3e-e5e5-4b41-87b8-5aeb4cec5800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/332487bc-82d8-4c64-786e-d764e9901500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c5ac1816-43e7-47ca-6578-176543ed4300
 social_links:
   - https://lindevos.myportfolio.com
   - https://www.instagram.com/_devos__lin/

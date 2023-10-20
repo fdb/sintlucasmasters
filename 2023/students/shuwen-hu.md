@@ -7,14 +7,14 @@ tags:
   - installation
   - digital
   - video
-main_image: https://ucarecdn.com/b5f45525-9f36-453d-a58a-3d3839484709/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1da53c6e-9a32-4def-c65c-602eb94a8d00
 images:
-  - https://ucarecdn.com/28d9708f-f5ef-4c01-8745-24a8bc74b193/
-  - https://ucarecdn.com/75cead44-164a-43b6-89e5-d1089161fa87/
-  - https://ucarecdn.com/330a5780-5c92-4d5d-84f5-e116ffa001e2/
-  - https://ucarecdn.com/eb95b78d-54c1-45e9-8f8a-cc400cdffcad/
-  - https://ucarecdn.com/66819df9-8cf4-4c37-b14d-bacd02809466/
-  - https://ucarecdn.com/2a5e7d40-2919-4f9a-96a0-234755bc7870/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/935397f9-9f36-4bc2-aafd-567daac36800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b7e844c6-15c4-4a49-3350-62ad5293ca00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/70314e61-9518-41e8-d980-075c14d7f800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c6eed568-ed39-47e2-6f7e-13902cfbab00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6740aa2d-b032-4476-562f-02aaf8c47f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9f3130b3-7a1f-4857-895e-ec1b621bb800
 social_links:
   - https://shuwenhu.netlify.app/
   - https://www.instagram.com/shuwenhu__

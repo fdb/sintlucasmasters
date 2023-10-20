@@ -3,7 +3,7 @@ student_name: Catarina Martins
 project_title: A Safe Space for Bad Type
 context: Autonomous Context
 year: 2021-2022
-main_image: 'https://ucarecdn.com/c329daa8-736e-4d64-b0e7-ce705db2817d/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/48bd72dd-85d5-4e8d-9009-d9efdafbc200'
 social_links:
   - https://catarinaregomartins.com
 ---

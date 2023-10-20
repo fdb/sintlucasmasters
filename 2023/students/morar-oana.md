@@ -3,7 +3,7 @@ student_name: Morar Oana
 project_title: Reunion
 context: Autonomous Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/a4089334-f46c-4ab8-9658-b3a544eabab6/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b1d00005-b4b4-4b57-d0e0-f3af17de1500'
 social_links:
   - 'https://www.instagram.com/oanatreii'
 ---

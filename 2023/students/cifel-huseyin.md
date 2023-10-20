@@ -3,7 +3,7 @@ student_name: çifel huseyin
 project_title: Visible Invisible or mental-health embodiments
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/1a52bafb-f390-493c-b828-c2f8bf9db855/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1304935f-99e4-49c4-5ef3-d90b669a9d00'
 social_links:
   - 'https://cifelhuseyin.wixsite.com/artist'
   - 'https://www.instagram.com/https://instagram.com/cifel'

@@ -8,16 +8,16 @@ tags:
   - photography
   - textile
   - performance
-main_image: https://ucarecdn.com/5a8d7a75-4c2a-4e94-814c-eb2654d0c100/
-thumb_image: https://ucarecdn.com/a929a91e-8773-4e61-be75-5d15a862a524/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2b7a4657-195b-47f7-d594-9ba6b4869400
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e895ce3e-0532-4911-bce0-bd77ee135c00
 bio: ""
 images:
-  - https://ucarecdn.com/6bf1f613-7a74-499e-a1c1-cf83c1b8954e/
-  - https://ucarecdn.com/71a87b87-8459-4974-995f-94f4589ddd9d/
-  - https://ucarecdn.com/afea497e-0b92-400d-83b1-cefa7c25019e/
-  - https://ucarecdn.com/1449216f-3c1d-474f-bcef-56531f89c60e/
-  - https://ucarecdn.com/f0546af3-6eb2-4a33-b871-989b1de70aa6/
-  - https://ucarecdn.com/24f2467f-a5e6-4756-8bef-8bb405191ea3/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c61c40cd-4f86-4d09-4957-56bbca373f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ca27b48e-1a2d-4be5-86c9-99bc1d68a500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/24b0e6ad-b5cf-4031-5339-be236b51f800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e7bf83dc-9c2c-4654-0a8c-91fe7a369200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/5ca8ba5d-5d52-4601-697b-522372b14400
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d608eff0-4bf9-4707-12dc-9f0aa1df1c00
 social_links:
   - https://www.instagram.com/hailweltschmerz/
 ---

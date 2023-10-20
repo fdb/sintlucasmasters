@@ -3,7 +3,7 @@ student_name: Lana Van Goethem
 project_title: 'Quality of Consciousness / Kwaliteit van Bewustzijn '
 context: Applied Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/b513e33a-e769-496d-a338-d6a7990350dc/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/abaca97f-26cb-4c39-39a2-05b93f8fc000'
 bio: >-
   Hi there. I've always seen myself as an illustrator, but I've learnt to
   profile myself as an autonomous artist within an applied context. I enjoy
@@ -11,10 +11,10 @@ bio: >-
   thrive in an experimental environment that allows mixed media and everything
   at once ! Analogue printing techniques being my favorite. 
 images:
-  - 'https://ucarecdn.com/4e1b5478-5965-4f59-9f28-a5b59b5e8adf/'
-  - 'https://ucarecdn.com/8882ccb3-a032-4102-9ecc-de3e125e1c3b/'
-  - 'https://ucarecdn.com/a3791e95-a147-4848-9222-d92b0484ccd7/'
-  - 'https://ucarecdn.com/27fe6278-b057-49c1-85f6-8c06888cbd9e/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/02c2f1e7-554b-4ce6-ee73-9bd5691aae00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9513cd22-fa4b-4cc4-5f38-dcd272295200'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/df0d552b-395a-4b7e-b5dd-64c91fdb5c00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/926b531d-0a45-493a-8e8c-6e53eaf2e400'
 social_links:
   - 'https://www.behance.net/Lanavangoe1736'
   - 'https://www.instagram.com/lanavangoethem/?hl=nl'

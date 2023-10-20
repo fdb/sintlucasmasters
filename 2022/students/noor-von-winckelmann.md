@@ -8,13 +8,13 @@ tags:
   - installation
   - photography
   - textile
-main_image: https://ucarecdn.com/e4342b5e-8b72-4bff-8d89-c06f4d794b38/
-thumb_image: https://ucarecdn.com/1e3c35d6-bb5e-4a88-ad7e-8a4e605e6738/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9c0e3967-d084-43b2-591a-5f416f6c7b00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e4c29fb7-6c9f-4862-bd77-16b982413200
 images:
-  - https://ucarecdn.com/194aa42a-2f82-4b13-ba55-4c1ce654e109/
-  - https://ucarecdn.com/1fc2ebba-8cee-4610-9c69-e249f35f2c4d/
-  - https://ucarecdn.com/79c617fc-7c9f-43af-9079-a7286a55a398/
-  - https://ucarecdn.com/3ce647f9-185b-49c5-957b-e16691efb647/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e1ace9ca-1ca9-4592-a98d-253473cdba00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d73c1721-4b5f-40a2-7bf1-73810cb01800
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c1c6d575-7f1e-424d-d7d9-aa5b1e6bf900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/82f7f817-9523-4a10-9174-111800bff800
 social_links:
   - https://www.instagram.com/nov.a.rt/
 ---

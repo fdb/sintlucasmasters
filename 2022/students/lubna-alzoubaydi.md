@@ -8,11 +8,11 @@ tags:
   - sculpture
   - paint
   - textile
-main_image: https://ucarecdn.com/1378f48d-b55c-4bb4-98d7-18c117e91629/
-thumb_image: https://ucarecdn.com/13609186-46ff-4461-a04d-ba24e47c0294/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7c926f90-5caf-421b-b762-20bec9fb7000
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/94fe6c14-7eca-4a58-765c-8e1d0b56f900
 bio: ""
 images:
-  - https://ucarecdn.com/1df7dda2-0a2e-43a7-b92c-1048f4f80ad9/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6f5519e4-8c24-4d83-815a-3527119def00
 social_links:
   - http://lubna-alzoubaydi0.webnode.be/portfolio-am-rwbh/
 ---

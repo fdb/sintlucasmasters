@@ -6,14 +6,14 @@ year: 2021—2022
 tags:
   - installation
   - photography
-main_image: https://ucarecdn.com/a70df544-10f8-441e-8a12-88ee1c9e8ffa/
-thumb_image: https://ucarecdn.com/58638f65-c3ce-4ede-bf7e-91b12f9bb8ca/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/00e12ce0-112d-4524-15fb-4e670e867c00
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/14a74f4f-077c-40db-afc5-3103d99eaa00
 images:
-  - https://ucarecdn.com/1b3ecdce-77d6-4587-a7fc-390d278d6f05/
-  - https://ucarecdn.com/730f552a-52b6-4ce6-96c7-ba18d3540eea/
-  - https://ucarecdn.com/b8bc2c8d-f220-4e57-88a5-f0060e5c24cc/
-  - https://ucarecdn.com/7e16fe37-c279-4dce-bf84-c41d645e04e7/
-  - https://ucarecdn.com/6da0ae7f-0b52-4d43-927b-ca52ca78199f/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/561ac3d8-7c06-46e9-8735-d54d40d14500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9ae4d8d1-15a4-46d3-480f-d488c8d59f00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/65bbf9bf-7632-42af-aac3-559526194200
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/fb8fb47e-18d8-4473-badd-e2badc945500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/99306615-69cb-4de3-6e13-1b80e678ea00
 social_links:
   - www.instagram.com/guinness_frateur
 ---

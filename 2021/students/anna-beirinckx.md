@@ -3,7 +3,7 @@ student_name: Anna Beirinckx
 project_title: ' / ə ʊ m /  ━ A Story About Light and Sound '
 context: Digital Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/1caeb923-a9d5-4b33-86c9-bcea92a8bb28/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/4769c6d2-627d-430f-a725-0d8e58365f00'
 bio: >
   Anna Beirinckx is an Antwerp based graphic designer with a passion for 3D
   practicing in the areas of Branding, 3D Modeling & Visualizations, 3D Printing
@@ -14,11 +14,11 @@ bio: >
 
   Website in development, please contact me for full portfolio/CV.
 images:
-  - 'https://ucarecdn.com/9d2cfed2-77b2-4600-a4a2-638e8ba07ba7/'
-  - 'https://ucarecdn.com/a95d8f1e-5625-4cdc-b497-8573975d731e/'
-  - 'https://ucarecdn.com/53daea8b-15aa-4bdc-b04f-1f4717f13b45/'
-  - 'https://ucarecdn.com/dae8f6ea-49ed-4412-b10f-46b2ccad9ae4/'
-  - 'https://ucarecdn.com/cba86a72-9d29-43b3-8f11-b22da6ebc958/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/57e635cc-f15d-46b0-de23-bc73a978b700'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/85d81e9e-db8c-4ea2-988f-92c3353f9400'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3a8b86fb-71fd-4fec-ff26-295078f88c00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c63ec5cb-2865-4cca-3eed-04e455f37b00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b92f3cd9-217e-4896-f0e2-320349940d00'
 social_links:
   - 'https://www.instagram.com/anna_beirinckx/'
   - 'https://annabeirinckx.webflow.io/'

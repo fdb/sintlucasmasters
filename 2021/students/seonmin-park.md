@@ -3,7 +3,7 @@ student_name: Seonmin Park
 project_title: Unordered/misordred
 context: Autonomous Context
 year: 2020—2021
-main_image: 'https://ucarecdn.com/a2872a01-bc88-4ec0-a606-8df100c89355/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/80c9b89c-288a-4439-1748-4a3bc61fdc00'
 bio: >-
   I never had the identity as an Asian. I was only female. Since I moved to
   Europe I became "Asian" and "woman".   The extra tag led me to face racial
@@ -18,11 +18,11 @@ bio: >-
 
   --------------------------
 images:
-  - 'https://ucarecdn.com/3a9745f1-662e-47e2-8d6a-2ab951421a7a/'
-  - 'https://ucarecdn.com/64d623c2-b077-4853-b329-e751ab1a1086/'
-  - 'https://ucarecdn.com/de3fabc5-9ba8-4ce5-a6dc-a0544bd489e8/'
-  - 'https://ucarecdn.com/fd01d7e4-ca18-4823-b513-4f75870b6642/'
-  - 'https://ucarecdn.com/a6cdbd3d-7c1c-4bab-8239-3f7684cd6d6d/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/c45528a6-db8d-4ea2-aa84-1eb7ca1bca00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/24b5fdd4-f4ba-4055-964b-59124e2f5d00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/9d51edc6-2a21-47b5-2625-94e98302a400'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7a484ac4-51cf-4614-0157-4e211e132200'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/ad5c0979-a0c3-4f4a-3edf-e3572b821400'
 social_links:
   - 'https://sorryimgreat.wixsite.com/seonminpark'
   - 'https://sorryimgreat.wixsite.com/orinest'

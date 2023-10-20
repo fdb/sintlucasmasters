@@ -3,12 +3,12 @@ student_name: Noortje de Brouwer
 project_title: '     A curation of living stories'
 context: Autonomous Context
 year: 2020-2021
-main_image: 'https://ucarecdn.com/78057601-c2ad-4425-b53b-1c0cad7800a6/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/81d56336-037d-40b0-9b1a-33048067c100'
 bio: >-
   *************************************************************************************************
 images:
-  - 'https://ucarecdn.com/4e52a3b4-a0b1-4b8e-aed5-de34e31d6503/'
-  - 'https://ucarecdn.com/51d58c1b-7c82-4c57-b2b0-353c071f4daa/'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e04a8f93-2eab-4bd5-6da9-f33db7f2eb00'
+  - 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/adb77581-1eca-4ab5-27c9-279516d68f00'
 social_links:
   - www.noortjedebrouwer.nl
   - 'http://www.noortjedebrouwer.nl/'

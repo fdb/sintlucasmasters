@@ -3,7 +3,7 @@ student_name: Lies Verhaegen
 project_title: The Church Of Climate
 context: Applied Context
 year: 2022-2023
-main_image: 'https://ucarecdn.com/7b17f4cc-8ab9-43a5-8250-6ca80dcab9b1/'
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e29f23a5-7bc5-4e89-b9b1-ff1e7d3e7f00'
 social_links:
   - 'https://liesverhaegen.wixsite.com/my-site-2'
   - 'https://www.instagram.com/@lies.verhaegen'

@@ -8,8 +8,8 @@ tags:
   - audio
   - ceramic
   - metal
-main_image: https://ucarecdn.com/c2b1ec76-931a-4b43-8af3-f6c82229fa46/
-thumb_image: https://ucarecdn.com/b86babf5-d970-4268-a4c2-a728315d4384/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e91ef405-cc39-4156-d5f5-71bcee52a200
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/252d3b0d-a0b8-4368-036e-11ebf9935100
 bio: My interests are characterized by the relationship between the world of the
   individual or object and the physical space they occupy. The last few years I
   have studied psychoanalysis and the way in which it deals with different forms
@@ -21,25 +21,25 @@ bio: My interests are characterized by the relationship between the world of the
   investigation. In this way I try to make myself understood and connect to the
   world around me.
 images:
-  - https://ucarecdn.com/4544627f-f3ba-4470-8eee-e412684a70ed/
-  - https://ucarecdn.com/9dda7353-ace8-43cf-b287-50a3dab14c5e/
-  - https://ucarecdn.com/55877635-978d-4eed-9c3e-a8d74596b8e8/
-  - https://ucarecdn.com/5639d598-23d3-46cd-a4db-7c28acb311b8/
-  - https://ucarecdn.com/5e4b5101-535b-4bc9-be0a-cbc0bfa1396e/
-  - https://ucarecdn.com/a59fcfa7-906e-45a2-9a52-b84b97de089f/
-  - https://ucarecdn.com/1ce71002-b706-49cd-ade7-fa457aea9a71/
-  - https://ucarecdn.com/4b0db944-2d16-4bb0-b763-c68d1d603580/
-  - https://ucarecdn.com/0a58108b-4a14-4644-991e-43bf9ff91d4c/
-  - https://ucarecdn.com/30c479b4-ea05-4af9-a865-b455895d166c/
-  - https://ucarecdn.com/b8fdb2da-2460-4a0f-8189-e2f19e5a8b10/
-  - https://ucarecdn.com/76d659cc-a411-48bd-b643-d5e1ea976352/
-  - https://ucarecdn.com/197db281-9907-4527-8107-73624b2e6a03/
-  - https://ucarecdn.com/f55baab6-33f4-47a0-9207-0e4eddd80628/
-  - https://ucarecdn.com/cb3af8d6-a391-4c75-a07a-bfefea690472/
-  - https://ucarecdn.com/8f01d03a-cdac-4f08-baa4-e121d93b27a4/
-  - https://ucarecdn.com/b115fecc-7b66-4bf2-bd35-251c29f0b672/
-  - https://ucarecdn.com/772695a4-f324-4e15-b3af-90141b0d2168/
-  - https://ucarecdn.com/c6fe6513-e088-4030-b6a7-549750bd25fc/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/db3febf1-ad07-4729-27cc-6815635e9900
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bb3c8575-a10b-417d-dc61-10f032c42500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/b8c7faf0-c7dd-4a48-c45a-30f608857e00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/21a7f607-2813-4eab-c37a-df97e9764a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/6fe15e08-0b8d-4efc-6091-aab25cc8da00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8784bab2-5da3-4010-343d-270ea32dfc00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d687c859-a97d-4d56-8b02-661789feee00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/cfd6af0c-ccb0-4112-60a4-7d9a0a558a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0d1b64b6-8178-4b63-67bc-976cc2baaf00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1facb5a5-1fd2-4894-2f6f-3acd2ad0ea00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/51b0cf50-c2cb-4cef-9c1e-56fcd3a78a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e069333f-4e79-49af-5e18-c909df343a00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d359ac78-240f-4105-7e75-ac8f55c0b000
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/aa45ee04-0cdf-421f-c55a-21a0492d8300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/46337628-01c8-4601-8b6d-612727dece00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d8e6179e-a6c2-494b-dbbd-8b2e597b4d00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f2a04164-f0f7-41c8-3f90-0da00bb01300
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f8ee98b6-0146-4843-3645-aca64509fb00
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/0d0e30ad-8249-4bf8-3d6b-cf8a7c990700
 social_links:
   - https://www.instagram.com/by_sarahdona/
   - https://www.sarahdona.com/

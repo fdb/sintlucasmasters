@@ -6,12 +6,12 @@ year: 2021—2022
 tags:
   - installation
   - paper
-main_image: https://ucarecdn.com/f8cb8710-ce7d-4bea-a458-4a6ea5ab1ee9/
-thumb_image: https://ucarecdn.com/52b71e7e-b486-44f4-8ded-b230d9d5a3eb/-/crop/4072x3975/1113,0/-/preview/
+main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d1cd6aad-851e-4fbc-5174-9a7b74812400
+thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2f615304-2e03-487f-748d-e84fe319fc00-/crop/4072x3975/1113,0/-/preview/
 bio: ""
 images:
-  - https://ucarecdn.com/99978539-2a5a-4bb7-868f-7683195356e8/
-  - https://ucarecdn.com/944cc1f8-2ac7-4b1f-b2f7-41534a6bf973/
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/848b9968-7f3f-4d57-c176-2bf187b72500
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/8ffdcfb5-5bc8-49e6-0f69-a4740bfda700
 social_links:
   - https://www.instagram.com/lies___jacobs
 ---
