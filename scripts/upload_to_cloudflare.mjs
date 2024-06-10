@@ -8,6 +8,7 @@ import FormData from 'form-data';
 import 'dotenv/config';
 
 const UPLOADS_DIR = '_uploads';
+const VALID_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif'];
 const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
 const CLOUDFLARE_ACCOUNT_HASH = process.env.CLOUDFLARE_ACCOUNT_HASH;
 const CLOUDFLARE_API_KEY = process.env.CLOUDFLARE_API_KEY;
@@ -51,6 +52,12 @@ async function main() {
 	for (const studentDir of studentDirs) {
 		const studentImages = await readdir(`${UPLOADS_DIR}/${studentDir}`);
 		for (const studentImage of studentImages) {
+			const ext = studentImage.split('.').pop();
+			if (!VALID_EXTENSIONS.includes(ext)) {
+				console.log(`Invalid extension ${ext}, skipping...`);
+				continue;
+			}
+
 			const relativeFilename = `${studentDir}/${studentImage}`;
 			console.log(relativeFilename);
 			if (!(await checkCloudflareImage(relativeFilename))) {
