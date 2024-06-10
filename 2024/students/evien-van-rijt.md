@@ -2,8 +2,12 @@
 student_name: "Evien van Rijt"
 project_title: "etentje met jezelf"
 context: Autonomous Context
-year: 2022-2023
-main_image: evien-van-rijt.jpg
+year: 2023-2024
+main_image: evien-van-rijt/1nQ6yMsolL629QudtQ6BONhVtlvBrlrJW.jpg
+images:
+  - evien-van-rijt/1kR1IigrnSFd4QZgTVgkL20oXp39BznKV.jpg
+  - evien-van-rijt/1XzRAlbrVpgOyDKDDm2smChqhSL7cKi1f.jpg
+  - evien-van-rijt/1geIH5miZ5cQALdL3RIK8tMaZJEXKyDqK.jpg
 social_links:
   - "www.evienvanrijt@gmail.com"
   - "https://www.instagram.com/vanrijt_evien"
@@ -19,3 +23,4 @@ Met woordspelingen en subtiele verwijzingen verwerk ik deze gevoelens in mijn sc
 
 Door het gebruik van schilderijen en een keramische installatie wil ik een geforceerde herinnering oproepen. Het gaat om een gevoel van herkenning en speelsheid. Wat is jouw gekste eetcombinatie die je koppelt aan een herinnering?
 Het is een speels werk waarmee ik vervreemding wil overbruggen. Durf je te eten als er mensen bij zijn? Daarom heb ik het afgelopen jaar broodjes chips uitgedeeld en een etentje met lasagne en appelmoes georganiseerd, om de spanning rondom eetgewoontes weg te nemen.
+

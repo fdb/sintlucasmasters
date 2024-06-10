@@ -2,8 +2,11 @@
 student_name: "Fien Dierckx"
 project_title: "Resonating Memories"
 context: Digital Context
-year: 2022-2023
-main_image: fien-dierckx.jpg
+year: 2023-2024
+main_image: fien-dierckx/1LX6nFAiFY3SX_i1DSScsGO-eqgzde4At.png
+images:
+  - fien-dierckx/1x3y4h5V6sUS2FQeAwdbmK7pBSZTynJJK.png
+  - fien-dierckx/1n6IjYSbSv6K1OR81tp3cwwa0WkTyGxO_.jpg
 social_links:
 ---
 An exploration of how childhood audio shapes and resonates with me now. Combining computer analysis with personal connotations, this project delves into core memories and their impact, translating their emotional and psychological effects into visual form, bridging the past and present.

@@ -85,6 +85,7 @@ async function downloadImageFromGoogleDrive(url, slug, prefix = '') {
 	// fileSlug = prefix + fileSlug;
 	// fileSlug = slug + '_' + fileSlug;
 	console.log(fileSlug);
+	const fileExtension = fileConfig.title.split('.').pop().toLowerCase();
 
 	// Download the file
 	const exportUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
@@ -93,7 +94,7 @@ async function downloadImageFromGoogleDrive(url, slug, prefix = '') {
 	const buffer = await res.arrayBuffer();
 	const data = new Uint8Array(buffer);
 	await ensureDirectory(`_uploads/${slug}`);
-	await writeFile(`_uploads/${slug}/${fileSlug}`, data);
+	await writeFile(`_uploads/${slug}/${fileId}.${fileExtension}`, data);
 }
 
 async function processStudent(student) {

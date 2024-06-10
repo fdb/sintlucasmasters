@@ -2,8 +2,14 @@
 student_name: "Luiza Botner"
 project_title: "(Dis)assembled Bodies: Exploring impacts from digital technologies in our perceptions. "
 context: Socio-Political Context
-year: 2022-2023
-main_image: luiza-botner.jpg
+year: 2023-2024
+main_image: luiza-botner/1kBSIAdSfKu7B6jX2Bxn1RlstzUDKzC5L.png
+images:
+  - luiza-botner/121QgkVkAPsuWvGRKms_hf8OhWWe6FbMb.jpg
+  - luiza-botner/1Nb0zYlxiK-WwWI9u02I0uygXZGO0CUBH.jpg
+  - luiza-botner/1gMvPTPRAUesyOG3-v_x_OEP0AV2F1nRk.jpg
+  - luiza-botner/1-pSealUd8A81em55frxHDY4z436oCR_e.jpg
+  - luiza-botner/1vNR3lbl3lObRk7OTF-Zz5kQf1PdzGZ_m.jpg
 social_links:
   - "https://www.instagram.com/@lbotner"
 ---

@@ -2,8 +2,13 @@
 student_name: "Marlena Owczarek"
 project_title: "Insignia of Age and Decay"
 context: Autonomous Context
-year: 2022-2023
-main_image: marlena-owczarek.jpg
+year: 2023-2024
+main_image: marlena-owczarek/1Syfd7xu4yj8GggeDpjzNTwXc_fNvuhvW.jpg
+images:
+  - marlena-owczarek/1Y1m_62NNhSWWSTsf_78-MYgWy323IyFC.png
+  - marlena-owczarek/1P05kl2xvP1Tmqn0aGh8u8BZJT_bu6ziW.jpg
+  - marlena-owczarek/1I1ve0k8bVw7Fng8eyWYlKIO4r2NDXE0z.jpg
+  - marlena-owczarek/17TzPnmL4CdpYhMV2KOdklLxexcYPpPPA.jpeg
 social_links:
   - "https://www.instagram.com/@lxnva"
 ---

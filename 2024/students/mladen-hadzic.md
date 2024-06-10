@@ -2,8 +2,14 @@
 student_name: "Младен Хаџић"
 project_title: "HAJDUK: Against the Midnight Sultan"
 context: Autonomous Context
-year: 2022-2023
-main_image: mladen-hadzic.jpg
+year: 2023-2024
+main_image: mladen-hadzic/14WPs9140Y2vo2LA6B5mnrLcuN8olOBPx.jpg
+images:
+  - mladen-hadzic/1HObyYYAtTIEggxCtl-nnuFybG0RGoU2k.jpg
+  - mladen-hadzic/12j1_Dt2jqefVy_NwqzcfLlhqj739xfXP.jpg
+  - mladen-hadzic/1CyVR0cEcq2xMRDygXwR_iPGt2yURXtfU.png
+  - mladen-hadzic/179askzL6pYNBgjGrOB3FYDfo4GgdO4oS.png
+  - mladen-hadzic/1FZsK71zMHV2vXrsiHkI4skNiyTZGtxok.png
 social_links:
   - "https://mladen-hadzic.squarespace.com/blog"
   - "https://www.instagram.com/https://www.instagram.com/levorukirevolveras/"

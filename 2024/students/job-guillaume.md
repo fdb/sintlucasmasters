@@ -2,8 +2,10 @@
 student_name: "Job Guillaume"
 project_title: "Adventures in chronic fiction"
 context: Autonomous Context
-year: 2022-2023
-main_image: job-guillaume.jpg
+year: 2023-2024
+main_image: job-guillaume/1QFtYdMcRzpZjAwGpV-VP-1W5MbW-CZRA.jpg
+images:
+  - job-guillaume/190vUaJVZM62OOprNAvgWfSIhl6ITRYU_.jpg
 social_links:
   - "https://www.instagram.com/@jopgwiejoom"
 ---

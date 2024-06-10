@@ -3,6 +3,30 @@
 import { stat, readdir, readFile, writeFile } from 'fs/promises';
 import { csvParse } from 'd3-dsv';
 import slugify from 'slugify';
+import { existsSync } from 'fs';
+
+function parseDriveUrl(url) {
+	url = url.trim();
+	const GOOGLE_DRIVE_URL_PREFIX = 'https://drive.google.com/open?id=';
+	if (!url.startsWith(GOOGLE_DRIVE_URL_PREFIX)) {
+		console.warn(`Invalid link ${url}`);
+	}
+	return url.slice(GOOGLE_DRIVE_URL_PREFIX.length);
+}
+
+function driveUrlToRelativeUrl(slug, url) {
+	url = parseDriveUrl(url);
+	const filename = `${slug}/${url}`;
+	const jpgFilename = `${filename}.jpg`;
+	if (existsSync(`_uploads/${jpgFilename}`)) return jpgFilename;
+	const jpegFilename = `${filename}.jpeg`;
+	if (existsSync(`_uploads/${jpegFilename}`)) return jpegFilename;
+	const pngFilename = `${filename}.png`;
+	if (existsSync(`_uploads/${pngFilename}`)) return pngFilename;
+	const gifFilename = `${filename}.gif`;
+	if (existsSync(`_uploads/${gifFilename}`)) return gifFilename;
+	throw new Error(`File not found: ${filename}`);
+}
 
 async function parseCsvFile(filename) {
 	const text = await readFile(filename, 'utf8');
@@ -51,7 +75,11 @@ async function processStudent(student) {
 	md += `project_title: "${student.project_title}"\n`;
 	md += `context: ${context}\n`;
 	md += `year: 2023-2024\n`;
-	md += `main_image: ${slug}.jpg\n`;
+	md += `main_image: ${driveUrlToRelativeUrl(slug, student.main_image)}\n`;
+	md += `images:\n`;
+	for (const image of student.images.split(',')) {
+		md += `  - ${driveUrlToRelativeUrl(slug, image)}\n`;
+	}
 	md += `social_links:\n`;
 	if (student.website) {
 		md += `  - "${student.website}"\n`;
@@ -63,8 +91,11 @@ async function processStudent(student) {
 	}
 	md += '---\n';
 	md += `${student.summary}`;
-	md += '\n\n';
-	md += `${student.description}`;
+	if (student.summary.trim() !== student.description.trim()) {
+		md += '\n\n';
+		md += `${student.description}`;
+	}
+	md += '\n';
 
 	const filename = `2024/students/${slug}.md`;
 	await writeFile(filename, md);

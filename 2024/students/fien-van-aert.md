@@ -2,8 +2,14 @@
 student_name: "Fien van Aert"
 project_title: "Cryoforms"
 context: Applied Context
-year: 2022-2023
-main_image: fien-van-aert.jpg
+year: 2023-2024
+main_image: fien-van-aert/1yolJvI2lM_SCaJdR52BRLwOohKfAZMYC.jpg
+images:
+  - fien-van-aert/1DpfTtiLzPLICup3KMCZvVahvcO-JxSd7.jpg
+  - fien-van-aert/1bgfIsxy2sgIJ0-LW9mA-w7tDNiYkcEze.jpg
+  - fien-van-aert/1Ydxy34x3_qLKswSIa9yQoAYk3GWBYIYo.jpg
+  - fien-van-aert/1sSKj1P4jRM9te0mTQdNqilgOuLNIRQPC.jpg
+  - fien-van-aert/1vdb6_mmMmUcdgNKEWw9izf7yKNs1Qlq1.jpg
 social_links:
   - "https://www.instagram.com/artfiiyo"
 ---

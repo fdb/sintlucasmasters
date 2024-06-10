@@ -2,8 +2,13 @@
 student_name: "Eline Antonine Zeevat "
 project_title: "Breek jij je mooie hoofdje daar maar niet over'"
 context: Socio-Political Context
-year: 2022-2023
-main_image: eline-antonine-zeevat.jpg
+year: 2023-2024
+main_image: eline-antonine-zeevat/1Mqj5p2e59RCEBkdbnQ3mvYfCyKSgEbgL.jpg
+images:
+  - eline-antonine-zeevat/1Jard8NnD2DVeuxJ9PnUVC38bOx6K6r6J.jpg
+  - eline-antonine-zeevat/1CdEYc7Q4aKZxB7ulMaatow5J6zhZLU7Q.jpg
+  - eline-antonine-zeevat/1eadwJ0T5EdlxcBAbz3y_Tt9ViQqUTFY1.jpg
+  - eline-antonine-zeevat/1KKHmkqAQQvheo9B3OSWH874rZYBWQvSB.jpg
 social_links:
   - "https://harvestingtraces.netlify.app/members/eline/eline"
   - "https://www.instagram.com/_elineantonine_zeevat"

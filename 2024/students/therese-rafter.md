@@ -2,8 +2,15 @@
 student_name: "Thérèse Rafter"
 project_title: "Tremor"
 context: Autonomous Context
-year: 2022-2023
-main_image: therese-rafter.jpg
+year: 2023-2024
+main_image: therese-rafter/1fmifkd41-8MQ1m1U9FjjA5OMf2jFZCI3.jpg
+images:
+  - therese-rafter/1ITefO3asAAWu6pUpFWMHQQ7JdLsNcTAU.jpg
+  - therese-rafter/1ThK9bzV5lz8qZKy9Ti_7poc7dNYpGLDI.jpg
+  - therese-rafter/1axEyV88H8LaBuGepnawWnOIUBHDTKxqv.jpg
+  - therese-rafter/16iYMSClJrqhKVh8CxfTheQekOjX-fA30.jpg
+  - therese-rafter/1nzJsiGnKNPFfF2vi1A1wbwbtpMYnBQHF.jpg
+  - therese-rafter/1OD2BnvFSZcOrmNl9g9JgUKXU4sJc99EN.jpg
 social_links:
   - "thereserafter.com"
   - "https://www.instagram.com/www.instagram.com/thereserafter"

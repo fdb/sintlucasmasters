@@ -2,8 +2,11 @@
 student_name: "Bob Harterink"
 project_title: "Door het oog van de maker"
 context: Digital Context
-year: 2022-2023
-main_image: bob-harterink.jpg
+year: 2023-2024
+main_image: bob-harterink/1rX0hkM8S2Rr_msSg1-ip2qcvQXzJLIHx.jpg
+images:
+  - bob-harterink/1dZtFD4hgwDqmzKN8KoA75gDBn8XcDeHJ.jpg
+  - bob-harterink/1iiuJ2MDiR1Vz2edUNsJwJJYhgdfURN7I.jpg
 social_links:
   - "https://picturemod.netlify.app/"
   - "https://www.instagram.com/bobharterink"

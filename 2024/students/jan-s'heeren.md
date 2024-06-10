@@ -2,8 +2,14 @@
 student_name: "Jan S'heeren"
 project_title: "FASCiATIO"
 context: Applied Context
-year: 2022-2023
-main_image: jan-s'heeren.jpg
+year: 2023-2024
+main_image: jan-s'heeren/1M-O09b1YIKV2F2RSxHE6Ixjmt4NXoCOZ.jpg
+images:
+  - jan-s'heeren/1ekkUsu6mvxzhFfsqns9gIOlNkXfL_0bc.jpg
+  - jan-s'heeren/18_zzAlRPFzTu-2Eg1J9V_yTehnQeStUV.jpg
+  - jan-s'heeren/1QxysG7jpivDf8aAto5LshnjOnJZIApHW.jpg
+  - jan-s'heeren/1x7pPoMQafDbB5XGps7R1fejHOJdwP0vz.jpg
+  - jan-s'heeren/1UBhnCMxQWwdoWGkyMKQMEB95K9ndAHbZ.jpg
 social_links:
   - "sheeren.world"
   - "https://www.instagram.com/sheerenmidas"
@@ -15,3 +21,4 @@ FASCiATIO is a visual exploration of self-destruction in human behavior, a refle
 The name "FASCiATIO" draws inspiration from a genetic anomaly observed in flowering plants known as fasciation, wherein uninhibited cell division results in the formation of distorted flowers. This phenomenon resonates deeply with the narrative of my own journey, mirroring unbounded growth and distortion beyond control. The resulting blooms, with their eerie beauty, serve as a visual metaphor for the paradoxical potency within self-destructive processes.
 
 In my effort to intertwine personal narrative with the symbolic resonance of fasciation, I assumed a godlike role, manipulating genetic mutations akin to wielding celestial tools. By encoding these mutations into digital organisms, I endeavor to recreate the essence of my altered self, transcending natural boundaries. Developing algorithms that emulate these processes and deploying them onto objects beyond their usual context allows me to embody the role of a celestial creator. 
+

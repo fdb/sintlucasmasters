@@ -2,8 +2,15 @@
 student_name: "Helin Çan"
 project_title: "Lost & Found, Romania: Endangered heritage"
 context: Applied Context
-year: 2022-2023
-main_image: helin-can.jpg
+year: 2023-2024
+main_image: helin-can/11ocdVZHYH3yLo7qWLPfeeOANXdIBCF65.jpg
+images:
+  - helin-can/1IKcqMMo-BBdAf5nsMEvzonZ-bAL1xHkV.jpg
+  - helin-can/1OxLBkfG7B1bvKg_tpRB54R5lHZB07x0e.jpg
+  - helin-can/1bNnbk8RGWp3NrsPP1HbNFO6OvABJWwnA.png
+  - helin-can/1uDp_289CzXAMDIWklcIzsvS_wzCPcT3W.jpg
+  - helin-can/18meg8rIIRxCJzo4bviwd-jYwtX4GSX4_.png
+  - helin-can/1fJXdzCsc_EabHWQUDNwBvpYKsV_G01SU.jpg
 social_links:
   - "https://canhelin.com"
   - "https://www.instagram.com/can_helin"

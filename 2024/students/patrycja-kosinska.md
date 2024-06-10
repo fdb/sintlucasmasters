@@ -2,8 +2,13 @@
 student_name: "Patrycja Kosinska"
 project_title: "Fishboy"
 context: Applied Context
-year: 2022-2023
-main_image: patrycja-kosinska.jpg
+year: 2023-2024
+main_image: patrycja-kosinska/1xYBBZDFNLO9fm0cKeGn1FqGqECKEOLW3.jpg
+images:
+  - patrycja-kosinska/1U5fqWxgsB6J22QfOMb38vjtEPag7d2JF.jpg
+  - patrycja-kosinska/18dQ5OeNkm38Jv91-BUS0-ayAqVjbt1mT.jpg
+  - patrycja-kosinska/11ZTHAeiHKjaIOTqkpbl-nC9l_1wg2iZy.jpg
+  - patrycja-kosinska/1md3e1ngjzo_1McuyeXzTGXUVqKEHJM9s.jpg
 social_links:
   - "https://www.instagram.com/pats.arts"
 ---

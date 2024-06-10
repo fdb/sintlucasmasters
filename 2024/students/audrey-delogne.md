@@ -2,8 +2,15 @@
 student_name: "Audrey Delogne"
 project_title: "La révélation de mes ruïnes"
 context: Autonomous Context
-year: 2022-2023
-main_image: audrey-delogne.jpg
+year: 2023-2024
+main_image: audrey-delogne/1M-EJj_gd0-qeAER_c2rb9RFf0wkrCpdn.jpg
+images:
+  - audrey-delogne/173mNYUuPyjGdH8-rbhxmbfW8z5Ci_xRZ.jpg
+  - audrey-delogne/11Z4QUpmA4ymfvGVWDbkWN3F7M3en49Ui.jpg
+  - audrey-delogne/19byWUeloBoHDa7_3zHLlIpx8eUeyb2gN.jpg
+  - audrey-delogne/1V7ph35wuyI_SFKci6HW02TMZUeYqgAq2.jpg
+  - audrey-delogne/11SeAbopdFKeKa8rIqxiZfWkR-QbaZ6ts.jpg
+  - audrey-delogne/19mSfc5zpoBDYHDflHmX9GFlx1Q9fo2BH.jpg
 social_links:
   - "www.audreydelogne.com"
   - "https://www.instagram.com/audreydelogne"

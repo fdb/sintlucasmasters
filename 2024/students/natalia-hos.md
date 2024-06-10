@@ -2,8 +2,15 @@
 student_name: "Natalia Hos"
 project_title: "MY MOTHER IS A HUMAN"
 context: Applied Context
-year: 2022-2023
-main_image: natalia-hos.jpg
+year: 2023-2024
+main_image: natalia-hos/1kiAW73JU9XE8rMXELl-lPnnw9fbboPN6.jpg
+images:
+  - natalia-hos/18NJO-V9c0TsaREIq3wBybAOcYGye-oV8.jpg
+  - natalia-hos/1auDWkOioljRHuO-o3UOGRN3n6bjA-Y9u.jpg
+  - natalia-hos/1xbDI1QBWui2U7k5Oo40caiM1C3d4Zed1.jpg
+  - natalia-hos/1epKZOiTyFVwl8laAEbGaA8yxr9PCtgk2.jpg
+  - natalia-hos/1kY64Qkhf2yUL2jbwcFm5FJlfdLEVaEvH.jpg
+  - natalia-hos/1wZBgys-V_qTARP4AzhUts5VjNUvV5yfd.jpg
 social_links:
   - "https://nallatau.portfoliobox.net "
   - "https://www.instagram.com/https://www.instagram.com/nalla.tau/"

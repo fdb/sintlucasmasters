@@ -2,8 +2,14 @@
 student_name: "Léopoldine Balis "
 project_title: "Soft Fascination "
 context: Autonomous Context
-year: 2022-2023
-main_image: leopoldine-balis.jpg
+year: 2023-2024
+main_image: leopoldine-balis/1n-ChfAPmhYv1b3Uw1g6mAYWIs8bzK2wX.jpg
+images:
+  - leopoldine-balis/1Ull_1QxXm5vntbiptClX-LMvHfhrAzMk.jpg
+  - leopoldine-balis/1QNT-ZRKq1rK_CO6RyWIfhO4My0tuE8mW.jpg
+  - leopoldine-balis/1VKzZZAkTqEaJDvUJtX58fz6cRI4HK8Ig.jpg
+  - leopoldine-balis/1yRu2anq3B4sCpah7aMMp6FE29R33Kk1c.jpg
+  - leopoldine-balis/1wR6huXl_tqk8IrViUQsdWPfkUcHTg0Xh.jpg
 social_links:
   - "https://www.instagram.com/leopoldinebalis "
 ---

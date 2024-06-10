@@ -2,8 +2,12 @@
 student_name: "Arthur Saint-Remy"
 project_title: "Posterior Hot Zone"
 context: Digital Context
-year: 2022-2023
-main_image: arthur-saint-remy.jpg
+year: 2023-2024
+main_image: arthur-saint-remy/1sV4AfFx5b2HIdxlZH8ke4R2AFGXhsfzA.jpg
+images:
+  - arthur-saint-remy/1ZJhJRKPj-m85SEepHVEKAxtguJJ4Xhmm.jpg
+  - arthur-saint-remy/1Sa1UTjf-S2o0pN6lVjtDoY52Ww2lV7kt.jpg
+  - arthur-saint-remy/1axD7DZyMMeM2C19ppi4JIt4GV1r1rVTw.jpg
 social_links:
   - "https://www.instagram.com/arthur_saintremy"
 ---

@@ -2,8 +2,14 @@
 student_name: "Jenthe Jochums"
 project_title: "Bewaarders van Herinneringen"
 context: Autonomous Context
-year: 2022-2023
-main_image: jenthe-jochums.jpg
+year: 2023-2024
+main_image: jenthe-jochums/1nPXr7MC4RZTDnqnngKEas7RAeN48k9sd.jpg
+images:
+  - jenthe-jochums/1j775AFnf-gW4EV_B-TiA7XsYuSmxx--B.jpg
+  - jenthe-jochums/1tDBz0y55mRSzGQZWFj3T1p1ZUn3aJ8jt.jpg
+  - jenthe-jochums/1TTOTFzvQWN5ER5-uH4BcYmgHM3LZWJc0.jpg
+  - jenthe-jochums/10RIp-D_V5RjqiMuhGWsOKkjCo0ETxFQo.jpg
+  - jenthe-jochums/1QfA_JQnCJzBhPgkf7n1-ZVsY5BRJHwMf.jpg
 social_links:
   - "https://www.instagram.com/jenthe.jochums"
 ---

@@ -2,8 +2,14 @@
 student_name: "Karlijn de Lange"
 project_title: "A Vast Set of Accumulated Narratives"
 context: Autonomous Context
-year: 2022-2023
-main_image: karlijn-de-lange.jpg
+year: 2023-2024
+main_image: karlijn-de-lange/1Jny9PEiNKuUrjYcH3u_6FyHqbp_5F1gQ.jpg
+images:
+  - karlijn-de-lange/1ZLqUXNajdE8cpJaPPIEAxzoMK31tYLZs.jpg
+  - karlijn-de-lange/1BSbNO5gApK2glwuRftkpG4JUTW_J6yzw.jpeg
+  - karlijn-de-lange/1Joo8nKambLAfClmkHl4hTA86IXZBzgHo.jpg
+  - karlijn-de-lange/1i5C4epVXLa4GOZocs8yQ9edI1JKDvHez.jpg
+  - karlijn-de-lange/1-XzIocJCWmaR7LGpOqRRBWg-YygM5KQn.jpg
 social_links:
   - "https://kar.hotglue.me/"
   - "https://www.instagram.com/kar___line"

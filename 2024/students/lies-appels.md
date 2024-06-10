@@ -2,8 +2,15 @@
 student_name: "Lies Appels"
 project_title: "Aesthetic Complexity"
 context: Digital Context
-year: 2022-2023
-main_image: lies-appels.jpg
+year: 2023-2024
+main_image: lies-appels/1WnA1zne-MB3RXnV6yNnx_7je10a9kavf.jpg
+images:
+  - lies-appels/1k1Ea83njam4pgg9w9XqW1gIeg2oydInH.jpg
+  - lies-appels/1gK-YxHSA8bv7Cgx-l67b3o0GG7WQujqs.jpg
+  - lies-appels/1dLJZkle6pIu-zQ1vDDS4MgNlcgagcSEZ.jpg
+  - lies-appels/1HiSZNDSmZtU2nOvxxHPRNzVYYq5G6mPK.jpeg
+  - lies-appels/1Es9wkKt5gA-UmGNsACbiTrhKMcvmGF6j.jpg
+  - lies-appels/1ZmzHq84mrPl78yeJLugNnYasbBb7NAfQ.jpg
 social_links:
   - "https://www.linkedin.com/in/lies-appels-5aa58117a/"
 ---

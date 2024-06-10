@@ -2,8 +2,13 @@
 student_name: "Ori van Gelderen"
 project_title: "Take me Back to Eden"
 context: Autonomous Context
-year: 2022-2023
-main_image: ori-van-gelderen.jpg
+year: 2023-2024
+main_image: ori-van-gelderen/1GOO26OxUTy8c9pEriYtKc9j90BoRp1So.jpg
+images:
+  - ori-van-gelderen/11W249sfE2-x4hNktDVwKG9TBooGJmnn7.jpg
+  - ori-van-gelderen/1L3Qezi0dUKpK6KssxpmjFeTfgOBLVCQy.jpg
+  - ori-van-gelderen/1-63HyCfsbG9wxru_h-EzA78UzLDIRzdb.jpg
+  - ori-van-gelderen/1xA-cKTmHmd9RoIo6Z5dunbOfY3TPhEdP.jpg
 social_links:
   - "https://www.instagram.com/Ori_van_gelderenart"
 ---

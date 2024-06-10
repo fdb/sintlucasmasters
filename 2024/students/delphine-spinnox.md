@@ -2,8 +2,13 @@
 student_name: "Delphine Spinnox"
 project_title: "Moi une Patate"
 context: Autonomous Context
-year: 2022-2023
-main_image: delphine-spinnox.jpg
+year: 2023-2024
+main_image: delphine-spinnox/1d_lxywgkNPMxE7m_Zu2MDAX_aGEZBNYQ.jpg
+images:
+  - delphine-spinnox/15B2bMO6LviKnKWwRcgbIGP5s4oy5Lgg_.jpg
+  - delphine-spinnox/1lLzQ9Tfr_R4oOHIGR_R3BAu8Tu5_7n0w.jpg
+  - delphine-spinnox/1jhUdlfLeJ1QUpkF9NbSqT52raZi1iopD.jpg
+  - delphine-spinnox/1EfBl56OrkJhyWkAe8g5863i83F_4qOzV.jpg
 social_links:
   - "www.delphinespinnox.com"
   - "https://www.instagram.com/@by.delphinespinnox"
@@ -15,3 +20,4 @@ The year began with reflecting on my childhood drawings from when I was 2 to 3 y
 My work centres around a ceramic sculpture representing my safe self, contrasted with a poem-video that depicts a situation where this sense of safety is disturbed by catcalling. This sculpture embodies the culmination of my experiences and growth as an artist. It is crafted with clay slabs, reinforcing the connection between the material and the safe feeling that also originates from my childhood drawings. 
 
 Despite the challenges and intense self-reflection, I feel more connected to my work than ever. Through my ceramics, I put a piece of myself on display. The sculpture's form, resembling a potato, ties back to the simplicity of my childhood drawings. Given the personal nature of this project and my mother tongue being French, it felt only right to title it in French.
+

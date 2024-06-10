@@ -3,7 +3,7 @@ layout: base
 ---
 
 <div class="full-width">
-	<img class="main-image" src="{{ main_image }}/xl" alt="{{ project_title }}" />
+	<img class="main-image" src="/2024/static/media/{{ main_image }}" cf-src="{{ main_image }}/xl" alt="{{ project_title }}" />
 </div>
 
 <div class="meta">
@@ -20,10 +20,6 @@ layout: base
 	{{ content }}
 </article>
 
-{%- for image in images -%}
-<img class="image" src="{{ image }}/xl" alt="" />
-{%- endfor -%}
-
 <div class="social-links__wrapper">
 	<div class="social-links">
 		{% for link in social_links %}
@@ -31,4 +27,8 @@ layout: base
 		{% endfor %}
 	</div>
 </div>
-{% include 'footer' %}
+
+{%- for image in images -%}
+<img class="image" src="/2024/static/media/{{ image }}" cf-src="{{ image }}/xl" alt="" />
+{%- endfor -%}
+

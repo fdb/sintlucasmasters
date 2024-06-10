@@ -2,8 +2,15 @@
 student_name: "Inge Floré"
 project_title: "A SPACE FOR/OF TENDERNESS"
 context: Socio-Political Context
-year: 2022-2023
-main_image: inge-flore.jpg
+year: 2023-2024
+main_image: inge-flore/1uPWs7vvdO_ZfQRwhEjO1eIibAQvMJU_d.jpg
+images:
+  - inge-flore/1e8LB7mJIur-JXjx3B3AdjOipDFHuBVTb.jpeg
+  - inge-flore/1InuBSFh7phsLJ7QJrOCS4yralWK0a15a.jpeg
+  - inge-flore/17NCKig-ecqGE8b-v0dfd9j7j6EjsBOaL.jpeg
+  - inge-flore/18IsBxEPgWyJ1OzkcOsuv2YavvlqiYCZm.jpeg
+  - inge-flore/1OVs3DwasF3FAF7-cqg4viMuAG9S1FMrO.jpeg
+  - inge-flore/1t0ioXzYtMOsMt04lrRWUz2l5ykcjGJQy.jpg
 social_links:
   - "I don't have my own website yet, but there is the website of the Socio-Political Master : Harvesting Traces with my 'member page' https://harvestingtraces.netlify.app (still under construction)"
   - "https://www.instagram.com/what.if.images"
@@ -14,4 +21,5 @@ My work embodies tenderness, storytelling, and experimentation. As a daughter an
 This master project includes a series of five full-colour garments and one hat, two collections of hand-sewn 'Handkerchiefs for Special Use (For tears only – To express shame)', a textile banner 'To Proudly express Mixed Ancestry', two poems and a Pluriverse Prayer, a performative video, and a black-and-white photo series, 'Female Lineage'. These components explore femininity and societal constructs.
 Central to the presentation is tenderness as a counterforce to violence and societal discord. My embroidery and lace work, the garments, the handkerchiefs and banner, the photo series and video open a multi-sensorial experience, inviting viewers to reflect on touch, intimacy, and connection in a world often dominated by aggression and patriarchy. 
 I aim to expand my practice with close-to-the-body textile techniques such as lacework and embroidery, exploring the transformative power of mistakes and unexpected outcomes.        I envision my artistic space as a refuge for introspection, where audiences can contemplate the potency of tenderness and femininity in today's society.
+
 

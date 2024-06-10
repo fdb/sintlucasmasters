@@ -2,8 +2,15 @@
 student_name: "Kamilla Isalieva"
 project_title: "Around the World in 72 Days"
 context: Applied Context
-year: 2022-2023
-main_image: kamilla-isalieva.jpg
+year: 2023-2024
+main_image: kamilla-isalieva/1Hi_m-jnjIaAb9avClbIaR5AZnk9og7IT.jpg
+images:
+  - kamilla-isalieva/1k8Wvk-ES0Om7svCLhhF4GiXG7S122xpy.jpg
+  - kamilla-isalieva/1KmAYYrsYH9kJnA9ruaEZaNwjftXzzRn_.jpg
+  - kamilla-isalieva/1finBveWAYAjyIM5HcNwgyzEQ89fzn1Ej.jpg
+  - kamilla-isalieva/1FrdCtqMlHif_e8OCTNXhjY3J393koW-c.jpg
+  - kamilla-isalieva/1VC3uTvRIqD1RgJghgkFc1ncW2wGi0t9S.jpg
+  - kamilla-isalieva/1D_P8vj4AroHIQilXL6_h5AsKDdK5qQ--.jpg
 social_links:
   - "kamilla.be"
 ---

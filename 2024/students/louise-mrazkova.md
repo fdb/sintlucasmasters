@@ -2,8 +2,10 @@
 student_name: "Louise Mrázková"
 project_title: "De Selfie, geportretteerd. "
 context: Autonomous Context
-year: 2022-2023
-main_image: louise-mrazkova.jpg
+year: 2023-2024
+main_image: louise-mrazkova/1tIXrHcaGWuF91d9dSCedas4Eqr6eLLA9.jpg
+images:
+  - louise-mrazkova/1LoaVvqli8wvfrjSqzQzaLpDejLMNg1p4.jpg
 social_links:
   - "https://www.instagram.com/@louisemrazkova"
 ---

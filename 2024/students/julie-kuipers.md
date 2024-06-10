@@ -2,8 +2,15 @@
 student_name: "Julie Kuipers"
 project_title: "I FEEL..."
 context: Applied Context
-year: 2022-2023
-main_image: julie-kuipers.jpg
+year: 2023-2024
+main_image: julie-kuipers/1bfqFxZDI1S_L5YI_cMdyX-HZDLvh0TV2.jpg
+images:
+  - julie-kuipers/1YWuru1RpuuK7W4qrxM9KOWjKlGsGyLz9.jpeg
+  - julie-kuipers/1tRMwx21VFtqORNaSJQa1xe7pk4lg5eKt.jpeg
+  - julie-kuipers/15vZSUdj8Lp97Yb0Frx9WF_ghX5uXMtGy.jpeg
+  - julie-kuipers/15ZA8NTLhBvo4dgn4c_jjoiwkIgatuf94.jpg
+  - julie-kuipers/10SXPMHc1XrSpV7xqBBGGYESEyUTs2PJo.jpeg
+  - julie-kuipers/1sdAt4lZ9iRIVMs3byPkyunSDN9agThXf.jpeg
 social_links:
   - "https://juliekuipers0.wixstudio.io/illustration"
   - "https://www.instagram.com/Julies_Illustrations"

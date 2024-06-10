@@ -2,8 +2,15 @@
 student_name: "Sam Thys"
 project_title: "Exploring Algae in Contemporary Visual Arts"
 context: Autonomous Context
-year: 2022-2023
-main_image: sam-thys.jpg
+year: 2023-2024
+main_image: sam-thys/1YmfEgzn6dWzSvNVKvQ03W7fHajj-JfqT.jpg
+images:
+  - sam-thys/1PKDqkZw0tJ0gYGwJ170r0gWBrIUmh2FJ.jpg
+  - sam-thys/12L9F8uAPe_e6xmZGDqQMqSg6VG0ogCm8.jpeg
+  - sam-thys/1RmRQm5DdDNohW7zcXWLdR_3GzUCnRQmA.jpg
+  - sam-thys/1STr2WnGFuOaCNUcAH5jwpRr5x3OAvcJ2.jpeg
+  - sam-thys/1JGntMqPKOWKBi_jmqBLhMbi8U9nKIDFf.jpg
+  - sam-thys/1h8CxTwTAaWZsYtP5fIGcD93egs51vg6J.jpeg
 social_links:
   - "https://www.instagram.com/sam._.thys"
 ---

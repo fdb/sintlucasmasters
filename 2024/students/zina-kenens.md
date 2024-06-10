@@ -2,8 +2,13 @@
 student_name: "Zina Kenens"
 project_title: "to (be) long"
 context: Autonomous Context
-year: 2022-2023
-main_image: zina-kenens.jpg
+year: 2023-2024
+main_image: zina-kenens/1870n4EcO2EEocU-6K0ws_DqiMgHF8DP3.jpg
+images:
+  - zina-kenens/1DPPFgTY-D75Yt1Dw8rm7XNau9nwJtVhj.jpg
+  - zina-kenens/1QpttfIXYz2ko7wjiujjAgXlgdy-a57sa.jpg
+  - zina-kenens/19jd0fA2gYrFvFVNTNXTl3itGEuWtDoi6.jpg
+  - zina-kenens/1ee2-m7QR_0PyW1IPEjQPnhSUQAtSSxCT.jpg
 social_links:
   - "www.zinakenens.com"
   - "https://www.instagram.com/@zinakenens"

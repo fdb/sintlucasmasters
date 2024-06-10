@@ -2,8 +2,14 @@
 student_name: "Yasmine (Amira) M'Rabet"
 project_title: "Catharsis de emovere"
 context: Autonomous Context
-year: 2022-2023
-main_image: yasmine-(amira)-m'rabet.jpg
+year: 2023-2024
+main_image: yasmine-(amira)-m'rabet/1MUKsLaSMchTh89bORZuAc4jsVqHwuHOM.jpg
+images:
+  - yasmine-(amira)-m'rabet/1uQLc1PRlhinPpIOWXuhegDtEAt2SUmwN.jpg
+  - yasmine-(amira)-m'rabet/1easkHTpBnRE5lQA0ZCG2W600HUw3bgRL.jpg
+  - yasmine-(amira)-m'rabet/1j5SGGk10kUXUbxg_RTCyEXLtpotWEUY9.jpg
+  - yasmine-(amira)-m'rabet/19n6iszmjYaHX7K7A307YUO5nnWpRdqob.jpg
+  - yasmine-(amira)-m'rabet/1Et9fC8H2XuT-FFuY1JGRwKdRFra8tfXv.jpg
 social_links:
   - "https://www.instagram.com/y.amira_mr"
 ---

@@ -2,8 +2,15 @@
 student_name: "Luiza-Anamaria Pop"
 project_title: "Virtual repurpose of lost art"
 context: Digital Context
-year: 2022-2023
-main_image: luiza-anamaria-pop.jpg
+year: 2023-2024
+main_image: luiza-anamaria-pop/1z-mCC2coKnWfSVZbjW1ZnFXaW5xfHu6K.jpg
+images:
+  - luiza-anamaria-pop/1AvynO0I_r0CeEgNjZy3b3JAB-Nj0zGXb.jpg
+  - luiza-anamaria-pop/1Yn3lOsbdGg5qdU-d-TPxJL7jlIUGs8mD.jpg
+  - luiza-anamaria-pop/1opDytlaaczokGN36I8H5v4yK5gcIAEZU.jpg
+  - luiza-anamaria-pop/1YiNgF-dQqEjK6NmF6dFXGeabPYbGfU4A.jpg
+  - luiza-anamaria-pop/1RIDSgsco-ZbEPTSzj6zdAjrBCVI5ACzD.jpg
+  - luiza-anamaria-pop/1wf5CflPRU3QxWfrN516mXNShNEAQSbAl.jpg
 social_links:
   - "https://luizaanamariapopae5b.myportfolio.com/work"
   - "https://www.instagram.com/https://www.instagram.com/luiza_pop"

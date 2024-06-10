@@ -2,8 +2,14 @@
 student_name: "Stammen Judith"
 project_title: "Shift 121,50"
 context: Autonomous Context
-year: 2022-2023
-main_image: stammen-judith.jpg
+year: 2023-2024
+main_image: stammen-judith/1tk-0OOXS4wlY3SRc3z2IR9YMGNiISJgA.jpg
+images:
+  - stammen-judith/1amNL2n2U6Xjhg-ckgT-O0lVPADRWN8k_.jpg
+  - stammen-judith/1DGMlYvQ1l7m2WWATDz_jLaXHf8cT3yQs.jpg
+  - stammen-judith/16gNqBiPojNjugl9vFMjvOaGacti7KA80.jpg
+  - stammen-judith/1bjMPXH2g-y59J8N20wTWZdPSfVvMKty3.jpg
+  - stammen-judith/12uYLxo9PKsLXPcfXBHACOW2Krun0TAzN.png
 social_links:
   - "/"
   - "https://www.instagram.com/@Judith.Stammen"

@@ -14,11 +14,11 @@
  */
 :root {
 	--primary-bg: #f1f5f9;
-	--primary-fg: #1e293b;
-	--secondary-bg: #ddd6fe;
-	--secondary-fg: #4c1d95;
-	--accent-bg: #7c3aed;
-	--accent-fg: #ddd6fe;
+	--primary-fg: #0f1115;
+	--secondary-bg: #1b1a1f;
+	--secondary-fg: #e4e1ec;
+	--accent-bg: #39383e;
+	--accent-fg: #e4e1ec;
 	--link: #2e1065;
 }
 
@@ -52,10 +52,7 @@ body {
 	margin: 0;
 	background: var(--primary-bg);
 	color: var(--primary-fg);
-	font:
-		1rem/1.5 'Alpino',
-		serif,
-		monospace;
+	font: 1rem/1.5 'Alpino', serif, monospace;
 }
 
 a {
@@ -95,7 +92,7 @@ header h1 a {
 
 header nav a {
 	margin-left: 1rem;
-	color: var(--link);
+	color: inherit;
 	font-weight: 500;
 }
 
@@ -191,7 +188,7 @@ footer > div {
 	font-size: 1rem;
 	font-weight: bold;
 	margin-top: 0.5rem;
-	color: #bbdb62;
+	color: var(--primary-fg);
 }
 .student__name {
 	font-size: 0.8rem;
@@ -201,7 +198,7 @@ footer > div {
 
 .meta {
 	max-width: 80ch;
-	margin: 5rem auto;
+	margin: 2rem auto;
 }
 
 .meta h2,
@@ -226,8 +223,8 @@ footer > div {
 article {
 	max-width: 80ch;
 	margin: 0 auto;
-	padding: 5rem 0;
-	min-height: calc(100vh - 200px);
+	padding: 2rem 0;
+	/* min-height: calc(100vh - 200px); */
 }
 
 article h2 {
@@ -257,8 +254,7 @@ p {
 .social-links__wrapper {
 	margin-left: -2rem;
 	margin-right: -2rem;
-	padding: 5rem 2rem;
-	background: #f3f3f3;
+	padding: 2rem 2rem;
 }
 
 .social-links {

@@ -2,8 +2,13 @@
 student_name: "Eleonora Rondags"
 project_title: "Odyssey "
 context: Autonomous Context
-year: 2022-2023
-main_image: eleonora-rondags.jpg
+year: 2023-2024
+main_image: eleonora-rondags/10fyQub6yM5hJ7Ih7daiG4a9jwTHbRrh3.jpg
+images:
+  - eleonora-rondags/19hn_ql1jD0B0R1NXAH9L6T-TdWprEtKG.jpg
+  - eleonora-rondags/1IHydAJqf71dQkOqWHicgGNyo0RqvG-_8.jpg
+  - eleonora-rondags/13FgY_Nh93Q_h7NeDRj3c2T3P_UJVgeqJ.png
+  - eleonora-rondags/1DhmvLS6fUmT3WdnQ5S6UFnw0zhEtcuT7.png
 social_links:
   - "https://www.instagram.com/leonora_arts"
 ---

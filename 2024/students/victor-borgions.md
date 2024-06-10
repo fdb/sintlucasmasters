@@ -2,8 +2,14 @@
 student_name: "Victor Borgions"
 project_title: "Haunted Flesh"
 context: Digital Context
-year: 2022-2023
-main_image: victor-borgions.jpg
+year: 2023-2024
+main_image: victor-borgions/1EW81xd7BV7aZ7QTsg-GCKrdTBcVvtLFC.jpg
+images:
+  - victor-borgions/1KPEbB-tMrMQ-PTdeiwO_p7dBgx6PS2a7.jpg
+  - victor-borgions/1gCCOuxBxpvY_o98KU5OgQNXoFc34IV0g.jpg
+  - victor-borgions/1XVWGAqBZgOY6pkf7d3zenehtQFN1sfdt.jpg
+  - victor-borgions/1Os6oFg175lwkiatcE4qYwF-vhPiDRv8e.jpg
+  - victor-borgions/12g6QeMZX4ObH9-8u1RuHdnoFFeMllTg5.jpg
 social_links:
   - "https://www.instagram.com/@victorborgions"
 ---

@@ -2,8 +2,12 @@
 student_name: "Lise-Marie Goossens"
 project_title: "Visuele Structuren "
 context: Applied Context
-year: 2022-2023
-main_image: lise-marie-goossens.jpg
+year: 2023-2024
+main_image: lise-marie-goossens/1dHYCcaceiVv7iofhPew5ThZkDiuZ2yfD.jpg
+images:
+  - lise-marie-goossens/1-0GHK7KZW-F7_nXy6yPpz1G895h6ITrk.png
+  - lise-marie-goossens/1F-eip1hIUzrds9lLuvrB3D2qyqdaQSDS.png
+  - lise-marie-goossens/1LfTTZxivK4273eiIJbk2e-2_wbZgdCMD.png
 social_links:
   - "https://lisemariegoossens.cargo.site/"
 ---

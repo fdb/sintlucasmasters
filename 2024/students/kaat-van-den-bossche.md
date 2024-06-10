@@ -2,8 +2,10 @@
 student_name: "Kaat Van den Bossche"
 project_title: "Blinde vlekken "
 context: Digital Context
-year: 2022-2023
-main_image: kaat-van-den-bossche.jpg
+year: 2023-2024
+main_image: kaat-van-den-bossche/1qfdyCjbNKB0xN07pg7268YFLjxOQ36fT.jpg
+images:
+  - kaat-van-den-bossche/1KYSDhG4QpnkvQgYFHwOTWC4DcH0jRn_i.jpg
 social_links:
   - "kaatvdb.cargo.site"
   - "https://www.instagram.com/kaats.studio"

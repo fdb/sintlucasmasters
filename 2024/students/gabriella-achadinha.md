@@ -2,8 +2,15 @@
 student_name: "Gabriella Achadinha"
 project_title: "Scar Made of Tar"
 context: Socio-Political Context
-year: 2022-2023
-main_image: gabriella-achadinha.jpg
+year: 2023-2024
+main_image: gabriella-achadinha/1CC_ySGvSXW-3gNjUPs8ho2FEtHgXd4k5.jpg
+images:
+  - gabriella-achadinha/1uZIPrlYC5tp7NnCpzN9NpDOjDVWVB4o7.jpg
+  - gabriella-achadinha/1FFq5E9cbGySJdHQZn3GYScsCOfVL8YW1.jpg
+  - gabriella-achadinha/1T0JqSJHPN48FoRvLN0j-cb2OTx5wKq4p.jpg
+  - gabriella-achadinha/1PQGMM5AMKf102W7cUNbSeJggAWnxeinL.jpg
+  - gabriella-achadinha/1rwhedMD0OJSw5QDdmtcfDDDj5msFDC_g.jpg
+  - gabriella-achadinha/1oUtz4OAOmeke0Y-3GL6zsnkION-E0gBR.jpg
 social_links:
   - "https://www.gabriellaachadinha.com/"
   - "https://www.instagram.com/https://www.instagram.com/gabriella_achadinha"

@@ -2,8 +2,15 @@
 student_name: "Wout Van Ackere"
 project_title: "Stilstaan bij de boom."
 context: Autonomous Context
-year: 2022-2023
-main_image: wout-van-ackere.jpg
+year: 2023-2024
+main_image: wout-van-ackere/1NgvP1QQU0R7tHNTM_JnZkOc5MPkULllR.jpg
+images:
+  - wout-van-ackere/1tu9L1lixQcn_xqTzODvIy0bV1aRazLOf.jpg
+  - wout-van-ackere/1zUGRLYewdWz76WVFgotuWemjZL8plSSe.jpg
+  - wout-van-ackere/1IoEPJPb7t1szmZIJM7S2M6vYD2HxiX7t.jpeg
+  - wout-van-ackere/15LAlKJuX5NfebIKsTJQ_sCHKxHTa3TQQ.jpg
+  - wout-van-ackere/1MUVfl6TF5I1UylvSzzfKbaIDddIptzpp.jpg
+  - wout-van-ackere/1-NkPVB6NYlF7fP50f864sVs3sKK5EGHd.jpg
 social_links:
   - "https://www.instagram.com/@woutvanackere"
 ---
@@ -15,3 +22,4 @@ Ook ik keek lang zo naar de boom, en zag in de boom het ideale model om het scho
 perspectieven van de boom, geleid door de inzichten van auteurs als Ton Lemaire en Peter Wohlleben.
 
 Ze leerden mij dat het observeren van bomen verder reikt dan slechts het aanschouwen van hun esthetiek of het verheerlijken van hun nut. Ze kunnen de poort openen naar een wereld van verborgen betekenissen. Het zijn deze ‘vergeten perspectieven’ waar ik bij zal stilstaan, om zo de boom alle eer aan te doen.
+

@@ -2,8 +2,15 @@
 student_name: "Carla Persia"
 project_title: "Patterned Perceptions"
 context: Applied Context
-year: 2022-2023
-main_image: carla-persia.jpg
+year: 2023-2024
+main_image: carla-persia/1n24SAePRhx33nW-IHfCLus1ss95zlqGc.jpg
+images:
+  - carla-persia/1YjmDPfrZ86y3BoL_laI5tkmxUG8t25-u.jpg
+  - carla-persia/1YvipiTu7zm2TbLfXzMb4Cm2US2gxe8oB.jpg
+  - carla-persia/1yY4Cok7A3_sATPBxsnTlboIZ6Rc7JivQ.jpg
+  - carla-persia/1jNeYrPskgIbqqWHk-X_9a_kAw0fZKbzE.jpg
+  - carla-persia/1TF7LK2Fuc3Irgkm0Ci4MDqPQ4nsuYtj5.jpg
+  - carla-persia/1SUupu2XgHa3j9HAQ8NbtCjmAmAMhfUPC.jpg
 social_links:
   - "https://www.instagram.com/carla.persia"
 ---

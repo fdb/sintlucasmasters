@@ -2,8 +2,14 @@
 student_name: "Lauranne Verreydt"
 project_title: "A cult of rituals"
 context: Autonomous Context
-year: 2022-2023
-main_image: lauranne-verreydt.jpg
+year: 2023-2024
+main_image: lauranne-verreydt/1P8RB8-BR3EWT4bA8hpnR92FKCv7dwbf1.jpeg
+images:
+  - lauranne-verreydt/1XvcR-RvyxfyFKoDtTsPVD3bRx8UPiL8B.jpeg
+  - lauranne-verreydt/1UvAB3qN9Y_f98C_vWCQ0Bwkew_7pEsUu.jpeg
+  - lauranne-verreydt/1n4wdC977WgbN4WXtqrHFJPXI5d3XgNpo.jpeg
+  - lauranne-verreydt/1Dse61ZKE4C-mgBdFcJSYrg1yif9FAUeE.jpg
+  - lauranne-verreydt/1ArHpwYA6_9v7_qilVGjJBuDqr8GokVbP.jpg
 social_links:
   - "https://www.instagram.com/atelierlauranneverreydt"
 ---
