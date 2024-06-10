@@ -153,8 +153,7 @@ footer > div {
 }
 
 .students-grid {
-	padding-top: 4.5rem;
-	padding-bottom: 4.5rem;
+	padding: 4.5rem 1rem;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 4rem 1rem;
