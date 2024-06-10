@@ -4,12 +4,14 @@
 	"description": "",
 	"scripts": {
 		"start": "concurrently \"npm run watch\" \"npm run serve\"",
-		"watch": "eleventy --config=2023/.eleventy.js --input=2023 --output=_site/2023 --watch",
+		"dev": "npm run start",
+		"watch": "eleventy --config=2024/.eleventy.js --input=2024 --output=_site/2024 --watch",
 		"serve": "serve _site",
-		"build": "npm run clean && npm run build:admin && npm run build:2021 && npm run build:2022 && npm run build:2023",
+		"build": "npm run clean && npm run build:admin && npm run build:2021 && npm run build:2022 && npm run build:2023 && npm run build:2024",
 		"build:2021": "eleventy --config=2021/.eleventy.js --input=2021 --output=_site/2021",
 		"build:2022": "eleventy --config=2022/.eleventy.js --input=2022 --output=_site/2022",
 		"build:2023": "eleventy --config=2023/.eleventy.js --input=2023 --output=_site/2023",
+		"build:2024": "eleventy --config=2024/.eleventy.js --input=2024 --output=_site/2024",
 		"build:admin": "mkdir _site && cp -r admin _site/admin",
 		"clean": "rm -rf _site"
 	},
@@ -17,12 +19,12 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@11ty/eleventy": "1.0.1",
-		"concurrently": "7.2.1",
+		"@11ty/eleventy": "2.0.1",
+		"concurrently": "8.2.2",
 		"d3-dsv": "3.0.1",
-		"dotenv": "16.0.1",
+		"dotenv": "16.4.5",
 		"front-matter": "4.0.2",
-		"serve": "13.0.2",
-		"slugify": "1.6.5"
+		"serve": "14.2.3",
+		"slugify": "1.6.6"
 	}
 }

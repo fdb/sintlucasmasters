@@ -1,0 +1,38 @@
+---
+layout: base.liquid
+id: index
+---
+
+<div class="explain-wrapper">
+    <p class="explain"><strong>GRADUATION TOUR</strong> — presenting the graduation projects of the 2023-2024 Masters in Art
+        and
+        Design at <a href="https://www.sintlucasantwerpen.be/" target="_blank">Sint Lucas Antwerpen.</a></p>
+</div>
+
+<div class="filter-buttons">
+    <button class="filter active" data-key="context" data-value="*">all contexts</button>
+    <button class="filter" data-key="context" data-value="Applied Context">applied context</button>
+    <button class="filter" data-key="context" data-value="Autonomous Context">autonomous context</button>
+    <button class="filter" data-key="context" data-value="Digital Context">digital context</button>
+    <button class="filter" data-key="context" data-value="Jewelry Context">jewelry context</button>
+    <button class="filter" data-key="context" data-value="Socio-Political Context">socio-political context</button>
+</div>
+
+<div class="students-grid">
+    {% for student in collections.students %} {% if student.data.thumb_image %} {% assign thumb_image =
+    student.data.thumb_image %} {% else %}
+    {% assign thumb_image = student.data.main_image %} {% endif %}
+
+    <div class="student" data-context="{{student.data.context}}" data-tags="{{student.data.tags | join: " ,"}}">
+        <a href="/2023{{ student.url }}" class="student__link">
+            <div class="student__image-wrap">
+                <img class="student__image" src="{{thumb_image}}/thumb"
+                    data-preview-src="{{student.data.main_image}}/thumb"
+                    alt="{{student.data.project_title}}" width="300" height="300" crossorigin="anonymous" />
+            </div>
+            <div class="student__title">{{student.data.project_title}}</div>
+            <div class="student__name">{{student.data.student_name}}</div>
+        </a>
+    </div>
+    {% endfor %}
+</div>

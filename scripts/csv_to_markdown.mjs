@@ -32,7 +32,7 @@ const CONTEXT_MAP = {
 };
 
 async function createJsonLayoutFile() {
-	const filename = '2023/students/students.json';
+	const filename = '2024/students/students.json';
 	const text = `{ "layout": "student.liquid" }`;
 	await writeFile(filename, text);
 }
@@ -50,7 +50,7 @@ async function processStudent(student) {
 	md += `student_name: "${student.name}"\n`;
 	md += `project_title: "${student.project_title}"\n`;
 	md += `context: ${context}\n`;
-	md += `year: 2022-2023\n`;
+	md += `year: 2023-2024\n`;
 	md += `main_image: ${slug}.jpg\n`;
 	md += `social_links:\n`;
 	if (student.website) {
@@ -66,7 +66,7 @@ async function processStudent(student) {
 	md += '\n\n';
 	md += `${student.description}`;
 
-	const filename = `2023/students/${slug}.md`;
+	const filename = `2024/students/${slug}.md`;
 	await writeFile(filename, md);
 }
 
