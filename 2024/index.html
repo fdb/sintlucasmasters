@@ -29,7 +29,7 @@ id: index
     <div class="student" data-context="{{student.data.context}}" data-tags="{{student.data.tags | join: " ,"}}">
         <a href="/2024{{ student.url }}" class="student__link">
             <div class="student__image-wrap">
-                <img class="student__image" src="/2024/static/media/{{ thumb_image }}" cf-src="{{thumb_image}}/thumb"
+                <img class="student__image" local-src="/2024/static/media/{{ thumb_image }}" src="https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/{{thumb_image}}/thumb"
                     data-preview-src="{{student.data.main_image}}/thumb"
                     alt="{{student.data.project_title}}" width="300" height="300" crossorigin="anonymous" />
             </div>
