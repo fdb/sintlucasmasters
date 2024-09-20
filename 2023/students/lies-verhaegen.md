@@ -6,9 +6,10 @@ year: 2022-2023
 main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/e29f23a5-7bc5-4e89-b9b1-ff1e7d3e7f00'
 social_links:
   - 'https://liesverhaegen.wixsite.com/my-site-2'
-  - 'https://www.instagram.com/@lies.verhaegen'
+  - 'https://www.instagram.com/lies.verhaegen'
 ---
-What happens when you combine the empirical reality of the climate crisis with the profound dogmas and organizational framework of a religion? By intertwining science and spirituality, This project aims to bring the urgent need for attention and unwavering dedication to the climate crisis in a new light. 
+
+What happens when you combine the empirical reality of the climate crisis with the profound dogmas and organizational framework of a religion? By intertwining science and spirituality, This project aims to bring the urgent need for attention and unwavering dedication to the climate crisis in a new light.
 
 What happens when you combine the empirical reality of the climate crisis with the profound dogmas and organizational framework of a religion. By intertwining science and spirituality, this project aims to bring the urgent need for attention and unwavering dedication to the climate crisis in a new light.
 

@@ -1,6 +1,6 @@
 ---
-student_name: "Léopoldine Balis "
-project_title: "Soft Fascination "
+student_name: 'Léopoldine Balis '
+project_title: 'Soft Fascination '
 context: Autonomous Context
 year: 2023-2024
 main_image: leopoldine-balis/1n-ChfAPmhYv1b3Uw1g6mAYWIs8bzK2wX.jpg
@@ -11,9 +11,10 @@ images:
   - leopoldine-balis/1yRu2anq3B4sCpah7aMMp6FE29R33Kk1c.jpg
   - leopoldine-balis/1wR6huXl_tqk8IrViUQsdWPfkUcHTg0Xh.jpg
 social_links:
-  - "https://www.instagram.com/leopoldinebalis "
+  - 'https://www.instagram.com/leopoldinebalis'
 ---
-Soft Fascination invites you in to the serene world of nature where mind, body and environment connect through meditative walks. The resulting cyanotypes capture the essence of these moments and nurture a deeper connection with the natural world. 
+
+_Soft Fascination invites you in to the serene world of nature where mind, body and environment connect through meditative walks. The resulting cyanotypes capture the essence of these moments and nurture a deeper connection with the natural world._
 
 Soft Fascination nodigt je uit in de serene wereld van de natuur, waar geest, lichaam en omgeving samenkomen tijdens meditatieve wandelingen. Deze combinatie creëert ruimte voor zelfreflectie en bewustzijnsverkenning. Ik heb ervoor gekozen om dit proces met anderen te delen en hen de kans te geven om hun geest en lichaam opnieuw te verbinden met de natuur.
 

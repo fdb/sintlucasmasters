@@ -1,6 +1,6 @@
 ---
-student_name: "Axelle Pels "
-project_title: "(N)ooit weer thuis "
+student_name: 'Axelle Pels '
+project_title: '(N)ooit weer thuis '
 context: Applied Context
 year: 2023-2024
 main_image: axelle-pels/17f-bPayZQiWKmUhvOx1f8lVjLyV55IRj.jpg
@@ -12,6 +12,7 @@ images:
   - axelle-pels/11aZ82Y4MyX2oEVXKkoEiU0iczdpGb4iG.jpg
   - axelle-pels/1xl6F-MUAiQmVEWfPa7yie6cfiL64gtNF.jpg
 social_links:
-  - "https://www.instagram.com/https://www.instagram.com/studiopels?igsh=amUwN2J4eHZjOW85&utm_source=qr"
+  - 'https://www.instagram.com/studiopels'
 ---
+
 "(N)ooit weer thuis" is een animatie die het thema van thuisverlies verkent, waarbij de herinnering aan een plek die eens veilig en vertrouwd was, langzaam vervaagt.

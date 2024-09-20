@@ -1,6 +1,6 @@
 ---
-student_name: "Zeguers Paulien"
-project_title: "Op welke manier kunnen fotografie en grafisch ontwerp samen bijdragen aan een sterke merkidentiteit en de visuele aantrekkingskracht van interieurontwerpbedrijven vergroten?"
+student_name: 'Zeguers Paulien'
+project_title: 'Op welke manier kunnen fotografie en grafisch ontwerp samen bijdragen aan een sterke merkidentiteit en de visuele aantrekkingskracht van interieurontwerpbedrijven vergroten?'
 context: Applied Context
 year: 2023-2024
 main_image: zeguers-paulien/1lUy67Vz0CD2C9OnIRxP6a-JCHYF0rDsU.jpg
@@ -10,14 +10,8 @@ images:
   - zeguers-paulien/1RyP7I3aZoBTd1U4O4XZ5mik47kFhATR-.jpg
   - zeguers-paulien/1HngetCdkLHIKWyQSDwsVSSGeMYMJWyWC.jpg
 social_links:
-  - "https://www.instagram.com/@paulienzeguerss "
+  - 'https://www.instagram.com/paulienzeguerss '
 ---
-Ik ben Paulien, een fotograaf en grafisch ontwerper gespecialiseerd in interieurontwerp. Mijn passie ligt in het vastleggen van de unieke kenmerken en sfeer van elke ruimte, met aandacht voor detail en creativiteit. Ik bied grafisch ontwerp aan om de merkidentiteit van interieurmerken te versterken, met materialen die helder en doeltreffend communiceren. Samen met mijn klanten werk ik aan visuele verhalen die subtiel opvallen in de interieurdesignmarkt.
-
-
-
-
-
 
 Hallo, ik ben Paulien, een gepassioneerde en toegewijde fotograaf en grafisch ontwerper, gespecialiseerd in de dynamische wereld van interieurontwerp. Met een scherp oog voor detail en een creatieve flair breng ik ruimtes tot leven door middel van meeslepende beelden en innovatieve ontwerpoplossingen.
 
@@ -26,4 +20,3 @@ Als fotograaf begrijp ik dat elke ruimte een verhaal te vertellen heeft. Mijn be
 Naast fotografie bied ik ook grafische ontwerpservices aan, gericht op het versterken van de uitstraling van interieurmerken. Ik ontwikkel logo’s, kleurenschema’s en typografie die de essentie van uw merk vastleggen en zorg voor een consistente uitstraling op alle platforms. Of het nu gaat om brochures, catalogi, sociale media graphics of webdesign, ik creëer materialen die de boodschap van uw merk helder en aantrekkelijk communiceren. Samenwerken met mijn klanten is voor mij essentieel; ik luister naar hun ideeën en doelstellingen en vertaal deze naar ontwerpen die passen bij hun visie en helpen om op te vallen in de interieurdesignmarkt.
 
 Met mijn combinatie van fotografie en grafisch ontwerp help ik merken hun volledige potentieel te bereiken door middel van visuele verhalen die indruk maken.
-

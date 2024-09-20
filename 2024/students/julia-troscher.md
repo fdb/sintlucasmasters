@@ -1,6 +1,6 @@
 ---
-student_name: "Julia Tröscher"
-project_title: "There was a Never, there was a Yes  Yes/Emotion   (NOTE: two separate titles! please put them with a paragraph)"
+student_name: 'Julia Tröscher'
+project_title: 'There was a Never, there was a Yes'
 context: Autonomous Context
 year: 2023-2024
 main_image: julia-troscher/1LGeXuks8tggylQzmOFcB_tu2gixdfkrx.jpg
@@ -12,10 +12,9 @@ images:
   - julia-troscher/1Tx0G3hQTcHuWNVQSb6uVukYYn7YCNLQq.jpg
   - julia-troscher/1TA6D_Wmji0YUsJqlL4oa08cLLkAFVEzm.jpg
 social_links:
-  - "https://juliatroscher.com/"
-  - "https://www.instagram.com/@juliatr.o.scher"
+  - 'https://juliatroscher.com/'
+  - 'https://www.instagram.com/juliatr.o.scher'
 ---
-Shifting between lines of individual genealogy and cosmic creation, this work reflects on the private and broader relations we foster with our surroundings. Separate, not so separate narratives are coming together to consider history, humanity, ecology; fish, phones, mothers, spaceships and the sea.
 
 Shifting between lines of individual genealogy and cosmic creation, this work reflects on the private and broader relations we foster with our surroundings. Separate, not so separate narratives are coming together to consider history, humanity, ecology; fish, phones, mothers, spaceships and the sea.
 

@@ -52,7 +52,10 @@ body {
 	margin: 0;
 	background: var(--primary-bg);
 	color: var(--primary-fg);
-	font: 1rem/1.5 'Alpino', serif, monospace;
+	font:
+		1rem/1.5 'Alpino',
+		serif,
+		monospace;
 }
 
 a {
@@ -255,6 +258,7 @@ p {
 .image {
 	display: block;
 	margin: 4rem auto;
+	max-height: 100vh;
 }
 
 .social-links__wrapper {

@@ -1,6 +1,6 @@
 ---
-student_name: "Kamilla Isalieva"
-project_title: "Around the World in 72 Days"
+student_name: 'Kamilla Isalieva'
+project_title: 'Around the World in 72 Days'
 context: Applied Context
 year: 2023-2024
 main_image: kamilla-isalieva/1Hi_m-jnjIaAb9avClbIaR5AZnk9og7IT.jpg
@@ -12,8 +12,9 @@ images:
   - kamilla-isalieva/1VC3uTvRIqD1RgJghgkFc1ncW2wGi0t9S.jpg
   - kamilla-isalieva/1D_P8vj4AroHIQilXL6_h5AsKDdK5qQ--.jpg
 social_links:
-  - "kamilla.be"
+  - 'https://kamilla.be'
 ---
+
 A visual diary interpreted through essential fragments and highlights of Nellie Bly's travels, inspired by her book "Around the World in Seventy-Two Days," published in 1890.
 
 Een visueel dagboek, geïnspireerd door het boek van de 19de-eeuwse Amerikaanse journaliste en reizigster Nellie Bly, "Around the World in 72 Days", waarin ik de fragmenten en hoogtepunten van de wereld door haar ogen laat zien. Voor dit project heb ik gekozen voor een niet-letterlijke visuele interpretatie om haar reis uit te beelden. Door een afwisseling van verschillende stijlen wilde ik de diversiteit haar bestemmingen en reizen in het algemeen vastleggen.

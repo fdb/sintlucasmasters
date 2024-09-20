@@ -1,6 +1,6 @@
 ---
-student_name: "Thor Vermin"
-project_title: "30/12/2023 00:42"
+student_name: 'Thor Vermin'
+project_title: '30/12/2023 00:42'
 context: Autonomous Context
 year: 2023-2024
 main_image: thor-vermin/1EtiuzlNlZ5sjNNLCni0XUBFdKsN0arBP.jpg
@@ -13,6 +13,7 @@ images:
   - thor-vermin/1VsMOPBXddvlzA3x7WDpI7WX4lBacM5wF.jpg
   - thor-vermin/1z3-_9sQAteZ_6G42BqbMfAtpQ6cXsta3.jpg
 social_links:
-  - "thorvermin.com"
+  - 'https://thorvermin.com'
 ---
+
 Inspired by a night out in Café Papa Jos, a table littered with cigarette butts, beer glasses and a finished chess game is presented as a tangible sculpture and a 3D animation.

@@ -1,6 +1,6 @@
 ---
-student_name: "Arthur Saint-Remy"
-project_title: "Posterior Hot Zone"
+student_name: 'Arthur Saint-Remy'
+project_title: 'Posterior Hot Zone'
 context: Digital Context
 year: 2023-2024
 main_image: arthur-saint-remy/1sV4AfFx5b2HIdxlZH8ke4R2AFGXhsfzA.jpg
@@ -9,9 +9,8 @@ images:
   - arthur-saint-remy/1Sa1UTjf-S2o0pN6lVjtDoY52Ww2lV7kt.jpg
   - arthur-saint-remy/1axD7DZyMMeM2C19ppi4JIt4GV1r1rVTw.jpg
 social_links:
-  - "https://www.instagram.com/arthur_saintremy"
+  - 'https://www.instagram.com/arthur_saintremy'
 ---
-Posterior Hot Zone showcases a virtual dream world directly connected to my physical existence and driven by my sleep data, obtained through a Fitbit smartwatch. Night after night, the dynamic environment of this world is shaped by my sleep rhythms and patterns. The dream world is only accessible when I fall asleep in the real world, during waking hours, the digital dream world remains dormant. Posterior Hot Zone presents a daily one-to-one replay of my nocturnal life in the dream world.
 
 Posterior Hot Zone showcases a virtual dream world directly connected to my physical existence and driven by my sleep data, obtained through a Fitbit smartwatch. Night after night, the dynamic environment of this world is shaped by my sleep rhythms and patterns. The dream world is only accessible when I fall asleep in the real world, during waking hours, the digital dream world remains dormant. Posterior Hot Zone presents a daily one-to-one replay of my nocturnal life in the dream world.
 

@@ -6,8 +6,9 @@ year: 2022-2023
 main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1f4ca36b-4fc9-424e-310d-c4c03825ac00'
 social_links:
   - 'https://www.geraldodossantos.nl/'
-  - 'https://www.instagram.com/@geraldodossantos.nl'
+  - 'https://www.instagram.com/geraldodossantos.nl'
 ---
+
 Geraldo Dos Santos explores the multifaceted use of candles as a "ritual artifact," revealing their symbolic significance in contemporary society. He delves into four contemporary frameworks: Coping-mechanism, heritages, popular identity, and solemnity, shedding light on their diverse roles. Dos Santos highlights the metaphorical significance of candles, expressing devotion, sensuality, and esoteric rites. His work evokes human emotions, regulating cultural systems, fostering a connection to the past, present, and future of tradition.
 
 Geraldo Dos Santos is a contemporary artist born in Amsterdam, Netherlands in 1993. He has lived in various countries, including the Netherlands, Brazil, and Peru, which have influenced his artistic journey.

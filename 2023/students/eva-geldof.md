@@ -14,20 +14,21 @@ images:
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d1f7f44e-b4af-4638-95f4-183ad52e3f00
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f1c0d4e0-3e79-4aa9-6930-4e9729104000
 social_links:
-  - https://www.instagram.com/@geldofuleva
+  - https://www.instagram.com/geldofuleva
 ---
-(ENGL) *POUNDING THE IRON AS MY HEART IS PULSATING AT THE SAME RHYTHM, I FEEL ONE WITH THE METAL* 
+
+(ENGL) _POUNDING THE IRON AS MY HEART IS PULSATING AT THE SAME RHYTHM, I FEEL ONE WITH THE METAL_
 
 My project focuses on the outbreak of contained feelings like anger and stress,
 I used the beating of my heart and the forging of the nails as a guide through my work.
 
-The copper bracelet (*juste un clou en colère*) acts as a remnant of the emotional outbreak, it's also a rebellious reference to Cartier's exclusive nail bracelets (*juste un clou*) that turns the nail into a status symbol.
+The copper bracelet (_juste un clou en colère_) acts as a remnant of the emotional outbreak, it's also a rebellious reference to Cartier's exclusive nail bracelets (_juste un clou_) that turns the nail into a status symbol.
 
 I also looked at what makes us human and what we share: our mortality, being alive at this moment, a beating heart and a body constructed of bones.
 
 \
 \
-(NDL) *TERWIJL IK HET IJZER SMEEDT KLOPT MIJN HART OP HETZELFDE RITME, IK SMELT SAMEN MET HET METAAL* 
+(NDL) _TERWIJL IK HET IJZER SMEEDT KLOPT MIJN HART OP HETZELFDE RITME, IK SMELT SAMEN MET HET METAAL_
 
 Mijn project focust zich op de uitbraak van ingehouden gevoelens als woede en stress,
 het kloppen van mijn hart en het smeden van de spijkers gebruikte ik als leidraad.

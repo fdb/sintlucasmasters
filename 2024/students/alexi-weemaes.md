@@ -12,7 +12,7 @@ images:
   - alexi-weemaes/1tV51jFjWgPKBKqnCGr4OrmAVfoQRx5Lw.jpg
   - alexi-weemaes/1DtreA36tk4xx0VLGm3bBQftdr8jgYqxa.jpg
 social_links:
-  - 'alexiweemaes.com'
+  - 'https://alexiweemaes.com'
   - 'https://www.instagram.com/alexi_weemaes'
 ---
 

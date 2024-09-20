@@ -1,6 +1,6 @@
 ---
-student_name: "Jenthe Jochums"
-project_title: "Bewaarders van Herinneringen"
+student_name: 'Jenthe Jochums'
+project_title: 'Bewaarders van Herinneringen'
 context: Autonomous Context
 year: 2023-2024
 main_image: jenthe-jochums/1nPXr7MC4RZTDnqnngKEas7RAeN48k9sd.jpg
@@ -11,12 +11,11 @@ images:
   - jenthe-jochums/10RIp-D_V5RjqiMuhGWsOKkjCo0ETxFQo.jpg
   - jenthe-jochums/1QfA_JQnCJzBhPgkf7n1-ZVsY5BRJHwMf.jpg
 social_links:
-  - "https://www.instagram.com/jenthe.jochums"
+  - 'https://www.instagram.com/jenthe.jochums'
 ---
-Dit project verkent de connectie tussen lichaam en object, waarbij de tussenruimte als bewaarder van herinneringen optreedt, weergegeven door kleur. In dit werk hangen de tekeningen aan de objecten en worden lichaamshoudingen gebruikt om persoonlijke herinneringen aan deze objecten te reflecteren.
 
 Dit project verkent de connectie tussen lichaam en object, waarbij de tussenruimte als bewaarder van herinneringen optreedt, weergegeven door kleur. Jenthe hangt tekeningen aan de objecten op en gebruikt lichaamshoudingen om persoonlijke herinneringen aan deze objecten te reflecteren.
 
-De cut-outs in het doek geven een extra dimensie aan het werk, waarbij de leegte en de fysieke ruimte tussen de objecten en het lichaam visueel tastbaar worden. Deze tussenruimte wordt gebruikt om de onzichtbare, maar voelbare, aanwezigheid van herinneringen weer te geven. De kleuren maken deze ruimtes zichtbaar en er ontstaat een visuele taal. 
+De cut-outs in het doek geven een extra dimensie aan het werk, waarbij de leegte en de fysieke ruimte tussen de objecten en het lichaam visueel tastbaar worden. Deze tussenruimte wordt gebruikt om de onzichtbare, maar voelbare, aanwezigheid van herinneringen weer te geven. De kleuren maken deze ruimtes zichtbaar en er ontstaat een visuele taal.
 
-‘Bewaarders van herinneringen’ is een uitnodiging aan de kijker om stil te staan bij hun eigen herinneringen en de objecten die deze herinneringen bewaren. Het project moedigt een reis aan door de relatie tussen lichaam, object en herinnering te verkennen. Door middel van kleur, vorm en illustratie ontstaat een werk dat zowel visueel aantrekkelijk is en herkenbaar kan zijn. 
+‘Bewaarders van herinneringen’ is een uitnodiging aan de kijker om stil te staan bij hun eigen herinneringen en de objecten die deze herinneringen bewaren. Het project moedigt een reis aan door de relatie tussen lichaam, object en herinnering te verkennen. Door middel van kleur, vorm en illustratie ontstaat een werk dat zowel visueel aantrekkelijk is en herkenbaar kan zijn.
