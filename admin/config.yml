@@ -9,10 +9,10 @@ collections:
   - name: 'students'
     label: 'Students'
     label_singular: 'Student'
-    folder: '2023/students'
+    folder: '2024/students'
     create: true
     slug: '{{student_name}}'
-    preview_path: '2023/{{slug}}'
+    preview_path: '2024/{{slug}}'
     view_filters:
       - label: 'Applied Context'
         field: 'context'
@@ -38,7 +38,7 @@ collections:
           widget: 'select',
           options: ['Autonomous Context', 'Applied Context', 'Digital Context', 'Socio-Political Context', 'Jewelry Context']
         }
-      - { label: 'Academic year', name: 'year', widget: 'select', options: ['2022—2023'], default: '2022—2023' }
+      - { label: 'Academic year', name: 'year', widget: 'select', options: ['2023—2024'], default: '2023—2024' }
       - {
           label: 'Tags',
           name: 'tags',
