@@ -1,6 +1,6 @@
 ---
-student_name: "Ilja Van den Broeck"
-project_title: "Geen glimlach zo zacht"
+student_name: Ilja Van den Broeck
+project_title: Geen glimlach zo zacht
 context: Applied Context
 year: 2024-2025
 main_image: ilja-van-den-broeck/1ws3Jj4ApCygn0ie9Ubp2zjaSVrVIZjGB.jpg
@@ -12,8 +12,8 @@ images:
   - ilja-van-den-broeck/1VuhdcrWDeeNPqtgoW_vWwn_CgyeP1Rum.jpg
   - ilja-van-den-broeck/1RWSXSyyYCqNK3BO5eOAKCaVuNDWqTed5.jpg
 social_links:
-  - "www.iljavandenbroeck.be"
-  - "https://www.instagram.com/@ilja_vdb"
+  - www.iljavandenbroeck.be
+  - https://www.instagram.com/ilja_vdb
 ---
 Een beeldverhaal over mijn leven met een buitengewone broer. Jelrik is anders dan de meeste mensen, hij werd geboren met een zware meervoudige handicap, één die ervoor zorgt dat hij in zijn hoofd altijd jong blijft. Aan de hand van tekeningen, collages, schilderijen, geborduurde illustraties en tekstfragmenten toon ik wie Jelrik voor mij is. 
 
