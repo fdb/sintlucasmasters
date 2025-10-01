@@ -1,6 +1,6 @@
 ---
-student_name: "Jian Xin Wang"
-project_title: "I Am an Anxious Graphic Designer"
+student_name: Jian Xin Wang
+project_title: I Am an Anxious Graphic Designer
 context: Applied Context
 year: 2024-2025
 main_image: jian-xin-wang/1DgkIVNs-fBH-2G08suZaLClimJGne7vJ.jpg
@@ -12,8 +12,8 @@ images:
   - jian-xin-wang/1rQApNN0nrEEpc7OQpNID7se8KkJ8PhYx.jpg
   - jian-xin-wang/1vthNAgGOQXbcyeTRsyYIn0_3yOI1dyNF.jpg
 social_links:
-  - "https://jianxw.com/"
-  - "https://www.instagram.com/https://www.instagram.com/jxw.design"
+  - https://jianxw.com/
+  - https://www.instagram.com/jxw.design
 ---
 A risograph/digital hybrid zine that talks about anxiety, procrastination, and perfectionism... in graphic design industry. The zine includes visual reflection, personal archive, and emotional typographies to tell you that you are not alone in this creative journey.
 
