@@ -1,6 +1,6 @@
 ---
-student_name: "Inge Floré"
-project_title: "THE LANDSCAPE OF MY LIFE IN THE LANDSCAPE OF THE WORLD"
+student_name: Inge Floré
+project_title: THE LANDSCAPE OF MY LIFE IN THE LANDSCAPE OF THE WORLD
 context: Autonomous Context
 year: 2024-2025
 main_image: inge-flore/1doyzhVx0nDlKo9U4pjmsc5LhBLNQSPfD.jpg
@@ -12,8 +12,7 @@ images:
   - inge-flore/1q6IaLD8y2WIyT8HemLjzNu9y4miAM4Tx.jpg
   - inge-flore/1mmBpLP7B2ghhwzwSlUayJz8sz9mduC38.jpg
 social_links:
-  - "/"
-  - "https://www.instagram.com/what.if.images (INSTAGRAM)"
+  - https://www.instagram.com/what.if.images
 ---
 Frontside/backside - inside/outside - 2D/3D - intended/unintended - transparent/opaque - intimate/political - panorama/sampler - garment/costume - functional/storytelling - ornament/content, this textile installation seeks the point where these opposites interact 
 to reveal a reality and thus disturb the tense calm of the docile and the decorative.
