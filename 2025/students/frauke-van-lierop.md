@@ -1,6 +1,6 @@
 ---
-student_name: "Frauke van Lierop"
-project_title: "De (in)significante schaduw van wat was"
+student_name: Frauke van Lierop
+project_title: De (in)significante schaduw van wat was
 context: Autonomous Context
 year: 2024-2025
 main_image: frauke-van-lierop/1t08Io35S_k-qLyaLhDDj1lefl52dd_hD.jpg
@@ -12,7 +12,7 @@ images:
   - frauke-van-lierop/16xw41afepjYulBZfPpxQMWGPeIFyOa-W.jpg
   - frauke-van-lierop/1605G9CKBRxvKX1X552OxrMUd-b8J3pES.jpg
 social_links:
-  - "https://www.instagram.com/@fraukevanlierop"
+  - https://www.instagram.com/fraukevanlierop
 ---
 Is een foto een herinnering? Ik onderzoek hoe dit een fysieke vorm kan krijgen. Afgebeeld zijn bouwplaatsen; hier is een sterk verleden-heden-toekomst gevoel aanwezig. De foto’s zijn gekristalliseerd om de ‘herinnering’ te vereeuwigen. Tegelijkertijd worden ze zo, gedeeltelijk, verhuld waardoor je je kan afvragen wat belangrijker is: de herinnering of de foto hiervan? 
 
