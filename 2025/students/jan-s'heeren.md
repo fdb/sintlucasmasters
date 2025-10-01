@@ -1,6 +1,6 @@
 ---
-student_name: "Jan S'heeren"
-project_title: "gaia.exe"
+student_name: Jan S'heeren
+project_title: gaia.exe
 context: Digital Context
 year: 2024-2025
 main_image: jan-s'heeren/1ovsP-k0LYV5Gm7Z47Sn8UM039X3Vp0py.jpg
@@ -11,8 +11,8 @@ images:
   - jan-s'heeren/1r3-XFIAG5_VGIx1tpOipV_1UYfum48sw.jpg
   - jan-s'heeren/18duCweIZXFB3ov_wnZW4L6zYt9WCbvUI.jpg
 social_links:
-  - "www.sheeren.world"
-  - "https://www.instagram.com/@sheerenmidas"
+  - www.sheeren.world
+  - https://www.instagram.com/sheerenmidas
 ---
 Life is built on delicate connections, intricate systems that depend on balance and reciprocity. Gaia.exe is an artificial biosphere; not one that mirrors nature, but one that makes its fragility tangible, embodied. Providing a space to experience how inextricably entwined we are with the dynamic, ever-changing networks of the present moment. A (dys)functional system in which presence shifts equilibrium. A reminder that all life is connected, and that every connection carries the weight of its own fragility.
 
