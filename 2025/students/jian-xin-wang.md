@@ -17,7 +17,7 @@ social_links:
 ---
 A risograph/digital hybrid zine that talks about anxiety, procrastination, and perfectionism... in graphic design industry. The zine includes visual reflection, personal archive, and emotional typographies to tell you that you are not alone in this creative journey.
 
-“I Am an Anxious Graphic Designer” is a bilingual publication (English and Taiwanese-Mandarin) that transforms emotional struggles into graphic/visual expression. Through visual metaphors, typography, and quotes from mental health experts, it aims to explore ten common challenges that often bother designers, including impostor syndrome, procrastination, burnout, and fear of public speaking… etc. Each spread interprets anxiety into a visual form—bold, honest, and sometimes humorous.
+“I Am an Anxious Graphic Designer” is a bilingual publication (English and Taiwanese-Mandarin) that transforms emotional struggles into graphic/visual expression. Through visual metaphors, typography, and quotes from mental health experts, it aims to explore ten common challenges that often bother designers, including impostor syndrome, procrastination, burnout, and fear of public speaking… etc. Each spread interprets anxiety into a visual form: bold, honest, and sometimes humorous. 
 
 Rather than “curing” anxiety, the zine seeks to express it visually, open up conversations, and offer emotional resonance for those who feel the same and face similar struggles. The goal is not to provide solutions but to make readers feel less alone.
 
