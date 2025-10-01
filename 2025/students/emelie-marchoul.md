@@ -1,6 +1,6 @@
 ---
-student_name: "Emelie Marchoul"
-project_title: "Transferred"
+student_name: Emelie Marchoul
+project_title: Transferred
 context: Applied Context
 year: 2024-2025
 main_image: emelie-marchoul/1X5bQfcKyX4Rx4qv0VMq-WnNDSHk_SH2l.jpg
@@ -11,9 +11,9 @@ images:
   - emelie-marchoul/15n96bnLWnaMX17nM_Yj0dZ4u3SryUAPw.jpg
   - emelie-marchoul/1b0b0hsCU-ML-gk-7uuT277h224xTfm5L.jpg
 social_links:
-  - "https://www.instagram.com/@emelie_marchoul"
+  - https://www.instagram.com/emelie_marchoul
 ---
-This work originates from the leftover material of old Letraset sheets. What’s often discarded or ignored, becomes the starting point for this graphic research. Through repetition, shifting, and layering, these fragments are transformed into a distinctive — at times uncanny — visual language. The outcome balances between coincidence and control, intuition and design.
+This work originates from the leftover material of old Letraset sheets. What’s often discarded or ignored, becomes the starting point for this graphic research. Through repetition, shifting, and layering, these fragments are transformed into a distinctive, at times uncanny, visual language. The outcome balances between coincidence and control, intuition and design.
 
 “Transferred” is a project that began with leftover fragments from old Letraset sheets — broken shapes, dots, and lines that usually end up discarded. These remnants became the starting point for a new exploration.
 
