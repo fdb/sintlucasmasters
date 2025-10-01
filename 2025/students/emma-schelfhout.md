@@ -14,11 +14,12 @@ images:
 social_links:
   - https://www.instagram.com/sch_elfhout
 ---
+Eng
 
 “My home is a sparrow” is the story of Jo, a 7 year old boy who struggles with loneliness. He forms attachments to objects and often loses himself in his imagination. Told in the format of a diary, the book gives an intimate look at how Jo copes with his feelings of isolation. When he meets a sparrow, the small connection becomes deeply meaningful to him.
 
+N﻿l
 
 “My home is a sparrow” is een beeldverhaal in boekvorm, een klein, intiem boekje op A5-formaat van net geen 200 pagina’s.
 Het vertelt het verhaal van Jo, een 7-jarige jongen die worstelt met eenzaamheid. Hij hecht zich sterk aan objecten en verdwijnt vaak in zijn eigen verbeelding. In dagboekvorm krijgen we een intieme kijk op hoe hij omgaat met zijn gevoelens van isolement. Het verhaal is geschreven in een kinderlijke stem, die van Jo zelf. Wanneer hij een mus ontmoet waarvoor hij wil zorgen, krijgt die kleine connectie een diepe betekenis. Door verloop van tijd verliest Jo zich steeds meer in zijn fantasiewereld, die steeds minder troost biedt voor hem. 
-Het boek is getekend in grafiet en pastels, waarbij het pastelgebruik kleur geeft aan Jo’s fantasie. Het verhaal is opgebouwd uit korte scènes, die momenten uit Jo’s leven in beeld brengen. Daarnaast zijn er objectpaginas, waar Jo’s verzameling van betekenisvolle voorwerpen wordt getoond. 
-
+Het boek is getekend in grafiet en pastels, waarbij het pastelgebruik kleur geeft aan Jo’s fantasie. Het verhaal is opgebouwd uit korte scènes, die momenten uit Jo’s leven in beeld brengen. Daarnaast zijn er objectpaginas, waar Jo’s verzameling van betekenisvolle voorwerpen wordt getoond.
