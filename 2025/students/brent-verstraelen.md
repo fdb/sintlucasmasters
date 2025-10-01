@@ -1,6 +1,6 @@
 ---
-student_name: "Brent Verstraelen"
-project_title: "Temple of The Non-Useful"
+student_name: Brent Verstraelen
+project_title: Temple of The Non-Useful
 context: Autonomous Context
 year: 2024-2025
 main_image: brent-verstraelen/1fXJmMA92g9Qkzb8vreoPnLSlDANcj7xs.jpg
@@ -8,8 +8,7 @@ images:
   - brent-verstraelen/1W5HB14K2fRoxXBRELcoYudlewK-Er_-N.jpg
   - brent-verstraelen/19HA_O78XG-gLlIDgHYE3WWuGjAftb-_l.jpg
 social_links:
-  - "/"
-  - "https://www.instagram.com/studiobrentverstraelen"
+  - https://www.instagram.com/studiobrentverstraelen
 ---
 Temple of The Non-Useful questions how we assign value and function in a society driven by efficiency and progress. Born from a geometric ruin, it expresses fascination with the useless. An octagonal pillar without clear purpose exists honestly, inviting slow observation beyond utility. Its meaning arises from this lack of function, a pillar without a career.
 
