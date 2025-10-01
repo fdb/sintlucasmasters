@@ -1,6 +1,6 @@
 ---
-student_name: "Lene Thys"
-project_title: "De grote kleine mensen"
+student_name: Lene Thys
+project_title: De grote kleine mensen
 context: Applied Context
 year: 2024-2025
 main_image: lene-thys/16N6jcwtzpTFIoQPVdtkRlkRNFmVTu9vd.jpg
@@ -12,7 +12,7 @@ images:
   - lene-thys/1f5u3t93WwnRP591mNrMbxIfxXqTQGqaO.jpg
   - lene-thys/1gZGkfM_DQ1Yxw4PFzcQO5UiRCm1erQeW.jpg
 social_links:
-  - "https://www.instagram.com/@lene_thys"
+  - https://www.instagram.com/lene_thys
 ---
 De grote kleine mensen' illustreert het belang van spelen in de verschillende fasen van het leven. Waarom lijken we als volwassene minder te spelen? Hoe kunnen we spel een onderdeel maken van het dagelijks leven? Met speelse tekeningen en een poëtisch verhaal wil deze publicatie het spelplezier van de lezer aanwakkeren.
 
