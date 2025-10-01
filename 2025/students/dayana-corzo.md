@@ -1,6 +1,6 @@
 ---
-student_name: "Dayana Corzo"
-project_title: "PÁRAMO"
+student_name: Dayana Corzo
+project_title: PÁRAMO
 context: Socio-Political Context
 year: 2024-2025
 main_image: dayana-corzo/1_ptDmxyzFgxtuW_IuzOwQaIEZcgnhS0I.jpg
@@ -11,7 +11,7 @@ images:
   - dayana-corzo/1wzyRoJYER4krmhs_NVgxK_D7tviT-sQp.jpg
   - dayana-corzo/18PbLYWIQF1VAeHiUe_msCOMQMvHX-mpo.jpg
 social_links:
-  - "https://www.instagram.com/@dayanacorzojoya"
+  - https://www.instagram.com/dayanacorzojoya
 ---
 Een visueel en tastbaar voorstel rond het woord Páramo. Naast de betekenis als ecosysteem, onderzoek ze het ook als een politiek, emotioneel en territoriaal symbool.
 Een elastisch en interactief alfabet waarmee realiteiten kunnen worden geschreven buiten alle extractivistische en koloniale ideeën om.
