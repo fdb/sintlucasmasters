@@ -48,6 +48,7 @@ const CONTEXT_MAP = {
 	'Premaster Digitale Context / Digital Context': 'Applied Context',
 	'Premaster Socio-politieke Context / Socio-political Context': 'Socio-Political Context',
 	'Premaster Toegepaste Context / Applied Context': 'Applied Context',
+	'Premaster Sieraad Context / Jewelry Context': 'Jewelry Context',
 	'Master Socio-politieke Context / Socio-political Context': 'Socio-Political Context',
 	'Master Digitale Context / Digital Context': 'Digital Context',
 	'Master Autonome Context / Autonomous Context': 'Autonomous Context',
@@ -56,7 +57,7 @@ const CONTEXT_MAP = {
 };
 
 async function createJsonLayoutFile() {
-	const filename = '2024/students/students.json';
+	const filename = '2025/students/students.json';
 	const text = `{ "layout": "student.liquid" }`;
 	await writeFile(filename, text);
 }
@@ -74,7 +75,7 @@ async function processStudent(student) {
 	md += `student_name: "${student.name}"\n`;
 	md += `project_title: "${student.project_title}"\n`;
 	md += `context: ${context}\n`;
-	md += `year: 2023-2024\n`;
+	md += `year: 2024-2025\n`;
 	md += `main_image: ${driveUrlToRelativeUrl(slug, student.main_image)}\n`;
 	md += `images:\n`;
 	for (const image of student.images.split(',')) {
@@ -97,7 +98,7 @@ async function processStudent(student) {
 	}
 	md += '\n';
 
-	const filename = `2024/students/${slug}.md`;
+	const filename = `2025/students/${slug}.md`;
 	await writeFile(filename, md);
 }
 

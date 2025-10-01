@@ -23,39 +23,6 @@ async function parseCsvFile(filename) {
 	return rows;
 }
 
-async function parseDriveImagePage(url) {
-	const res = await fetch(url);
-	const html = await res.text();
-	const imageConfigIndex = html.indexOf('window.viewerData = {config: '); // {'id': '1kXARDHTSndAt14TLyAjjyI_7TpywVlwG', 'title': 'Rino_Vranken_boots - Rino Vranken.jpg'')
-	const imageConfigLastIndex = html.indexOf('}', imageConfigIndex);
-	let snippet = html.slice(imageConfigIndex + 29, imageConfigLastIndex + 1);
-	snippet = snippet.replace(/^{|}$/g, '').trim();
-	let pairs = snippet.match(/'[^']*':\s*[^,]+/g);
-	let config = {};
-	pairs.forEach((pair) => {
-		let [key, value] = pair.split(/:\s*/);
-
-		// Remove single quotes around keys
-		key = key.replace(/'/g, '');
-
-		// Handle boolean and null values
-		if (value === 'true') {
-			value = true;
-		} else if (value === 'false') {
-			value = false;
-		} else if (value === 'null') {
-			value = null;
-		} else {
-			// Remove single quotes around string values
-			value = value.replace(/^'|'$/g, '');
-		}
-
-		// Assign the key-value pair to the object
-		config[key] = value;
-	});
-	return config;
-}
-
 async function ensureDirectory(dir) {
 	try {
 		await mkdir(dir, { recursive: true });
@@ -67,34 +34,72 @@ async function ensureDirectory(dir) {
 }
 
 async function downloadImageFromGoogleDrive(url, slug, prefix = '') {
-	// Check that the link starts with https://drive.google.com/file/d/
-	const GOOGLE_DRIVE_URL_PREFIX = 'https://drive.google.com/open?id=';
-	if (!url.startsWith(GOOGLE_DRIVE_URL_PREFIX)) {
-		console.warn(`Invalid link ${url}`);
+	// Extract file ID from various Google Drive URL formats
+	let fileId;
+	if (url.includes('/open?id=')) {
+		fileId = url.split('/open?id=')[1];
+	} else if (url.includes('/file/d/')) {
+		fileId = url.split('/file/d/')[1].split('/')[0];
+	} else {
+		console.warn(`Invalid Google Drive link: ${url}`);
+		return;
 	}
 
-	// Get the file ID
-	const fileId = url.slice(GOOGLE_DRIVE_URL_PREFIX.length);
-	console.log(fileId);
+	console.log(`Downloading file ID: ${fileId}`);
 
-	// Get the file name
-	const fileConfig = await parseDriveImagePage(url);
-	let fileSlug = slugify(fileConfig.title, { lower: true });
-	// fileSlug.replace(slug.replace('-', '_') + '_', '');
-	// fileSlug.replace('-' + slug, '');
-	// fileSlug = prefix + fileSlug;
-	// fileSlug = slug + '_' + fileSlug;
-	console.log(fileSlug);
-	const fileExtension = fileConfig.title.split('.').pop().toLowerCase();
-
-	// Download the file
-	const exportUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
+	// Try direct download without fetching metadata
+	const exportUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
 
 	const res = await fetch(exportUrl);
+
+	// Check if we got redirected or got an error
+	if (!res.ok) {
+		console.error(`Failed to download ${fileId}: ${res.status} ${res.statusText}`);
+		return;
+	}
+
+	// Try to get file extension from Content-Disposition header or Content-Type
+	const contentDisposition = res.headers.get('content-disposition');
+	const contentType = res.headers.get('content-type');
+	let fileExtension = null;
+
+	if (contentDisposition) {
+		const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+		if (filenameMatch && filenameMatch[1]) {
+			const originalFilename = filenameMatch[1].replace(/['"]/g, '');
+			const ext = originalFilename.split('.').pop().toLowerCase();
+			if (ext && ext.length <= 4) {
+				fileExtension = ext;
+			}
+		}
+	}
+
+	if (!fileExtension && contentType) {
+		// Fallback to content-type
+		const typeMap = {
+			'image/jpeg': 'jpg',
+			'image/jpg': 'jpg',
+			'image/png': 'png',
+			'image/gif': 'gif',
+			'image/webp': 'webp',
+			'image/heic': 'heic',
+			'image/heif': 'heif'
+		};
+		fileExtension = typeMap[contentType];
+	}
+
+	// Final fallback
+	if (!fileExtension) {
+		fileExtension = 'jpg';
+	}
+
+	const filename = `${fileId}.${fileExtension}`;
+	console.log(`Saving as: ${filename}`);
+
 	const buffer = await res.arrayBuffer();
 	const data = new Uint8Array(buffer);
 	await ensureDirectory(`_uploads/${slug}`);
-	await writeFile(`_uploads/${slug}/${fileId}.${fileExtension}`, data);
+	await writeFile(`_uploads/${slug}/${filename}`, data);
 }
 
 async function processStudent(student) {

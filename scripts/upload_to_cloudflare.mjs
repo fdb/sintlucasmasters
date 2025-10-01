@@ -1,9 +1,8 @@
 // Take all files in _uploads and upload the to Cloudflare.
 // We use the same file names as the original filenames for Cloudflare.
 // Note that the files are in a subdirectory of _uploads, keyed under the slug (name) of the student.
-import { read } from 'fs';
 import { createReadStream } from 'fs';
-import { readdir, readFile, writeFile } from 'fs/promises';
+import { readdir } from 'fs/promises';
 import FormData from 'form-data';
 import 'dotenv/config';
 
@@ -19,26 +18,41 @@ if (!CLOUDFLARE_ACCOUNT_ID || !CLOUDFLARE_ACCOUNT_HASH || !CLOUDFLARE_API_KEY) {
 async function uploadToCloudflare(relativeFilename) {
 	const filename = `${UPLOADS_DIR}/${relativeFilename}`;
 
-	const buffer = await readFile(filename);
 	const form = new FormData();
 	form.append('id', relativeFilename);
-	form.append('file', buffer);
+	form.append('file', createReadStream(filename));
 
-	const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/images/v1`, {
-		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${CLOUDFLARE_API_KEY}`,
-			...form.getHeaders()
-		},
-		body: form.getBuffer()
+	return new Promise((resolve, reject) => {
+		form.submit({
+			protocol: 'https:',
+			host: 'api.cloudflare.com',
+			path: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/images/v1`,
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${CLOUDFLARE_API_KEY}`
+			}
+		}, (err, res) => {
+			if (err) {
+				reject(err);
+				return;
+			}
+
+			let data = '';
+			res.on('data', chunk => data += chunk);
+			res.on('end', () => {
+				if (res.statusCode !== 200) {
+					reject(new Error(`Failed to upload ${filename}: ${res.statusCode} ${res.statusMessage}\n${data}`));
+					return;
+				}
+				const json = JSON.parse(data);
+				if (!json.success) {
+					reject(new Error(`Failed to upload ${filename}: ${JSON.stringify(json.errors)}`));
+					return;
+				}
+				resolve();
+			});
+		});
 	});
-	if (!res.ok) {
-		throw new Error(`Failed to upload ${filename}: ${res.status} ${res.statusText}`);
-	}
-	const json = await res.json();
-	if (!json.success) {
-		throw new Error(`Failed to upload ${filename}: ${json.errors}`);
-	}
 }
 
 async function checkCloudflareImage(relativeFilename) {
