@@ -1,6 +1,6 @@
 ---
-student_name: "Elisabeth Van Dyck"
-project_title: "Adem"
+student_name: Elisabeth Van Dyck
+project_title: Adem
 context: Autonomous Context
 year: 2024-2025
 main_image: elisabeth-van-dyck/1wD__yrtb6mAkbJ0NC2JA1fxq6uWCgMkr.jpg
@@ -11,8 +11,8 @@ images:
   - elisabeth-van-dyck/1sf2nsKA6Oa2oHJCvjzehJL9h9wAT3b-D.png
   - elisabeth-van-dyck/1AY6Q3J7PvwBgALwYYl7blweA0LbgVy8N.png
 social_links:
-  - "https://elisabethvandyck.be/"
-  - "https://www.instagram.com/@elisabeth_vandyck @captured_designed_by_elisabeth"
+  - https://elisabethvandyck.be/
+  - https://www.instagram.com/captured_designed_by_elisabeth
 ---
 ‘Adem’ is an exploration of the somatic experience of a dancer/human. Breath is an essential part of a dance practice, but do we use it enough? In this project, we tried to get as close to the body as possible by using microphones and GoPro’s, both attached to the bodies of seven dancers. It's an ode to being a dancer and therefore being vulnerable, thus human.
 
