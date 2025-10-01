@@ -1,6 +1,6 @@
 ---
-student_name: "Femke Goyvaerts"
-project_title: "Lachen mag"
+student_name: Femke Goyvaerts
+project_title: Lachen mag
 context: Autonomous Context
 year: 2024-2025
 main_image: femke-goyvaerts/1FuwxPEubgyg7b3PWbZ3Z9aEo4K5VHZVE.jpg
@@ -12,8 +12,7 @@ images:
   - femke-goyvaerts/1-TFGPRy580u-_efSd_I55-Za2kvNWnKT.jpg
   - femke-goyvaerts/1Ticqufr4BPhxe7Cxl2SaogSP_FH8hDLp.jpg
 social_links:
-  - "volg me op instagram!"
-  - "https://www.instagram.com/studio_femkegoyvaerts"
+  - https://www.instagram.com/studio_femkegoyvaerts
 ---
 Vertrekkend vanuit een persoonlijke fascinatie voor absurde humor onderzoek ik familiale dynamieken en hun visuele vertaling.
 De schilderijen zijn geïnspireerd door spreekwoorden, gezinsstructuren en de droogkomische taal van mijn vader.
