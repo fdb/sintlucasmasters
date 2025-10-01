@@ -1,6 +1,6 @@
 ---
-student_name: "jef verbeke"
-project_title: "Op Eigen Houtje"
+student_name: jef verbeke
+project_title: Op Eigen Houtje
 context: Applied Context
 year: 2024-2025
 main_image: jef-verbeke/1e2rCtGP-ikaiwdzT4mO1KjBZEubI3Eya.jpg
@@ -11,8 +11,8 @@ images:
   - jef-verbeke/1gM54pXyq_SjgPcIOsPpC7yHFJ5ImoN53.jpg
   - jef-verbeke/11bQFD3rykw2iidyyxpzqRmPRD3zq84mm.jpg
 social_links:
-  - "https://jefverbeke.netlify.app/"
-  - "https://www.instagram.com/@mendejef"
+  - https://jefverbeke.netlify.app/
+  - https://www.instagram.com/mendejef
 ---
 Op eigen houtje' is een eerste kennismaking met houtbewerking en verwelkomt iedereen om bij te leren en om samen iets te maken.
 
