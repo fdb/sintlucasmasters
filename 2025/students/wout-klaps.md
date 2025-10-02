@@ -1,6 +1,6 @@
 ---
-student_name: "Wout Klaps"
-project_title: "Patterns of remembrance"
+student_name: Wout Klaps
+project_title: Patterns of remembrance
 context: Autonomous Context
 year: 2024-2025
 main_image: wout-klaps/1d2eAWmNFjrsDXl38Y3o-1hBnU7oSqBNy.jpg
@@ -11,8 +11,7 @@ images:
   - wout-klaps/1zvkWdTsKK4-dOjM8w-Rww1v7g4UpYmEu.jpg
   - wout-klaps/1M8nJpUSChYpUG-h9Bs2Xr_AY9kbo2FDD.jpg
 social_links:
-  - "/"
-  - "https://www.instagram.com/woutklapskunst"
+  - https://www.instagram.com/woutklapskunst
 ---
 Via sculpturen in textiel en schilderijen onderzoek ik de symboliek van patronen, bestaande stereotypen rond deze luxe stoffen en breng ik deze in dialoog met portretten die terugkijken naar de toeschouwer. 
 
