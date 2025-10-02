@@ -1,6 +1,6 @@
 ---
-student_name: "Melissa Van Havere"
-project_title: "They can talk, we just have to listen"
+student_name: Melissa Van Havere
+project_title: They can talk, we just have to listen
 context: Autonomous Context
 year: 2024-2025
 main_image: melissa-van-havere/19H294pmFtYsneqypi9ouTgFTq7c9QnAT.jpg
@@ -12,8 +12,7 @@ images:
   - melissa-van-havere/1SGmRkcyP5JxyPpFdWxqPK79H2cDTmOc6.jpg
   - melissa-van-havere/1kDj-Hs3eZ4pT7E3vaRS2oKz9Dgk862cY.jpg
 social_links:
-  - "/"
-  - "https://www.instagram.com/https://www.instagram.com/_m.oats_/"
+  - https://www.instagram.com/_m.oats_/
 ---
 In my artistic practice animals are central. With my work I want to question the current dynamic between human-animals and non-human animals. In this way I want to set a positive change in motion.
 
