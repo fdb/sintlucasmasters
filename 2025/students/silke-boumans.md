@@ -1,6 +1,6 @@
 ---
-student_name: "Silke Boumans"
-project_title: "Stukke(n) Stad"
+student_name: Silke Boumans
+project_title: Stukke(n) Stad
 context: Autonomous Context
 year: 2024-2025
 main_image: silke-boumans/1WZvxWr95VTc5AgX8g9rj57yUbIDMRIZG.jpg
@@ -11,6 +11,6 @@ images:
   - silke-boumans/14JOhCRWSQ780k4vIUoU6Kvr4mR5g9ygC.gif
   - silke-boumans/17wpqK-H1BmGibySy4vstrBkfK57K6ahS.gif
 social_links:
-  - "https://www.instagram.com/@boumanssilke"
+  - https://www.instagram.com/boumanssilke
 ---
 Stukke(n) Stad is een verzameling van gedachten, foto’s en objecten die samen een verhaal vertellen over vasthouden, veranderen en loslaten. Het werk nodigt je uit stil te staan bij wat we bewaren en wat we achterlaten. Er zijn namelijk twee soorten mensen: zij die vasthouden, en zij die loslaten. Welke ben jij?
