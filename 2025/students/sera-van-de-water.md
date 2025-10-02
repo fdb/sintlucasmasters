@@ -1,6 +1,6 @@
 ---
-student_name: "Sera van de Water"
-project_title: "What Are We Doing Here?"
+student_name: Sera van de Water
+project_title: What Are We Doing Here?
 context: Socio-Political Context
 year: 2024-2025
 main_image: sera-van-de-water/1TDoPzza7Oodbo9jriNuFQ2_wmW1B-Y7C.jpg
@@ -11,8 +11,8 @@ images:
   - sera-van-de-water/1w6pBsN0n_Be-q-8aUvkJQT53k7B2q7pd.jpg
   - sera-van-de-water/1SS1frlB1OFDruXVDSN0W7iXLnHZUkn-K.jpg
 social_links:
-  - "seravandewater.netlify.app"
-  - "https://www.instagram.com/@seravandewater"
+  - seravandewater.netlify.app
+  - https://www.instagram.com/seravandewater
 ---
 Graphic design is stuck, caught in capitalism’s chokehold. This project is a collective rethinking, a way to question that condition through an exploration of open-ended design practices. How can we draft alternative futures in the present? What’s left in the margins?
 
