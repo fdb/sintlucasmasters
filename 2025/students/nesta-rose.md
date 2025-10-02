@@ -1,6 +1,6 @@
 ---
-student_name: "Nesta Rose"
-project_title: "TripRig"
+student_name: Nesta Rose
+project_title: TripRig
 context: Digital Context
 year: 2024-2025
 main_image: nesta-rose/15-giu5uRhnhLLb_S7Ob2c2F2-sI15aGH.jpg
@@ -12,8 +12,8 @@ images:
   - nesta-rose/1qBttDe-eH8U-mCiP9FE9GU83tlo5tQpw.jpg
   - nesta-rose/1_Dnv4aRTNgZzuQifouI3oY68O-KbHnJA.jpg
 social_links:
-  - "nesta-rose.netlify.app"
-  - "https://www.instagram.com/@nesta.rose"
+  - nesta-rose.netlify.app
+  - https://www.instagram.com/nesta.rose
 ---
 Meditation, hallucination and tech in one trippy, self-generated experience. TripRig is a flickering light and sound machine, guided by your breath. Basically, getting high on your own supply.
 
