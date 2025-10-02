@@ -1,6 +1,6 @@
 ---
-student_name: "Raquellle Verheyen"
-project_title: "Consumentencultuur is overal maar niet altijd zichtbaar"
+student_name: Raquellle Verheyen
+project_title: Consumentencultuur is overal maar niet altijd zichtbaar
 context: Autonomous Context
 year: 2024-2025
 main_image: raquellle-verheyen/1dGpMvPhQYYvc1k195OzoAPg3BgC1Y6nV.jpg
@@ -11,8 +11,8 @@ images:
   - raquellle-verheyen/1PGagyh5jIILb8lYdFV4wVC7sJbbp34A9.jpg
   - raquellle-verheyen/1WY-gqwVEwyRw9A-CceANZMCaTvBm9AmM.jpg
 social_links:
-  - "https://www.raquelleverheyen.be/"
-  - "https://www.instagram.com/https://www.instagram.com/rakel.dj?igsh=MXUwbHF5YmJrY3Z0dA%3D%3D&utm_source=qr"
+  - https://www.raquelleverheyen.be/
+  - https://www.instagram.com/rakel.dj
 ---
 Raquelle investigates the unstable life cycle of everyday objects. These objects are assembled into compositions where the line between reality and the 'consumer dream' blurs. Drawing from vintage commercial imagery, she recontextualizes discarded materials to question how products are marketed, consumed and forgotten. Her assemblages challenge the promises we attach to things and the speed at which they lose their meaning.
 
