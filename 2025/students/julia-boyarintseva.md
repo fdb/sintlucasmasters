@@ -1,5 +1,5 @@
 ---
-student_name: "Julia Boyarintseva"
+student_name: Julia Boyarintseva
 project_title: "Tapir en Mombin: een prentenboek"
 context: Applied Context
 year: 2024-2025
@@ -11,8 +11,7 @@ images:
   - julia-boyarintseva/1s0-t5hu6jXs0H5spyWOngI0J9dr9K4kB.jpg
   - julia-boyarintseva/1itjmK5tjHWCnndKRDr4h4oLOm6UYi0g-.jpg
 social_links:
-  - "https://www.instagram.com/creatosaurus_rex/"
-  - "https://www.instagram.com/creatosaurus_rex"
+  - https://www.instagram.com/creatosaurus_rex
 ---
 "Tapir en Mombin" is en ontroerend prentenboek over een eenzame tapir die op straat een klein plantje vindt en mee naar huis neemt. De zorg voor het plantje verandert langzaam zijn leven. Hij ontdekt nieuwe hobby’s, sluit nieuwe vriendschappen en ondergaat een innerlijke transformatie.
 
