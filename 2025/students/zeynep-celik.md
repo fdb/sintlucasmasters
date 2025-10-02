@@ -1,14 +1,14 @@
 ---
-student_name: "zeynep celik"
-project_title: "failed feminism"
+student_name: zeynep celik
+project_title: failed feminism
 context: Autonomous Context
 year: 2024-2025
 main_image: zeynep-celik/1UTX6Gb4f6fC392ELuQ0YLiLzmmWOOLOL.jpeg
 images:
   - zeynep-celik/11TblRqSV4iID5ek7yhCxE9IMXByBN78m.jpeg
 social_links:
-  - "www.studiozeynepcelik.com"
-  - "https://www.instagram.com/@zzeynepcelikk__"
+  - www.studiozeynepcelik.com
+  - https://www.instagram.com/zzeynepcelikk__
 ---
 De motieven die ik gebruik blijven een verwijzing naar mijn voortdurende strijd voor feminisme, zelfs wanneer mijn persoonlijke ervaringen die strijd tijdelijk onder druk zetten.
 
