@@ -1,6 +1,6 @@
 ---
-student_name: "Tisse Geukens"
-project_title: "Zoetwater Safari"
+student_name: Tisse Geukens
+project_title: Zoetwater Safari
 context: Applied Context
 year: 2024-2025
 main_image: tisse-geukens/1pqVYHD_YFQrrw2AmKHuQewSZUdkI3sSY.jpg
@@ -12,8 +12,7 @@ images:
   - tisse-geukens/13DrDKTAlnusRwNzgjIvHaK7ekN6Jg34l.jpg
   - tisse-geukens/1ZHPOoq51GwpXmGIPQIjJJLItbrF-9NMi.jpg
 social_links:
-  - "nvt"
-  - "https://www.instagram.com/@tissegeukens"
+  - https://www.instagram.com/tissegeukens
 ---
 De Zoetwater Safari is een speurtocht die plaatsvindt op een lokaal festival waar kinderen al spelend kennis maken met de bewoners van de onderwaterwereld van de Kempen. Op hun avontuur ontdekken ze de geheimen van de Kempense beken, rivieren en meren en komen ze vanalles te weten over de dieren en hun gekke gewoontes en slimme trucjes.
 
