@@ -1,6 +1,6 @@
 ---
-student_name: "Merel"
-project_title: "Cover Me"
+student_name: Merel
+project_title: Cover Me
 context: Autonomous Context
 year: 2024-2025
 main_image: merel/1DN54cRRPlfMgVjIgGJ1puvwvmrplCoOW.jpg
@@ -10,8 +10,8 @@ images:
   - merel/1-5HfnB-04RYf42azVLSoPz6kAFviqAZY.jpg
   - merel/1Py7337upnwoJ-0MghPCFj_cUd6dU8fA2.jpg
 social_links:
-  - "https://merelouwerkerk.cargo.site"
-  - "https://www.instagram.com/https://www.instagram.com/a.o.merel?igsh=MThsZzBveDRvc2Jzdg=="
+  - https://merelouwerkerk.cargo.site
+  - https://www.instagram.com/a.o.merel
 ---
 A live webcam on Texel streams everything it captures — people, movement, everyday life. Cover Me reflects on surveillance technologies and their role in systems of control and exposure. Using an object-detection algorithm that visually obscures yet also protects humans, the work questions the ethics of observation and offers a subtle act of resistance.
 
