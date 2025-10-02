@@ -1,6 +1,6 @@
 ---
-student_name: "Zina Kenens"
-project_title: "Post Love"
+student_name: Zina Kenens
+project_title: Post Love
 context: Autonomous Context
 year: 2024-2025
 main_image: zina-kenens/1xWlZ6mZA1Z2L6RwLGdlvdc51nMXOyjuE.jpg
@@ -10,8 +10,8 @@ images:
   - zina-kenens/1WEUJGVEwM9vOP1qHPfMce0wARixhWLj1.jpg
   - zina-kenens/11m2JWNpXJ9qcVatbVGoLUGEsHM3So4cm.jpg
 social_links:
-  - "www.zinakenens.com"
-  - "https://www.instagram.com/@zinakenens"
+  - www.zinakenens.com
+  - https://www.instagram.com/zinakenens
 ---
 The photographs are my way of answering, of placing their story next to mine, it's about how  a stranger's emotions can mirror your own and how photography becomes a space to hold those echoes.
 
