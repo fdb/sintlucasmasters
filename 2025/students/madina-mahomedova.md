@@ -1,6 +1,6 @@
 ---
-student_name: "Madina Mahomedova"
-project_title: "Replica of a Replica I Aspire to Become"
+student_name: Madina Mahomedova
+project_title: Replica of a Replica I Aspire to Become
 context: Digital Context
 year: 2024-2025
 main_image: madina-mahomedova/1zAptWw3llptdmi4V3OWVgw2_Bbj555yR.jpg
@@ -12,7 +12,7 @@ images:
   - madina-mahomedova/1xwb3PN4Ft0Du32Ua4rVBFvg4QMIi6mhV.jpg
   - madina-mahomedova/1v7askibrAiSl-b9QzFtiQgSSIqGxnAmY.jpg
 social_links:
-  - "https://www.instagram.com/@mado.archve"
+  - https://www.instagram.com/mado.archve
 ---
 A multi-part interactive installation; an ecosystem of works, objects, and artefacts, all orbiting the same constellations of ideas – digital mirrors and reflections, uncanny glitching chatbots, spiders, myths, failures and residue, hyperreal online spaces, and the blurred boundary between public and private. This work is both intimate and investigative – a way to process the grief of lost agency, dissociation, heartbreak and longing through creation/curation of AI mirrors, web maps, 3D prints, and digital residue. 
 
