@@ -1,6 +1,6 @@
 ---
-student_name: "Richard Klapwijk"
-project_title: "CONNECT, MOVE, DANCE (as we became material)"
+student_name: Richard Klapwijk
+project_title: CONNECT, MOVE, DANCE (as we became material)
 context: Autonomous Context
 year: 2024-2025
 main_image: richard-klapwijk/1ESrSvjTrxPPEWhPYBVkbFKiwDWGTdDXi.jpg
@@ -9,8 +9,8 @@ images:
   - richard-klapwijk/1dkGnjnW2m2aEVfAHe_T79UPcvBSQUwkw.jpg
   - richard-klapwijk/1aryMZxsHlzaq0s6jYHJVGtbiRhgSVGV8.jpg
 social_links:
-  - "https://richardklapwijk.com/"
-  - "https://www.instagram.com/https://www.instagram.com/richardklapwijk/"
+  - https://richardklapwijk.com/
+  - https://www.instagram.com/richardklapwijk/
 ---
 Richard's project brings together multiple artistic collaborations.
 He explores how structure works alongside spontaneity.
