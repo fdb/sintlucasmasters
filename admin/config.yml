@@ -2,9 +2,11 @@ backend:
   name: git-gateway
   branch: main
 media_library:
-  name: uploadcare
+  name: cloudflare
   config:
-    publicKey: a2ddae113b0813f64a20
+    account_hash: '7-GLn6-56OyK7JwwGe0hfg'
+    default_variant: public
+    function_path: '/.netlify/functions/cloudflare-create-direct-upload'
 collections:
   - name: 'students'
     label: 'Students'

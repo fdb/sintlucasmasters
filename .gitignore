@@ -11,3 +11,5 @@ uploadcare-files.json
 _uploads/
 _data/
 media/
+# Local Netlify folder
+.netlify
