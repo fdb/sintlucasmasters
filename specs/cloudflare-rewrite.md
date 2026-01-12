@@ -35,8 +35,8 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 | description | text | yes | Project description (markdown) |
 | main_image_id | string | yes | Cloudflare Images ID - used for print |
 | thumb_image_id | string | no | Square thumbnail (falls back to main_image) |
-| tags | string[] | no | Material/medium tags |
-| social_links | string[] | no | Portfolio, Instagram, etc. |
+| tags | TEXT (JSON) | no | Material/medium tags as JSON array |
+| social_links | TEXT (JSON) | no | Portfolio, Instagram, etc. as JSON array |
 | status | enum | yes | draft, submitted, ready_for_print, published |
 | created_at | datetime | yes | |
 | updated_at | datetime | yes | |
@@ -162,9 +162,73 @@ audio, ceramic, clay, digital, ink, installation, metal, paint, paper, performan
 
 ### 6. Data Migration
 
-- [ ] Script to import existing markdown files from 2021-2025
-- [ ] Map existing Cloudflare/Uploadcare image IDs
-- [ ] Validate migrated data
+- [ ] Create migration script to parse all student markdown files (307 files across 2021-2025)
+- [ ] Handle two image reference formats (see below)
+- [ ] Generate UUIDs for Project and ProjectImage records
+- [ ] Insert projects into D1 database
+- [ ] Insert project images with correct sort order
+- [ ] Validate migrated data (counts, required fields, image accessibility)
+- [ ] Create rollback script in case of issues
+
+#### Image Format Handling
+
+The existing markdown files use two different image reference formats:
+
+**2021-2024 format** (full Cloudflare URLs):
+```yaml
+main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bf666892-6c85-4a27-b2f2-e46a66740e00'
+images:
+  - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/84c53e0b-a621-4c69-724c-9b5c66f91000
+```
+Extract Cloudflare ID: `bf666892-6c85-4a27-b2f2-e46a66740e00`
+
+**2025 format** (relative paths):
+```yaml
+main_image: alix-spooren/13TDsml0WUunYSaBjfJA1A0WXuz-5_bRn.jpg
+images:
+  - alix-spooren/1OervsXFuXVsr6XICtkQqoaxevUomFr9C.jpg
+```
+Cloudflare ID is the full path: `alix-spooren/13TDsml0WUunYSaBjfJA1A0WXuz-5_bRn.jpg`
+
+**Migration logic:**
+```javascript
+function extractCloudflareId(imageRef) {
+  const CF_BASE = 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/';
+  if (imageRef.startsWith(CF_BASE)) {
+    return imageRef.replace(CF_BASE, '').replace(/\/.*$/, ''); // Remove variant suffix
+  }
+  return imageRef; // Already a relative path/ID
+}
+```
+
+#### Migration Data Mapping
+
+| Source (Markdown) | Target (D1) | Notes |
+|-------------------|-------------|-------|
+| `student_name` | `Project.student_name` | Direct copy |
+| `project_title` | `Project.project_title` | Direct copy |
+| `context` | `Project.context` | Validate against enum |
+| `year` | `Project.academic_year` | Normalize format (e.g., "2020—2021" → "2020-2021") |
+| `bio` | `Project.bio` | Optional, may be empty |
+| Body content | `Project.description` | Markdown content after frontmatter |
+| `main_image` | `Project.main_image_id` | Extract Cloudflare ID |
+| `thumb_image` | `Project.thumb_image_id` | Optional, extract ID if present |
+| `tags` | `Project.tags` | JSON array |
+| `social_links` | `Project.social_links` | JSON array |
+| `images[]` | `ProjectImage` records | One record per image, with sort_order |
+| — | `Project.status` | Set to `published` for all migrated data |
+| — | `Project.created_at` | Set to migration timestamp |
+| — | `Project.updated_at` | Set to migration timestamp |
+
+#### Migration Script Steps
+
+1. **Parse**: Read all `*/students/*.md` files using gray-matter
+2. **Transform**: Map frontmatter + body to Project schema
+3. **Normalize**: Fix year format inconsistencies (em-dash vs hyphen)
+4. **Extract IDs**: Convert image references to Cloudflare Image IDs
+5. **Validate**: Check required fields, valid context enum, image accessibility
+6. **Insert**: Batch insert into D1 (Projects first, then ProjectImages)
+7. **Verify**: Count records, spot-check random entries, verify image URLs work
 
 ### 7. Infrastructure
 
@@ -178,34 +242,36 @@ audio, ceramic, clay, digital, ink, installation, metal, paint, paper, performan
 
 ## Migration Notes
 
-### Existing Data Structure (from current codebase)
+### Source Data Summary
 
-Current student markdown frontmatter:
-```yaml
-student_name: "Name"
-project_title: "Title"
-context: "Digital Context"
-year: "2024-2025"
-main_image: "slug/image-id.jpeg"
-thumb_image: "slug/thumb.jpeg"  # optional
-bio: "..."  # optional
-tags: ["photography", "digital"]  # optional
-images:
-  - "slug/image1.jpeg"
-  - "slug/image2.jpeg"
-social_links:
-  - "https://instagram.com/..."
-  - "https://portfolio.com"
-```
+| Year | Students | Image Format |
+|------|----------|--------------|
+| 2021 | ~60 | Full Cloudflare URLs |
+| 2022 | ~60 | Full Cloudflare URLs |
+| 2023 | ~60 | Full Cloudflare URLs |
+| 2024 | ~60 | Full Cloudflare URLs |
+| 2025 | ~67 | Relative paths (student-slug/image-id.ext) |
+| **Total** | **~307** | |
 
-Body content is markdown description.
+### Cloudflare Images Account
 
-### Image Migration
+- Account hash: `7-GLn6-56OyK7JwwGe0hfg`
+- Delivery URL pattern: `https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/{image_id}/{variant}`
+- Available variants: `xl`, `large`, `medium`, `thumb` (to be configured)
 
-Current images are stored as:
-- Local files in `_uploads/{student-slug}/{image-id}.{ext}`
-- Referenced by relative path in frontmatter
-- Some already uploaded to Cloudflare Images (account hash: 7-GLn6-56OyK7JwwGe0hfg)
+### Year Format Normalization
+
+The `year` field has inconsistent formatting:
+- 2021-2023: Uses em-dash: `"2020—2021"`, `"2022—2023"`
+- 2024-2025: Uses hyphen: `"2023-2024"`, `"2024-2025"`
+
+Migration should normalize all to hyphen format: `"YYYY-YYYY"`
+
+### D1 Schema Notes
+
+Since D1 is SQLite-based, arrays must be stored as JSON strings:
+- `tags`: `TEXT` column containing JSON array, e.g., `'["photography","digital"]'`
+- `social_links`: `TEXT` column containing JSON array
 
 ---
 
