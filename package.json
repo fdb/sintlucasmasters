@@ -7,14 +7,17 @@
     "build": "wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "migrate": "node scripts/migrate-to-d1.mjs",
-    "db:init": "wrangler d1 execute sintlucas-masters --local --file=./schema.sql"
+    "db:init": "wrangler d1 execute sintlucas-masters --local --file=./schema.sql",
+    "setup-secrets": "op inject -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
+    "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote"
   },
   "dependencies": {
     "hono": "^4.11.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260113.0",
+    "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
-    "wrangler": "^4.59.0"
+    "wrangler": "^4.59.1"
   }
 }

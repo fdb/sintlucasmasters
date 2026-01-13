@@ -3,9 +3,6 @@ node_modules/
 build/
 .svelte-kit/
 package/
-.env
-.env.*
-!.env.example
 _site/
 uploadcare-files.json
 _uploads/
@@ -17,3 +14,7 @@ media/
 # Wrangler
 .wrangler/
 migration.sql
+
+# Secrets
+.env
+.dev.vars
