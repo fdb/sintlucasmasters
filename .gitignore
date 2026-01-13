@@ -18,3 +18,8 @@ migration.sql
 # Secrets
 .env
 .dev.vars
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
+    "dev:e2e": "wrangler dev --port 5174",
+    "test:e2e": "playwright test",
     "build": "wrangler deploy --dry-run",
     "deploy": "wrangler deploy --env=''",
     "db:init": "wrangler d1 execute sintlucasmasters --local --file=./schema.sql",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260113.0",
+    "@playwright/test": "^1.57.0",
     "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
     "wrangler": "^4.59.1"
