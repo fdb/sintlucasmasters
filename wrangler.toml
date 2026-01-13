@@ -1,0 +1,8 @@
+name = "sintlucas-masters"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sintlucas-masters"
+database_id = "local"

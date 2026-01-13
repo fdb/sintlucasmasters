@@ -13,3 +13,7 @@ _data/
 media/
 # Local Netlify folder
 .netlify
+
+# Wrangler
+.wrangler/
+migration.sql
