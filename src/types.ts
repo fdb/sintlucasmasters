@@ -36,7 +36,14 @@ export type Context = (typeof CONTEXTS)[number];
 // Cloudflare Images URL helper
 const CF_ACCOUNT_HASH = '7-GLn6-56OyK7JwwGe0hfg';
 
-// Available variants: 'public' (smaller) and 'xl' (full size)
-export function getImageUrl(imageId: string, variant: 'public' | 'xl' = 'public'): string {
+// Available variants:
+// - thumb: 600x600 (grid cards)
+// - medium: 1000w (gallery)
+// - large: 1600w (detail hero)
+// - xl: 2000x2000 (print/full)
+// Note: 'public' and 'private' variants are NOT publicly accessible
+export type ImageVariant = 'thumb' | 'medium' | 'large' | 'xl';
+
+export function getImageUrl(imageId: string, variant: ImageVariant = 'medium'): string {
 	return `https://imagedelivery.net/${CF_ACCOUNT_HASH}/${imageId}/${variant}`;
 }
