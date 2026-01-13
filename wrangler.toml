@@ -1,5 +1,5 @@
 name = "sintlucas-masters"
-main = "src/index.ts"
+main = "src/index.tsx"
 compatibility_date = "2024-01-01"
 
 [[d1_databases]]
