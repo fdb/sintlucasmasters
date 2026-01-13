@@ -4,5 +4,5 @@ compatibility_date = "2024-01-01"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "sintlucas-masters"
-database_id = "local"
+database_name = "sintlucasmasters"
+database_id = "4227d715-382f-416a-aa9c-c5da32847400"

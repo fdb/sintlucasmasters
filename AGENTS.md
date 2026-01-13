@@ -52,18 +52,30 @@ social_links: []
 - **2021-2024**: Full Cloudflare URLs (`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/{id}`)
 - **2025**: Relative paths (`student-slug/image-id.jpg`)
 
-## Commands (New - TBD)
+## Commands
 
 ```bash
 # Development
-npm run dev
+npm run dev                 # Start local dev server on http://localhost:8787
 
-# Run migration from old data
-npm run migrate
+# Database (Local)
+npm run db:init             # Create schema only
+npm run db:migrate          # Run migration only
+npm run db:reset            # Full reset: delete DB, create schema, run migration
 
-# Build
-npm run build
+# Database (Remote/Production)
+npm run db:init:remote      # Create schema on remote D1
+npm run db:migrate:remote   # Run migration on remote D1
+npm run db:reset:remote     # Full reset on remote D1 (use with caution!)
+
+# Build & Deploy
+npm run build               # Dry-run deploy
+npm run deploy              # Deploy to Cloudflare
 ```
+
+## Environment Variables
+
+See `.env.template` for the list of required secret environment variables.
 
 ## Development Phases
 

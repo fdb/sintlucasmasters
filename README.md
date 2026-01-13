@@ -1,13 +1,30 @@
 # Sint Lucas Masters Website
 
-The master websites are built with Cloudflare.
+Student exhibition website built with Cloudflare Workers + Hono + D1.
+
+## Prerequisites
+
+- Node.js 18+
+- [1Password CLI](https://developer.1password.com/docs/cli/) (`op`) for secret management
 
 ## Installation
 
 ```bash
 npm install
-npm run migrate
 ```
+
+## Setup
+
+1. **Set up secrets** (requires 1Password CLI and access to the vault):
+   ```bash
+   npm run setup-secrets
+   ```
+
+2. **Initialize the database**:
+   ```bash
+   npm run db:reset
+   ```
+   This creates the D1 schema and migrates all student data.
 
 ## Development
 
@@ -15,14 +32,23 @@ npm run migrate
 npm run dev
 ```
 
-Open [http://localhost:8787](http://localhost:8787) with your browser to see the result.
+Open [http://localhost:8787](http://localhost:8787) with your browser.
+
+## Database Commands
+
+```bash
+npm run db:reset            # Full reset: delete local DB, create schema, run migration
+npm run db:reset:remote     # Same for production (use with caution!)
+```
 
 ## Deployment
 
-Go to [dash.cloudflare.com](https://dash.cloudflare.com) > Account > Manage account (in sidebar) > Account API Tokens. 
-Create Token
-Custom Permissions:
-Account - D1 - Edit
-Zone - Workers Routes - Edit
+```bash
+npm run deploy
+```
 
-Zone Resources
+For remote database setup:
+```bash
+npm run db:reset:remote
+npm run setup-secrets:remote
+```
