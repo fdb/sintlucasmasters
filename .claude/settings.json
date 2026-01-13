@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(echo:*)",
+      "Bash(find:*)",
+      "Bash(fd:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(git:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": ["Read(.env)", "Read(.dev.vars)"]
+  }
+}
