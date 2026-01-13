@@ -71,6 +71,17 @@ function generateImageId(projectId, cloudflareId, sortOrder) {
 }
 
 /**
+ * Normalize URL to ensure it has a protocol
+ */
+function normalizeUrl(url) {
+    if (!url) return url;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+    }
+    return `https://${url}`;
+}
+
+/**
  * Escape single quotes for SQL
  */
 function sqlEscape(str) {
@@ -99,7 +110,7 @@ async function parseStudentFile(filePath) {
         main_image_id: extractCloudflareId(frontmatter.main_image),
         thumb_image_id: extractCloudflareId(frontmatter.thumb_image) || null,
         tags: frontmatter.tags ? JSON.stringify(frontmatter.tags) : null,
-        social_links: frontmatter.social_links ? JSON.stringify(frontmatter.social_links) : null,
+        social_links: frontmatter.social_links ? JSON.stringify(frontmatter.social_links.map(normalizeUrl)) : null,
         status: 'published'
     };
 
@@ -164,13 +175,14 @@ async function importData() {
     const args = process.argv.slice(2);
     const isRemote = args.includes('--remote');
     const isLocal = args.includes('--local');
+    const isReset = args.includes('--reset');
 
     if (!isRemote && !isLocal) {
-        console.error('Usage: node scripts/import-to-d1.mjs --local|--remote');
+        console.error('Usage: node scripts/import-to-d1.mjs --local|--remote [--reset]');
         process.exit(1);
     }
 
-    console.log(`Importing to ${isRemote ? 'REMOTE (production)' : 'LOCAL'} D1 database...\n`);
+    console.log(`${isReset ? 'Resetting and importing' : 'Importing'} to ${isRemote ? 'REMOTE (production)' : 'LOCAL'} D1 database...\n`);
 
     const allProjects = [];
     const allImages = [];
@@ -234,6 +246,14 @@ async function importData() {
         for (const err of errors) {
             sqlLines.push(`-- ${err}`);
         }
+        sqlLines.push('');
+    }
+
+    // Reset tables if requested
+    if (isReset) {
+        sqlLines.push('-- Reset tables');
+        sqlLines.push('DELETE FROM project_images;');
+        sqlLines.push('DELETE FROM projects;');
         sqlLines.push('');
     }
 
