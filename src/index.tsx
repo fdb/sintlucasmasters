@@ -64,14 +64,24 @@ app.get('/archive', async (c) => {
 	).all<{ academic_year: string }>();
 
 	const years = yearResults.map((r) => r.academic_year);
-	const selectedYear = year || years[0];
+	const selectedYear = year; // undefined means "all years"
 
-	let query = 'SELECT * FROM projects WHERE academic_year = ?';
-	const params: string[] = [selectedYear];
+	let query = 'SELECT * FROM projects';
+	const params: string[] = [];
+	const conditions: string[] = [];
+
+	if (selectedYear) {
+		conditions.push('academic_year = ?');
+		params.push(selectedYear);
+	}
 
 	if (context && CONTEXTS.includes(context as any)) {
-		query += ' AND context = ?';
+		conditions.push('context = ?');
 		params.push(context);
+	}
+
+	if (conditions.length > 0) {
+		query += ' WHERE ' + conditions.join(' AND ');
 	}
 
 	query += ' ORDER BY student_name';
@@ -81,9 +91,12 @@ app.get('/archive', async (c) => {
 		.all<Project>();
 
 	return c.html(
-		<Layout title={`Archive - ${selectedYear}`}>
+		<Layout title={`Archive${selectedYear ? ` - ${selectedYear}` : ''}`}>
 			<h2>Archive</h2>
 			<div class="filters">
+				<a href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ''}`} class={!selectedYear ? 'active' : ''}>
+					All
+				</a>
 				{years.map((y) => (
 					<a
 						href={`/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ''}`}
@@ -94,12 +107,12 @@ app.get('/archive', async (c) => {
 				))}
 			</div>
 			<div class="filters">
-				<a href={`/archive?year=${encodeURIComponent(selectedYear)}`} class={!context ? 'active' : ''}>
+				<a href={`/archive${selectedYear ? `?year=${encodeURIComponent(selectedYear)}` : ''}`} class={!context ? 'active' : ''}>
 					All
 				</a>
 				{CONTEXTS.map((ctx) => (
 					<a
-						href={`/archive?year=${encodeURIComponent(selectedYear)}&context=${encodeURIComponent(ctx)}`}
+						href={`/archive?${selectedYear ? `year=${encodeURIComponent(selectedYear)}&` : ''}context=${encodeURIComponent(ctx)}`}
 						class={context === ctx ? 'active' : ''}
 					>
 						{ctx.replace(' Context', '')}
