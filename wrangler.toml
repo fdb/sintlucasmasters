@@ -1,4 +1,4 @@
-name = "sintlucas-masters"
+name = "sintlucasmasters"
 main = "src/index.tsx"
 compatibility_date = "2024-01-01"
 

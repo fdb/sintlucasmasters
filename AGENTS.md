@@ -58,15 +58,11 @@ social_links: []
 # Development
 npm run dev                 # Start local dev server on http://localhost:8787
 
-# Database (Local)
-npm run db:init             # Create schema only
-npm run db:migrate          # Run migration only
-npm run db:reset            # Full reset: delete DB, create schema, run migration
-
-# Database (Remote/Production)
-npm run db:init:remote      # Create schema on remote D1
-npm run db:migrate:remote   # Run migration on remote D1
-npm run db:reset:remote     # Full reset on remote D1 (use with caution!)
+# Database
+npm run db:init             # Create schema locally
+npm run db:init:remote      # Create schema on production D1
+npm run import              # Import old data to local D1
+npm run import:remote       # Import old data to production D1
 
 # Build & Deploy
 npm run build               # Dry-run deploy
@@ -79,7 +75,7 @@ See `.env.template` for the list of required secret environment variables.
 
 ## Development Phases
 
-1. **Phase 1**: D1 schema + migration script (import old data)
+1. **Phase 1**: D1 schema + import script (import old data)
 2. **Phase 2**: Simple Hono SSR frontend (list/detail views)
 3. **Phase 3**: Public pages with context filtering
 4. **Phase 4**: Admin section (future)

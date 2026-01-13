@@ -1,54 +1,61 @@
 # Sint Lucas Masters Website
 
-Student exhibition website built with Cloudflare Workers + Hono + D1.
+Student exhibition website for Sint Lucas Antwerpen Masters program.
 
-## Prerequisites
+## Tech Stack
 
-- Node.js 18+
-- [1Password CLI](https://developer.1password.com/docs/cli/) (`op`) for secret management
-
-## Installation
-
-```bash
-npm install
-```
-
-## Setup
-
-1. **Set up secrets** (requires 1Password CLI and access to the vault):
-   ```bash
-   npm run setup-secrets
-   ```
-
-2. **Initialize the database**:
-   ```bash
-   npm run db:reset
-   ```
-   This creates the D1 schema and migrates all student data.
+- **Runtime**: Cloudflare Workers
+- **Framework**: Hono (SSR with JSX)
+- **Database**: Cloudflare D1 (SQLite)
+- **Media Storage**: Cloudflare Images
 
 ## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Setup secrets (requires 1Password CLI)
+npm run setup-secrets
+
+# Create local D1 database schema
+npm run db:init
+
+# Import student data from old markdown files
+npm run import
+
+# Start development server (port 8787)
+# Visit http://localhost:8787
 npm run dev
 ```
 
-Open [http://localhost:8787](http://localhost:8787) with your browser.
-
-## Database Commands
+## Deploying to Cloudflare
 
 ```bash
-npm run db:reset            # Full reset: delete local DB, create schema, run migration
-npm run db:reset:remote     # Same for production (use with caution!)
-```
+# First time setup only:
+npm run db:init:remote       # Create schema on production D1
+npm run import:remote        # Import data to production D1
+npm run setup-secrets:remote # Upload secrets to Cloudflare
 
-## Deployment
-
-```bash
+# Every time you deploy:
 npm run deploy
 ```
 
-For remote database setup:
-```bash
-npm run db:reset:remote
-npm run setup-secrets:remote
+## Project Structure
+
+```text
+src/
+├── index.tsx          # Hono app entry point
+├── components/        # JSX components (Layout, ProjectCard)
+└── types.ts           # TypeScript types
+
+scripts/
+├── import-to-d1.mjs   # Import old markdown data to D1
+└── setup-secrets.mjs  # Setup local/remote secrets
+
+old/                   # Legacy Eleventy site (data source for import)
+├── 2021-2025/         # Student markdown files by year
+└── ...
+
+schema.sql             # D1 database schema
 ```

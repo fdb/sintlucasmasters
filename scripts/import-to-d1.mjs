@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 
 /**
- * Migration script to import student data from old markdown files into D1
+ * Import legacy student data from old markdown files into D1
  *
  * This script reads all student markdown files from old/{year}/students/*.md
- * and generates SQL statements for importing into D1.
+ * and executes SQL statements to import into D1.
  *
  * Usage:
- *   node scripts/migrate-to-d1.mjs > migration.sql
- *   wrangler d1 execute sintlucas-masters --local --file=./migration.sql
+ *   node scripts/import-to-d1.mjs --local   # Import to local D1
+ *   node scripts/import-to-d1.mjs --remote  # Import to production D1
  */
 
-import { readdir, readFile, writeFile } from 'fs/promises';
+import { readdir, readFile, writeFile, unlink } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
 import matter from 'gray-matter';
 import { createHash } from 'crypto';
 
@@ -50,7 +51,7 @@ function normalizeYear(year) {
 
 /**
  * Generate deterministic project ID based on student name + year
- * This ensures idempotent migrations
+ * This ensures idempotent imports
  */
 function generateProjectId(studentName, academicYear) {
     const hash = createHash('sha256')
@@ -131,9 +132,46 @@ VALUES (${sqlEscape(image.id)}, ${sqlEscape(image.project_id)}, ${sqlEscape(imag
 }
 
 /**
- * Main migration function
+ * Run wrangler d1 execute with the given SQL file
  */
-async function migrate() {
+function runWrangler(sqlFile, isRemote) {
+    return new Promise((resolve, reject) => {
+        const args = ['d1', 'execute', 'sintlucasmasters', isRemote ? '--remote' : '--local', '--file', sqlFile];
+        console.log(`Running: wrangler ${args.join(' ')}`);
+
+        const child = spawn('npx', ['wrangler', ...args], {
+            stdio: 'inherit',
+            cwd: PROJECT_ROOT
+        });
+
+        child.on('close', (code) => {
+            if (code === 0) {
+                resolve();
+            } else {
+                reject(new Error(`wrangler exited with code ${code}`));
+            }
+        });
+
+        child.on('error', reject);
+    });
+}
+
+/**
+ * Main import function
+ */
+async function importData() {
+    // Parse arguments
+    const args = process.argv.slice(2);
+    const isRemote = args.includes('--remote');
+    const isLocal = args.includes('--local');
+
+    if (!isRemote && !isLocal) {
+        console.error('Usage: node scripts/import-to-d1.mjs --local|--remote');
+        process.exit(1);
+    }
+
+    console.log(`Importing to ${isRemote ? 'REMOTE (production)' : 'LOCAL'} D1 database...\n`);
+
     const allProjects = [];
     const allImages = [];
     const errors = [];
@@ -146,7 +184,7 @@ async function migrate() {
         try {
             files = await readdir(studentsDir);
         } catch (err) {
-            console.error(`-- Warning: Could not read ${studentsDir}: ${err.message}`);
+            console.error(`Warning: Could not read ${studentsDir}: ${err.message}`);
             continue;
         }
 
@@ -182,49 +220,55 @@ async function migrate() {
         }
     }
 
-    // Output SQL
-    console.log('-- Sint Lucas Masters Migration');
-    console.log(`-- Generated: ${new Date().toISOString()}`);
-    console.log(`-- Projects: ${allProjects.length}`);
-    console.log(`-- Images: ${allImages.length}`);
-    console.log('');
+    // Build SQL
+    const sqlLines = [
+        '-- Sint Lucas Masters Import',
+        `-- Generated: ${new Date().toISOString()}`,
+        `-- Projects: ${allProjects.length}`,
+        `-- Images: ${allImages.length}`,
+        ''
+    ];
 
     if (errors.length > 0) {
-        console.log('-- ERRORS:');
+        sqlLines.push('-- ERRORS:');
         for (const err of errors) {
-            console.log(`-- ${err}`);
+            sqlLines.push(`-- ${err}`);
         }
-        console.log('');
+        sqlLines.push('');
     }
 
     // Projects
-    console.log('-- Projects');
+    sqlLines.push('-- Projects');
     for (const project of allProjects) {
-        console.log(projectToSql(project));
+        sqlLines.push(projectToSql(project));
     }
 
-    console.log('');
+    sqlLines.push('');
 
     // Images
-    console.log('-- Project Images');
+    sqlLines.push('-- Project Images');
     for (const image of allImages) {
-        console.log(imageToSql(image));
+        sqlLines.push(imageToSql(image));
     }
 
-    // Summary by year and context
-    console.error('\n=== Migration Summary ===');
-    console.error(`Total projects: ${allProjects.length}`);
-    console.error(`Total images: ${allImages.length}`);
-    console.error(`Errors: ${errors.length}`);
+    // Write to temp file
+    const sqlFile = join(PROJECT_ROOT, '.import-temp.sql');
+    await writeFile(sqlFile, sqlLines.join('\n'), 'utf-8');
+
+    // Summary
+    console.log('=== Import Summary ===');
+    console.log(`Total projects: ${allProjects.length}`);
+    console.log(`Total images: ${allImages.length}`);
+    console.log(`Errors: ${errors.length}`);
 
     // Group by year
     const byYear = {};
     for (const p of allProjects) {
         byYear[p.academic_year] = (byYear[p.academic_year] || 0) + 1;
     }
-    console.error('\nBy year:');
+    console.log('\nBy year:');
     for (const [year, count] of Object.entries(byYear).sort()) {
-        console.error(`  ${year}: ${count}`);
+        console.log(`  ${year}: ${count}`);
     }
 
     // Group by context
@@ -232,17 +276,30 @@ async function migrate() {
     for (const p of allProjects) {
         byContext[p.context] = (byContext[p.context] || 0) + 1;
     }
-    console.error('\nBy context:');
+    console.log('\nBy context:');
     for (const [context, count] of Object.entries(byContext).sort()) {
-        console.error(`  ${context}: ${count}`);
+        console.log(`  ${context}: ${count}`);
     }
 
     if (errors.length > 0) {
-        console.error('\nErrors:');
+        console.log('\nErrors:');
         for (const err of errors) {
-            console.error(`  ${err}`);
+            console.log(`  ${err}`);
         }
+    }
+
+    // Execute import
+    console.log('\nExecuting import...\n');
+    try {
+        await runWrangler(sqlFile, isRemote);
+        console.log('\nImport completed successfully!');
+    } finally {
+        // Clean up temp file
+        await unlink(sqlFile).catch(() => {});
     }
 }
 
-migrate().catch(console.error);
+importData().catch((err) => {
+    console.error('Import failed:', err.message);
+    process.exit(1);
+});

@@ -5,14 +5,11 @@
   "scripts": {
     "dev": "wrangler dev",
     "build": "wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
-    "migrate": "node scripts/migrate-to-d1.mjs",
+    "deploy": "wrangler deploy --env=''",
     "db:init": "wrangler d1 execute sintlucasmasters --local --file=./schema.sql",
-    "db:migrate": "node scripts/migrate-to-d1.mjs > migration.sql && wrangler d1 execute sintlucasmasters --local --file=./migration.sql",
-    "db:reset": "rm -rf .wrangler/state/v3/d1 && npm run db:init && npm run db:migrate",
     "db:init:remote": "wrangler d1 execute sintlucasmasters --remote --file=./schema.sql",
-    "db:migrate:remote": "node scripts/migrate-to-d1.mjs > migration.sql && wrangler d1 execute sintlucasmasters --remote --file=./migration.sql",
-    "db:reset:remote": "npm run db:init:remote && npm run db:migrate:remote",
+    "import": "node scripts/import-to-d1.mjs --local",
+    "import:remote": "node scripts/import-to-d1.mjs --remote",
     "setup-secrets": "op inject -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
     "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote"
   },
