@@ -8,7 +8,7 @@ type ProjectCardProps = {
 
 export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
 	const imageId = project.thumb_image_id || project.main_image_id;
-	const imageUrl = getImageUrl(imageId, 'medium');
+	const imageUrl = getImageUrl(imageId, 'public');
 
 	return (
 		<a href={`/project/${project.id}`} class="card" style="text-decoration: none;">

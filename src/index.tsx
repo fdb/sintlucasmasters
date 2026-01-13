@@ -151,7 +151,7 @@ app.get('/project/:id', async (c) => {
 				<p class="meta">
 					{project.project_title} · {project.context} · {project.academic_year}
 				</p>
-				<img src={getImageUrl(project.main_image_id, 'large')} alt={project.project_title} class="main-image" />
+				<img src={getImageUrl(project.main_image_id, 'xl')} alt={project.project_title} class="main-image" />
 				{project.bio && (
 					<div>
 						<h3>Bio</h3>
@@ -172,7 +172,7 @@ app.get('/project/:id', async (c) => {
 						<h3>Gallery</h3>
 						<div class="gallery">
 							{images.map((img) => (
-								<img src={getImageUrl(img.cloudflare_id, 'medium')} alt="" loading="lazy" />
+								<img src={getImageUrl(img.cloudflare_id, 'public')} alt="" loading="lazy" />
 							))}
 						</div>
 					</div>

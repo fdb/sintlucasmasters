@@ -36,6 +36,7 @@ export type Context = (typeof CONTEXTS)[number];
 // Cloudflare Images URL helper
 const CF_ACCOUNT_HASH = '7-GLn6-56OyK7JwwGe0hfg';
 
-export function getImageUrl(imageId: string, variant: 'thumb' | 'medium' | 'large' = 'medium'): string {
+// Available variants: 'public' (smaller) and 'xl' (full size)
+export function getImageUrl(imageId: string, variant: 'public' | 'xl' = 'public'): string {
 	return `https://imagedelivery.net/${CF_ACCOUNT_HASH}/${imageId}/${variant}`;
 }
