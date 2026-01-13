@@ -63,6 +63,8 @@ npm run db:init             # Create schema locally
 npm run db:init:remote      # Create schema on production D1
 npm run import              # Import old data to local D1
 npm run import:remote       # Import old data to production D1
+npm run db:rebuild          # Drop tables, recreate schema, and import (local)
+npm run db:rebuild:remote   # Drop tables, recreate schema, and import (remote)
 
 # Build & Deploy
 npm run build               # Dry-run deploy

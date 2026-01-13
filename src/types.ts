@@ -1,5 +1,6 @@
 export interface Project {
 	id: string;
+	slug: string;
 	student_name: string;
 	project_title: string;
 	context: string;
@@ -46,4 +47,9 @@ export type ImageVariant = 'thumb' | 'medium' | 'large' | 'xl';
 
 export function getImageUrl(imageId: string, variant: ImageVariant = 'medium'): string {
 	return `https://imagedelivery.net/${CF_ACCOUNT_HASH}/${imageId}/${variant}`;
+}
+
+// Generate student URL from project
+export function getStudentUrl(project: Project): string {
+	return `/${project.academic_year}/students/${project.slug}/`;
 }

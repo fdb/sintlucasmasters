@@ -50,6 +50,18 @@ function normalizeYear(year) {
 }
 
 /**
+ * Generate URL-safe slug from student name
+ */
+function slugify(name) {
+    return name
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-z0-9]+/g, '-')     // Replace non-alphanumeric with hyphens
+        .replace(/^-+|-+$/g, '');        // Trim leading/trailing hyphens
+}
+
+/**
  * Generate deterministic project ID based on student name + year
  * This ensures idempotent imports
  */
@@ -101,6 +113,7 @@ async function parseStudentFile(filePath) {
 
     const project = {
         id: projectId,
+        slug: slugify(frontmatter.student_name),
         student_name: frontmatter.student_name,
         project_title: frontmatter.project_title,
         context: frontmatter.context,
@@ -130,8 +143,8 @@ async function parseStudentFile(filePath) {
  * Generate SQL INSERT statement for a project
  */
 function projectToSql(project) {
-    return `INSERT OR REPLACE INTO projects (id, student_name, project_title, context, academic_year, bio, description, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
-VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
+    return `INSERT OR REPLACE INTO projects (id, slug, student_name, project_title, context, academic_year, bio, description, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
+VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
 }
 
 /**

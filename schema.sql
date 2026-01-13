@@ -2,6 +2,7 @@
 
 CREATE TABLE IF NOT EXISTS projects (
     id TEXT PRIMARY KEY,
+    slug TEXT NOT NULL,
     student_name TEXT NOT NULL,
     project_title TEXT NOT NULL,
     context TEXT NOT NULL CHECK (context IN (
@@ -40,4 +41,5 @@ CREATE TABLE IF NOT EXISTS project_images (
 CREATE INDEX IF NOT EXISTS idx_projects_academic_year ON projects(academic_year);
 CREATE INDEX IF NOT EXISTS idx_projects_context ON projects(context);
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
+CREATE INDEX IF NOT EXISTS idx_projects_slug_year ON projects(slug, academic_year);
 CREATE INDEX IF NOT EXISTS idx_project_images_project_id ON project_images(project_id);

@@ -3,6 +3,7 @@ import { Layout } from './components/Layout';
 import { ProjectCard } from './components/ProjectCard';
 import type { Project, ProjectImage } from './types';
 import { CONTEXTS, getImageUrl } from './types';
+import { CURRENT_YEAR } from './config';
 
 type Bindings = {
 	DB: D1Database;
@@ -10,15 +11,18 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// Current academic year
-const CURRENT_YEAR = '2024-2025';
+// Home page - redirect to current year
+app.get('/', (c) => {
+	return c.redirect(`/${CURRENT_YEAR}/`);
+});
 
-// Home page - current year projects
-app.get('/', async (c) => {
+// Year page - projects for a specific academic year
+app.get('/:year/', async (c) => {
+	const year = c.req.param('year');
 	const context = c.req.query('context');
 
 	let query = 'SELECT * FROM projects WHERE academic_year = ?';
-	const params: string[] = [CURRENT_YEAR];
+	const params: string[] = [year];
 
 	if (context && CONTEXTS.includes(context as any)) {
 		query += ' AND context = ?';
@@ -31,14 +35,27 @@ app.get('/', async (c) => {
 		.bind(...params)
 		.all<Project>();
 
+	// If no projects found for this year, show 404
+	if (projects.length === 0 && !context) {
+		return c.html(
+			<Layout title="Not Found">
+				<p>No projects found for {year}.</p>
+				<a href={`/${CURRENT_YEAR}/`}>Go to current year</a>
+			</Layout>,
+			404
+		);
+	}
+
+	const basePath = `/${year}/`;
+
 	return c.html(
-		<Layout title="2024-2025">
+		<Layout title={year}>
 			<div class="filters">
-				<a href="/" class={!context ? 'active' : ''}>
+				<a href={basePath} class={!context ? 'active' : ''}>
 					All
 				</a>
 				{CONTEXTS.map((ctx) => (
-					<a href={`/?context=${encodeURIComponent(ctx)}`} class={context === ctx ? 'active' : ''}>
+					<a href={`${basePath}?context=${encodeURIComponent(ctx)}`} class={context === ctx ? 'active' : ''}>
 						{ctx.replace(' Context', '')}
 					</a>
 				))}
@@ -129,17 +146,20 @@ app.get('/archive', async (c) => {
 	);
 });
 
-// Project detail page
-app.get('/project/:id', async (c) => {
-	const id = c.req.param('id');
+// Student detail page
+app.get('/:year/students/:slug/', async (c) => {
+	const year = c.req.param('year');
+	const slug = c.req.param('slug');
 
-	const project = await c.env.DB.prepare('SELECT * FROM projects WHERE id = ?').bind(id).first<Project>();
+	const project = await c.env.DB.prepare('SELECT * FROM projects WHERE academic_year = ? AND slug = ?')
+		.bind(year, slug)
+		.first<Project>();
 
 	if (!project) {
 		return c.html(
 			<Layout title="Not Found">
-				<p>Project not found.</p>
-				<a href="/">Back to home</a>
+				<p>Student not found.</p>
+				<a href={`/${CURRENT_YEAR}/`}>Back to home</a>
 			</Layout>,
 			404
 		);
@@ -148,7 +168,7 @@ app.get('/project/:id', async (c) => {
 	const { results: images } = await c.env.DB.prepare(
 		'SELECT * FROM project_images WHERE project_id = ? ORDER BY sort_order'
 	)
-		.bind(id)
+		.bind(project.id)
 		.all<ProjectImage>();
 
 	const socialLinks: string[] = project.social_links ? JSON.parse(project.social_links) : [];
@@ -156,7 +176,7 @@ app.get('/project/:id', async (c) => {
 
 	return c.html(
 		<Layout title={`${project.student_name} - ${project.project_title}`}>
-			<a href="/" class="back-link">
+			<a href={`/${year}/`} class="back-link">
 				← Back
 			</a>
 			<div class="project-detail">
