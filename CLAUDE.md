@@ -4,57 +4,70 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a multi-year static website for Sint Lucas Masters student exhibitions, built with Eleventy (11ty). Each academic year has its own separate directory (2021, 2022, 2023, 2024, 2025) with independent Eleventy configurations.
+This is the Sint Lucas Masters student exhibition website, being rewritten from Eleventy to Cloudflare Workers + Hono + D1.
 
-## Commands
+**Current status**: Greenfield rewrite in progress. See `specs/cloudflare-rewrite.md` for the full specification.
 
-```bash
-# Install dependencies
-npm install
+## Tech Stack (New)
 
-# Development (watches 2025 folder, serves at localhost:3000)
-npm start
+- **Platform**: Cloudflare Pages + Workers
+- **Framework**: Hono (SSR with JSX)
+- **Database**: Cloudflare D1 (SQLite)
+- **Media Storage**: Cloudflare Images (existing)
 
-# Build all years
-npm run build
+## Old Code Reference
 
-# Build a specific year
-npm run build:2025
+The previous Eleventy-based implementation is preserved in `old/` for reference during migration:
+
+```
+old/
+├── 2021/              # Year folders with student markdown files
+├── 2022/
+├── 2023/
+├── 2024/
+├── 2025/
+├── admin/             # Decap CMS configuration
+├── scripts/           # CSV import scripts
+├── _data/             # Eleventy data files
+├── _uploads/          # Uploaded images
+└── package.json       # Old dependencies (Eleventy)
 ```
 
-## Architecture
+### Student Data Model (Old)
 
-### Year-based Structure
-- Each year folder (e.g., `2025/`) is a complete Eleventy site with:
-  - `.eleventy.js` - Eleventy configuration with custom collections
-  - `_includes/` - Liquid templates (base.liquid, student.liquid, etc.)
-  - `students/` - Markdown files for each student (frontmatter + content)
-  - `static/` - CSS and JavaScript assets
+Student markdown files in `old/{year}/students/*.md` use this frontmatter:
 
-### Student Data Model
-Student markdown files use this frontmatter structure:
 ```yaml
 student_name: "Name"
 project_title: "Title"
 context: "Digital Context" | "Autonomous Context" | "Applied Context" | "Socio-Political Context" | "Jewelry Context"
 year: "2024-2025"
-main_image: "slug/image-id.jpeg"
+main_image: "slug/image-id.jpeg"  # or full Cloudflare URL for 2021-2024
 images: []
 social_links: []
 ```
 
-### Collections
-Eleventy collections in `.eleventy.js` filter students by context (digitalContext, autonomousContext, appliedContext, sociopoliticalContext) and a general `students` collection.
+### Image Formats
 
-### CMS Integration
-- `admin/` contains Decap CMS (formerly Netlify CMS) configuration
-- Uses Cloudflare for media library storage
-- Deployed on Netlify (see `netlify.toml`)
+- **2021-2024**: Full Cloudflare URLs (`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/{id}`)
+- **2025**: Relative paths (`student-slug/image-id.jpg`)
 
-## Data Import Workflow
+## Commands (New - TBD)
 
-When importing new student data from Google Forms:
-1. Download CSV with headers: `timestamp,email,name,gsm,context,project_title,summary,website,main_image,main_caption,description,images,instagram`
-2. Run `node scripts/csv_to_markdown.mjs <csv-file>` to generate student markdown files
-3. Download images via `scripts/download_image_uploads.mjs` to `_uploads/`
-4. Upload images to media service and run `scripts/convert_to_uploadcare.mjs` to update image references
+```bash
+# Development
+npm run dev
+
+# Run migration from old data
+npm run migrate
+
+# Build
+npm run build
+```
+
+## Development Phases
+
+1. **Phase 1**: D1 schema + migration script (import old data)
+2. **Phase 2**: Simple Hono SSR frontend (list/detail views)
+3. **Phase 3**: Public pages with context filtering
+4. **Phase 4**: Admin section (future)
