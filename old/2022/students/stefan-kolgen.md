@@ -8,7 +8,6 @@ tags:
   - installation
   - digital
 main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/7c453446-5c46-49c7-542d-50bbf1b06100
-thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f8b2b3f3-6ca6-44d2-cc16-bbb6b769be00-/crop/1200x1076/0,0/-/preview/
 images:
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/3dd7262d-2717-4c25-1789-e1617b7f4a00
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/a1d31171-30d2-4fed-46f1-a66d77a7cb00

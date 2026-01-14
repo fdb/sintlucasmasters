@@ -7,7 +7,6 @@ tags:
   - installation
   - paper
 main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/d1cd6aad-851e-4fbc-5174-9a7b74812400
-thumb_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/2f615304-2e03-487f-748d-e84fe319fc00-/crop/4072x3975/1113,0/-/preview/
 bio: ""
 images:
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/848b9968-7f3f-4d57-c176-2bf187b72500

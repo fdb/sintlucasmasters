@@ -6,7 +6,6 @@ year: 2021—2022
 tags:
   - digital
 main_image: https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bccd242a-3834-4b2f-9a2f-63c7bf714400
-thumb_image: https://ucarecdn.com/78d6066c-f45a-41f7-b75c-79e49c218ef1/
 images:
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/f4d80d56-dc2b-4954-51c8-37813e5a4f00
 social_links:
