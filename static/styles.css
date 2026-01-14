@@ -102,37 +102,6 @@ main {
 	margin-bottom: 2rem;
 }
 
-/* Filters */
-.filters {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-	margin-bottom: 2rem;
-}
-
-.filters a {
-	display: inline-flex;
-	align-items: center;
-	padding: 0.5rem 1rem;
-	background: transparent;
-	border: 1px solid var(--black);
-	color: var(--black);
-	font-size: 0.875rem;
-	transition: all 0.15s ease;
-}
-
-.filters a:hover {
-	background: var(--black);
-	color: var(--white);
-	text-decoration: none;
-}
-
-.filters a.active {
-	background: var(--black);
-	border-color: var(--black);
-	color: var(--white);
-}
-
 /* Project grid */
 .grid {
 	display: grid;
@@ -309,6 +278,81 @@ main {
 	text-align: center;
 	padding: 4rem 2rem;
 	color: var(--gray);
+}
+
+/* Filter Navigation (used on year pages and archive) */
+.filter-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 2.5rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px solid var(--light-gray);
+}
+
+.filter-nav--single {
+	flex-direction: row;
+	align-items: center;
+}
+
+.filter-nav-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.filter-nav-label {
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--gray);
+	min-width: 4.5rem;
+	flex-shrink: 0;
+}
+
+.filter-nav-row a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem 1rem;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	color: var(--black);
+	background: transparent;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 2px;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}
+
+.filter-nav-row a:hover {
+	border-color: var(--black);
+	text-decoration: none;
+}
+
+.filter-nav-row a.active {
+	color: var(--white);
+	background: var(--black);
+	border-color: var(--black);
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+	.filter-nav {
+		gap: 1.25rem;
+	}
+
+	.filter-nav--single {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.filter-nav-row a {
+		padding: 0.625rem 1rem;
+	}
 }
 
 /* Footer */

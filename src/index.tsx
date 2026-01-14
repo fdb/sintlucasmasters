@@ -56,16 +56,19 @@ app.get('/:year/', async (c) => {
 		>
 			<h1 class="page-title">Masters {year}</h1>
 			<p class="page-subtitle">{contextLabel || 'All contexts'}</p>
-			<div class="filters">
-				<a href={basePath} class={!context ? 'active' : ''}>
-					All
-				</a>
-				{CONTEXTS.map((ctx) => (
-					<a href={`${basePath}?context=${encodeURIComponent(ctx)}`} class={context === ctx ? 'active' : ''}>
-						{ctx.replace(' Context', '')}
+			<nav class="filter-nav filter-nav--single">
+				<div class="filter-nav-row">
+					<span class="filter-nav-label">Context</span>
+					<a href={basePath} class={!context ? 'active' : ''}>
+						All
 					</a>
-				))}
-			</div>
+					{CONTEXTS.map((ctx) => (
+						<a href={`${basePath}?context=${encodeURIComponent(ctx)}`} class={context === ctx ? 'active' : ''}>
+							{ctx.replace(' Context', '')}
+						</a>
+					))}
+				</div>
+			</nav>
 			<div class="grid">
 				{projects.map((project) => (
 					<ProjectCard project={project} />
@@ -124,39 +127,40 @@ app.get('/archive', async (c) => {
 			title={`Archive${selectedYear ? ` - ${selectedYear}` : ''}`}
 			ogDescription={archiveDescription}
 		>
-			<h1 class="page-title">Archive</h1>
-			<p class="page-subtitle">
-				{selectedYear ? `${selectedYear}` : 'All years'}
+			<h1 class="page-title">
+				Archive · {selectedYear || 'All years'}
 				{contextLabel ? ` · ${contextLabel}` : ''}
-			</p>
-			<h3 class="section-title" style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1rem; font-weight: 600; color: #666;">Filter by year</h3>
-			<div class="filters">
-				<a href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ''}`} class={!selectedYear ? 'active' : ''}>
-					All years
-				</a>
-				{years.map((y) => (
-					<a
-						href={`/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ''}`}
-						class={selectedYear === y ? 'active' : ''}
-					>
-						{y}
+			</h1>
+			<nav class="filter-nav">
+				<div class="filter-nav-row">
+					<span class="filter-nav-label">Year</span>
+					<a href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ''}`} class={!selectedYear ? 'active' : ''}>
+						All
 					</a>
-				))}
-			</div>
-			<h3 class="section-title" style="margin-bottom: 1rem; font-size: 1rem; font-weight: 600; color: #666;">Filter by context</h3>
-			<div class="filters">
-				<a href={`/archive${selectedYear ? `?year=${encodeURIComponent(selectedYear)}` : ''}`} class={!context ? 'active' : ''}>
-					All contexts
-				</a>
-				{CONTEXTS.map((ctx) => (
-					<a
-						href={`/archive?${selectedYear ? `year=${encodeURIComponent(selectedYear)}&` : ''}context=${encodeURIComponent(ctx)}`}
-						class={context === ctx ? 'active' : ''}
-					>
-						{ctx.replace(' Context', '')}
+					{years.map((y) => (
+						<a
+							href={`/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ''}`}
+							class={selectedYear === y ? 'active' : ''}
+						>
+							{y}
+						</a>
+					))}
+				</div>
+				<div class="filter-nav-row">
+					<span class="filter-nav-label">Context</span>
+					<a href={`/archive${selectedYear ? `?year=${encodeURIComponent(selectedYear)}` : ''}`} class={!context ? 'active' : ''}>
+						All
 					</a>
-				))}
-			</div>
+					{CONTEXTS.map((ctx) => (
+						<a
+							href={`/archive?${selectedYear ? `year=${encodeURIComponent(selectedYear)}&` : ''}context=${encodeURIComponent(ctx)}`}
+							class={context === ctx ? 'active' : ''}
+						>
+							{ctx.replace(' Context', '')}
+						</a>
+					))}
+				</div>
+			</nav>
 			<div class="grid">
 				{projects.map((project) => (
 					<ProjectCard project={project} showYear />
