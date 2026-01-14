@@ -55,6 +55,7 @@ export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, 
 						<nav class="site-nav">
 							<a href="/">Projects</a>
 							<a href="/archive">Archive</a>
+							<a href="/about">About</a>
 						</nav>
 					</div>
 				</header>

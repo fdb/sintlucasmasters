@@ -79,6 +79,30 @@ app.get('/:year/', async (c) => {
 	);
 });
 
+// About page
+app.get('/about', (c) => {
+	return c.html(
+		<Layout title="About">
+			<h2>Master Expo</h2>
+			<p class="intro">
+				Discover the new generation of artists, designers and photographers of{' '}
+				<a href="https://www.sintlucasantwerpen.be/" target="_blank" rel="noopener noreferrer">
+					Sint Lucas Antwerpen
+				</a>
+				.
+			</p>
+			<h3>Credits</h3>
+			<p>
+				The code for this website is free software, available on{' '}
+				<a href="https://github.com/fdb/sintlucasmasters/" target="_blank" rel="noopener noreferrer">
+					GitHub
+				</a>
+				.
+			</p>
+		</Layout>
+	);
+});
+
 // Archive page - all years
 app.get('/archive', async (c) => {
 	const year = c.req.query('year');
