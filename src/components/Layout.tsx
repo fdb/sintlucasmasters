@@ -2,10 +2,17 @@ import type { FC, PropsWithChildren } from 'hono/jsx';
 
 type LayoutProps = PropsWithChildren<{
 	title?: string;
+	ogImage?: string;
+	ogDescription?: string;
+	ogUrl?: string;
 }>;
 
-export const Layout: FC<LayoutProps> = ({ title, children }) => {
-	const pageTitle = title ? `${title} - Sint Lucas Masters` : 'Sint Lucas Masters';
+const SITE_NAME = 'Sint Lucas Masters';
+const DEFAULT_DESCRIPTION = 'Master graduation projects from Sint Lucas Antwerpen';
+
+export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, children }) => {
+	const pageTitle = title ? `${title} - ${SITE_NAME}` : SITE_NAME;
+	const description = ogDescription || DEFAULT_DESCRIPTION;
 
 	return (
 		<html lang="en">
@@ -13,6 +20,24 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<title>{pageTitle}</title>
+				<meta name="description" content={description} />
+
+				{/* OpenGraph */}
+				<meta property="og:title" content={pageTitle} />
+				<meta property="og:description" content={description} />
+				<meta property="og:site_name" content={SITE_NAME} />
+				<meta property="og:type" content={ogImage ? 'article' : 'website'} />
+				{ogUrl && <meta property="og:url" content={ogUrl} />}
+				{ogImage && <meta property="og:image" content={ogImage} />}
+				{ogImage && <meta property="og:image:width" content="1200" />}
+				{ogImage && <meta property="og:image:height" content="630" />}
+
+				{/* Twitter Card */}
+				<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+				<meta name="twitter:title" content={pageTitle} />
+				<meta name="twitter:description" content={description} />
+				{ogImage && <meta name="twitter:image" content={ogImage} />}
+
 				<style>{`
 					:root {
 						font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

@@ -47,9 +47,13 @@ app.get('/:year/', async (c) => {
 	}
 
 	const basePath = `/${year}/`;
+	const contextLabel = context ? context.replace(' Context', '') : null;
 
 	return c.html(
-		<Layout title={year}>
+		<Layout
+			title={contextLabel ? `${contextLabel} - ${year}` : year}
+			ogDescription={`${projects.length} master projects from Sint Lucas Antwerpen ${year}${contextLabel ? ` · ${contextLabel}` : ''}`}
+		>
 			<div class="filters">
 				<a href={basePath} class={!context ? 'active' : ''}>
 					All
@@ -107,8 +111,15 @@ app.get('/archive', async (c) => {
 		.bind(...params)
 		.all<Project>();
 
+	const archiveDescription = selectedYear
+		? `${projects.length} master projects from Sint Lucas Antwerpen ${selectedYear}`
+		: `Browse ${projects.length} master projects from Sint Lucas Antwerpen across all years`;
+
 	return c.html(
-		<Layout title={`Archive${selectedYear ? ` - ${selectedYear}` : ''}`}>
+		<Layout
+			title={`Archive${selectedYear ? ` - ${selectedYear}` : ''}`}
+			ogDescription={archiveDescription}
+		>
 			<h2>Archive</h2>
 			<div class="filters">
 				<a href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ''}`} class={!selectedYear ? 'active' : ''}>
@@ -175,7 +186,11 @@ app.get('/:year/students/:slug/', async (c) => {
 	const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
 
 	return c.html(
-		<Layout title={`${project.student_name} - ${project.project_title}`}>
+		<Layout
+			title={`${project.student_name} - ${project.project_title}`}
+			ogImage={getImageUrl(project.main_image_id, 'large')}
+			ogDescription={`${project.project_title} by ${project.student_name} · ${project.context}`}
+		>
 			<a href={`/${year}/`} class="back-link">
 				← Back
 			</a>
