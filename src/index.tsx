@@ -54,6 +54,8 @@ app.get('/:year/', async (c) => {
 			title={contextLabel ? `${contextLabel} - ${year}` : year}
 			ogDescription={`${projects.length} master projects from Sint Lucas Antwerpen ${year}${contextLabel ? ` · ${contextLabel}` : ''}`}
 		>
+			<h1 class="page-title">Masters {year}</h1>
+			<p class="page-subtitle">{contextLabel || 'All contexts'}</p>
 			<div class="filters">
 				<a href={basePath} class={!context ? 'active' : ''}>
 					All
@@ -69,7 +71,7 @@ app.get('/:year/', async (c) => {
 					<ProjectCard project={project} />
 				))}
 			</div>
-			{projects.length === 0 && <p>No projects found.</p>}
+			{projects.length === 0 && <p class="empty-state">No projects found.</p>}
 		</Layout>
 	);
 });
@@ -115,15 +117,22 @@ app.get('/archive', async (c) => {
 		? `${projects.length} master projects from Sint Lucas Antwerpen ${selectedYear}`
 		: `Browse ${projects.length} master projects from Sint Lucas Antwerpen across all years`;
 
+	const contextLabel = context ? context.replace(' Context', '') : null;
+
 	return c.html(
 		<Layout
 			title={`Archive${selectedYear ? ` - ${selectedYear}` : ''}`}
 			ogDescription={archiveDescription}
 		>
-			<h2>Archive</h2>
+			<h1 class="page-title">Archive</h1>
+			<p class="page-subtitle">
+				{selectedYear ? `${selectedYear}` : 'All years'}
+				{contextLabel ? ` · ${contextLabel}` : ''}
+			</p>
+			<h3 class="section-title" style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1rem; font-weight: 600; color: #666;">Filter by year</h3>
 			<div class="filters">
 				<a href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ''}`} class={!selectedYear ? 'active' : ''}>
-					All
+					All years
 				</a>
 				{years.map((y) => (
 					<a
@@ -134,9 +143,10 @@ app.get('/archive', async (c) => {
 					</a>
 				))}
 			</div>
+			<h3 class="section-title" style="margin-bottom: 1rem; font-size: 1rem; font-weight: 600; color: #666;">Filter by context</h3>
 			<div class="filters">
 				<a href={`/archive${selectedYear ? `?year=${encodeURIComponent(selectedYear)}` : ''}`} class={!context ? 'active' : ''}>
-					All
+					All contexts
 				</a>
 				{CONTEXTS.map((ctx) => (
 					<a
@@ -149,10 +159,10 @@ app.get('/archive', async (c) => {
 			</div>
 			<div class="grid">
 				{projects.map((project) => (
-					<ProjectCard project={project} />
+					<ProjectCard project={project} showYear />
 				))}
 			</div>
-			{projects.length === 0 && <p>No projects found.</p>}
+			{projects.length === 0 && <p class="empty-state">No projects found.</p>}
 		</Layout>
 	);
 });
@@ -192,7 +202,7 @@ app.get('/:year/students/:slug/', async (c) => {
 			ogDescription={`${project.project_title} by ${project.student_name} · ${project.context}`}
 		>
 			<a href={`/${year}/`} class="back-link">
-				← Back
+				← Back to {year}
 			</a>
 			<div class="project-detail">
 				<h1>{project.student_name}</h1>
@@ -211,9 +221,14 @@ app.get('/:year/students/:slug/', async (c) => {
 					<p class="description">{project.description}</p>
 				</div>
 				{tags.length > 0 && (
-					<p>
-						<strong>Tags:</strong> {tags.join(', ')}
-					</p>
+					<div>
+						<h3>Tags</h3>
+						<div class="tags">
+							{tags.map((tag) => (
+								<span class="tag">{tag}</span>
+							))}
+						</div>
+					</div>
 				)}
 				{images.length > 0 && (
 					<div>
@@ -226,13 +241,15 @@ app.get('/:year/students/:slug/', async (c) => {
 					</div>
 				)}
 				{socialLinks.length > 0 && (
-					<div class="links">
+					<div>
 						<h3>Links</h3>
-						{socialLinks.map((link) => (
-							<a href={link} target="_blank" rel="noopener noreferrer">
-								{new URL(link).hostname}
-							</a>
-						))}
+						<div class="links">
+							{socialLinks.map((link) => (
+								<a href={link} target="_blank" rel="noopener noreferrer">
+									{new URL(link).hostname}
+								</a>
+							))}
+						</div>
 					</div>
 				)}
 			</div>

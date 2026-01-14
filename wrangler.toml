@@ -2,6 +2,11 @@ name = "sintlucasmasters"
 main = "src/index.tsx"
 compatibility_date = "2024-01-01"
 
+# Static assets from the static folder
+[assets]
+directory = "./static"
+binding = "ASSETS"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "sintlucasmasters"
