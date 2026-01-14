@@ -1,6 +1,6 @@
 ---
-student_name: "Fay Crauwels"
-project_title: "Orchid"
+student_name: 'Fay Crauwels'
+project_title: 'Orchid'
 context: Applied Context
 year: 2024-2025
 main_image: fay-crauwels/136yjnzlxNozITry42EKVjk-E4x6UCMAc.jpg
@@ -9,9 +9,10 @@ images:
   - fay-crauwels/1DnxbCdlg4w1a5sCAgHUqSlhPTqyH6Sy7.jpg
   - fay-crauwels/1K8DY7-vYes2uqTJupDeLylgLK5Zk-7qv.jpg
 social_links:
-  - "www.fayvie.nl"
-  - "https://www.instagram.com/https://www.instagram.com/faynomenal.inc/"
+  - 'www.fayvie.nl'
+  - 'https://www.instagram.com/faynomenal.inc/'
 ---
+
 Creative expressions collected in a book, inspired by the orchid. A tribute to the orchid.
 
 Orchid In my pre-master project, the orchid takes center stage: a flower that is both common and often underestimated. My choice for this flower was deliberate – I was drawn to its complex visual qualities and hybrid history.

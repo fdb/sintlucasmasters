@@ -1,6 +1,6 @@
 ---
-student_name: "enrika"
-project_title: "Wortels in Verwondering"
+student_name: 'Enrika Verbruggen'
+project_title: 'Wortels in Verwondering'
 context: Autonomous Context
 year: 2024-2025
 main_image: enrika/1QUMPOACpGVA47Aa3zE5d8Bn2bOJHEacq.jpg
@@ -9,8 +9,9 @@ images:
   - enrika/1uytnJ-A7Y0RhVNuSfmLFQ8TJpQCYVtY4.jpg
   - enrika/1ZuQAYinzg5B6fStO8OYmhhMNoYyVuOrj.jpg
 social_links:
-  - "https://www.instagram.com/https://www.instagram.com/enrikaverbruggen/"
+  - 'https://www.instagram.com/enrikaverbruggen/'
 ---
+
 Verbinding, verwondering en vertraging: een ode aan de natuur als gids, spiegel en herinnering aan wie we werkelijk zijn.
 
 Dit project gaat over de relatie tussen de mens en de natuur. Uit mijn onderzoek blijkt dat we daar in de loop der tijd steeds verder van verwijderd zijn geraakt. Door de groei van technologie en comfort zijn we minder afhankelijk geworden van natuurlijke ritmes en omstandigheden. Tegelijk zijn we vergeten dat we niet de natuur kunnen beheersen, maar er onlosmakelijk deel van uitmaken. We zijn geen buitenstaander – we zijn natuur.

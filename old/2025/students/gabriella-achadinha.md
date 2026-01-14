@@ -1,6 +1,6 @@
 ---
-student_name: "Gabriella Achadinha"
-project_title: "Deixem Passar (it favors the house)"
+student_name: 'Gabriella Achadinha'
+project_title: 'Deixem Passar (it favors the house)'
 context: Socio-Political Context
 year: 2024-2025
 main_image: gabriella-achadinha/1oEpq6Jq3Dv2wi4RHnzbPGWgkvRw504vK.jpg
@@ -12,7 +12,8 @@ images:
   - gabriella-achadinha/11LwbqKvAMOGGmZEsrtL48LnPxqLNm27W.jpg
   - gabriella-achadinha/15Mmm_MIL9OxM8HSXXNzfjlWO8bPaUZfm.jpg
 social_links:
-  - "https://www.gabriellaachadinha.com"
-  - "https://www.instagram.com/https://www.instagram.com/gabriella_achadinha/"
+  - 'https://www.gabriellaachadinha.com'
+  - 'https://www.instagram.com/gabriella_achadinha/'
 ---
+
 Deixem Passar (it favors the house) is a video essay that reflects on loss. Moving from Madeira’s sugarcane plantations to the diasporic spaces of corner shops and liquor stores in apartheid and post-apartheid South Africa, the film traces histories of extraction, expectation, and the inherited weight of gendered [specifically masculine] obligation. Montage becomes a language of grief: a process of re-remembering and re-configuring.

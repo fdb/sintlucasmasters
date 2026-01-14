@@ -12,7 +12,7 @@ images:
   - cifel-huseyin/1q974-nFs1RFEDBmCOTVZdEZZngMSPHus.jpg
 social_links:
   - 'https://cifelhuseyin.wixsite.com/artist'
-  - 'https://www.instagram.com/https://instagram.com/cifel'
+  - 'https://instagram.com/cifel'
 ---
 
 Novelscape' embodies not only the physical or narrative landscape of the novel in which artistic expressions occur but also the introspective journey of individual, social, collective, and spatial bodies within this research process as a whole. The artist's novel, entitled The Power of Discrimination, functions as a chronicle of the artistic research process, archiving the development of the narrative in the search for open-mindedness allowing readers to see the path of self-exploration and creative progress.

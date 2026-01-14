@@ -6,8 +6,9 @@ year: 2022-2023
 main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/1304935f-99e4-49c4-5ef3-d90b669a9d00'
 social_links:
   - 'https://cifelhuseyin.wixsite.com/artist'
-  - 'https://www.instagram.com/https://instagram.com/cifel'
+  - 'https://instagram.com/cifel'
 ---
+
 Humans have senses to communicate with their surroundings.
 
 Spaces have dimensions to communicate with their passers-by.

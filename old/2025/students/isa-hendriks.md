@@ -1,6 +1,6 @@
 ---
-student_name: "Isa Hendriks"
-project_title: "Tracing Shapes: Japanese Kamon and Their Echoes in Western Design"
+student_name: 'Isa Hendriks'
+project_title: 'Tracing Shapes: Japanese Kamon and Their Echoes in Western Design'
 context: Applied Context
 year: 2024-2025
 main_image: isa-hendriks/1-cDxLgeG9cbNqcxI7PRGEz_gcvvSwIYb.jpg
@@ -12,8 +12,9 @@ images:
   - isa-hendriks/19y5ihtmZ_V-oY852Q_M0wehJgMT--oSX.jpg
   - isa-hendriks/1890QuG9T7qsJGE3jqp_fYytLoB05F9fm.jpg
 social_links:
-  - "https://www.instagram.com/https://www.instagram.com/isahendriks2410/"
+  - 'https://www.instagram.com/isahendriks2410/'
 ---
+
 Ik onderzoek hoe Japanse Kamon eigentijdse logo-ontwerpen kunnen inspireren, met focus op geometrie en symboliek. Via dot-gridpatroon ontwikkel ik nieuwe vormen, gebaseerd op Kamon. Ik vergelijk deze visueel met het werk van Paul Ibou om culturele raakvlakken te analyseren. Het resultaat is een boek dat design, geschiedenis en cultuur samenbrengt.
 
 Mijn masterproject vertrekt vanuit de vraag hoe Japanse Kamon een visueel en conceptueel omslagpunt kunnen vormen in de ontwikkeling van Westerse logo-designs. In plaats van te zoeken naar een directe invloed van Japanse op Westerse logo’s, heb ik me verdiept in de oorsprong van Japanse visuele symboliek. Kamon, traditionele Japanse familiewapens, bleken een rijke bron van inspiratie en gaven mijn onderzoek een duidelijke richting. Door hun abstracte vormen en geometrische opbouw ging ik aan de slag met een dot-gridpatroon, waarmee ik nieuwe vormen ontwikkelde die dienen als basis voor eigentijdse logo’s.
