@@ -239,11 +239,17 @@ app.get('/:year/students/:slug/', async (c) => {
 						<h3>Gallery</h3>
 						<div class="gallery">
 							{images.map((img) => (
-								<img src={getImageUrl(img.cloudflare_id, 'medium')} alt="" loading="lazy" />
+								<img
+									src={getImageUrl(img.cloudflare_id, 'medium')}
+									data-lightbox-src={getImageUrl(img.cloudflare_id, 'xl')}
+									alt={img.caption || project.project_title}
+									loading="lazy"
+								/>
 							))}
 						</div>
 					</div>
 				)}
+				{images.length > 0 && <script src="/lightbox.js" defer></script>}
 				{socialLinks.length > 0 && (
 					<div>
 						<h3>Links</h3>
