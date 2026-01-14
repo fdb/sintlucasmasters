@@ -39,7 +39,6 @@ a:hover {
 /* Header */
 .site-header {
 	background: var(--black);
-	padding: 0 2rem;
 	position: sticky;
 	top: 0;
 	z-index: 100;
@@ -48,6 +47,7 @@ a:hover {
 .header-inner {
 	max-width: 1400px;
 	margin: 0 auto;
+	padding: 0 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -358,7 +358,7 @@ main {
 
 /* Responsive */
 @media (max-width: 768px) {
-	.site-header {
+	.header-inner {
 		padding: 0 1rem;
 	}
 
