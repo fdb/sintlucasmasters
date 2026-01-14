@@ -1,5 +1,5 @@
 ---
-student_name: luca vireak bonelli
+student_name: Luca Vireak Bonelli
 project_title: Protection
 context: Autonomous Context
 year: 2022-2023

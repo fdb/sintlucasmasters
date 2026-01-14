@@ -1,5 +1,5 @@
 ---
-student_name: çifel huseyin
+student_name: Çifel Hüseyin
 project_title: Visible Invisible or mental-health embodiments
 context: Applied Context
 year: 2022-2023

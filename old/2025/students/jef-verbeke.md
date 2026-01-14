@@ -1,5 +1,5 @@
 ---
-student_name: jef verbeke
+student_name: Jef Verbeke
 project_title: Op Eigen Houtje
 context: Applied Context
 year: 2024-2025

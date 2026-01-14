@@ -1,5 +1,5 @@
 ---
-student_name: zeynep celik
+student_name: Zeynep Celik
 project_title: failed feminism
 context: Autonomous Context
 year: 2024-2025

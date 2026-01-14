@@ -1,5 +1,5 @@
 ---
-student_name: anka cogen
+student_name: Anka Cogen
 project_title: Reclaiming death
 context: Socio-Political Context
 year: 2022-2023

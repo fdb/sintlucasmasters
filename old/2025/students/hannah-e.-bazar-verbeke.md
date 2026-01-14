@@ -1,5 +1,5 @@
 ---
-student_name: "hannah E. Bazar Verbeke"
+student_name: "Hannah E. Bazar Verbeke"
 project_title: "Animal Farm"
 context: Applied Context
 year: 2024-2025

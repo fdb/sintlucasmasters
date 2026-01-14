@@ -1,5 +1,5 @@
 ---
-student_name: 'Младен Хаџић'
+student_name: 'Mladen Hadžić'
 project_title: 'HAJDUK: Against the Midnight Sultan'
 context: Autonomous Context
 year: 2023-2024
