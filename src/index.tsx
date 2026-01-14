@@ -47,7 +47,7 @@ app.get('/:year/', async (c) => {
 	}
 
 	const basePath = `/${year}/`;
-	const contextLabel = context ? context.replace(' Context', '') : null;
+	const contextLabel = context ? context.replace(' Context', ' context') : null;
 
 	return c.html(
 		<Layout
