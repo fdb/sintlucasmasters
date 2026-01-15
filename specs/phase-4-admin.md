@@ -183,6 +183,11 @@ export default defineConfig({
 - Check `status !== 'ready_for_print'` before allowing edits
 - Show read-only view if locked
 
+**sort_name generation**:
+- When saving a project, auto-generate `sort_name` from `student_name`
+- Use the `sortName()` utility from `src/lib/names.ts`
+- This ensures proper alphabetical sorting for names with diacritics (e.g., "Çifel" sorts with "C")
+
 ### Phase 4.5: Admin API (JSON)
 
 **Create `src/routes/admin.ts`**:
@@ -353,6 +358,7 @@ This admin can then create additional admins via the Admin UI.
 | `src/lib/jwt.ts` | JWT utilities |
 | `src/lib/tokens.ts` | Magic token utilities |
 | `src/lib/email.ts` | Resend email sending |
+| `src/lib/names.ts` | Name normalization for sorting (already created) |
 | `src/middleware/auth.ts` | Auth middleware |
 | `src/routes/auth.tsx` | Login/verify/logout |
 | `src/routes/student.tsx` | Student dashboard |

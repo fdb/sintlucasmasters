@@ -29,7 +29,7 @@ app.get('/:year/', async (c) => {
 		params.push(context);
 	}
 
-	query += ' ORDER BY student_name';
+	query += ' ORDER BY sort_name';
 
 	const { results: projects } = await c.env.DB.prepare(query)
 		.bind(...params)
@@ -134,7 +134,7 @@ app.get('/archive', async (c) => {
 		query += ' WHERE ' + conditions.join(' AND ');
 	}
 
-	query += ' ORDER BY student_name';
+	query += ' ORDER BY sort_name';
 
 	const { results: projects } = await c.env.DB.prepare(query)
 		.bind(...params)

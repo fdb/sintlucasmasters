@@ -2,6 +2,7 @@ export interface Project {
 	id: string;
 	slug: string;
 	student_name: string;
+	sort_name: string;
 	project_title: string;
 	context: string;
 	academic_year: string;
