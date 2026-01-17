@@ -8,7 +8,7 @@ const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const envPath = resolve(projectRoot, '.env');
 dotenv.config({ path: envPath });
 
-const requiredKeys = ['RESEND_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET'];
+const requiredKeys = ['RESEND_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION'];
 const optionalKeys = ['APP_BASE_URL'];
 
 const missing = requiredKeys.filter((key) => !process.env[key]);
