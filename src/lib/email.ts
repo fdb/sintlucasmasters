@@ -2,7 +2,7 @@
 
 import { Resend } from 'resend';
 
-const FROM_EMAIL = 'Sint Lucas Masters <noreply@sintlucasantwerpen.be>';
+const FROM_EMAIL = 'Sint Lucas Masters <noreply@sintlucasmasters.com>';
 
 export async function sendMagicLink(
 	resendApiKey: string,

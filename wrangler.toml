@@ -21,7 +21,7 @@ APP_BASE_URL = "http://localhost:8787"
 
 # Production overrides
 [env.production.vars]
-APP_BASE_URL = "https://masters.sintlucasantwerpen.be"
+APP_BASE_URL = "https://sintlucasmasters.com"
 
 # Cron trigger for cleaning up expired auth tokens
 [triggers]
