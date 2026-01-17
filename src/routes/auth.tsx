@@ -24,10 +24,16 @@ authApiRoutes.post('/login', async (c) => {
 	const token = generateMagicToken();
 	await storeMagicToken(c.env.DB, email, token);
 
-	const result = await sendMagicLink(c.env.RESEND_API_KEY, email, token, c.env.APP_BASE_URL);
+	const sesConfig = {
+		accessKeyId: c.env.AWS_ACCESS_KEY_ID,
+		secretAccessKey: c.env.AWS_SECRET_ACCESS_KEY,
+		region: c.env.AWS_REGION,
+	};
+
+	const result = await sendMagicLink(sesConfig, email, token, c.env.APP_BASE_URL);
 
 	if (!result.success) {
-		console.error('Failed to send magic link:', result.error);
+		console.error('Failed to send magic link:', result.error, result.errorCode);
 		return c.json({ error: 'Failed to send email' }, 500);
 	}
 

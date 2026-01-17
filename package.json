@@ -22,8 +22,7 @@
     "create-admin:remote": "node scripts/create-admin.mjs --remote"
   },
   "dependencies": {
-    "hono": "^4.11.4",
-    "resend": "^6.7.0"
+    "hono": "^4.11.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260113.0",

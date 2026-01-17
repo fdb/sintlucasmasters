@@ -13,15 +13,17 @@ database_name = "sintlucasmasters"
 database_id = "4227d715-382f-416a-aa9c-c5da32847400"
 
 # Environment variables (secrets set via `wrangler secret put`)
-# RESEND_API_KEY - API key for Resend email service
 # JWT_SECRET - Secret for signing JWT tokens
+# AWS_ACCESS_KEY_ID - AWS IAM access key for SES
+# AWS_SECRET_ACCESS_KEY - AWS IAM secret key for SES
+# AWS_REGION - AWS region for SES (e.g., eu-west-1)
 
 [vars]
 APP_BASE_URL = "http://localhost:8787"
 
 # Production overrides
 [env.production.vars]
-APP_BASE_URL = "https://sintlucasmasters.com"
+APP_BASE_URL = "https://masters.sintlucasantwerpen.be"
 
 # Cron trigger for cleaning up expired auth tokens
 [triggers]

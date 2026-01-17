@@ -1,24 +1,29 @@
-// Email sending via Resend
+// Email sending via AWS SES
 
-import { Resend } from 'resend';
+import { sendEmail, type SESConfig } from './aws-ses';
 
-const FROM_EMAIL = 'Sint Lucas Masters <noreply@sintlucasmasters.com>';
+const FROM_EMAIL = 'Sint Lucas Masters <noreply@sintlucasantwerpen.be>';
+
+export interface SendMagicLinkResult {
+	success: boolean;
+	error?: string;
+	errorCode?: string;
+	messageId?: string;
+}
 
 export async function sendMagicLink(
-	resendApiKey: string,
+	sesConfig: SESConfig,
 	email: string,
 	token: string,
 	baseUrl: string
-): Promise<{ success: boolean; error?: string }> {
-	const resend = new Resend(resendApiKey);
+): Promise<SendMagicLinkResult> {
 	const loginUrl = `${baseUrl}/auth/verify?token=${token}`;
 
-	try {
-		const { error } = await resend.emails.send({
-			from: FROM_EMAIL,
-			to: email,
-			subject: 'Sign in to Sint Lucas Masters',
-			html: `
+	const result = await sendEmail(sesConfig, {
+		from: FROM_EMAIL,
+		to: email,
+		subject: 'Sign in to Sint Lucas Masters',
+		html: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,24 +47,26 @@ export async function sendMagicLink(
   </p>
 </body>
 </html>
-      `.trim(),
-			text: `Sign in to Sint Lucas Masters
+    `.trim(),
+		text: `Sign in to Sint Lucas Masters
 
 Click the link below to sign in to your account. This link will expire in 15 minutes.
 
 ${loginUrl}
 
 If you didn't request this email, you can safely ignore it.`,
-		});
+	});
 
-		if (error) {
-			console.error('Resend error:', error);
-			return { success: false, error: error.message };
-		}
-
-		return { success: true };
-	} catch (err) {
-		console.error('Email send error:', err);
-		return { success: false, error: 'Failed to send email' };
+	if (result.success) {
+		return {
+			success: true,
+			messageId: result.messageId,
+		};
 	}
+
+	return {
+		success: false,
+		error: result.error,
+		errorCode: result.errorCode,
+	};
 }

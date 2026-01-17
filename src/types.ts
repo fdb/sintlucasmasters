@@ -1,9 +1,12 @@
 // Cloudflare Worker bindings
 export type Bindings = {
 	DB: D1Database;
-	RESEND_API_KEY: string;
 	JWT_SECRET: string;
 	APP_BASE_URL: string;
+	// AWS SES credentials
+	AWS_ACCESS_KEY_ID: string;
+	AWS_SECRET_ACCESS_KEY: string;
+	AWS_REGION: string;
 };
 
 export interface User {
