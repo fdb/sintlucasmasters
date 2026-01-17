@@ -8,6 +8,12 @@ This is the Sint Lucas Masters student exhibition website, being rewritten from 
 
 **Current status**: Greenfield rewrite in progress. See `specs/cloudflare-rewrite.md` for the full specification.
 
+## Domain
+
+- **Production URL**: `https://sintlucasmasters.com`
+- **Email domain**: `sintlucasmasters.com` (verified in AWS SES)
+- **From address**: `info@sintlucasmasters.com`
+
 ## Tech Stack (New)
 
 - **Platform**: Cloudflare Pages + Workers

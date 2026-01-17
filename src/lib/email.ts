@@ -2,7 +2,7 @@
 
 import { sendEmail, type SESConfig } from './aws-ses';
 
-const FROM_EMAIL = 'Sint Lucas Masters <noreply@sintlucasantwerpen.be>';
+const FROM_EMAIL = 'Sint Lucas Masters <info@sintlucasmasters.com>';
 
 export interface SendMagicLinkResult {
 	success: boolean;
