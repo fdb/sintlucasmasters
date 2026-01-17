@@ -1,0 +1,84 @@
+/* Admin and Auth styles */
+
+/* Auth pages */
+.auth-container {
+	max-width: 400px;
+	margin: 4rem auto;
+}
+
+.auth-container h1 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 0.5rem;
+}
+
+.auth-container > p {
+	color: var(--gray);
+	margin-bottom: 2rem;
+}
+
+.auth-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.auth-form label {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+.auth-form input {
+	padding: 0.75rem 1rem;
+	font-size: 1rem;
+	font-family: inherit;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	outline: none;
+	transition: border-color 0.15s ease;
+}
+
+.auth-form input:focus {
+	border-color: var(--black);
+}
+
+.auth-form button {
+	padding: 0.875rem 1.5rem;
+	font-size: 1rem;
+	font-family: inherit;
+	font-weight: 600;
+	color: var(--white);
+	background: var(--black);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+.auth-form button:hover {
+	opacity: 0.85;
+}
+
+.auth-form button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.error-message {
+	padding: 1rem;
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	border-radius: 4px;
+	color: #dc2626;
+	font-size: 0.9375rem;
+	margin-bottom: 1.5rem;
+}
+
+.success-message {
+	padding: 1rem;
+	background: #f0fdf4;
+	border: 1px solid #bbf7d0;
+	border-radius: 4px;
+	color: #16a34a;
+	font-size: 0.9375rem;
+}
