@@ -6,7 +6,13 @@ CREATE TABLE IF NOT EXISTS projects (
     student_name TEXT NOT NULL,
     sort_name TEXT NOT NULL,
     project_title TEXT NOT NULL,
-    context TEXT NOT NULL CHECK (context IN (
+    program TEXT CHECK (program IN (
+        'BA_FO',
+        'BA_BK',
+        'MA_BK',
+        'PREMA_BK'
+    )),
+    context TEXT CHECK (context IN (
         'Autonomous Context',
         'Applied Context',
         'Digital Context',
@@ -40,6 +46,7 @@ CREATE TABLE IF NOT EXISTS project_images (
 
 -- Indexes for common queries
 CREATE INDEX IF NOT EXISTS idx_projects_academic_year ON projects(academic_year);
+CREATE INDEX IF NOT EXISTS idx_projects_program ON projects(program);
 CREATE INDEX IF NOT EXISTS idx_projects_context ON projects(context);
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_projects_slug_year ON projects(slug, academic_year);

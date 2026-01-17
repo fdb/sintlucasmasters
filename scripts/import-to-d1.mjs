@@ -128,7 +128,8 @@ async function parseStudentFile(filePath) {
         student_name: frontmatter.student_name,
         sort_name: sortName(frontmatter.student_name),
         project_title: frontmatter.project_title,
-        context: frontmatter.context,
+        program: frontmatter.program || 'MA_BK', // Default to MA_BK for legacy data
+        context: frontmatter.context || null,
         academic_year: academicYear,
         bio: frontmatter.bio || null,
         description: description.trim(),
@@ -155,8 +156,8 @@ async function parseStudentFile(filePath) {
  * Generate SQL INSERT statement for a project
  */
 function projectToSql(project) {
-    return `INSERT OR REPLACE INTO projects (id, slug, student_name, sort_name, project_title, context, academic_year, bio, description, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
-VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.sort_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
+    return `INSERT OR REPLACE INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
+VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.sort_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.program)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
 }
 
 /**
@@ -240,8 +241,9 @@ async function importData() {
                     errors.push(`${filePath}: Missing project_title`);
                     continue;
                 }
-                if (!project.context) {
-                    errors.push(`${filePath}: Missing context`);
+                // Context is required for MA_BK and PREMA_BK programs
+                if ((project.program === 'MA_BK' || project.program === 'PREMA_BK') && !project.context) {
+                    errors.push(`${filePath}: Missing context (required for ${project.program})`);
                     continue;
                 }
                 if (!project.main_image_id) {
@@ -316,10 +318,22 @@ async function importData() {
         console.log(`  ${year}: ${count}`);
     }
 
+    // Group by program
+    const byProgram = {};
+    for (const p of allProjects) {
+        byProgram[p.program] = (byProgram[p.program] || 0) + 1;
+    }
+    console.log('\nBy program:');
+    for (const [program, count] of Object.entries(byProgram).sort()) {
+        console.log(`  ${program}: ${count}`);
+    }
+
     // Group by context
     const byContext = {};
     for (const p of allProjects) {
-        byContext[p.context] = (byContext[p.context] || 0) + 1;
+        if (p.context) {
+            byContext[p.context] = (byContext[p.context] || 0) + 1;
+        }
     }
     console.log('\nBy context:');
     for (const [context, count] of Object.entries(byContext).sort()) {
