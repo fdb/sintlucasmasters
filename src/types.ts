@@ -1,3 +1,20 @@
+// Cloudflare Worker bindings
+export type Bindings = {
+	DB: D1Database;
+	RESEND_API_KEY: string;
+	JWT_SECRET: string;
+	APP_BASE_URL: string;
+};
+
+export interface User {
+	id: string;
+	email: string;
+	name: string | null;
+	is_admin: number; // SQLite boolean (0 or 1)
+	created_at: string;
+	last_login_at: string | null;
+}
+
 export interface Project {
 	id: string;
 	slug: string;
@@ -15,6 +32,7 @@ export interface Project {
 	status: string;
 	created_at: string;
 	updated_at: string;
+	user_id: string | null;
 }
 
 export interface ProjectImage {

@@ -11,3 +11,18 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "sintlucasmasters"
 database_id = "4227d715-382f-416a-aa9c-c5da32847400"
+
+# Environment variables (secrets set via `wrangler secret put`)
+# RESEND_API_KEY - API key for Resend email service
+# JWT_SECRET - Secret for signing JWT tokens
+
+[vars]
+APP_BASE_URL = "http://localhost:8787"
+
+# Production overrides
+[env.production.vars]
+APP_BASE_URL = "https://masters.sintlucasantwerpen.be"
+
+# Cron trigger for cleaning up expired auth tokens
+[triggers]
+crons = ["0 0 * * *"]

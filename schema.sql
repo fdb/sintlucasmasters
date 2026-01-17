@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS projects (
         'published'
     )),
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
-    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    user_id TEXT REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS project_images (
@@ -52,3 +53,27 @@ CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_projects_slug_year ON projects(slug, academic_year);
 CREATE INDEX IF NOT EXISTS idx_projects_sort_name ON projects(sort_name);
 CREATE INDEX IF NOT EXISTS idx_project_images_project_id ON project_images(project_id);
+
+-- Users table (students and admins)
+CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    name TEXT,
+    is_admin INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    last_login_at TEXT
+);
+
+-- Magic link tokens
+CREATE TABLE IF NOT EXISTS auth_tokens (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL,
+    token TEXT UNIQUE NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    expires_at TEXT NOT NULL,
+    used_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_auth_tokens_token ON auth_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);

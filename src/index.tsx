@@ -1,13 +1,9 @@
 import { Hono } from 'hono';
 import { Layout } from './components/Layout';
 import { ProjectCard } from './components/ProjectCard';
-import type { Project, ProjectImage } from './types';
+import type { Bindings, Project, ProjectImage } from './types';
 import { CONTEXTS, getImageUrl } from './types';
 import { CURRENT_YEAR } from './config';
-
-type Bindings = {
-	DB: D1Database;
-};
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -291,4 +287,18 @@ app.get('/:year/students/:slug/', async (c) => {
 	);
 });
 
-export default app;
+// Scheduled handler for cron jobs (token cleanup)
+const scheduled: ExportedHandlerScheduledHandler<Bindings> = async (event, env, ctx) => {
+	ctx.waitUntil(
+		env.DB.prepare(
+			`DELETE FROM auth_tokens
+       WHERE used_at IS NOT NULL
+          OR expires_at <= datetime('now')`
+		).run()
+	);
+};
+
+export default {
+	fetch: app.fetch,
+	scheduled,
+};

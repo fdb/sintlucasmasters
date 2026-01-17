@@ -75,6 +75,10 @@ npm run deploy              # Deploy to Cloudflare
 
 See `.env.template` for the list of required secret environment variables.
 
+## Working with Claude Code
+
+- **Commit after each phase**: When implementing multi-phase features, commit after completing each phase before moving to the next.
+
 ## Development Phases
 
 1. **Phase 1**: D1 schema + import script (import old data)
