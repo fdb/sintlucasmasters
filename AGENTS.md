@@ -69,6 +69,10 @@ npm run db:rebuild:remote   # Drop tables, recreate schema, and import (remote)
 # Build & Deploy
 npm run build               # Dry-run deploy
 npm run deploy              # Deploy to Cloudflare
+
+# Admin
+npm run create-admin <email>         # Create admin user locally
+npm run create-admin:remote <email>  # Create admin user on production
 ```
 
 ## Environment Variables

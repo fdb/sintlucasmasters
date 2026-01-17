@@ -17,7 +17,9 @@
     "db:rebuild": "node scripts/db-rebuild.mjs --local",
     "db:rebuild:remote": "node scripts/db-rebuild.mjs --remote",
     "setup-secrets": "op inject -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
-    "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote"
+    "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote",
+    "create-admin": "node scripts/create-admin.mjs --local",
+    "create-admin:remote": "node scripts/create-admin.mjs --remote"
   },
   "dependencies": {
     "hono": "^4.11.4",
