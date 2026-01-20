@@ -33,7 +33,11 @@ authApiRoutes.post('/login', async (c) => {
 	const result = await sendMagicLink(sesConfig, email, token, c.env.APP_BASE_URL);
 
 	if (!result.success) {
-		console.error('Failed to send magic link:', result.error, result.errorCode);
+		console.error('Failed to send magic link:', {
+			error: result.error,
+			errorCode: result.errorCode,
+			to: email,
+		});
 		return c.json({ error: 'Failed to send email' }, 500);
 	}
 
