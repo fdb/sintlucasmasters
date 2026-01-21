@@ -4,6 +4,7 @@ export type Bindings = {
 	JWT_SECRET: string;
 	APP_BASE_URL: string;
 	SES_CONFIGURATION_SET: string;
+	ASSETS: Fetcher;
 	// AWS SES credentials
 	AWS_ACCESS_KEY_ID: string;
 	AWS_SECRET_ACCESS_KEY: string;

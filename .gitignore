@@ -19,6 +19,9 @@ migration.sql
 .env
 .dev.vars
 
+# Admin build output
+static/admin/
+
 # Playwright
 /test-results/
 /playwright-report/

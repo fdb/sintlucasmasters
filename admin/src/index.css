@@ -1,0 +1,7 @@
+#root {
+	min-height: 100vh;
+}
+
+.auth-container button {
+	margin-top: 1rem;
+}
