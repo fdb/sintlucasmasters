@@ -2,10 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
 	root: __dirname,
 	plugins: [react()],
-	base: '/admin/',
+	base: command === 'serve' ? '/' : '/admin/',
 	build: {
 		outDir: resolve(__dirname, '../static/admin'),
 		emptyOutDir: true,
@@ -20,4 +20,4 @@ export default defineConfig({
 			'/logo-white.svg': 'http://localhost:8787',
 		},
 	},
-});
+}));
