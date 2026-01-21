@@ -6,12 +6,14 @@ import { CONTEXTS, getImageUrl } from './types';
 import { CURRENT_YEAR } from './config';
 import { authApiRoutes, authPageRoutes } from './routes/auth';
 import { adminPageRoutes } from './routes/admin';
+import { adminApiRoutes } from './routes/admin-api';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
 // Auth routes
 app.route('/api/auth', authApiRoutes);
 app.route('/auth', authPageRoutes);
+app.route('/api/admin', adminApiRoutes);
 app.route('/admin', adminPageRoutes);
 
 // Home page - redirect to current year

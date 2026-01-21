@@ -10,7 +10,7 @@
     "test:e2e": "playwright test",
     "build:admin": "vite build --config admin/vite.config.ts",
     "build": "wrangler deploy --dry-run",
-    "deploy": "wrangler deploy --env=''",
+    "deploy": "npm run build:admin && wrangler deploy --env=''",
     "db:init": "wrangler d1 execute sintlucasmasters --local --file=./schema.sql",
     "db:init:remote": "wrangler d1 execute sintlucasmasters --remote --file=./schema.sql",
     "import": "node scripts/import-to-d1.mjs --local",

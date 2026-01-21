@@ -82,3 +82,141 @@
 	color: #16a34a;
 	font-size: 0.9375rem;
 }
+
+/* Admin app */
+.admin-shell {
+	max-width: 1200px;
+	margin: 3rem auto;
+	padding: 0 2rem 4rem;
+}
+
+.admin-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+	font-size: 2.25rem;
+	font-weight: 700;
+	margin-bottom: 0.25rem;
+}
+
+.admin-header p {
+	color: var(--gray);
+}
+
+.admin-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.admin-user {
+	font-size: 0.875rem;
+	color: var(--gray);
+}
+
+.admin-actions button {
+	padding: 0.6rem 1.25rem;
+	font-size: 0.95rem;
+	font-family: inherit;
+	font-weight: 600;
+	color: var(--white);
+	background: var(--black);
+	border: none;
+	border-radius: 999px;
+	cursor: pointer;
+}
+
+.admin-panel {
+	background: #f8f8f8;
+	border: 1px solid #e5e5e5;
+	border-radius: 16px;
+	padding: 1.5rem;
+}
+
+.admin-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.admin-tabs button {
+	border: 1px solid #ddd;
+	background: var(--white);
+	color: var(--dark);
+	padding: 0.5rem 1rem;
+	border-radius: 999px;
+	font-size: 0.9rem;
+	cursor: pointer;
+	transition: all 0.15s ease;
+}
+
+.admin-tabs button.active {
+	background: var(--black);
+	color: var(--white);
+	border-color: var(--black);
+}
+
+.admin-table {
+	background: var(--white);
+	border-radius: 12px;
+	padding: 1.5rem;
+	border: 1px solid #e6e6e6;
+}
+
+.admin-table-meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	margin-bottom: 1rem;
+}
+
+.admin-table-meta h2 {
+	font-size: 1.2rem;
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+.admin-table-meta span {
+	font-size: 0.85rem;
+	color: var(--gray);
+}
+
+.table-scroll {
+	overflow-x: auto;
+	border: 1px solid #eee;
+	border-radius: 10px;
+}
+
+.admin-table table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid #f0f0f0;
+	text-align: left;
+	vertical-align: top;
+}
+
+.admin-table th {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--gray);
+	background: #fafafa;
+	position: sticky;
+	top: 0;
+}
+
+.admin-table tbody tr:hover {
+	background: #fcfcfc;
+}
