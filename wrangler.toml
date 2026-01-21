@@ -19,11 +19,13 @@ database_id = "4227d715-382f-416a-aa9c-c5da32847400"
 # AWS_REGION - AWS region for SES (e.g., eu-west-1)
 
 [vars]
-APP_BASE_URL = "http://localhost:8787"
+APP_BASE_URL = "https://dev.sintlucasmasters.com"
+SES_CONFIGURATION_SET = "sintlucasmasters-events"
 
 # Production overrides
 [env.production.vars]
 APP_BASE_URL = "https://sintlucasmasters.com"
+SES_CONFIGURATION_SET = "sintlucasmasters-events"
 
 # Cron trigger for cleaning up expired auth tokens
 [triggers]

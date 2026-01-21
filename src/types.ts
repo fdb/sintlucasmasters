@@ -3,6 +3,7 @@ export type Bindings = {
 	DB: D1Database;
 	JWT_SECRET: string;
 	APP_BASE_URL: string;
+	SES_CONFIGURATION_SET: string;
 	// AWS SES credentials
 	AWS_ACCESS_KEY_ID: string;
 	AWS_SECRET_ACCESS_KEY: string;

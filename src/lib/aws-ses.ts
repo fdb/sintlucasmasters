@@ -13,6 +13,7 @@ export interface SendEmailParams {
 	subject: string;
 	html: string;
 	text: string;
+	configurationSetName?: string;
 }
 
 export interface SESResult {
@@ -73,7 +74,7 @@ export async function sendEmail(config: SESConfig, params: SendEmailParams): Pro
 	const endpoint = `https://${host}/`;
 
 	// Build request body (form-urlencoded)
-	const body = new URLSearchParams({
+	const bodyParams: Record<string, string> = {
 		Action: 'SendEmail',
 		Version: '2010-12-01',
 		'Source': params.from,
@@ -84,7 +85,13 @@ export async function sendEmail(config: SESConfig, params: SendEmailParams): Pro
 		'Message.Body.Html.Charset': 'UTF-8',
 		'Message.Body.Text.Data': params.text,
 		'Message.Body.Text.Charset': 'UTF-8',
-	}).toString();
+	};
+
+	if (params.configurationSetName) {
+		bodyParams.ConfigurationSetName = params.configurationSetName;
+	}
+
+	const body = new URLSearchParams(bodyParams).toString();
 
 	const { amzDate, dateStamp } = getAmzDate();
 	const payloadHash = await sha256(body);

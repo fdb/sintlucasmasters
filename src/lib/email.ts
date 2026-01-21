@@ -15,7 +15,8 @@ export async function sendMagicLink(
 	sesConfig: SESConfig,
 	email: string,
 	token: string,
-	baseUrl: string
+	baseUrl: string,
+	configurationSetName?: string
 ): Promise<SendMagicLinkResult> {
 	const loginUrl = `${baseUrl}/auth/verify?token=${token}`;
 
@@ -23,6 +24,7 @@ export async function sendMagicLink(
 		from: FROM_EMAIL,
 		to: email,
 		subject: 'Sign in to Sint Lucas Masters',
+		configurationSetName,
 		html: `
 <!DOCTYPE html>
 <html>

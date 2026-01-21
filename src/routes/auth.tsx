@@ -30,7 +30,7 @@ authApiRoutes.post('/login', async (c) => {
 		region: c.env.AWS_REGION,
 	};
 
-	const result = await sendMagicLink(sesConfig, email, token, c.env.APP_BASE_URL);
+	const result = await sendMagicLink(sesConfig, email, token, c.env.APP_BASE_URL, c.env.SES_CONFIGURATION_SET);
 
 	if (!result.success) {
 		console.error('Failed to send magic link:', {
