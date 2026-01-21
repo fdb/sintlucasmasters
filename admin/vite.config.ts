@@ -15,6 +15,9 @@ export default defineConfig({
 		proxy: {
 			'/api': 'http://localhost:8787',
 			'/auth': 'http://localhost:8787',
+			'/styles.css': 'http://localhost:8787',
+			'/admin.css': 'http://localhost:8787',
+			'/logo-white.svg': 'http://localhost:8787',
 		},
 	},
 });
