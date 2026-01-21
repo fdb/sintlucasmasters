@@ -88,6 +88,7 @@ See `.env.template` for the list of required secret environment variables.
 ## Working with Claude Code
 
 - **Commit after each phase**: When implementing multi-phase features, commit after completing each phase before moving to the next.
+- **Admin UI style**: Avoid rounded corners. Keep a strict black/white palette with mid‑gray shades for contrast.
 
 ## Development Phases
 

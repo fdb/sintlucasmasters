@@ -12,10 +12,6 @@ const TABLES: Record<string, TableConfig> = {
 		select: 'id, email, name, is_admin, created_at, last_login_at',
 		orderBy: 'created_at DESC',
 	},
-	auth_tokens: {
-		select: 'id, email, token, created_at, expires_at, used_at',
-		orderBy: 'created_at DESC',
-	},
 	projects: {
 		select:
 			'id, slug, student_name, sort_name, project_title, context, academic_year, status, updated_at, user_id',
