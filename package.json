@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "concurrently -k -n worker,admin -c blue,magenta \"npm run dev:worker\" \"npm run dev:admin\"",
+    "dev:worker": "wrangler dev",
     "dev:e2e": "wrangler dev --port 5174",
     "dev:admin": "vite --config admin/vite.config.ts",
     "test:e2e": "playwright test",
@@ -34,6 +35,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^8.2.2",
     "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
     "vite": "^6.1.1",
