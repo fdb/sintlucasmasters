@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import type { Bindings } from '../types';
+import type { Bindings, Project, ProjectImage } from '../types';
 import { authMiddleware, requireAdmin } from '../middleware/auth';
 
 type TableConfig = {
@@ -56,5 +56,28 @@ adminApiRoutes.get('/table/:name', async (c) => {
 		limit,
 		count: countRow?.count ?? 0,
 		rows: results ?? [],
+	});
+});
+
+adminApiRoutes.get('/projects/:id', async (c) => {
+	const id = c.req.param('id');
+
+	const project = await c.env.DB.prepare('SELECT * FROM projects WHERE id = ?')
+		.bind(id)
+		.first<Project>();
+
+	if (!project) {
+		return c.json({ error: 'Project not found' }, 404);
+	}
+
+	const { results: images } = await c.env.DB.prepare(
+		'SELECT * FROM project_images WHERE project_id = ? ORDER BY sort_order ASC, id ASC'
+	)
+		.bind(id)
+		.all<ProjectImage>();
+
+	return c.json({
+		project,
+		images: images ?? [],
 	});
 });

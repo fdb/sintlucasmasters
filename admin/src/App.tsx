@@ -18,6 +18,11 @@ type TableResponse = {
 	rows: Array<Record<string, unknown>>;
 };
 
+type ProjectDetailResponse = {
+	project: Record<string, unknown>;
+	images: Array<Record<string, unknown>>;
+};
+
 export default function App() {
 	const [user, setUser] = useState<AuthUser | null>(null);
 	const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -25,6 +30,9 @@ export default function App() {
 	const [activeTable, setActiveTable] = useState<string>('');
 	const [tableData, setTableData] = useState<TableResponse | null>(null);
 	const [tableStatus, setTableStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+	const [projectDetail, setProjectDetail] = useState<ProjectDetailResponse | null>(null);
+	const [projectStatus, setProjectStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
 
 	useEffect(() => {
 		const load = async () => {
@@ -67,6 +75,9 @@ export default function App() {
 				const data = (await res.json()) as TableResponse;
 				setTableData(data);
 				setTableStatus('ready');
+				setSelectedProjectId(null);
+				setProjectDetail(null);
+				setProjectStatus('idle');
 			} catch {
 				setTableStatus('error');
 			}
@@ -75,12 +86,35 @@ export default function App() {
 		loadTable();
 	}, [activeTable]);
 
+	useEffect(() => {
+		if (!selectedProjectId) return;
+
+		const loadProject = async () => {
+			setProjectStatus('loading');
+			try {
+				const res = await fetch(`/api/admin/projects/${selectedProjectId}`);
+				if (!res.ok) {
+					setProjectStatus('error');
+					return;
+				}
+				const data = (await res.json()) as ProjectDetailResponse;
+				setProjectDetail(data);
+				setProjectStatus('ready');
+			} catch {
+				setProjectStatus('error');
+			}
+		};
+
+		loadProject();
+	}, [selectedProjectId]);
+
 	const handleLogout = async () => {
 		await fetch('/api/auth/logout', { method: 'POST' });
 		window.location.href = '/auth/login';
 	};
 
 	const columns = tableData?.rows[0] ? Object.keys(tableData.rows[0]) : [];
+	const isProjectsTable = activeTable === 'projects';
 
 	return (
 		<div className="admin-shell">
@@ -143,7 +177,19 @@ export default function App() {
 									</thead>
 									<tbody>
 										{tableData.rows.map((row, rowIndex) => (
-											<tr key={`${activeTable}-${rowIndex}`}>
+											<tr
+												key={`${activeTable}-${rowIndex}`}
+												className={
+													isProjectsTable ? 'row-clickable' : undefined
+												}
+												onClick={() => {
+													if (!isProjectsTable) return;
+													const id = row.id;
+													if (typeof id === 'string') {
+														setSelectedProjectId(id);
+													}
+												}}
+											>
 												{columns.map((column) => (
 													<td key={column}>{formatCell(row[column])}</td>
 												))}
@@ -154,6 +200,40 @@ export default function App() {
 							</div>
 						)}
 					</div>
+
+					{isProjectsTable && (
+						<section className="admin-detail">
+							<div className="admin-detail-header">
+								<h3>Project details</h3>
+								{selectedProjectId && (
+									<span>{selectedProjectId}</span>
+								)}
+							</div>
+							{!selectedProjectId && <p>Select a project row to view details.</p>}
+							{projectStatus === 'loading' && <p>Loading project…</p>}
+							{projectStatus === 'error' && (
+								<p className="error-message">Failed to load project.</p>
+							)}
+							{projectStatus === 'ready' && projectDetail && (
+								<div className="detail-grid">
+									{Object.entries(projectDetail.project).map(([key, value]) => (
+										<div key={key} className="detail-row">
+											<div className="detail-key">{key}</div>
+											<div className="detail-value">{formatCell(value)}</div>
+										</div>
+									))}
+									{projectDetail.images.length > 0 && (
+										<div className="detail-row">
+											<div className="detail-key">images</div>
+											<div className="detail-value">
+												{projectDetail.images.length} image(s)
+											</div>
+										</div>
+									)}
+								</div>
+							)}
+						</section>
+					)}
 				</div>
 			)}
 		</div>
