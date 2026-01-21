@@ -9,7 +9,8 @@ const envPath = resolve(projectRoot, '.env');
 dotenv.config({ path: envPath });
 
 const requiredKeys = ['RESEND_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION'];
-const optionalKeys = ['APP_BASE_URL', 'SES_CONFIGURATION_SET'];
+const optionalKeysLocal = ['APP_BASE_URL', 'SES_CONFIGURATION_SET'];
+const optionalKeysRemote = ['SES_CONFIGURATION_SET'];
 
 const missing = requiredKeys.filter((key) => !process.env[key]);
 if (missing.length > 0) {
@@ -48,7 +49,7 @@ const runRemote = args.has('--remote');
 if (runLocal) {
   const lines = [
     ...requiredKeys.map((key) => `${key}=${escapeValue(process.env[key])}`),
-    ...optionalKeys.filter((key) => process.env[key]).map((key) => `${key}=${escapeValue(process.env[key])}`),
+    ...optionalKeysLocal.filter((key) => process.env[key]).map((key) => `${key}=${escapeValue(process.env[key])}`),
   ];
   await writeFile(resolve(projectRoot, '.dev.vars'), `${lines.join('\n')}\n`, 'utf8');
   console.log('Wrote .dev.vars for local development.');
@@ -57,6 +58,11 @@ if (runLocal) {
 if (runRemote) {
   for (const key of requiredKeys) {
     await runWranglerSecretPut(key, process.env[key]);
+  }
+  for (const key of optionalKeysRemote) {
+    if (process.env[key]) {
+      await runWranglerSecretPut(key, process.env[key]);
+    }
   }
   console.log('Uploaded secrets to Cloudflare.');
 }
