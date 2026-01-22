@@ -34,6 +34,12 @@ export default function App() {
 	const [projectDetail, setProjectDetail] = useState<ProjectDetailResponse | null>(null);
 	const [projectStatus, setProjectStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
 
+	// Filters
+	const [selectedYear, setSelectedYear] = useState<string>('');
+	const [selectedContext, setSelectedContext] = useState<string>('');
+	const [searchQuery, setSearchQuery] = useState<string>('');
+	const [searchExpanded, setSearchExpanded] = useState<boolean>(false);
+
 	useEffect(() => {
 		const load = async () => {
 			try {
@@ -67,7 +73,7 @@ export default function App() {
 		const loadTable = async () => {
 			setTableStatus('loading');
 			try {
-				const res = await fetch(`/api/admin/table/${activeTable}?limit=100`);
+				const res = await fetch(`/api/admin/table/${activeTable}?limit=1000`);
 				if (!res.ok) {
 					setTableStatus('error');
 					return;
@@ -116,6 +122,48 @@ export default function App() {
 	const columns = tableData?.rows[0] ? Object.keys(tableData.rows[0]) : [];
 	const isProjectsTable = activeTable === 'projects';
 
+	// Extract unique years and contexts for filters
+	const allYears = isProjectsTable && tableData
+		? [...new Set(tableData.rows.map((r) => String(r.academic_year || '')).filter(Boolean))].sort().reverse()
+		: [];
+	const allContexts = isProjectsTable && tableData
+		? [...new Set(tableData.rows.map((r) => String(r.context || '')).filter(Boolean))].sort()
+		: [];
+
+	// Set default year to latest when data loads
+	useEffect(() => {
+		if (isProjectsTable && allYears.length > 0 && !selectedYear) {
+			setSelectedYear(allYears[0]);
+		}
+	}, [isProjectsTable, allYears.length]);
+
+	// Reset filters when switching tables
+	useEffect(() => {
+		setSelectedYear('');
+		setSelectedContext('');
+		setSearchQuery('');
+		setSearchExpanded(false);
+	}, [activeTable]);
+
+	// Filter rows
+	const filteredRows = isProjectsTable && tableData
+		? tableData.rows.filter((row) => {
+				const yearMatch = !selectedYear || String(row.academic_year) === selectedYear;
+				const contextMatch = !selectedContext || String(row.context) === selectedContext;
+				const searchLower = searchQuery.toLowerCase();
+				const searchMatch =
+					!searchQuery ||
+					String(row.student_name || '').toLowerCase().includes(searchLower) ||
+					String(row.project_title || '').toLowerCase().includes(searchLower);
+				return yearMatch && contextMatch && searchMatch;
+			})
+		: tableData?.rows || [];
+
+	// For the compact table view, show only key columns
+	const displayColumns = isProjectsTable
+		? columns.filter((col) => ['student_name', 'project_title', 'context'].includes(col))
+		: columns.slice(0, 4);
+
 	return (
 		<div className="admin-shell">
 			<header className="admin-header">
@@ -149,91 +197,174 @@ export default function App() {
 						))}
 					</nav>
 
-					<div className="admin-table">
-						<div className="admin-table-meta">
-							<h2>{activeTable.replace('_', ' ')}</h2>
-							{tableData && (
-								<span>
-									Showing {tableData.rows.length} of {tableData.count}
-								</span>
+					<div className="admin-split">
+						{/* Left: Table list */}
+						<div className="admin-list">
+							<div className="admin-list-header">
+								<h2>{activeTable.replace('_', ' ')}</h2>
+								{isProjectsTable && tableData && (
+									<div className="admin-filters">
+										<select
+											value={selectedYear}
+											onChange={(e) => setSelectedYear(e.target.value)}
+											className="filter-select"
+										>
+											<option value="">All years</option>
+											{allYears.map((year) => (
+												<option key={year} value={year}>
+													{year}
+												</option>
+											))}
+										</select>
+										<select
+											value={selectedContext}
+											onChange={(e) => setSelectedContext(e.target.value)}
+											className="filter-select"
+										>
+											<option value="">All contexts</option>
+											{allContexts.map((ctx) => (
+												<option key={ctx} value={ctx}>
+													{ctx.replace(' Context', '')}
+												</option>
+											))}
+										</select>
+										<div className={`search-container ${searchExpanded ? 'expanded' : ''}`}>
+											{searchExpanded ? (
+												<input
+													type="text"
+													value={searchQuery}
+													onChange={(e) => setSearchQuery(e.target.value)}
+													placeholder="Search..."
+													className="search-input"
+													autoFocus
+													onBlur={() => {
+														if (!searchQuery) setSearchExpanded(false);
+													}}
+												/>
+											) : (
+												<button
+													type="button"
+													className="search-toggle"
+													onClick={() => setSearchExpanded(true)}
+													title="Search"
+												>
+													<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+														<circle cx="11" cy="11" r="8" />
+														<path d="M21 21l-4.35-4.35" />
+													</svg>
+												</button>
+											)}
+										</div>
+										<span className="filter-count">{filteredRows.length}</span>
+									</div>
+								)}
+							</div>
+
+							{tableStatus === 'loading' && <p className="admin-list-message">Loading data…</p>}
+							{tableStatus === 'error' && <p className="admin-list-message error-message">Failed to load data.</p>}
+							{tableStatus === 'ready' && (!tableData || tableData.rows.length === 0) && (
+								<p className="admin-list-message">No rows found.</p>
+							)}
+
+							{tableStatus === 'ready' && tableData && filteredRows.length > 0 && (
+								<div className="admin-list-scroll">
+									<table>
+										<thead>
+											<tr>
+												{displayColumns.map((column) => (
+													<th key={column}>{column.replace('_', ' ')}</th>
+												))}
+											</tr>
+										</thead>
+										<tbody>
+											{filteredRows.map((row, rowIndex) => {
+												const rowId = typeof row.id === 'string' ? row.id : null;
+												const isSelected = isProjectsTable && rowId === selectedProjectId;
+												return (
+													<tr
+														key={`${activeTable}-${rowIndex}`}
+														className={`${isProjectsTable ? 'row-clickable' : ''} ${isSelected ? 'row-selected' : ''}`}
+														onClick={() => {
+															if (!isProjectsTable || !rowId) return;
+															setSelectedProjectId(rowId);
+														}}
+													>
+														{displayColumns.map((column) => (
+															<td key={column}>{formatCell(row[column])}</td>
+														))}
+													</tr>
+												);
+											})}
+										</tbody>
+									</table>
+								</div>
+							)}
+							{tableStatus === 'ready' && tableData && tableData.rows.length > 0 && filteredRows.length === 0 && (
+								<p className="admin-list-message">No matches found.</p>
 							)}
 						</div>
 
-						{tableStatus === 'loading' && <p>Loading data…</p>}
-						{tableStatus === 'error' && <p className="error-message">Failed to load data.</p>}
-						{tableStatus === 'ready' && (!tableData || tableData.rows.length === 0) && (
-							<p>No rows found.</p>
-						)}
-
-						{tableStatus === 'ready' && tableData && tableData.rows.length > 0 && (
-							<div className="table-scroll">
-								<table>
-									<thead>
-										<tr>
-											{columns.map((column) => (
-												<th key={column}>{column}</th>
-											))}
-										</tr>
-									</thead>
-									<tbody>
-										{tableData.rows.map((row, rowIndex) => (
-											<tr
-												key={`${activeTable}-${rowIndex}`}
-												className={
-													isProjectsTable ? 'row-clickable' : undefined
-												}
-												onClick={() => {
-													if (!isProjectsTable) return;
-													const id = row.id;
-													if (typeof id === 'string') {
-														setSelectedProjectId(id);
-													}
-												}}
-											>
-												{columns.map((column) => (
-													<td key={column}>{formatCell(row[column])}</td>
-												))}
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						)}
-					</div>
-
-					{isProjectsTable && (
-						<section className="admin-detail">
-							<div className="admin-detail-header">
-								<h3>Project details</h3>
-								{selectedProjectId && (
-									<span>{selectedProjectId}</span>
-								)}
-							</div>
-							{!selectedProjectId && <p>Select a project row to view details.</p>}
-							{projectStatus === 'loading' && <p>Loading project…</p>}
-							{projectStatus === 'error' && (
-								<p className="error-message">Failed to load project.</p>
-							)}
-							{projectStatus === 'ready' && projectDetail && (
-								<div className="detail-grid">
-									{Object.entries(projectDetail.project).map(([key, value]) => (
-										<div key={key} className="detail-row">
-											<div className="detail-key">{key}</div>
-											<div className="detail-value">{formatCell(value)}</div>
-										</div>
-									))}
-									{projectDetail.images.length > 0 && (
-										<div className="detail-row">
-											<div className="detail-key">images</div>
-											<div className="detail-value">
-												{projectDetail.images.length} image(s)
-											</div>
-										</div>
-									)}
+						{/* Right: Detail panel */}
+						<div className="admin-detail-panel">
+							{!isProjectsTable && (
+								<div className="admin-detail-empty">
+									<p>Select a row to view details</p>
 								</div>
 							)}
-						</section>
-					)}
+
+							{isProjectsTable && !selectedProjectId && (
+								<div className="admin-detail-empty">
+									<span className="detail-icon">←</span>
+									<p>Select a project from the list</p>
+								</div>
+							)}
+
+							{isProjectsTable && projectStatus === 'loading' && (
+								<div className="admin-detail-empty">
+									<p>Loading project…</p>
+								</div>
+							)}
+
+							{isProjectsTable && projectStatus === 'error' && (
+								<div className="admin-detail-empty">
+									<p className="error-message">Failed to load project.</p>
+								</div>
+							)}
+
+							{isProjectsTable && projectStatus === 'ready' && projectDetail && (
+								<div className="admin-detail-content">
+									<div className="admin-detail-header">
+										<h3>{String(projectDetail.project.student_name || 'Untitled')}</h3>
+										<span className="detail-id">{selectedProjectId}</span>
+									</div>
+
+									<div className="detail-grid">
+										{Object.entries(projectDetail.project)
+											.filter(([key]) => key !== 'id')
+											.map(([key, value]) => (
+												<div key={key} className="detail-row">
+													<div className="detail-key">{key.replace('_', ' ')}</div>
+													<div className="detail-value">{formatCell(value)}</div>
+												</div>
+											))}
+
+										{projectDetail.images.length > 0 && (
+											<div className="detail-row">
+												<div className="detail-key">images</div>
+												<div className="detail-value detail-images">
+													{projectDetail.images.map((img, idx) => (
+														<div key={idx} className="detail-image-item">
+															{formatCell(img)}
+														</div>
+													))}
+												</div>
+											</div>
+										)}
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
 				</div>
 			)}
 		</div>
