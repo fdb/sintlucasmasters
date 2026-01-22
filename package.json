@@ -15,8 +15,6 @@
     "db:init:remote": "wrangler d1 execute sintlucasmasters --remote --file=./schema.sql",
     "db:import": "node scripts/import-to-d1.mjs --local",
     "db:import:remote": "node scripts/import-to-d1.mjs --remote",
-    "db:reset": "node scripts/import-to-d1.mjs --local --reset",
-    "db:reset:remote": "node scripts/import-to-d1.mjs --remote --reset",
     "db:rebuild": "node scripts/db-rebuild.mjs --local",
     "db:rebuild:remote": "node scripts/db-rebuild.mjs --remote",
     "setup-secrets": "op inject -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
