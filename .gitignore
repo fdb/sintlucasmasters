@@ -8,6 +8,7 @@ uploadcare-files.json
 _uploads/
 _data/
 media/
+*.pdf
 # Local Netlify folder
 .netlify
 
