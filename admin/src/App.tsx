@@ -1,11 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { Sun, Moon, LogOut, Search } from 'lucide-react';
 
+type UserRole = 'student' | 'editor' | 'admin';
+
 type AuthUser = {
 	id: string;
 	email: string;
 	name: string | null;
-	isAdmin: boolean;
+	role: UserRole;
 };
 
 type AuthResponse =
@@ -341,7 +343,15 @@ export default function App() {
 														}}
 													>
 														{displayColumns.map((column) => (
-															<td key={column}>{formatCell(row[column])}</td>
+															<td key={column}>
+																{column === 'role' ? (
+																	<span className={`role-pill role-${String(row[column] || 'student').toLowerCase()}`}>
+																		{String(row[column] || 'student')}
+																	</span>
+																) : (
+																	formatCell(row[column])
+																)}
+															</td>
 														))}
 													</tr>
 												);
