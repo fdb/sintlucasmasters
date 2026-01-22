@@ -23,7 +23,7 @@ const TABLES: Record<string, TableConfig> = {
 	},
 };
 
-const MAX_LIMIT = 200;
+const MAX_LIMIT = 1000;
 
 export const adminApiRoutes = new Hono<{ Bindings: Bindings }>();
 
