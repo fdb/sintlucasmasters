@@ -9,7 +9,7 @@ type TableConfig = {
 
 const TABLES: Record<string, TableConfig> = {
 	users: {
-		select: 'id, email, name, is_admin, created_at, last_login_at',
+		select: 'id, email, name, role, created_at, last_login_at',
 		orderBy: 'created_at DESC',
 	},
 	projects: {

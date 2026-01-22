@@ -1,10 +1,12 @@
 // JWT utilities for authentication
 // Uses Web Crypto API (available in Cloudflare Workers)
 
+import type { UserRole } from '../types';
+
 export interface JWTPayload {
 	userId: string;
 	email: string;
-	isAdmin: boolean;
+	role: UserRole;
 	exp: number;
 	iat: number;
 }
@@ -37,7 +39,7 @@ function base64UrlDecode(str: string): Uint8Array {
 }
 
 export async function signToken(
-	payload: { userId: string; email: string; isAdmin: boolean },
+	payload: { userId: string; email: string; role: UserRole },
 	secret: string
 ): Promise<string> {
 	const header = { alg: 'HS256', typ: 'JWT' };

@@ -54,12 +54,12 @@ CREATE INDEX IF NOT EXISTS idx_projects_slug_year ON projects(slug, academic_yea
 CREATE INDEX IF NOT EXISTS idx_projects_sort_name ON projects(sort_name);
 CREATE INDEX IF NOT EXISTS idx_project_images_project_id ON project_images(project_id);
 
--- Users table (students and admins)
+-- Users table (students, editors, and admins)
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     name TEXT,
-    is_admin INTEGER NOT NULL DEFAULT 0,
+    role TEXT NOT NULL DEFAULT 'student' CHECK (role IN ('student', 'editor', 'admin')),
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     last_login_at TEXT
 );

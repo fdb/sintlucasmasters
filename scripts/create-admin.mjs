@@ -82,7 +82,7 @@ async function main() {
 	console.log('');
 
 	// Use INSERT OR REPLACE to make it idempotent
-	const sql = `INSERT OR REPLACE INTO users (id, email, is_admin, created_at) VALUES ('${userId}', '${normalizedEmail}', 1, datetime('now'));`;
+	const sql = `INSERT OR REPLACE INTO users (id, email, role, created_at) VALUES ('${userId}', '${normalizedEmail}', 'admin', datetime('now'));`;
 
 	try {
 		await runWrangler(sql, isRemote);

@@ -21,6 +21,15 @@ authApiRoutes.post('/login', async (c) => {
 		return c.json({ error: 'Valid email is required' }, 400);
 	}
 
+	// Check if user exists in database
+	const existingUser = await c.env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
+
+	if (!existingUser) {
+		// Log warning but return same response to prevent email enumeration
+		console.warn('Login attempt for unregistered email:', email);
+		return c.json({ success: true, message: 'Check your email for a login link' });
+	}
+
 	const token = generateMagicToken();
 	await storeMagicToken(c.env.DB, email, token);
 
@@ -54,7 +63,7 @@ authApiRoutes.get('/me', async (c) => {
 	}
 
 	// Fetch full user details from database
-	const dbUser = await c.env.DB.prepare('SELECT id, email, name, is_admin FROM users WHERE id = ?')
+	const dbUser = await c.env.DB.prepare('SELECT id, email, name, role FROM users WHERE id = ?')
 		.bind(user.userId)
 		.first<User>();
 
@@ -68,7 +77,7 @@ authApiRoutes.get('/me', async (c) => {
 			id: dbUser.id,
 			email: dbUser.email,
 			name: dbUser.name,
-			isAdmin: dbUser.is_admin === 1,
+			role: dbUser.role,
 		},
 	});
 });
@@ -167,38 +176,24 @@ authPageRoutes.get('/verify', async (c) => {
 		return c.redirect(`/auth/login?error=${result.error || 'invalid_token'}`);
 	}
 
-	// Find or create user
-	let user = await c.env.DB.prepare('SELECT * FROM users WHERE email = ?').bind(result.email).first<User>();
+	// Find user (must already exist in database)
+	const user = await c.env.DB.prepare('SELECT * FROM users WHERE email = ?').bind(result.email).first<User>();
 
 	if (!user) {
-		// Create new user
-		const userId = crypto.randomUUID();
-		await c.env.DB.prepare(
-			`INSERT INTO users (id, email, is_admin, last_login_at)
-       VALUES (?, ?, 0, datetime('now'))`
-		)
-			.bind(userId, result.email)
-			.run();
-
-		user = {
-			id: userId,
-			email: result.email,
-			name: null,
-			is_admin: 0,
-			created_at: new Date().toISOString(),
-			last_login_at: new Date().toISOString(),
-		};
-	} else {
-		// Update last login
-		await c.env.DB.prepare(`UPDATE users SET last_login_at = datetime('now') WHERE id = ?`).bind(user.id).run();
+		// User not registered - should not happen since we only send tokens to registered users
+		console.warn('Token verification for unregistered email:', result.email);
+		return c.redirect('/auth/login?error=not_registered');
 	}
+
+	// Update last login
+	await c.env.DB.prepare(`UPDATE users SET last_login_at = datetime('now') WHERE id = ?`).bind(user.id).run();
 
 	// Create JWT
 	const jwt = await signToken(
 		{
 			userId: user.id,
 			email: user.email,
-			isAdmin: user.is_admin === 1,
+			role: user.role,
 		},
 		c.env.JWT_SECRET
 	);
@@ -214,7 +209,7 @@ authPageRoutes.get('/verify', async (c) => {
 	});
 
 	// Redirect based on role
-	if (user.is_admin === 1) {
+	if (user.role === 'admin' || user.role === 'editor') {
 		return c.redirect('/admin');
 	}
 	return c.redirect('/student');
@@ -242,6 +237,8 @@ function getErrorMessage(error: string): string {
 			return 'Login link has expired. Please request a new one.';
 		case 'already_used':
 			return 'Login link has already been used. Please request a new one.';
+		case 'not_registered':
+			return 'This account is not registered. Please contact an administrator.';
 		default:
 			return 'Something went wrong. Please try again.';
 	}

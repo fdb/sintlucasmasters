@@ -11,11 +11,13 @@ export type Bindings = {
 	AWS_REGION: string;
 };
 
+export type UserRole = 'student' | 'editor' | 'admin';
+
 export interface User {
 	id: string;
 	email: string;
 	name: string | null;
-	is_admin: number; // SQLite boolean (0 or 1)
+	role: UserRole;
 	created_at: string;
 	last_login_at: string | null;
 }

@@ -50,7 +50,7 @@ async function main() {
     console.log('📦 Step 1: Dropping existing tables...');
     await runCommand('npx', [
         'wrangler', 'd1', 'execute', 'sintlucasmasters', target,
-        '--command', '"DROP TABLE IF EXISTS project_images; DROP TABLE IF EXISTS projects;"'
+        '--command', '"DROP TABLE IF EXISTS project_images; DROP TABLE IF EXISTS projects; DROP TABLE IF EXISTS auth_tokens; DROP TABLE IF EXISTS users;"'
     ]);
 
     // Step 2: Create schema

@@ -6,10 +6,12 @@ import { verifyToken, type JWTPayload } from '../lib/jwt';
 
 export const AUTH_COOKIE_NAME = 'auth_token';
 
+import type { UserRole } from '../types';
+
 export interface AuthUser {
 	userId: string;
 	email: string;
-	isAdmin: boolean;
+	role: UserRole;
 }
 
 // Extend Hono's context variables
@@ -36,7 +38,7 @@ export async function authMiddleware(
 			c.set('user', {
 				userId: payload.userId,
 				email: payload.email,
-				isAdmin: payload.isAdmin,
+				role: payload.role,
 			});
 		} else {
 			c.set('user', null);
@@ -81,7 +83,7 @@ export async function requireAdmin(
 		return c.redirect('/auth/login');
 	}
 
-	if (!user.isAdmin) {
+	if (user.role !== 'admin' && user.role !== 'editor') {
 		if (c.req.path.startsWith('/api/')) {
 			return c.json({ error: 'Forbidden' }, 403);
 		}
