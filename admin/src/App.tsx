@@ -307,7 +307,6 @@ export default function App() {
 												</button>
 											)}
 										</div>
-										<span className="filter-count">{filteredRows.length}</span>
 									</div>
 								)}
 							</div>
@@ -385,31 +384,125 @@ export default function App() {
 
 							{isProjectsTable && projectStatus === 'ready' && projectDetail && (
 								<div className="admin-detail-content">
-									<div className="admin-detail-header">
+									{/* Header: Name + Status */}
+									<div className="detail-header-row">
 										<h3>{String(projectDetail.project.student_name || 'Untitled')}</h3>
-										<span className="detail-id">{selectedProjectId}</span>
+										<span className={`status-pill status-${String(projectDetail.project.status || 'draft').toLowerCase()}`}>
+											{String(projectDetail.project.status || 'draft')}
+										</span>
 									</div>
 
-									<div className="detail-grid">
-										{Object.entries(projectDetail.project)
-											.filter(([key]) => key !== 'id')
-											.map(([key, value]) => (
-												<div key={key} className="detail-row">
-													<div className="detail-key">{key.replace('_', ' ')}</div>
-													<div className="detail-value">{formatCell(value)}</div>
-												</div>
-											))}
+									{/* Project title */}
+									<div className="detail-title">
+										{String(projectDetail.project.project_title || '')}
+									</div>
 
-										{projectDetail.images.length > 0 && (
-											<div className="detail-row">
-												<div className="detail-key">images</div>
-												<div className="detail-value detail-images">
-													{projectDetail.images.map((img, idx) => (
-														<div key={idx} className="detail-image-item">
-															{formatCell(img)}
-														</div>
-													))}
+									{/* Program + Context */}
+									<div className="detail-program-context">
+										<span className="detail-program">{String(projectDetail.project.program || '')}</span>
+										{projectDetail.project.program && projectDetail.project.context && ' · '}
+										<span className="detail-context">{String(projectDetail.project.context || '')}</span>
+									</div>
+
+									{/* Academic year */}
+									<div className="detail-year">
+										{String(projectDetail.project.academic_year || '')}
+									</div>
+
+									{/* Images */}
+									<div className="detail-section">
+										<div className="detail-section-label">Images</div>
+										<div className="detail-images">
+											{/* Main image first */}
+											{projectDetail.project.main_image_id && (
+												<div className="detail-image-thumb detail-image-main">
+													<img
+														src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${projectDetail.project.main_image_id}/thumb`}
+														alt="Main image"
+														loading="lazy"
+													/>
+													<span className="image-badge">Main</span>
 												</div>
+											)}
+											{/* Additional images */}
+											{projectDetail.images.map((img, idx) => {
+												const cloudflareId = String(img.cloudflare_id || '');
+												if (!cloudflareId) return null;
+												return (
+													<div key={idx} className="detail-image-thumb">
+														<img
+															src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${cloudflareId}/thumb`}
+															alt={`Image ${idx + 1}`}
+															loading="lazy"
+														/>
+													</div>
+												);
+											})}
+										</div>
+									</div>
+
+									{/* Bio */}
+									{projectDetail.project.bio && (
+										<div className="detail-section">
+											<div className="detail-section-label">Bio</div>
+											<div className="detail-text">{String(projectDetail.project.bio)}</div>
+										</div>
+									)}
+
+									{/* Description */}
+									{projectDetail.project.description && (
+										<div className="detail-section">
+											<div className="detail-section-label">Description</div>
+											<div className="detail-text">{String(projectDetail.project.description)}</div>
+										</div>
+									)}
+
+									{/* Social links */}
+									{projectDetail.project.social_links && (
+										<div className="detail-section">
+											<div className="detail-section-label">Social Links</div>
+											<div className="detail-links">
+												{parseSocialLinks(projectDetail.project.social_links).map((link, idx) => (
+													<a
+														key={idx}
+														href={link.startsWith('http') ? link : `https://${link}`}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="detail-link"
+													>
+														{link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+													</a>
+												))}
+											</div>
+										</div>
+									)}
+
+									{/* Metadata footer */}
+									<div className="detail-metadata">
+										<div className="detail-meta-item">
+											<span className="meta-label">ID</span>
+											<span className="meta-value">{String(projectDetail.project.id || '')}</span>
+										</div>
+										<div className="detail-meta-item">
+											<span className="meta-label">Slug</span>
+											<span className="meta-value">{String(projectDetail.project.slug || '')}</span>
+										</div>
+										<div className="detail-meta-item">
+											<span className="meta-label">Sort name</span>
+											<span className="meta-value">{String(projectDetail.project.sort_name || '')}</span>
+										</div>
+										<div className="detail-meta-item">
+											<span className="meta-label">Created</span>
+											<span className="meta-value">{formatDate(projectDetail.project.created_at)}</span>
+										</div>
+										<div className="detail-meta-item">
+											<span className="meta-label">Updated</span>
+											<span className="meta-value">{formatDate(projectDetail.project.updated_at)}</span>
+										</div>
+										{projectDetail.project.user_id && (
+											<div className="detail-meta-item">
+												<span className="meta-label">User ID</span>
+												<span className="meta-value">{String(projectDetail.project.user_id)}</span>
 											</div>
 										)}
 									</div>
@@ -429,4 +522,33 @@ function formatCell(value: unknown) {
 	if (typeof value === 'number') return String(value);
 	if (typeof value === 'boolean') return value ? 'true' : 'false';
 	return JSON.stringify(value);
+}
+
+function parseSocialLinks(value: unknown): string[] {
+	if (!value) return [];
+	if (typeof value === 'string') {
+		try {
+			const parsed = JSON.parse(value);
+			if (Array.isArray(parsed)) return parsed.filter((l) => typeof l === 'string');
+		} catch {
+			// Not JSON, try splitting by newline or comma
+			return value.split(/[\n,]/).map((s) => s.trim()).filter(Boolean);
+		}
+	}
+	if (Array.isArray(value)) return value.filter((l) => typeof l === 'string');
+	return [];
+}
+
+function formatDate(value: unknown): string {
+	if (!value || typeof value !== 'string') return '—';
+	try {
+		const date = new Date(value);
+		return date.toLocaleDateString('en-GB', {
+			day: 'numeric',
+			month: 'short',
+			year: 'numeric',
+		});
+	} catch {
+		return String(value);
+	}
 }

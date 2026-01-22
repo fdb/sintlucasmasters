@@ -466,61 +466,191 @@
 	padding: 1.5rem;
 }
 
-.admin-detail-header {
-	margin-bottom: 1.5rem;
-	padding-bottom: 1rem;
-	border-bottom: 1px solid var(--admin-border);
-}
 
-.admin-detail-header h3 {
-	font-size: 1.125rem;
-	font-weight: 600;
+/* Detail header row */
+.detail-header-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
 	margin-bottom: 0.25rem;
 }
 
-.admin-detail-header .detail-id {
-	font-size: 0.75rem;
+.detail-header-row h3 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin: 0;
+}
+
+/* Status pill */
+.status-pill {
+	font-size: 0.6875rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 0.25rem 0.625rem;
+	background: var(--admin-bg-hover);
 	color: var(--gray);
-	font-family: monospace;
 }
 
-.detail-grid {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
+.status-pill.status-published {
+	background: #e8f5e9;
+	color: #2e7d32;
 }
 
-.detail-row {
-	display: flex;
-	flex-direction: column;
-	gap: 0.25rem;
+:root[data-theme='dark'] .status-pill.status-published {
+	background: #1b3d1f;
+	color: #81c784;
 }
 
-.detail-key {
+.status-pill.status-draft {
+	background: #fff3e0;
+	color: #e65100;
+}
+
+:root[data-theme='dark'] .status-pill.status-draft {
+	background: #3d2a14;
+	color: #ffb74d;
+}
+
+/* Project title */
+.detail-title {
+	font-size: 1rem;
+	font-weight: 500;
+	color: var(--black);
+	margin-bottom: 0.5rem;
+}
+
+/* Program + Context */
+.detail-program-context {
+	font-size: 0.875rem;
+	color: var(--gray);
+	margin-bottom: 0.25rem;
+}
+
+.detail-program {
+	font-weight: 600;
+	color: var(--black);
+}
+
+.detail-context {
+	font-style: italic;
+}
+
+/* Academic year */
+.detail-year {
+	font-size: 0.8125rem;
+	color: var(--gray);
+	margin-bottom: 1.5rem;
+	padding-bottom: 1.5rem;
+	border-bottom: 1px solid var(--admin-border);
+}
+
+/* Detail sections */
+.detail-section {
+	margin-bottom: 1.5rem;
+}
+
+.detail-section-label {
 	font-size: 0.6875rem;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.06em;
 	color: var(--gray);
+	margin-bottom: 0.5rem;
 }
 
-.detail-value {
+.detail-text {
 	font-size: 0.875rem;
+	line-height: 1.6;
 	white-space: pre-wrap;
 	word-break: break-word;
-	line-height: 1.5;
 }
 
+/* Images */
 .detail-images {
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
 	gap: 0.5rem;
 }
 
-.detail-image-item {
-	font-size: 0.75rem;
-	padding: 0.5rem;
+.detail-image-thumb {
+	position: relative;
+	max-width: 120px;
+	max-height: 120px;
 	background: var(--admin-bg-hover);
-	font-family: monospace;
+}
+
+.detail-image-thumb img {
+	max-width: 120px;
+	max-height: 120px;
+	width: auto;
+	height: auto;
+	display: block;
+	object-fit: contain;
+}
+
+.detail-image-main {
+	outline: 2px solid var(--black);
+	outline-offset: -2px;
+}
+
+.image-badge {
+	position: absolute;
+	bottom: 4px;
+	left: 4px;
+	font-size: 0.625rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	padding: 0.125rem 0.375rem;
+	background: var(--black);
+	color: var(--white);
+}
+
+/* Social links */
+.detail-links {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+}
+
+.detail-link {
+	font-size: 0.875rem;
+	color: var(--black);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.detail-link:hover {
+	opacity: 0.7;
+}
+
+/* Metadata footer */
+.detail-metadata {
+	margin-top: 2rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--admin-border);
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 0.75rem 1rem;
+}
+
+.detail-meta-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+}
+
+.meta-label {
+	font-size: 0.625rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--gray);
+}
+
+.meta-value {
+	font-size: 0.75rem;
+	color: var(--black);
 	word-break: break-all;
 }
