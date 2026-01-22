@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { Sun, Moon, LogOut, Search } from 'lucide-react';
 
 type AuthUser = {
 	id: string;
@@ -39,6 +40,35 @@ export default function App() {
 	const [selectedContext, setSelectedContext] = useState<string>('');
 	const [searchQuery, setSearchQuery] = useState<string>('');
 	const [searchExpanded, setSearchExpanded] = useState<boolean>(false);
+
+	// Dark mode
+	const [darkMode, setDarkMode] = useState<boolean>(() => {
+		const stored = localStorage.getItem('admin-dark-mode');
+		if (stored !== null) return stored === 'true';
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+	});
+
+	// User menu
+	const [userMenuOpen, setUserMenuOpen] = useState(false);
+	const userMenuRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+		localStorage.setItem('admin-dark-mode', String(darkMode));
+	}, [darkMode]);
+
+	// Close user menu when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (e: MouseEvent) => {
+			if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+				setUserMenuOpen(false);
+			}
+		};
+		if (userMenuOpen) {
+			document.addEventListener('mousedown', handleClickOutside);
+		}
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, [userMenuOpen]);
 
 	useEffect(() => {
 		const load = async () => {
@@ -172,10 +202,35 @@ export default function App() {
 					<p>Data viewer for Sint Lucas Masters.</p>
 				</div>
 				<div className="admin-actions">
-					{user && <span className="admin-user">{user.email}</span>}
-					<button type="button" onClick={handleLogout}>
-						Log out
+					<button
+						type="button"
+						className="theme-toggle"
+						onClick={() => setDarkMode(!darkMode)}
+						title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+					>
+						{darkMode ? <Sun size={16} /> : <Moon size={16} />}
 					</button>
+					{user && (
+						<div className="user-menu" ref={userMenuRef}>
+							<button
+								type="button"
+								className="user-avatar"
+								onClick={() => setUserMenuOpen(!userMenuOpen)}
+								title={user.email}
+							>
+								{user.email.charAt(0).toUpperCase()}
+							</button>
+							{userMenuOpen && (
+								<div className="user-dropdown">
+									<div className="user-dropdown-email">{user.email}</div>
+									<button type="button" onClick={handleLogout}>
+										<LogOut size={14} />
+										Log out
+									</button>
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 			</header>
 
@@ -248,10 +303,7 @@ export default function App() {
 													onClick={() => setSearchExpanded(true)}
 													title="Search"
 												>
-													<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-														<circle cx="11" cy="11" r="8" />
-														<path d="M21 21l-4.35-4.35" />
-													</svg>
+													<Search size={14} />
 												</button>
 											)}
 										</div>
