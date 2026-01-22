@@ -20,7 +20,8 @@
     "setup-secrets": "op inject -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
     "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote",
     "create-admin": "node scripts/create-admin.mjs --local",
-    "create-admin:remote": "node scripts/create-admin.mjs --remote"
+    "create-admin:remote": "node scripts/create-admin.mjs --remote",
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,html,css,md}\""
   },
   "dependencies": {
     "hono": "^4.11.4",
@@ -37,6 +38,7 @@
     "concurrently": "^8.2.2",
     "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
+    "prettier": "^3.8.1",
     "vite": "^6.1.1",
     "wrangler": "^4.59.1"
   }

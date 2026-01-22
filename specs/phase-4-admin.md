@@ -92,6 +92,7 @@ src/
 1. **Install dependency**: `npm install resend`
 
 2. **Add bindings** to `src/index.tsx`:
+
    ```typescript
    type Bindings = {
      DB: D1Database;
@@ -127,14 +128,15 @@ src/
 - `authApiRoutes` → mounted at `/api/auth`
 - `authVerifyRoutes` → mounted at `/auth` (magic link verify + redirect)
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/api/auth/login` | POST | Send magic link email |
-| `/api/auth/me` | GET | Return current user info |
-| `/auth/verify` | GET | Verify token, create session (sets cookie, redirects) |
-| `/api/auth/logout` | POST | Clear session cookie |
+| Route              | Method | Description                                           |
+| ------------------ | ------ | ----------------------------------------------------- |
+| `/api/auth/login`  | POST   | Send magic link email                                 |
+| `/api/auth/me`     | GET    | Return current user info                              |
+| `/auth/verify`     | GET    | Verify token, create session (sets cookie, redirects) |
+| `/api/auth/logout` | POST   | Clear session cookie                                  |
 
 **Flow**:
+
 1. Admin SPA posts email to `/api/auth/login`
 2. System generates token, stores in D1, emails link
 3. User clicks link → `/auth/verify?token=xxx`
@@ -157,14 +159,15 @@ src/
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'http://localhost:8787',
-      '/auth': 'http://localhost:8787'
-    }
-  }
+      "/api": "http://localhost:8787",
+      "/auth": "http://localhost:8787",
+    },
+  },
 });
 ```
 
 **Build output**:
+
 - Output to `static/admin/` (served via Hono static middleware)
 - Add `static/admin/` to `.gitignore`
 - Ensure `/admin/*` routes fallback to `admin/index.html`
@@ -173,17 +176,19 @@ export default defineConfig({
 
 **Create `src/routes/student.tsx`**:
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/student` | GET | Dashboard showing user's project(s) |
-| `/student/project/:id` | GET | Edit form (if editable) |
-| `/student/project/:id` | POST | Save changes |
+| Route                  | Method | Description                         |
+| ---------------------- | ------ | ----------------------------------- |
+| `/student`             | GET    | Dashboard showing user's project(s) |
+| `/student/project/:id` | GET    | Edit form (if editable)             |
+| `/student/project/:id` | POST   | Save changes                        |
 
 **Edit restrictions**:
+
 - Check `status !== 'ready_for_print'` before allowing edits
 - Show read-only view if locked
 
 **sort_name generation**:
+
 - When saving a project, auto-generate `sort_name` from `student_name`
 - Use the `sortName()` utility from `src/lib/names.ts`
 - This ensures proper alphabetical sorting for names with diacritics (e.g., "Çifel" sorts with "C")
@@ -192,16 +197,17 @@ export default defineConfig({
 
 **Create `src/routes/admin.ts`**:
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/api/admin/projects` | GET | Project list (filter/sort) |
-| `/api/admin/projects/:id` | GET | Review single project |
-| `/api/admin/projects/:id/status` | POST | Change status (ready_for_print, published) |
-| `/api/admin/unlock-all` | POST | Bulk unlock current year projects |
-| `/api/admin/users` | GET | List all users |
-| `/api/admin/users` | POST | Create new user (student or admin) |
+| Route                            | Method | Description                                |
+| -------------------------------- | ------ | ------------------------------------------ |
+| `/api/admin/projects`            | GET    | Project list (filter/sort)                 |
+| `/api/admin/projects/:id`        | GET    | Review single project                      |
+| `/api/admin/projects/:id/status` | POST   | Change status (ready_for_print, published) |
+| `/api/admin/unlock-all`          | POST   | Bulk unlock current year projects          |
+| `/api/admin/users`               | GET    | List all users                             |
+| `/api/admin/users`               | POST   | Create new user (student or admin)         |
 
 **Admin dashboard features**:
+
 - Filter by: status, context, year
 - Sort by: student name, status, updated date
 - Status badges: draft, submitted, ready_for_print, published
@@ -230,15 +236,15 @@ Add to `src/index.tsx`:
 
 ```typescript
 // Auth routes
-app.route('/api/auth', authApiRoutes);
-app.route('/auth', authVerifyRoutes);
+app.route("/api/auth", authApiRoutes);
+app.route("/auth", authVerifyRoutes);
 
 // Protected routes
-app.use('/student/*', authMiddleware, requireAuth);
-app.route('/student', studentRoutes);
+app.use("/student/*", authMiddleware, requireAuth);
+app.route("/student", studentRoutes);
 
-app.use('/api/admin/*', authMiddleware, requireAdmin);
-app.route('/api/admin', adminRoutes);
+app.use("/api/admin/*", authMiddleware, requireAdmin);
+app.route("/api/admin", adminRoutes);
 
 // Admin SPA static assets
 // Serve /admin/* from static/admin with index.html fallback
@@ -265,12 +271,14 @@ Yes — Cloudflare Workers supports scheduled Cron triggers. Add a scheduled han
 ```ts
 export default {
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(env.DB.prepare(
-      `DELETE FROM auth_tokens
+    ctx.waitUntil(
+      env.DB.prepare(
+        `DELETE FROM auth_tokens
        WHERE used_at IS NOT NULL
           OR expires_at <= datetime('now')`
-    ).run());
-  }
+      ).run()
+    );
+  },
 };
 ```
 
@@ -340,33 +348,33 @@ This admin can then create additional admins via the Admin UI.
 
 ### Files to Modify
 
-| File | Changes |
-|------|---------|
-| `schema.sql` | Add users, auth_tokens tables; add user_id to projects |
-| `src/index.tsx` | Add bindings, import route modules |
-| `wrangler.toml` | Add env var bindings if needed |
-| `package.json` | Add resend dependency, Vite/React tooling, test scripts |
+| File            | Changes                                                 |
+| --------------- | ------------------------------------------------------- |
+| `schema.sql`    | Add users, auth_tokens tables; add user_id to projects  |
+| `src/index.tsx` | Add bindings, import route modules                      |
+| `wrangler.toml` | Add env var bindings if needed                          |
+| `package.json`  | Add resend dependency, Vite/React tooling, test scripts |
 
 ### New Files
 
-| File | Purpose |
-|------|---------|
-| `admin/vite.config.ts` | Vite config + proxy |
-| `admin/src/main.tsx` | SPA entry |
-| `admin/src/App.tsx` | Root admin app |
-| `admin/src/api/client.ts` | API wrappers |
-| `src/lib/jwt.ts` | JWT utilities |
-| `src/lib/tokens.ts` | Magic token utilities |
-| `src/lib/email.ts` | Resend email sending |
-| `src/lib/names.ts` | Name normalization for sorting (already created) |
-| `src/middleware/auth.ts` | Auth middleware |
-| `src/routes/auth.tsx` | Login/verify/logout |
-| `src/routes/student.tsx` | Student dashboard |
-| `src/routes/admin.ts` | Admin API routes |
-| `src/components/LoginForm.tsx` | Login UI |
-| `src/components/StudentDashboard.tsx` | Student UI |
-| `src/components/ProjectForm.tsx` | Edit form |
-| `scripts/create-admin.mjs` | CLI tool to bootstrap first admin user |
+| File                                  | Purpose                                          |
+| ------------------------------------- | ------------------------------------------------ |
+| `admin/vite.config.ts`                | Vite config + proxy                              |
+| `admin/src/main.tsx`                  | SPA entry                                        |
+| `admin/src/App.tsx`                   | Root admin app                                   |
+| `admin/src/api/client.ts`             | API wrappers                                     |
+| `src/lib/jwt.ts`                      | JWT utilities                                    |
+| `src/lib/tokens.ts`                   | Magic token utilities                            |
+| `src/lib/email.ts`                    | Resend email sending                             |
+| `src/lib/names.ts`                    | Name normalization for sorting (already created) |
+| `src/middleware/auth.ts`              | Auth middleware                                  |
+| `src/routes/auth.tsx`                 | Login/verify/logout                              |
+| `src/routes/student.tsx`              | Student dashboard                                |
+| `src/routes/admin.ts`                 | Admin API routes                                 |
+| `src/components/LoginForm.tsx`        | Login UI                                         |
+| `src/components/StudentDashboard.tsx` | Student UI                                       |
+| `src/components/ProjectForm.tsx`      | Edit form                                        |
+| `scripts/create-admin.mjs`            | CLI tool to bootstrap first admin user           |
 
 ---
 

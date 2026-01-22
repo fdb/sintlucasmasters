@@ -25,6 +25,7 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 ## Development Phases
 
 ### Phase 1: Database & Data Migration
+
 **Goal**: Validate the data model by importing all existing data
 
 1. Design and create D1 schema locally
@@ -33,6 +34,7 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 4. Test image ID extraction for both formats
 
 ### Phase 2: Simple SSR Frontend
+
 **Goal**: Validate the Hono + D1 approach works end-to-end
 
 1. Create Hono app with SSR
@@ -41,6 +43,7 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 4. Minimal CSS (system fonts, basic spacing)
 
 ### Phase 3: Public Pages with Filtering
+
 **Goal**: Complete the public-facing website
 
 1. Current year page with context filter
@@ -49,6 +52,7 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 4. SEO metadata
 
 ### Phase 4: Admin Section (Future)
+
 **Goal**: Replace Google Forms workflow
 
 1. Authentication system
@@ -185,7 +189,7 @@ CREATE INDEX IF NOT EXISTS idx_project_images_project_id ON project_images(proje
 **2021-2024 format** (full Cloudflare URLs):
 
 ```yaml
-main_image: 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bf666892-6c85-4a27-b2f2-e46a66740e00'
+main_image: "https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bf666892-6c85-4a27-b2f2-e46a66740e00"
 images:
   - https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/84c53e0b-a621-4c69-724c-9b5c66f91000
 ```
@@ -207,113 +211,128 @@ Cloudflare ID is the full path: `alix-spooren/13TDsml0WUunYSaBjfJA1A0WXuz-5_bRn.
 ```javascript
 // scripts/migrate-to-d1.mjs
 
-import { readdir, readFile } from 'fs/promises';
-import { join } from 'path';
-import matter from 'gray-matter';
-import { createHash } from 'crypto';
+import { readdir, readFile } from "fs/promises";
+import { join } from "path";
+import matter from "gray-matter";
+import { createHash } from "crypto";
 
-const CF_BASE = 'https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/';
-const YEARS = ['2021', '2022', '2023', '2024', '2025'];
+const CF_BASE = "https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/";
+const YEARS = ["2021", "2022", "2023", "2024", "2025"];
 
 function extractCloudflareId(imageRef) {
-    if (!imageRef) return null;
-    if (imageRef.startsWith(CF_BASE)) {
-        return imageRef.replace(CF_BASE, '').replace(/\/.*$/, ''); // Remove variant suffix
-    }
-    return imageRef; // Already a relative path/ID
+  if (!imageRef) return null;
+  if (imageRef.startsWith(CF_BASE)) {
+    return imageRef.replace(CF_BASE, "").replace(/\/.*$/, ""); // Remove variant suffix
+  }
+  return imageRef; // Already a relative path/ID
 }
 
 function normalizeYear(year) {
-    // Convert "2020—2021" (em-dash) to "2020-2021" (hyphen)
-    return year?.replace(/—/g, '-') || '';
+  // Convert "2020—2021" (em-dash) to "2020-2021" (hyphen)
+  return year?.replace(/—/g, "-") || "";
 }
 
 function generateProjectId(studentName, academicYear) {
-    // Deterministic ID based on student name + year for idempotent upserts
-    const hash = createHash('sha256')
-        .update(`${studentName}:${academicYear}`)
-        .digest('hex');
-    return hash.substring(0, 36); // UUID-length
+  // Deterministic ID based on student name + year for idempotent upserts
+  const hash = createHash("sha256").update(`${studentName}:${academicYear}`).digest("hex");
+  return hash.substring(0, 36); // UUID-length
 }
 
 function generateImageId(projectId, cloudflareId, sortOrder) {
-    const hash = createHash('sha256')
-        .update(`${projectId}:${cloudflareId}:${sortOrder}`)
-        .digest('hex');
-    return hash.substring(0, 36);
+  const hash = createHash("sha256").update(`${projectId}:${cloudflareId}:${sortOrder}`).digest("hex");
+  return hash.substring(0, 36);
 }
 
 async function parseStudentFile(filePath) {
-    const content = await readFile(filePath, 'utf-8');
-    const { data: frontmatter, content: description } = matter(content);
+  const content = await readFile(filePath, "utf-8");
+  const { data: frontmatter, content: description } = matter(content);
 
-    const academicYear = normalizeYear(frontmatter.year);
-    const projectId = generateProjectId(frontmatter.student_name, academicYear);
+  const academicYear = normalizeYear(frontmatter.year);
+  const projectId = generateProjectId(frontmatter.student_name, academicYear);
 
-    const project = {
-        id: projectId,
-        student_name: frontmatter.student_name,
-        project_title: frontmatter.project_title,
-        context: frontmatter.context,
-        academic_year: academicYear,
-        bio: frontmatter.bio || null,
-        description: description.trim(),
-        main_image_id: extractCloudflareId(frontmatter.main_image),
-        thumb_image_id: extractCloudflareId(frontmatter.thumb_image),
-        tags: frontmatter.tags ? JSON.stringify(frontmatter.tags) : null,
-        social_links: frontmatter.social_links ? JSON.stringify(frontmatter.social_links) : null,
-        status: 'published'
-    };
+  const project = {
+    id: projectId,
+    student_name: frontmatter.student_name,
+    project_title: frontmatter.project_title,
+    context: frontmatter.context,
+    academic_year: academicYear,
+    bio: frontmatter.bio || null,
+    description: description.trim(),
+    main_image_id: extractCloudflareId(frontmatter.main_image),
+    thumb_image_id: extractCloudflareId(frontmatter.thumb_image),
+    tags: frontmatter.tags ? JSON.stringify(frontmatter.tags) : null,
+    social_links: frontmatter.social_links ? JSON.stringify(frontmatter.social_links) : null,
+    status: "published",
+  };
 
-    const images = (frontmatter.images || []).map((img, index) => ({
-        id: generateImageId(projectId, extractCloudflareId(img), index),
-        project_id: projectId,
-        cloudflare_id: extractCloudflareId(img),
-        sort_order: index,
-        caption: null
-    }));
+  const images = (frontmatter.images || []).map((img, index) => ({
+    id: generateImageId(projectId, extractCloudflareId(img), index),
+    project_id: projectId,
+    cloudflare_id: extractCloudflareId(img),
+    sort_order: index,
+    caption: null,
+  }));
 
-    return { project, images };
+  return { project, images };
 }
 
 async function migrate(db) {
-    const allProjects = [];
-    const allImages = [];
+  const allProjects = [];
+  const allImages = [];
 
-    for (const year of YEARS) {
-        const studentsDir = join(process.cwd(), year, 'students');
-        const files = await readdir(studentsDir);
+  for (const year of YEARS) {
+    const studentsDir = join(process.cwd(), year, "students");
+    const files = await readdir(studentsDir);
 
-        for (const file of files.filter(f => f.endsWith('.md'))) {
-            const { project, images } = await parseStudentFile(join(studentsDir, file));
-            allProjects.push(project);
-            allImages.push(...images);
-        }
+    for (const file of files.filter((f) => f.endsWith(".md"))) {
+      const { project, images } = await parseStudentFile(join(studentsDir, file));
+      allProjects.push(project);
+      allImages.push(...images);
     }
+  }
 
-    // Upsert projects (INSERT OR REPLACE for idempotency)
-    for (const project of allProjects) {
-        await db.prepare(`
+  // Upsert projects (INSERT OR REPLACE for idempotency)
+  for (const project of allProjects) {
+    await db
+      .prepare(
+        `
             INSERT OR REPLACE INTO projects
             (id, student_name, project_title, context, academic_year, bio, description,
              main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-        `).bind(
-            project.id, project.student_name, project.project_title, project.context,
-            project.academic_year, project.bio, project.description, project.main_image_id,
-            project.thumb_image_id, project.tags, project.social_links, project.status
-        ).run();
-    }
+        `
+      )
+      .bind(
+        project.id,
+        project.student_name,
+        project.project_title,
+        project.context,
+        project.academic_year,
+        project.bio,
+        project.description,
+        project.main_image_id,
+        project.thumb_image_id,
+        project.tags,
+        project.social_links,
+        project.status
+      )
+      .run();
+  }
 
-    // Upsert images
-    for (const image of allImages) {
-        await db.prepare(`
+  // Upsert images
+  for (const image of allImages) {
+    await db
+      .prepare(
+        `
             INSERT OR REPLACE INTO project_images (id, project_id, cloudflare_id, sort_order, caption)
             VALUES (?, ?, ?, ?, ?)
-        `).bind(image.id, image.project_id, image.cloudflare_id, image.sort_order, image.caption).run();
-    }
+        `
+      )
+      .bind(image.id, image.project_id, image.cloudflare_id, image.sort_order, image.caption)
+      .run();
+  }
 
-    console.log(`Migrated ${allProjects.length} projects and ${allImages.length} images`);
+  console.log(`Migrated ${allProjects.length} projects and ${allImages.length} images`);
 }
 ```
 
@@ -350,33 +369,32 @@ src/
 ```css
 /* Inline in Layout.tsx */
 :root {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                 "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
 }
 body {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
-    background: white;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  background: white;
 }
 img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 a {
-    color: inherit;
+  color: inherit;
 }
 ```
 
 ### Routes
 
-| Path | Description |
-| ---- | ----------- |
-| `/` | List all projects from current year |
-| `/project/:id` | Single project detail page |
-| `/archive` | List projects from all years |
-| `/archive/:year` | List projects from specific year |
+| Path             | Description                         |
+| ---------------- | ----------------------------------- |
+| `/`              | List all projects from current year |
+| `/project/:id`   | Single project detail page          |
+| `/archive`       | List projects from all years        |
+| `/archive/:year` | List projects from specific year    |
 
 ---
 
@@ -434,12 +452,14 @@ a {
 ### User Roles
 
 **Student**
+
 - Can create/edit their own project
 - Can upload images
 - Can submit project for review
 - Can edit after print (but changes won't affect printed version)
 
 **Admin (Nicolas, Chloé, Reg)**
+
 - Can view all projects
 - Can mark projects as "ready for print"
 - Can edit any project
@@ -448,6 +468,7 @@ a {
 - Can manage student accounts
 
 **Super Admin (Frederik)**
+
 - All admin permissions
 - Can manage admin accounts
 

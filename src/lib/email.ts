@@ -1,31 +1,31 @@
 // Email sending via AWS SES
 
-import { sendEmail, type SESConfig } from './aws-ses';
+import { sendEmail, type SESConfig } from "./aws-ses";
 
-const FROM_EMAIL = 'Sint Lucas Masters <info@sintlucasmasters.com>';
+const FROM_EMAIL = "Sint Lucas Masters <info@sintlucasmasters.com>";
 
 export interface SendMagicLinkResult {
-	success: boolean;
-	error?: string;
-	errorCode?: string;
-	messageId?: string;
+  success: boolean;
+  error?: string;
+  errorCode?: string;
+  messageId?: string;
 }
 
 export async function sendMagicLink(
-	sesConfig: SESConfig,
-	email: string,
-	token: string,
-	baseUrl: string,
-	configurationSetName?: string
+  sesConfig: SESConfig,
+  email: string,
+  token: string,
+  baseUrl: string,
+  configurationSetName?: string
 ): Promise<SendMagicLinkResult> {
-	const loginUrl = `${baseUrl}/auth/verify?token=${token}`;
+  const loginUrl = `${baseUrl}/auth/verify?token=${token}`;
 
-	const result = await sendEmail(sesConfig, {
-		from: FROM_EMAIL,
-		to: email,
-		subject: 'Sign in to Sint Lucas Masters',
-		configurationSetName,
-		html: `
+  const result = await sendEmail(sesConfig, {
+    from: FROM_EMAIL,
+    to: email,
+    subject: "Sign in to Sint Lucas Masters",
+    configurationSetName,
+    html: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,25 +50,25 @@ export async function sendMagicLink(
 </body>
 </html>
     `.trim(),
-		text: `Sign in to Sint Lucas Masters
+    text: `Sign in to Sint Lucas Masters
 
 Click the link below to sign in to your account. This link will expire in 15 minutes.
 
 ${loginUrl}
 
 If you didn't request this email, you can safely ignore it.`,
-	});
+  });
 
-	if (result.success) {
-		return {
-			success: true,
-			messageId: result.messageId,
-		};
-	}
+  if (result.success) {
+    return {
+      success: true,
+      messageId: result.messageId,
+    };
+  }
 
-	return {
-		success: false,
-		error: result.error,
-		errorCode: result.errorCode,
-	};
+  return {
+    success: false,
+    error: result.error,
+    errorCode: result.errorCode,
+  };
 }
