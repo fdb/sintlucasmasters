@@ -1,49 +1,6 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { Sun, Moon, LogOut, Search, Pencil, X, GripVertical, Plus, Trash2, Star, SquareArrowOutUpRight } from "lucide-react";
-
-type UserRole = "student" | "editor" | "admin";
-
-type AuthUser = {
-  id: string;
-  email: string;
-  name: string | null;
-  role: UserRole;
-};
-
-type AuthResponse = { authenticated: true; user: AuthUser } | { authenticated: false };
-
-type TableResponse = {
-  table: string;
-  limit: number;
-  count: number;
-  rows: Array<Record<string, unknown>>;
-};
-
-type ProjectDetailResponse = {
-  project: Record<string, unknown>;
-  images: Array<Record<string, unknown>>;
-};
-
-type ProjectImage = {
-  id: string;
-  cloudflare_id: string;
-  sort_order: number;
-  caption: string | null;
-};
-
-type EditFormData = {
-  student_name: string;
-  project_title: string;
-  context: string;
-  program: string;
-  academic_year: string;
-  bio: string;
-  description: string;
-  status: string;
-  tags: string[];
-  social_links: string[];
-  main_image_id: string;
-};
+import { useAdminStore } from "./store/adminStore";
 
 const CONTEXTS = [
   "Autonomous Context",
@@ -58,41 +15,101 @@ const PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"];
 const STATUSES = ["draft", "submitted", "ready_for_print", "published"];
 
 export default function App() {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
-  const [tables, setTables] = useState<string[]>([]);
-  const [activeTable, setActiveTable] = useState<string>("");
-  const [tableData, setTableData] = useState<TableResponse | null>(null);
-  const [tableStatus, setTableStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
-  const [projectDetail, setProjectDetail] = useState<ProjectDetailResponse | null>(null);
-  const [projectStatus, setProjectStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const {
+    user,
+    status,
+    tables,
+    activeTable,
+    tableData,
+    tableStatus,
+    selectedProjectId,
+    projectDetail,
+    projectStatus,
+    selectedYear,
+    selectedContext,
+    searchQuery,
+    searchExpanded,
+    darkMode,
+    userMenuOpen,
+    editModalOpen,
+    editDraft,
+    editImages,
+    saveStatus,
+    draggedImageId,
+    newTag,
+    loadSession,
+    setActiveTable,
+    selectProject,
+    openEditForProject,
+    closeEdit,
+    updateEditField,
+    setNewTag,
+    addTag,
+    removeTag,
+    addSocialLink,
+    updateSocialLink,
+    removeSocialLink,
+    setDraggedImageId,
+    reorderImages,
+    setMainImage,
+    saveProject,
+    toggleDarkMode,
+    setUserMenuOpen,
+    setSelectedYear,
+    setSelectedContext,
+    setSearchQuery,
+    setSearchExpanded,
+  } = useAdminStore((state) => ({
+    user: state.user,
+    status: state.status,
+    tables: state.tables,
+    activeTable: state.activeTable,
+    tableData: state.tableData,
+    tableStatus: state.tableStatus,
+    selectedProjectId: state.selectedProjectId,
+    projectDetail: state.projectDetail,
+    projectStatus: state.projectStatus,
+    selectedYear: state.selectedYear,
+    selectedContext: state.selectedContext,
+    searchQuery: state.searchQuery,
+    searchExpanded: state.searchExpanded,
+    darkMode: state.darkMode,
+    userMenuOpen: state.userMenuOpen,
+    editModalOpen: state.editModalOpen,
+    editDraft: state.editDraft,
+    editImages: state.editImages,
+    saveStatus: state.saveStatus,
+    draggedImageId: state.draggedImageId,
+    newTag: state.newTag,
+    loadSession: state.loadSession,
+    setActiveTable: state.setActiveTable,
+    selectProject: state.selectProject,
+    openEditForProject: state.openEditForProject,
+    closeEdit: state.closeEdit,
+    updateEditField: state.updateEditField,
+    setNewTag: state.setNewTag,
+    addTag: state.addTag,
+    removeTag: state.removeTag,
+    addSocialLink: state.addSocialLink,
+    updateSocialLink: state.updateSocialLink,
+    removeSocialLink: state.removeSocialLink,
+    setDraggedImageId: state.setDraggedImageId,
+    reorderImages: state.reorderImages,
+    setMainImage: state.setMainImage,
+    saveProject: state.saveProject,
+    toggleDarkMode: state.toggleDarkMode,
+    setUserMenuOpen: state.setUserMenuOpen,
+    setSelectedYear: state.setSelectedYear,
+    setSelectedContext: state.setSelectedContext,
+    setSearchQuery: state.setSearchQuery,
+    setSearchExpanded: state.setSearchExpanded,
+  }));
 
-  // Filters
-  const [selectedYear, setSelectedYear] = useState<string>("");
-  const [selectedContext, setSelectedContext] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchExpanded, setSearchExpanded] = useState<boolean>(false);
-
-  // Dark mode
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const stored = localStorage.getItem("admin-dark-mode");
-    if (stored !== null) return stored === "true";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  // User menu
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Edit modal
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editFormData, setEditFormData] = useState<EditFormData | null>(null);
-  const [editImages, setEditImages] = useState<ProjectImage[]>([]);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [draggedImageId, setDraggedImageId] = useState<string | null>(null);
-  const [newTag, setNewTag] = useState("");
-  const [pendingEdit, setPendingEdit] = useState(false);
+  useEffect(() => {
+    loadSession();
+  }, [loadSession]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
@@ -110,225 +127,23 @@ export default function App() {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [userMenuOpen]);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch("/api/auth/me");
-        if (!res.ok) {
-          setStatus("error");
-          return;
-        }
-        const data = (await res.json()) as AuthResponse;
-        if (data.authenticated) {
-          setUser(data.user);
-          const tablesRes = await fetch("/api/admin/tables");
-          if (tablesRes.ok) {
-            const tablesData = (await tablesRes.json()) as { tables: string[] };
-            setTables(tablesData.tables);
-            setActiveTable((current) => current || tablesData.tables[0] || "");
-          }
-        }
-        setStatus("ready");
-      } catch {
-        setStatus("error");
-      }
-    };
-
-    load();
-  }, []);
-
-  useEffect(() => {
-    if (!activeTable) return;
-
-    const loadTable = async () => {
-      setTableStatus("loading");
-      try {
-        const res = await fetch(`/api/admin/table/${activeTable}?limit=1000`);
-        if (!res.ok) {
-          setTableStatus("error");
-          return;
-        }
-        const data = (await res.json()) as TableResponse;
-        setTableData(data);
-        setTableStatus("ready");
-        setSelectedProjectId(null);
-        setProjectDetail(null);
-        setProjectStatus("idle");
-      } catch {
-        setTableStatus("error");
-      }
-    };
-
-    loadTable();
-  }, [activeTable]);
-
-  useEffect(() => {
-    if (!selectedProjectId) return;
-
-    const loadProject = async () => {
-      setProjectStatus("loading");
-      try {
-        const res = await fetch(`/api/admin/projects/${selectedProjectId}`);
-        if (!res.ok) {
-          setProjectStatus("error");
-          return;
-        }
-        const data = (await res.json()) as ProjectDetailResponse;
-        setProjectDetail(data);
-        setProjectStatus("ready");
-      } catch {
-        setProjectStatus("error");
-      }
-    };
-
-    loadProject();
-  }, [selectedProjectId]);
-
-  // Open edit modal after project loads if pending
-  useEffect(() => {
-    if (pendingEdit && projectStatus === "ready" && projectDetail) {
-      setPendingEdit(false);
-      // Small delay to ensure state is settled
-      setTimeout(() => {
-        const p = projectDetail.project;
-        const parsedTags = parseTags(p.tags);
-        const parsedLinks = parseSocialLinks(p.social_links);
-
-        setEditFormData({
-          student_name: String(p.student_name || ""),
-          project_title: String(p.project_title || ""),
-          context: String(p.context || ""),
-          program: String(p.program || ""),
-          academic_year: String(p.academic_year || ""),
-          status: String(p.status || "draft"),
-          bio: String(p.bio || ""),
-          description: String(p.description || ""),
-          tags: parsedTags,
-          social_links: parsedLinks,
-        });
-
-        setEditImages(
-          projectDetail.images.map((img) => ({
-            ...img,
-            id: String(img.id),
-            project_id: String(img.project_id),
-          }))
-        );
-
-        setSaveStatus("idle");
-        setEditModalOpen(true);
-      }, 0);
-    }
-  }, [pendingEdit, projectStatus, projectDetail]);
+  }, [userMenuOpen, setUserMenuOpen]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     window.location.href = "/auth/login";
   };
 
-  // Open edit modal with current project data
-  const openEditModal = useCallback(() => {
-    if (!projectDetail) return;
-
-    const p = projectDetail.project;
-    const parsedTags = parseTags(p.tags);
-    const parsedLinks = parseSocialLinks(p.social_links);
-
-    setEditFormData({
-      student_name: String(p.student_name || ""),
-      project_title: String(p.project_title || ""),
-      context: String(p.context || ""),
-      program: String(p.program || ""),
-      academic_year: String(p.academic_year || ""),
-      bio: String(p.bio || ""),
-      description: String(p.description || ""),
-      status: String(p.status || "draft"),
-      tags: parsedTags,
-      social_links: parsedLinks,
-      main_image_id: String(p.main_image_id || ""),
-    });
-
-    setEditImages(
-      projectDetail.images.map((img) => ({
-        id: String(img.id),
-        cloudflare_id: String(img.cloudflare_id),
-        sort_order: Number(img.sort_order),
-        caption: img.caption ? String(img.caption) : null,
-      }))
-    );
-
-    setEditModalOpen(true);
-    setSaveStatus("idle");
-  }, [projectDetail]);
-
-  // Close edit modal
-  const closeEditModal = () => {
-    setEditModalOpen(false);
-    setEditFormData(null);
-    setEditImages([]);
-    setSaveStatus("idle");
-    setNewTag("");
-  };
-
   // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && editModalOpen) {
-        closeEditModal();
+        closeEdit();
       }
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [editModalOpen]);
-
-  // Update form field
-  const updateFormField = <K extends keyof EditFormData>(field: K, value: EditFormData[K]) => {
-    if (!editFormData) return;
-    setEditFormData({ ...editFormData, [field]: value });
-  };
-
-  // Add tag
-  const addTag = () => {
-    if (!editFormData || !newTag.trim()) return;
-    if (!editFormData.tags.includes(newTag.trim())) {
-      updateFormField("tags", [...editFormData.tags, newTag.trim()]);
-    }
-    setNewTag("");
-  };
-
-  // Remove tag
-  const removeTag = (tag: string) => {
-    if (!editFormData) return;
-    updateFormField(
-      "tags",
-      editFormData.tags.filter((t) => t !== tag)
-    );
-  };
-
-  // Add social link
-  const addSocialLink = () => {
-    if (!editFormData) return;
-    updateFormField("social_links", [...editFormData.social_links, ""]);
-  };
-
-  // Update social link
-  const updateSocialLink = (index: number, value: string) => {
-    if (!editFormData) return;
-    const links = [...editFormData.social_links];
-    links[index] = value;
-    updateFormField("social_links", links);
-  };
-
-  // Remove social link
-  const removeSocialLink = (index: number) => {
-    if (!editFormData) return;
-    updateFormField(
-      "social_links",
-      editFormData.social_links.filter((_, i) => i !== index)
-    );
-  };
+  }, [editModalOpen, closeEdit]);
 
   // Drag and drop for images
   const handleDragStart = (e: React.DragEvent, imageId: string) => {
@@ -343,117 +158,7 @@ export default function App() {
 
   const handleDrop = (e: React.DragEvent, targetId: string) => {
     e.preventDefault();
-    if (!draggedImageId || draggedImageId === targetId) {
-      setDraggedImageId(null);
-      return;
-    }
-
-    const draggedIndex = editImages.findIndex((img) => img.id === draggedImageId);
-    const targetIndex = editImages.findIndex((img) => img.id === targetId);
-
-    if (draggedIndex === -1 || targetIndex === -1) {
-      setDraggedImageId(null);
-      return;
-    }
-
-    const newImages = [...editImages];
-    const [draggedItem] = newImages.splice(draggedIndex, 1);
-    newImages.splice(targetIndex, 0, draggedItem);
-
-    // Update sort_order
-    const reorderedImages = newImages.map((img, idx) => ({
-      ...img,
-      sort_order: idx,
-    }));
-
-    setEditImages(reorderedImages);
-    setDraggedImageId(null);
-  };
-
-  // Set main image
-  const setMainImage = (cloudflareId: string) => {
-    if (!editFormData) return;
-    updateFormField("main_image_id", cloudflareId);
-  };
-
-  // Save project
-  const handleSave = async () => {
-    if (!editFormData || !selectedProjectId) return;
-
-    setSaveStatus("saving");
-
-    try {
-      // Save project data
-      const projectRes = await fetch(`/api/admin/projects/${selectedProjectId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          student_name: editFormData.student_name,
-          project_title: editFormData.project_title,
-          context: editFormData.context,
-          program: editFormData.program,
-          academic_year: editFormData.academic_year,
-          bio: editFormData.bio || null,
-          description: editFormData.description,
-          status: editFormData.status,
-          tags: editFormData.tags.length > 0 ? JSON.stringify(editFormData.tags) : null,
-          social_links: editFormData.social_links.filter(Boolean).length > 0 ? JSON.stringify(editFormData.social_links.filter(Boolean)) : null,
-          main_image_id: editFormData.main_image_id,
-        }),
-      });
-
-      if (!projectRes.ok) {
-        throw new Error("Failed to save project");
-      }
-
-      // Save image order
-      if (editImages.length > 0) {
-        const imageOrderRes = await fetch(`/api/admin/projects/${selectedProjectId}/images/reorder`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            imageOrder: editImages.map((img) => ({
-              id: img.id,
-              sort_order: img.sort_order,
-            })),
-            mainImageId: editFormData.main_image_id,
-          }),
-        });
-
-        if (!imageOrderRes.ok) {
-          throw new Error("Failed to save image order");
-        }
-      }
-
-      setSaveStatus("saved");
-
-      // Reload project data
-      const refreshRes = await fetch(`/api/admin/projects/${selectedProjectId}`);
-      if (refreshRes.ok) {
-        const data = (await refreshRes.json()) as ProjectDetailResponse;
-        setProjectDetail(data);
-
-        // Also update the row in table data
-        if (tableData) {
-          setTableData({
-            ...tableData,
-            rows: tableData.rows.map((row) =>
-              row.id === selectedProjectId
-                ? { ...row, ...data.project }
-                : row
-            ),
-          });
-        }
-      }
-
-      // Close modal after brief delay to show success
-      setTimeout(() => {
-        closeEditModal();
-      }, 800);
-    } catch (err) {
-      console.error("Save error:", err);
-      setSaveStatus("error");
-    }
+    reorderImages(targetId);
   };
 
   const columns = tableData?.rows[0] ? Object.keys(tableData.rows[0]) : [];
@@ -468,21 +173,14 @@ export default function App() {
     isProjectsTable && tableData
       ? [...new Set(tableData.rows.map((r) => String(r.context || "")).filter(Boolean))].sort()
       : [];
+  const defaultYear = allYears[0] || "";
 
   // Set default year to latest when data loads
   useEffect(() => {
-    if (isProjectsTable && allYears.length > 0 && !selectedYear) {
-      setSelectedYear(allYears[0]);
+    if (isProjectsTable && defaultYear && !selectedYear) {
+      setSelectedYear(defaultYear);
     }
-  }, [isProjectsTable, allYears.length]);
-
-  // Reset filters when switching tables
-  useEffect(() => {
-    setSelectedYear("");
-    setSelectedContext("");
-    setSearchQuery("");
-    setSearchExpanded(false);
-  }, [activeTable]);
+  }, [defaultYear, isProjectsTable, selectedYear, setSelectedYear]);
 
   // Filter rows
   const filteredRows =
@@ -519,7 +217,7 @@ export default function App() {
           <button
             type="button"
             className="theme-toggle"
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={toggleDarkMode}
             title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
@@ -652,16 +350,11 @@ export default function App() {
                             className={`${isProjectsTable ? `row-clickable status-${rowStatus}` : ""} ${isSelected ? "row-selected" : ""}`}
                             onClick={() => {
                               if (!isProjectsTable || !rowId) return;
-                              setSelectedProjectId(rowId);
+                              selectProject(rowId);
                             }}
                             onDoubleClick={() => {
                               if (!isProjectsTable || !rowId) return;
-                              if (isSelected && projectDetail) {
-                                openEditModal();
-                              } else {
-                                setSelectedProjectId(rowId);
-                                setPendingEdit(true);
-                              }
+                              openEditForProject(rowId);
                             }}
                           >
                             {displayColumns.map((column) => (
@@ -730,7 +423,7 @@ export default function App() {
                         {String(projectDetail.project.status || "draft").replace(/_/g, " ")}
                       </div>
                       <div className="detail-action-group">
-                        <button type="button" className="detail-action-btn has-label" onClick={openEditModal}>
+                        <button type="button" className="detail-action-btn has-label" onClick={() => openEditForProject()}>
                           <Pencil size={14} />
                           Edit
                         </button>
@@ -865,17 +558,17 @@ export default function App() {
       )}
 
       {/* Edit Modal */}
-      <div className={`edit-modal-overlay ${editModalOpen ? "is-open" : ""}`} onClick={closeEditModal}>
+      <div className={`edit-modal-overlay ${editModalOpen ? "is-open" : ""}`} onClick={closeEdit}>
         <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
           <div className="edit-modal-header">
             <h2>Edit Project</h2>
-            <button type="button" className="edit-modal-close" onClick={closeEditModal}>
+            <button type="button" className="edit-modal-close" onClick={closeEdit}>
               <X size={18} />
             </button>
           </div>
 
           <div className="edit-modal-body">
-            {editFormData && (
+            {editDraft && (
               <div className="edit-sections">
                 {/* Identity Section */}
                 <div className="edit-section">
@@ -889,8 +582,8 @@ export default function App() {
                         <input
                           type="text"
                           className="edit-input"
-                          value={editFormData.student_name}
-                          onChange={(e) => updateFormField("student_name", e.target.value)}
+                          value={editDraft.student_name}
+                          onChange={(e) => updateEditField("student_name", e.target.value)}
                         />
                       </div>
                       <div className="edit-field">
@@ -898,8 +591,8 @@ export default function App() {
                         <input
                           type="text"
                           className="edit-input"
-                          value={editFormData.project_title}
-                          onChange={(e) => updateFormField("project_title", e.target.value)}
+                          value={editDraft.project_title}
+                          onChange={(e) => updateEditField("project_title", e.target.value)}
                         />
                       </div>
                     </div>
@@ -917,8 +610,8 @@ export default function App() {
                         <label className="edit-label">Context</label>
                         <select
                           className="edit-select"
-                          value={editFormData.context}
-                          onChange={(e) => updateFormField("context", e.target.value)}
+                          value={editDraft.context}
+                          onChange={(e) => updateEditField("context", e.target.value)}
                         >
                           <option value="">Select context...</option>
                           {CONTEXTS.map((ctx) => (
@@ -932,8 +625,8 @@ export default function App() {
                         <label className="edit-label">Program</label>
                         <select
                           className="edit-select"
-                          value={editFormData.program}
-                          onChange={(e) => updateFormField("program", e.target.value)}
+                          value={editDraft.program}
+                          onChange={(e) => updateEditField("program", e.target.value)}
                         >
                           <option value="">Select program...</option>
                           {PROGRAMS.map((prog) => (
@@ -950,8 +643,8 @@ export default function App() {
                         <input
                           type="text"
                           className="edit-input"
-                          value={editFormData.academic_year}
-                          onChange={(e) => updateFormField("academic_year", e.target.value)}
+                          value={editDraft.academic_year}
+                          onChange={(e) => updateEditField("academic_year", e.target.value)}
                           placeholder="2024-2025"
                         />
                       </div>
@@ -962,8 +655,8 @@ export default function App() {
                             <button
                               key={status}
                               type="button"
-                              className={`edit-status-option ${editFormData.status === status ? "active" : ""}`}
-                              onClick={() => updateFormField("status", status)}
+                              className={`edit-status-option ${editDraft.status === status ? "active" : ""}`}
+                              onClick={() => updateEditField("status", status)}
                             >
                               {status.replace(/_/g, " ")}
                             </button>
@@ -984,8 +677,8 @@ export default function App() {
                       <label className="edit-label">Bio</label>
                       <textarea
                         className="edit-textarea"
-                        value={editFormData.bio}
-                        onChange={(e) => updateFormField("bio", e.target.value)}
+                        value={editDraft.bio}
+                        onChange={(e) => updateEditField("bio", e.target.value)}
                         placeholder="Short biography of the student..."
                       />
                     </div>
@@ -993,8 +686,8 @@ export default function App() {
                       <label className="edit-label">Project Description</label>
                       <textarea
                         className="edit-textarea tall"
-                        value={editFormData.description}
-                        onChange={(e) => updateFormField("description", e.target.value)}
+                        value={editDraft.description}
+                        onChange={(e) => updateEditField("description", e.target.value)}
                         placeholder="Describe the project..."
                       />
                     </div>
@@ -1011,7 +704,7 @@ export default function App() {
                       {editImages.map((img, idx) => (
                         <div
                           key={img.id}
-                          className={`edit-image-item ${draggedImageId === img.id ? "dragging" : ""} ${editFormData.main_image_id === img.cloudflare_id ? "is-main" : ""}`}
+                          className={`edit-image-item ${draggedImageId === img.id ? "dragging" : ""} ${editDraft.main_image_id === img.cloudflare_id ? "is-main" : ""}`}
                           draggable
                           onDragStart={(e) => handleDragStart(e, img.id)}
                           onDragOver={handleDragOver}
@@ -1023,7 +716,7 @@ export default function App() {
                             loading="lazy"
                           />
                           <span className="edit-image-order">{idx + 1}</span>
-                          {editFormData.main_image_id === img.cloudflare_id && (
+                          {editDraft.main_image_id === img.cloudflare_id && (
                             <span className="edit-image-badge">Main</span>
                           )}
                           <div className="edit-image-actions">
@@ -1055,7 +748,7 @@ export default function App() {
                     <div className="edit-field">
                       <label className="edit-label">Tags</label>
                       <div className="edit-tags">
-                        {editFormData.tags.map((tag) => (
+                        {editDraft.tags.map((tag) => (
                           <span key={tag} className="edit-tag">
                             {tag}
                             <button type="button" className="edit-tag-remove" onClick={() => removeTag(tag)}>
@@ -1081,7 +774,7 @@ export default function App() {
                     <div className="edit-field">
                       <label className="edit-label">Social Links</label>
                       <div className="edit-links-list">
-                        {editFormData.social_links.map((link, idx) => (
+                        {editDraft.social_links.map((link, idx) => (
                           <div key={idx} className="edit-link-row">
                             <input
                               type="text"
@@ -1123,13 +816,13 @@ export default function App() {
               {saveStatus === "error" && <span className="save-indicator error">Failed to save</span>}
             </div>
             <div className="edit-modal-footer-right">
-              <button type="button" className="btn btn-secondary" onClick={closeEditModal}>
+              <button type="button" className="btn btn-secondary" onClick={closeEdit}>
                 Cancel
               </button>
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={handleSave}
+                onClick={saveProject}
                 disabled={saveStatus === "saving"}
               >
                 Save Changes
@@ -1181,24 +874,6 @@ function parseSocialLinks(value: unknown): string[] {
     }
   }
   if (Array.isArray(value)) return value.filter((l) => typeof l === "string");
-  return [];
-}
-
-function parseTags(value: unknown): string[] {
-  if (!value) return [];
-  if (typeof value === "string") {
-    try {
-      const parsed = JSON.parse(value);
-      if (Array.isArray(parsed)) return parsed.filter((t) => typeof t === "string");
-    } catch {
-      // Not JSON, try splitting by comma
-      return value
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-    }
-  }
-  if (Array.isArray(value)) return value.filter((t) => typeof t === "string");
   return [];
 }
 
