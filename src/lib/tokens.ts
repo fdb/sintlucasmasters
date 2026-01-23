@@ -38,7 +38,11 @@ export interface VerifyTokenResult {
   error?: "not_found" | "expired" | "already_used";
 }
 
-export async function verifyMagicToken(db: D1Database, token: string): Promise<VerifyTokenResult> {
+/**
+ * Check if a magic token is valid without consuming it.
+ * Use this for GET requests to show a confirmation page.
+ */
+export async function checkMagicToken(db: D1Database, token: string): Promise<VerifyTokenResult> {
   const row = await db
     .prepare(`SELECT email, expires_at, used_at FROM auth_tokens WHERE token = ?`)
     .bind(token)
@@ -57,8 +61,22 @@ export async function verifyMagicToken(db: D1Database, token: string): Promise<V
     return { valid: false, error: "expired" };
   }
 
+  return { valid: true, email: row.email };
+}
+
+/**
+ * Verify and consume a magic token.
+ * Use this for POST requests when the user confirms login.
+ */
+export async function verifyMagicToken(db: D1Database, token: string): Promise<VerifyTokenResult> {
+  const result = await checkMagicToken(db, token);
+
+  if (!result.valid) {
+    return result;
+  }
+
   // Mark token as used
   await db.prepare(`UPDATE auth_tokens SET used_at = datetime('now') WHERE token = ?`).bind(token).run();
 
-  return { valid: true, email: row.email };
+  return result;
 }

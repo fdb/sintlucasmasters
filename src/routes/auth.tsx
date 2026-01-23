@@ -3,7 +3,7 @@
 import { Hono } from "hono";
 import { setCookie, deleteCookie } from "hono/cookie";
 import type { Bindings, User } from "../types";
-import { generateMagicToken, storeMagicToken, verifyMagicToken } from "../lib/tokens";
+import { generateMagicToken, storeMagicToken, checkMagicToken, verifyMagicToken } from "../lib/tokens";
 import { sendMagicLink } from "../lib/email";
 import { signToken } from "../lib/jwt";
 import { authMiddleware, AUTH_COOKIE_NAME } from "../middleware/auth";
@@ -162,7 +162,8 @@ authPageRoutes.get("/login", (c) => {
   );
 });
 
-// GET /auth/verify - Verify magic link token
+// GET /auth/verify - Show confirmation page (doesn't consume token)
+// This prevents email security scanners from consuming the token
 authPageRoutes.get("/verify", async (c) => {
   const token = c.req.query("token");
 
@@ -170,6 +171,41 @@ authPageRoutes.get("/verify", async (c) => {
     return c.redirect("/auth/login?error=missing_token");
   }
 
+  // Check token validity without consuming it
+  const result = await checkMagicToken(c.env.DB, token);
+
+  if (!result.valid || !result.email) {
+    return c.redirect(`/auth/login?error=${result.error || "invalid_token"}`);
+  }
+
+  // Show confirmation page with button
+  return c.html(
+    <AdminLayout title="Confirm sign in">
+      <div class="auth-container">
+        <h1>Confirm sign in</h1>
+        <p>Click the button below to sign in as {result.email}</p>
+
+        <form method="POST" action={`/auth/verify?token=${encodeURIComponent(token)}`} class="auth-form">
+          <button type="submit">Sign in</button>
+        </form>
+
+        <p class="auth-note">
+          If you didn't request this link, you can safely ignore this page.
+        </p>
+      </div>
+    </AdminLayout>
+  );
+});
+
+// POST /auth/verify - Actually verify and consume the token
+authPageRoutes.post("/verify", async (c) => {
+  const token = c.req.query("token");
+
+  if (!token) {
+    return c.redirect("/auth/login?error=missing_token");
+  }
+
+  // Now actually consume the token
   const result = await verifyMagicToken(c.env.DB, token);
 
   if (!result.valid || !result.email) {

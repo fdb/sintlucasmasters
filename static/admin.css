@@ -104,6 +104,12 @@
   font-size: 0.9375rem;
 }
 
+.auth-note {
+  font-size: 0.875rem;
+  color: var(--gray);
+  margin-top: 2rem;
+}
+
 /* Admin app */
 .admin-shell {
   display: flex;
