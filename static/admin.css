@@ -802,7 +802,7 @@
 
 /* Edit button in detail panel */
 .edit-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   padding: 0.25rem 0.625rem;
@@ -811,11 +811,17 @@
   font-family: inherit;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  background: var(--black);
-  color: var(--white);
+  background: #111;
+  color: #fff;
   border: none;
   cursor: pointer;
   transition: opacity 0.15s ease;
+  line-height: 1.4;
+}
+
+:root[data-theme="dark"] .edit-button {
+  background: #333;
+  color: #fff;
 }
 
 .edit-button:hover {
