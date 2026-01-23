@@ -3,13 +3,28 @@ node_modules/
 build/
 .svelte-kit/
 package/
-.env
-.env.*
-!.env.example
 _site/
 uploadcare-files.json
 _uploads/
 _data/
 media/
+*.pdf
 # Local Netlify folder
 .netlify
+
+# Wrangler
+.wrangler/
+migration.sql
+
+# Secrets
+.env
+.dev.vars
+
+# Admin build output
+static/admin/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+.playwright-mcp/

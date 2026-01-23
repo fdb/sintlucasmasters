@@ -1,35 +1,61 @@
-# 11ty
+# Sint Lucas Masters Website
 
-The master websites are created in 11ty. We have a folder per year.
+Student exhibition website for Sint Lucas Antwerpen Masters program.
 
-## Installation
+## Tech Stack
 
-```bash
-npm install
-```
+- **Runtime**: Cloudflare Workers
+- **Framework**: Hono (SSR with JSX)
+- **Database**: Cloudflare D1 (SQLite)
+- **Media Storage**: Cloudflare Images
 
 ## Development
 
 ```bash
-npm start
+# Install dependencies
+npm install
+
+# Setup secrets (requires 1Password CLI)
+npm run setup-secrets
+
+# Create local D1 database schema
+npm run db:init
+
+# Import student data from old markdown files
+npm run import
+
+# Start development server (port 8787)
+# Visit http://localhost:8787
+npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploying to Cloudflare
 
-## Preparing the data for the website
+```bash
+# First time setup only:
+npm run db:init:remote       # Create schema on production D1
+npm run import:remote        # Import data to production D1
+npm run setup-secrets:remote # Upload secrets to Cloudflare
 
-Once all submissions have been done in the Google Form, we can do a couple of steps:
-
-- Download the data from the Google Form as a CSV file. Place it in the root, e.g. 22-23.csv
-- Rewrite the header row to use the correct headers (see below)
-- Run the csv_to_markdown script to convert the CSV to the correct markdown files. Adapt the file to make sure they are stored in the correct folder.
-- Download all images from the Google Form and place them in the _uploads folder. There is a script, `download_image_uploads.mjs` that can do this automatically. However, Google might rate-limit you if you download too many images at once. In that case, you can download them manually.
-- Make sure the names of the images are the same as the "slugs" of the students, e.g. `jane-doe.jpg` for `jane-doe.md`.
-- Manually upload the images to [Uploadcare](https://uploadcare.com/). 
-- Run the `convert_to_uploadcare.mjs` script with the CSV file as an argument to convert the names to Uploadcare UUIDs. This will also update the markdown files for the students.
-
-This is what the header row should look like:
-
+# Every time you deploy:
+npm run deploy
 ```
-timestamp,email,name,gsm,context,project_title,summary,website,main_image,main_caption,description,images,instagram
+
+## Project Structure
+
+```text
+src/
+├── index.tsx          # Hono app entry point
+├── components/        # JSX components (Layout, ProjectCard)
+└── types.ts           # TypeScript types
+
+scripts/
+├── import-to-d1.mjs   # Import old markdown data to D1
+└── setup-secrets.mjs  # Setup local/remote secrets
+
+old/                   # Legacy Eleventy site (data source for import)
+├── 2021-2025/         # Student markdown files by year
+└── ...
+
+schema.sql             # D1 database schema
 ```

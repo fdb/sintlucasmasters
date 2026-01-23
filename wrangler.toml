@@ -1,0 +1,32 @@
+name = "sintlucasmasters"
+main = "src/index.tsx"
+compatibility_date = "2024-01-01"
+
+# Static assets from the static folder
+[assets]
+directory = "./static"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sintlucasmasters"
+database_id = "4227d715-382f-416a-aa9c-c5da32847400"
+
+# Environment variables (secrets set via `wrangler secret put`)
+# JWT_SECRET - Secret for signing JWT tokens
+# AWS_ACCESS_KEY_ID - AWS IAM access key for SES
+# AWS_SECRET_ACCESS_KEY - AWS IAM secret key for SES
+# AWS_REGION - AWS region for SES (e.g., eu-west-1)
+
+[vars]
+APP_BASE_URL = "https://dev.sintlucasmasters.com"
+SES_CONFIGURATION_SET = "sintlucasmasters-events"
+
+# Production overrides
+[env.production.vars]
+APP_BASE_URL = "https://sintlucasmasters.com"
+SES_CONFIGURATION_SET = "sintlucasmasters-events"
+
+# Cron trigger for cleaning up expired auth tokens
+[triggers]
+crons = ["0 0 * * *"]
