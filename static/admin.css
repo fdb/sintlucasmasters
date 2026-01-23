@@ -481,35 +481,124 @@
   margin: 0;
 }
 
-/* Status pill */
-.status-pill {
+/* Header actions group */
+.detail-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Action button group (Edit + External link) */
+.detail-action-group {
+  display: flex;
+  border: 1px solid var(--admin-border);
+}
+
+.detail-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--admin-bg);
+  color: var(--black);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.detail-action-btn.has-label {
+  width: auto;
+  padding: 0 0.625rem;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.detail-action-btn:first-child {
+  border-right: 1px solid var(--admin-border);
+}
+
+.detail-action-btn:hover {
+  background: var(--admin-bg-hover);
+}
+
+.detail-action-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* Status badge tab style */
+.status-badge {
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 0.25rem 0.625rem;
-  background: var(--admin-bg-hover);
+  padding: 0.375rem 0.75rem;
+  background: transparent;
   color: var(--gray);
+  border: 1px solid var(--gray);
 }
 
-.status-pill.status-published {
-  background: #e8f5e9;
-  color: #2e7d32;
+.status-badge.status-published {
+  color: #4caf50;
+  border-color: #4caf50;
 }
 
-:root[data-theme="dark"] .status-pill.status-published {
-  background: #1b3d1f;
-  color: #81c784;
+:root[data-theme="dark"] .status-badge.status-published {
+  color: #66bb6a;
+  border-color: #66bb6a;
 }
 
-.status-pill.status-draft {
-  background: #fff3e0;
-  color: #e65100;
+.status-badge.status-submitted {
+  color: #f57c00;
+  border-color: #f57c00;
 }
 
-:root[data-theme="dark"] .status-pill.status-draft {
-  background: #3d2a14;
+:root[data-theme="dark"] .status-badge.status-submitted {
   color: #ffb74d;
+  border-color: #ffb74d;
+}
+
+.status-badge.status-ready_for_print {
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+:root[data-theme="dark"] .status-badge.status-ready_for_print {
+  color: #64b5f6;
+  border-color: #64b5f6;
+}
+
+.status-badge.status-draft {
+  color: #757575;
+  border-color: #757575;
+}
+
+:root[data-theme="dark"] .status-badge.status-draft {
+  color: #9e9e9e;
+  border-color: #9e9e9e;
+}
+
+/* Status border for list view rows */
+tr.status-published td:first-child {
+  box-shadow: inset 2px 0 0 #4caf50;
+}
+
+tr.status-submitted td:first-child {
+  box-shadow: inset 2px 0 0 #ff9800;
+}
+
+tr.status-ready_for_print td:first-child {
+  box-shadow: inset 2px 0 0 #2196f3;
+}
+
+tr.status-draft td:first-child {
+  box-shadow: inset 2px 0 0 #9e9e9e;
 }
 
 /* Role pills */
@@ -800,46 +889,6 @@
   gap: 0.75rem;
 }
 
-/* Edit button in detail panel */
-.edit-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  height: 22px;
-  padding: 0 0.625rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  font-family: inherit;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: #111;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.15s ease;
-}
-
-.edit-button svg {
-  width: 10px;
-  height: 10px;
-}
-
-:root[data-theme="dark"] .edit-button {
-  background: #333;
-  color: #fff;
-}
-
-.edit-button:hover {
-  opacity: 0.85;
-}
-
-/* Match status pill height */
-.detail-header-row .status-pill {
-  height: 22px;
-  display: inline-flex;
-  align-items: center;
-}
-
 /* Form buttons */
 .btn {
   padding: 0.625rem 1.25rem;
@@ -982,12 +1031,13 @@
 
 .edit-status-option {
   flex: 1;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.625rem;
   font-weight: 600;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
   background: var(--admin-bg);
   color: var(--black);
   border: 1px solid var(--admin-border);
@@ -1126,7 +1176,7 @@
 }
 
 .edit-image-action:hover {
-  background: var(--black);
+  background: #000;
 }
 
 /* Drag hint */

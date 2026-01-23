@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Sun, Moon, LogOut, Search, Pencil, X, GripVertical, Plus, Trash2, Star } from "lucide-react";
+import { Sun, Moon, LogOut, Search, Pencil, X, GripVertical, Plus, Trash2, Star, SquareArrowOutUpRight } from "lucide-react";
 
 type UserRole = "student" | "editor" | "admin";
 
@@ -92,6 +92,7 @@ export default function App() {
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [draggedImageId, setDraggedImageId] = useState<string | null>(null);
   const [newTag, setNewTag] = useState("");
+  const [pendingEdit, setPendingEdit] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
@@ -184,6 +185,43 @@ export default function App() {
 
     loadProject();
   }, [selectedProjectId]);
+
+  // Open edit modal after project loads if pending
+  useEffect(() => {
+    if (pendingEdit && projectStatus === "ready" && projectDetail) {
+      setPendingEdit(false);
+      // Small delay to ensure state is settled
+      setTimeout(() => {
+        const p = projectDetail.project;
+        const parsedTags = parseTags(p.tags);
+        const parsedLinks = parseSocialLinks(p.social_links);
+
+        setEditFormData({
+          student_name: String(p.student_name || ""),
+          project_title: String(p.project_title || ""),
+          context: String(p.context || ""),
+          program: String(p.program || ""),
+          academic_year: String(p.academic_year || ""),
+          status: String(p.status || "draft"),
+          bio: String(p.bio || ""),
+          description: String(p.description || ""),
+          tags: parsedTags,
+          social_links: parsedLinks,
+        });
+
+        setEditImages(
+          projectDetail.images.map((img) => ({
+            ...img,
+            id: String(img.id),
+            project_id: String(img.project_id),
+          }))
+        );
+
+        setSaveStatus("idle");
+        setEditModalOpen(true);
+      }, 0);
+    }
+  }, [pendingEdit, projectStatus, projectDetail]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -394,6 +432,18 @@ export default function App() {
       if (refreshRes.ok) {
         const data = (await refreshRes.json()) as ProjectDetailResponse;
         setProjectDetail(data);
+
+        // Also update the row in table data
+        if (tableData) {
+          setTableData({
+            ...tableData,
+            rows: tableData.rows.map((row) =>
+              row.id === selectedProjectId
+                ? { ...row, ...data.project }
+                : row
+            ),
+          });
+        }
       }
 
       // Close modal after brief delay to show success
@@ -595,13 +645,23 @@ export default function App() {
                       {filteredRows.map((row, rowIndex) => {
                         const rowId = typeof row.id === "string" ? row.id : null;
                         const isSelected = isProjectsTable && rowId === selectedProjectId;
+                        const rowStatus = String(row.status || "draft").toLowerCase();
                         return (
                           <tr
                             key={`${activeTable}-${rowIndex}`}
-                            className={`${isProjectsTable ? "row-clickable" : ""} ${isSelected ? "row-selected" : ""}`}
+                            className={`${isProjectsTable ? `row-clickable status-${rowStatus}` : ""} ${isSelected ? "row-selected" : ""}`}
                             onClick={() => {
                               if (!isProjectsTable || !rowId) return;
                               setSelectedProjectId(rowId);
+                            }}
+                            onDoubleClick={() => {
+                              if (!isProjectsTable || !rowId) return;
+                              if (isSelected && projectDetail) {
+                                openEditModal();
+                              } else {
+                                setSelectedProjectId(rowId);
+                                setPendingEdit(true);
+                              }
                             }}
                           >
                             {displayColumns.map((column) => (
@@ -660,19 +720,30 @@ export default function App() {
 
               {isProjectsTable && projectStatus === "ready" && projectDetail && (
                 <div className="admin-detail-content">
-                  {/* Header: Name + Status + Edit button */}
+                  {/* Header: Name + Status + Actions */}
                   <div className="detail-header-row">
                     <h3>{String(projectDetail.project.student_name || "Untitled")}</h3>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                      <button type="button" className="edit-button" onClick={openEditModal}>
-                        <Pencil size={12} />
-                        Edit
-                      </button>
-                      <span
-                        className={`status-pill status-${String(projectDetail.project.status || "draft").toLowerCase()}`}
+                    <div className="detail-header-actions">
+                      <div
+                        className={`status-badge status-${String(projectDetail.project.status || "draft").toLowerCase()}`}
                       >
-                        {String(projectDetail.project.status || "draft")}
-                      </span>
+                        {String(projectDetail.project.status || "draft").replace(/_/g, " ")}
+                      </div>
+                      <div className="detail-action-group">
+                        <button type="button" className="detail-action-btn has-label" onClick={openEditModal}>
+                          <Pencil size={14} />
+                          Edit
+                        </button>
+                        <a
+                          href={`/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="detail-action-btn"
+                          title="Open project page"
+                        >
+                          <SquareArrowOutUpRight size={14} />
+                        </a>
+                      </div>
                     </div>
                   </div>
 
@@ -894,7 +965,7 @@ export default function App() {
                               className={`edit-status-option ${editFormData.status === status ? "active" : ""}`}
                               onClick={() => updateFormField("status", status)}
                             >
-                              {status.replace("_", " ")}
+                              {status.replace(/_/g, " ")}
                             </button>
                           ))}
                         </div>
