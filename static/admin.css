@@ -1070,6 +1070,7 @@ tr.status-draft td:first-child {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  position: relative;
 }
 
 .edit-image-item {
@@ -1079,7 +1080,7 @@ tr.status-draft td:first-child {
   background: var(--admin-bg);
   border: 1px solid var(--admin-border);
   cursor: grab;
-  transition: all 0.15s ease;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.15s ease, border-color 0.15s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
@@ -1088,14 +1089,14 @@ tr.status-draft td:first-child {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.edit-image-item.dragging {
-  opacity: 0.5;
-  cursor: grabbing;
+.edit-image-item.is-dragging {
+  opacity: 0;
 }
 
-.edit-image-item.drag-over {
-  border-color: var(--black);
-  border-width: 2px;
+.edit-image-overlay {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  transform: scale(1.02);
+  pointer-events: none;
 }
 
 .edit-image-item.is-main {

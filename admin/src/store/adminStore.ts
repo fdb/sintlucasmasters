@@ -69,7 +69,6 @@ type AdminState = {
   editDraft: EditDraft | null;
   editImages: ProjectImage[];
   saveStatus: SaveStatus;
-  draggedImageId: string | null;
   newTag: string;
   setDarkMode: (value: boolean) => void;
   toggleDarkMode: () => void;
@@ -92,8 +91,7 @@ type AdminState = {
   addSocialLink: () => void;
   updateSocialLink: (index: number, value: string) => void;
   removeSocialLink: (index: number) => void;
-  setDraggedImageId: (imageId: string | null) => void;
-  reorderImages: (targetId: string) => void;
+  moveEditImage: (activeId: string, overId: string) => void;
   setMainImage: (cloudflareId: string) => void;
   saveProject: () => Promise<void>;
 };
@@ -191,7 +189,6 @@ export const useAdminStore = create<AdminState>()(
       editDraft: null,
       editImages: [],
       saveStatus: "idle",
-      draggedImageId: null,
       newTag: "",
       setDarkMode: (value) => set({ darkMode: value }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
@@ -318,7 +315,6 @@ export const useAdminStore = create<AdminState>()(
           editDraft: buildEditDraft(detail.project),
           editImages: normalizeImages(detail.images),
           saveStatus: "idle",
-          draggedImageId: null,
           newTag: "",
         });
       },
@@ -328,7 +324,6 @@ export const useAdminStore = create<AdminState>()(
           editDraft: null,
           editImages: [],
           saveStatus: "idle",
-          draggedImageId: null,
           newTag: "",
         }),
       closeEdit: () => get().resetEditSession(),
@@ -406,26 +401,19 @@ export const useAdminStore = create<AdminState>()(
           };
         });
       },
-      setDraggedImageId: (imageId) => set({ draggedImageId: imageId }),
-      reorderImages: (targetId) => {
+      moveEditImage: (activeId, overId) => {
         set((state) => {
-          if (!state.draggedImageId) return {};
-          if (state.draggedImageId === targetId) {
-            return { draggedImageId: null };
-          }
-          const draggedIndex = state.editImages.findIndex((img) => img.id === state.draggedImageId);
-          const targetIndex = state.editImages.findIndex((img) => img.id === targetId);
-          if (draggedIndex === -1 || targetIndex === -1) {
-            return { draggedImageId: null };
-          }
-          const newImages = [...state.editImages];
-          const [draggedItem] = newImages.splice(draggedIndex, 1);
-          newImages.splice(targetIndex, 0, draggedItem);
-          const reordered = newImages.map((img, idx) => ({
+          const activeIndex = state.editImages.findIndex((img) => img.id === activeId);
+          const overIndex = state.editImages.findIndex((img) => img.id === overId);
+          if (activeIndex === -1 || overIndex === -1 || activeIndex === overIndex) return {};
+          const nextImages = [...state.editImages];
+          const [moved] = nextImages.splice(activeIndex, 1);
+          nextImages.splice(overIndex, 0, moved);
+          const reordered = nextImages.map((img, idx) => ({
             ...img,
             sort_order: idx,
           }));
-          return { editImages: reordered, draggedImageId: null };
+          return { editImages: reordered };
         });
       },
       setMainImage: (cloudflareId) => {
