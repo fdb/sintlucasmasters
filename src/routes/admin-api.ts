@@ -8,10 +8,6 @@ type TableConfig = {
 };
 
 const TABLES: Record<string, TableConfig> = {
-  users: {
-    select: "id, email, name, role, created_at, last_login_at",
-    orderBy: "created_at DESC",
-  },
   projects: {
     select: "id, slug, student_name, sort_name, project_title, context, academic_year, status, updated_at, user_id",
     orderBy: "updated_at DESC",
@@ -19,6 +15,10 @@ const TABLES: Record<string, TableConfig> = {
   project_images: {
     select: "id, project_id, cloudflare_id, sort_order, caption",
     orderBy: "sort_order ASC, id ASC",
+  },
+  users: {
+    select: "id, email, name, role, created_at, last_login_at",
+    orderBy: "created_at DESC",
   },
 };
 
