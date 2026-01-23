@@ -402,6 +402,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8125rem;
+  user-select: none;
 }
 
 .admin-list th {
