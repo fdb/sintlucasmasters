@@ -78,3 +78,138 @@ adminApiRoutes.get("/projects/:id", async (c) => {
     images: images ?? [],
   });
 });
+
+// Update project
+adminApiRoutes.put("/projects/:id", async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json<{
+    student_name?: string;
+    project_title?: string;
+    context?: string;
+    program?: string;
+    academic_year?: string;
+    bio?: string | null;
+    description?: string;
+    status?: string;
+    tags?: string | null;
+    social_links?: string | null;
+    main_image_id?: string;
+  }>();
+
+  // Check project exists
+  const existing = await c.env.DB.prepare("SELECT id FROM projects WHERE id = ?").bind(id).first();
+  if (!existing) {
+    return c.json({ error: "Project not found" }, 404);
+  }
+
+  // Build update query dynamically
+  const updates: string[] = [];
+  const values: unknown[] = [];
+
+  if (body.student_name !== undefined) {
+    updates.push("student_name = ?");
+    values.push(body.student_name);
+  }
+  if (body.project_title !== undefined) {
+    updates.push("project_title = ?");
+    values.push(body.project_title);
+  }
+  if (body.context !== undefined) {
+    updates.push("context = ?");
+    values.push(body.context);
+  }
+  if (body.program !== undefined) {
+    updates.push("program = ?");
+    values.push(body.program);
+  }
+  if (body.academic_year !== undefined) {
+    updates.push("academic_year = ?");
+    values.push(body.academic_year);
+  }
+  if (body.bio !== undefined) {
+    updates.push("bio = ?");
+    values.push(body.bio);
+  }
+  if (body.description !== undefined) {
+    updates.push("description = ?");
+    values.push(body.description);
+  }
+  if (body.status !== undefined) {
+    updates.push("status = ?");
+    values.push(body.status);
+  }
+  if (body.tags !== undefined) {
+    updates.push("tags = ?");
+    values.push(body.tags);
+  }
+  if (body.social_links !== undefined) {
+    updates.push("social_links = ?");
+    values.push(body.social_links);
+  }
+  if (body.main_image_id !== undefined) {
+    updates.push("main_image_id = ?");
+    values.push(body.main_image_id);
+  }
+
+  if (updates.length === 0) {
+    return c.json({ error: "No fields to update" }, 400);
+  }
+
+  // Always update updated_at
+  updates.push("updated_at = datetime('now')");
+
+  const query = `UPDATE projects SET ${updates.join(", ")} WHERE id = ?`;
+  values.push(id);
+
+  await c.env.DB.prepare(query).bind(...values).run();
+
+  // Return updated project
+  const project = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(id).first<Project>();
+
+  return c.json({ project });
+});
+
+// Reorder project images
+adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
+  const projectId = c.req.param("id");
+  const body = await c.req.json<{
+    imageOrder: Array<{ id: string; sort_order: number }>;
+    mainImageId?: string;
+  }>();
+
+  // Check project exists
+  const project = await c.env.DB.prepare("SELECT id FROM projects WHERE id = ?").bind(projectId).first();
+  if (!project) {
+    return c.json({ error: "Project not found" }, 404);
+  }
+
+  // Update sort orders
+  const statements = body.imageOrder.map((img) =>
+    c.env.DB.prepare("UPDATE project_images SET sort_order = ? WHERE id = ? AND project_id = ?").bind(
+      img.sort_order,
+      img.id,
+      projectId
+    )
+  );
+
+  // Update main image if provided
+  if (body.mainImageId) {
+    statements.push(
+      c.env.DB.prepare("UPDATE projects SET main_image_id = ?, updated_at = datetime('now') WHERE id = ?").bind(
+        body.mainImageId,
+        projectId
+      )
+    );
+  }
+
+  await c.env.DB.batch(statements);
+
+  // Return updated images
+  const { results: images } = await c.env.DB.prepare(
+    "SELECT * FROM project_images WHERE project_id = ? ORDER BY sort_order ASC, id ASC"
+  )
+    .bind(projectId)
+    .all<ProjectImage>();
+
+  return c.json({ images: images ?? [] });
+});
