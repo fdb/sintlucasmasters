@@ -13,15 +13,15 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|------------|
-| Platform | Cloudflare Pages + Workers |
-| Framework | Hono (SSR with JSX) |
-| Database | Cloudflare D1 (SQLite) |
-| Media Storage | Cloudflare Images |
-| Authentication | Magic link (email-based) via AWS SES |
-| Admin UI | React + TypeScript SPA (Vite) |
-| CSS | Minimal system font stack, dark mode support |
+| Component      | Technology                                   |
+| -------------- | -------------------------------------------- |
+| Platform       | Cloudflare Pages + Workers                   |
+| Framework      | Hono (SSR with JSX)                          |
+| Database       | Cloudflare D1 (SQLite)                       |
+| Media Storage  | Cloudflare Images                            |
+| Authentication | Magic link (email-based) via AWS SES         |
+| Admin UI       | React + TypeScript SPA (Vite)                |
+| CSS            | Minimal system font stack, dark mode support |
 
 ---
 
@@ -40,57 +40,57 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 
 #### Project
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| id | TEXT | yes | Primary key (deterministic hash) |
-| slug | TEXT | yes | URL-safe identifier |
-| student_name | TEXT | yes | Full name of the student |
-| sort_name | TEXT | yes | ASCII-normalized name for sorting |
-| project_title | TEXT | yes | Title of the master project |
-| context | TEXT | yes | One of the 5 contexts |
-| academic_year | TEXT | yes | Format: "2024-2025" |
-| bio | TEXT | no | Student biography/artist statement |
-| description | TEXT | yes | Project description (markdown) |
-| main_image_id | TEXT | yes | Cloudflare Images ID - used for print |
-| thumb_image_id | TEXT | no | Square thumbnail (falls back to main_image) |
-| tags | TEXT (JSON) | no | Material/medium tags as JSON array |
-| social_links | TEXT (JSON) | no | Portfolio, Instagram, etc. as JSON array |
-| status | TEXT | yes | draft, submitted, ready_for_print, published |
-| user_id | TEXT | no | Foreign key to users table |
-| created_at | TEXT | yes | Timestamp |
-| updated_at | TEXT | yes | Timestamp |
+| Field          | Type        | Required | Description                                  |
+| -------------- | ----------- | -------- | -------------------------------------------- |
+| id             | TEXT        | yes      | Primary key (deterministic hash)             |
+| slug           | TEXT        | yes      | URL-safe identifier                          |
+| student_name   | TEXT        | yes      | Full name of the student                     |
+| sort_name      | TEXT        | yes      | ASCII-normalized name for sorting            |
+| project_title  | TEXT        | yes      | Title of the master project                  |
+| context        | TEXT        | yes      | One of the 5 contexts                        |
+| academic_year  | TEXT        | yes      | Format: "2024-2025"                          |
+| bio            | TEXT        | no       | Student biography/artist statement           |
+| description    | TEXT        | yes      | Project description (markdown)               |
+| main_image_id  | TEXT        | yes      | Cloudflare Images ID - used for print        |
+| thumb_image_id | TEXT        | no       | Square thumbnail (falls back to main_image)  |
+| tags           | TEXT (JSON) | no       | Material/medium tags as JSON array           |
+| social_links   | TEXT (JSON) | no       | Portfolio, Instagram, etc. as JSON array     |
+| status         | TEXT        | yes      | draft, submitted, ready_for_print, published |
+| user_id        | TEXT        | no       | Foreign key to users table                   |
+| created_at     | TEXT        | yes      | Timestamp                                    |
+| updated_at     | TEXT        | yes      | Timestamp                                    |
 
 #### ProjectImage
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| id | TEXT | yes | Primary key |
-| project_id | TEXT | yes | Foreign key to Project |
-| cloudflare_id | TEXT | yes | Cloudflare Images ID |
-| sort_order | INTEGER | yes | Display order |
-| caption | TEXT | no | Image caption |
+| Field         | Type    | Required | Description            |
+| ------------- | ------- | -------- | ---------------------- |
+| id            | TEXT    | yes      | Primary key            |
+| project_id    | TEXT    | yes      | Foreign key to Project |
+| cloudflare_id | TEXT    | yes      | Cloudflare Images ID   |
+| sort_order    | INTEGER | yes      | Display order          |
+| caption       | TEXT    | no       | Image caption          |
 
 #### User
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| id | TEXT | yes | Primary key |
-| email | TEXT | yes | Unique email address |
-| name | TEXT | no | Display name |
-| role | TEXT | yes | student, editor, or admin |
-| created_at | TEXT | yes | Timestamp |
-| last_login_at | TEXT | no | Last login timestamp |
+| Field         | Type | Required | Description               |
+| ------------- | ---- | -------- | ------------------------- |
+| id            | TEXT | yes      | Primary key               |
+| email         | TEXT | yes      | Unique email address      |
+| name          | TEXT | no       | Display name              |
+| role          | TEXT | yes      | student, editor, or admin |
+| created_at    | TEXT | yes      | Timestamp                 |
+| last_login_at | TEXT | no       | Last login timestamp      |
 
 #### AuthToken
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| id | TEXT | yes | Primary key |
-| email | TEXT | yes | Email address |
-| token | TEXT | yes | Magic link token |
-| created_at | TEXT | yes | Timestamp |
-| expires_at | TEXT | yes | Expiration timestamp |
-| used_at | TEXT | no | When token was used |
+| Field      | Type | Required | Description          |
+| ---------- | ---- | -------- | -------------------- |
+| id         | TEXT | yes      | Primary key          |
+| email      | TEXT | yes      | Email address        |
+| token      | TEXT | yes      | Magic link token     |
+| created_at | TEXT | yes      | Timestamp            |
+| expires_at | TEXT | yes      | Expiration timestamp |
+| used_at    | TEXT | no       | When token was used  |
 
 ### Enums
 
@@ -105,15 +105,19 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 ### Image Format Handling
 
 **2021-2024** (full Cloudflare URLs):
+
 ```yaml
 main_image: "https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/bf666892-6c85-4a27-b2f2-e46a66740e00"
 ```
+
 Extract ID: `bf666892-6c85-4a27-b2f2-e46a66740e00`
 
 **2025** (relative paths):
+
 ```yaml
 main_image: alix-spooren/13TDsml0WUunYSaBjfJA1A0WXuz-5_bRn.jpg
 ```
+
 ID is the full path: `alix-spooren/13TDsml0WUunYSaBjfJA1A0WXuz-5_bRn.jpg`
 
 ---
@@ -155,13 +159,13 @@ src/
 
 ### Routes
 
-| Path | Description |
-|------|-------------|
-| `/` | Redirect to current year |
-| `/:year/` | List projects for academic year |
-| `/:year/students/:slug/` | Project detail page |
-| `/archive` | Archive with year + context filters |
-| `/about` | About page |
+| Path                     | Description                         |
+| ------------------------ | ----------------------------------- |
+| `/`                      | Redirect to current year            |
+| `/:year/`                | List projects for academic year     |
+| `/:year/students/:slug/` | Project detail page                 |
+| `/archive`               | Archive with year + context filters |
+| `/about`                 | About page                          |
 
 ---
 
@@ -215,15 +219,16 @@ src/
 
 **Auth Routes**:
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/auth/login` | GET | Login page with email form |
-| `/api/auth/login` | POST | Send magic link email |
-| `/api/auth/me` | GET | Return current user info |
-| `/auth/verify` | GET | Verify token, set cookie, redirect |
-| `/api/auth/logout` | POST | Clear session cookie |
+| Route              | Method | Description                        |
+| ------------------ | ------ | ---------------------------------- |
+| `/auth/login`      | GET    | Login page with email form         |
+| `/api/auth/login`  | POST   | Send magic link email              |
+| `/api/auth/me`     | GET    | Return current user info           |
+| `/auth/verify`     | GET    | Verify token, set cookie, redirect |
+| `/api/auth/logout` | POST   | Clear session cookie               |
 
 **Auth Flow**:
+
 1. User enters email at `/auth/login`
 2. System generates token, stores in D1, emails link
 3. User clicks link → `/auth/verify?token=xxx`
@@ -281,13 +286,14 @@ admin/
 
 **Student Routes**:
 
-| Route | Method | Description |
-|-------|--------|-------------|
-| `/student` | GET | Dashboard showing user's project(s) |
-| `/student/project/:id` | GET | Edit form (if editable) |
-| `/student/project/:id` | POST | Save changes |
+| Route                  | Method | Description                         |
+| ---------------------- | ------ | ----------------------------------- |
+| `/student`             | GET    | Dashboard showing user's project(s) |
+| `/student/project/:id` | GET    | Edit form (if editable)             |
+| `/student/project/:id` | POST   | Save changes                        |
 
 **Edit Restrictions**:
+
 - Students can edit while status is `draft` or `submitted`
 - `ready_for_print` locks student edits
 - Admin can bulk unlock to re-enable editing
@@ -339,12 +345,12 @@ draft → submitted → ready_for_print → published
 
 ### Cloudflare Images Variants
 
-| Variant | Size | Use |
-|---------|------|-----|
-| thumb | 600x600 | Grid cards |
-| medium | 1000w | Gallery display |
-| large | 1600w | Main image |
-| xl | 2000x2000 | Lightbox / print |
+| Variant | Size      | Use              |
+| ------- | --------- | ---------------- |
+| thumb   | 600x600   | Grid cards       |
+| medium  | 1000w     | Gallery display  |
+| large   | 1600w     | Main image       |
+| xl      | 2000x2000 | Lightbox / print |
 
 ---
 
