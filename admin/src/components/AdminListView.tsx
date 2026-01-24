@@ -206,9 +206,11 @@ function buildColumnsFromRow(
 interface GenericTableProps {
   activeTable: string;
   formatters?: Record<string, ColumnFormatter>;
+  selectedRowId?: string | null;
+  onRowClick?: (row: Record<string, unknown>) => void;
 }
 
-function GenericTable({ activeTable, formatters = {} }: GenericTableProps): React.ReactNode {
+function GenericTable({ activeTable, formatters = {}, selectedRowId, onRowClick }: GenericTableProps): React.ReactNode {
   const tableData = useAdminStore((s) => s.tableData);
   const tableStatus = useAdminStore((s) => s.tableStatus);
 
@@ -219,7 +221,13 @@ function GenericTable({ activeTable, formatters = {} }: GenericTableProps): Reac
     <>
       <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={rows.length > 0} />
       {tableStatus === "ready" && rows.length > 0 && (
-        <DataTable columns={columns} rows={rows} activeTable={activeTable} />
+        <DataTable
+          columns={columns}
+          rows={rows}
+          activeTable={activeTable}
+          selectedRowId={selectedRowId}
+          onRowClick={onRowClick}
+        />
       )}
     </>
   );
@@ -230,7 +238,23 @@ function AdminProjectImagesTable(): React.ReactNode {
 }
 
 function AdminUsersTable(): React.ReactNode {
-  return <GenericTable activeTable="users" formatters={{ role: formatRole }} />;
+  const selectedUserId = useAdminStore((s) => s.selectedUserId);
+  const selectUser = useAdminStore((s) => s.selectUser);
+
+  const handleRowClick = (row: Record<string, unknown>): void => {
+    if (typeof row.id === "string") {
+      selectUser(row.id);
+    }
+  };
+
+  return (
+    <GenericTable
+      activeTable="users"
+      formatters={{ role: formatRole }}
+      selectedRowId={selectedUserId}
+      onRowClick={handleRowClick}
+    />
+  );
 }
 
 function renderTableHeader(activeTable: string): React.ReactNode {

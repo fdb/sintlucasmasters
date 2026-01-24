@@ -12,3 +12,17 @@ export function formatAcademicYear(value: unknown): string {
   }
   return str;
 }
+
+export function formatDate(value: unknown): string {
+  if (!value || typeof value !== "string") return "—";
+  try {
+    const date = new Date(value);
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return String(value);
+  }
+}

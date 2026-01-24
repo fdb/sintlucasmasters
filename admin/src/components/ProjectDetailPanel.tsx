@@ -1,5 +1,6 @@
 import { Pencil, SquareArrowOutUpRight } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { formatDate } from "../utils";
 
 export function ProjectDetailPanel() {
   const { activeTable, selectedProjectId, projectDetail, projectStatus, openEditForProject } = useAdminStore(
@@ -183,16 +184,3 @@ function parseSocialLinks(value: unknown): string[] {
   return [];
 }
 
-function formatDate(value: unknown): string {
-  if (!value || typeof value !== "string") return "—";
-  try {
-    const date = new Date(value);
-    return date.toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  } catch {
-    return String(value);
-  }
-}

@@ -24,6 +24,17 @@ export type ProjectDetailResponse = {
   images: Array<Record<string, unknown>>;
 };
 
+export type UserDetailResponse = {
+  user: {
+    id: string;
+    email: string;
+    name: string | null;
+    role: string;
+    created_at: string;
+    last_login_at: string | null;
+  };
+};
+
 export type ProjectImage = {
   id: string;
   cloudflare_id: string;
@@ -72,6 +83,12 @@ type AdminState = {
   editImages: ProjectImage[];
   saveStatus: SaveStatus;
   newTag: string;
+  // User selection and detail state
+  selectedUserId: string | null;
+  userDetail: UserDetailResponse | null;
+  userDetailStatus: LoadStatus;
+  deleteConfirmOpen: boolean;
+  deleteStatus: LoadStatus;
   // User creation modal state
   userModalOpen: boolean;
   userModalTab: UserModalTab;
@@ -107,6 +124,11 @@ type AdminState = {
   uploadStatus: "idle" | "uploading" | "error";
   uploadError: string | null;
   saveProject: () => Promise<void>;
+  // User selection and delete actions
+  selectUser: (userId: string | null) => Promise<void>;
+  openDeleteConfirm: () => void;
+  closeDeleteConfirm: () => void;
+  deleteUser: () => Promise<void>;
   // User creation actions
   openUserModal: () => void;
   closeUserModal: () => void;
@@ -211,6 +233,11 @@ export const useAdminStore = create<AdminState>()(
       uploadStatus: "idle",
       uploadError: null,
       newTag: "",
+      selectedUserId: null,
+      userDetail: null,
+      userDetailStatus: "idle",
+      deleteConfirmOpen: false,
+      deleteStatus: "idle",
       userModalOpen: false,
       userModalTab: "single",
       userCreateStatus: "idle",
@@ -284,6 +311,9 @@ export const useAdminStore = create<AdminState>()(
             selectedProjectId: null,
             projectDetail: null,
             projectStatus: "idle",
+            selectedUserId: null,
+            userDetail: null,
+            userDetailStatus: "idle",
           });
         } catch {
           set({ tableStatus: "error" });
@@ -637,6 +667,72 @@ export const useAdminStore = create<AdminState>()(
           set({ saveStatus: "error" });
         }
       },
+      // User selection and delete actions
+      selectUser: async (userId) => {
+        if (!userId) {
+          set({
+            selectedUserId: null,
+            userDetail: null,
+            userDetailStatus: "idle",
+          });
+          return;
+        }
+        if (userId === get().selectedUserId && get().userDetailStatus === "ready") {
+          return;
+        }
+        set({
+          selectedUserId: userId,
+          userDetail: null,
+          userDetailStatus: "loading",
+        });
+        try {
+          const res = await fetch(`/api/admin/users/${userId}`);
+          if (!res.ok) {
+            set({ userDetailStatus: "error" });
+            return;
+          }
+          const data = (await res.json()) as UserDetailResponse;
+          set({
+            userDetail: data,
+            userDetailStatus: "ready",
+          });
+        } catch {
+          set({ userDetailStatus: "error" });
+        }
+      },
+      openDeleteConfirm: () => set({ deleteConfirmOpen: true }),
+      closeDeleteConfirm: () => set({ deleteConfirmOpen: false, deleteStatus: "idle" }),
+      deleteUser: async () => {
+        const userId = get().selectedUserId;
+        if (!userId) return;
+
+        set({ deleteStatus: "loading" });
+        try {
+          const res = await fetch(`/api/admin/users/${userId}`, {
+            method: "DELETE",
+          });
+          if (!res.ok) {
+            set({ deleteStatus: "error" });
+            return;
+          }
+
+          set({
+            deleteConfirmOpen: false,
+            deleteStatus: "idle",
+            selectedUserId: null,
+            userDetail: null,
+            userDetailStatus: "idle",
+          });
+
+          // Refresh the users table
+          const { activeTable, loadTable } = get();
+          if (activeTable === "users") {
+            await loadTable("users");
+          }
+        } catch {
+          set({ deleteStatus: "error" });
+        }
+      },
       // User creation modal actions
       openUserModal: () =>
         set({
@@ -722,10 +818,6 @@ export const useAdminStore = create<AdminState>()(
           if (activeTable === "users") {
             await loadTable("users");
           }
-
-          setTimeout(() => {
-            get().closeUserModal();
-          }, 2000);
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed to create users";
           set({ userCreateStatus: "error", userCreateError: message });

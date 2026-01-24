@@ -9,6 +9,7 @@ interface DataTableProps {
   rows: Record<string, unknown>[];
   activeTable: string;
   selectedProjectId?: string | null;
+  selectedRowId?: string | null;
   onRowClick?: (row: Record<string, unknown>) => void;
   onRowDoubleClick?: (row: Record<string, unknown>) => void;
   getRowClassName?: (row: Record<string, unknown>) => string;
@@ -19,11 +20,13 @@ export function DataTable({
   rows,
   activeTable,
   selectedProjectId,
+  selectedRowId,
   onRowClick,
   onRowDoubleClick,
   getRowClassName,
 }: DataTableProps) {
   const isProjectsTable = activeTable === "projects";
+  const isClickable = !!onRowClick;
 
   return (
     <div className="admin-list-scroll">
@@ -38,10 +41,12 @@ export function DataTable({
         <tbody>
           {rows.map((row, rowIndex) => {
             const rowId = typeof row.id === "string" ? row.id : null;
-            const isSelected = isProjectsTable && rowId === selectedProjectId;
+            const isSelected = rowId === selectedProjectId || rowId === selectedRowId;
             const baseClassName = isProjectsTable
               ? `row-clickable status-${String(row.status || "draft").toLowerCase()}`
-              : "";
+              : isClickable
+                ? "row-clickable"
+                : "";
             const customClassName = getRowClassName ? getRowClassName(row) : "";
             const rowKey = rowId ? `${activeTable}-${rowId}` : `${activeTable}-${rowIndex}`;
 

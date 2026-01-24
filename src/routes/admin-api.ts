@@ -483,6 +483,42 @@ adminApiRoutes.post("/users/create", async (c) => {
   return c.json({ user: newUser }, 201);
 });
 
+// Get user detail
+adminApiRoutes.get("/users/:id", async (c) => {
+  const id = c.req.param("id");
+
+  const user = await c.env.DB.prepare(
+    "SELECT id, email, name, role, created_at, last_login_at FROM users WHERE id = ?"
+  )
+    .bind(id)
+    .first();
+
+  if (!user) {
+    return c.json({ error: "User not found" }, 404);
+  }
+
+  return c.json({ user });
+});
+
+// Delete user
+adminApiRoutes.delete("/users/:id", async (c) => {
+  const id = c.req.param("id");
+
+  // Check user exists
+  const user = await c.env.DB.prepare("SELECT id, email FROM users WHERE id = ?")
+    .bind(id)
+    .first<{ id: string; email: string }>();
+
+  if (!user) {
+    return c.json({ error: "User not found" }, 404);
+  }
+
+  // Delete the user
+  await c.env.DB.prepare("DELETE FROM users WHERE id = ?").bind(id).run();
+
+  return c.json({ success: true, deletedEmail: user.email });
+});
+
 // Bulk create users from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const body = await c.req.json<{ csvData: string }>();

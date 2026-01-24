@@ -937,6 +937,78 @@ tr.status-draft td:first-child {
   border-color: var(--black);
 }
 
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   Confirm Dialog
+   ===================================================== */
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-dialog {
+  background: var(--admin-bg);
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90vw;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px var(--admin-border);
+}
+
+.confirm-dialog h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.confirm-dialog p {
+  color: var(--gray);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+}
+
+.confirm-dialog p strong {
+  color: var(--black);
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* Danger action button variant */
+.detail-action-btn.danger {
+  color: #dc2626;
+}
+
+.detail-action-btn.danger:hover {
+  border-color: #dc2626;
+  background: rgba(220, 38, 38, 0.05);
+}
+
 /* =====================================================
    Topical Edit Sections
    ===================================================== */
