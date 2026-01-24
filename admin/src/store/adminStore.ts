@@ -48,6 +48,8 @@ export type EditDraft = {
 type SessionStatus = "loading" | "ready" | "error";
 type LoadStatus = "idle" | "loading" | "ready" | "error";
 type SaveStatus = "idle" | "saving" | "saved" | "error";
+type UserCreateStatus = "idle" | "creating" | "success" | "error";
+type UserModalTab = "single" | "bulk";
 
 type AdminState = {
   user: AuthUser | null;
@@ -70,6 +72,12 @@ type AdminState = {
   editImages: ProjectImage[];
   saveStatus: SaveStatus;
   newTag: string;
+  // User creation modal state
+  userModalOpen: boolean;
+  userModalTab: UserModalTab;
+  userCreateStatus: UserCreateStatus;
+  userCreateError: string | null;
+  userCreateSuccess: string | null;
   setDarkMode: (value: boolean) => void;
   toggleDarkMode: () => void;
   setUserMenuOpen: (open: boolean) => void;
@@ -99,6 +107,12 @@ type AdminState = {
   uploadStatus: "idle" | "uploading" | "error";
   uploadError: string | null;
   saveProject: () => Promise<void>;
+  // User creation actions
+  openUserModal: () => void;
+  closeUserModal: () => void;
+  setUserModalTab: (tab: UserModalTab) => void;
+  createUser: (email: string, name: string, role: string) => Promise<void>;
+  bulkCreateUsers: (csvData: string) => Promise<void>;
 };
 
 const getInitialDarkMode = () => {
@@ -197,6 +211,11 @@ export const useAdminStore = create<AdminState>()(
       uploadStatus: "idle",
       uploadError: null,
       newTag: "",
+      userModalOpen: false,
+      userModalTab: "single",
+      userCreateStatus: "idle",
+      userCreateError: null,
+      userCreateSuccess: null,
       setDarkMode: (value) => set({ darkMode: value }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       setUserMenuOpen: (open) => set({ userMenuOpen: open }),
@@ -616,6 +635,100 @@ export const useAdminStore = create<AdminState>()(
         } catch (err) {
           console.error("Save error:", err);
           set({ saveStatus: "error" });
+        }
+      },
+      // User creation modal actions
+      openUserModal: () =>
+        set({
+          userModalOpen: true,
+          userModalTab: "single",
+          userCreateStatus: "idle",
+          userCreateError: null,
+          userCreateSuccess: null,
+        }),
+      closeUserModal: () =>
+        set({
+          userModalOpen: false,
+          userCreateStatus: "idle",
+          userCreateError: null,
+          userCreateSuccess: null,
+        }),
+      setUserModalTab: (tab) =>
+        set({
+          userModalTab: tab,
+          userCreateStatus: "idle",
+          userCreateError: null,
+          userCreateSuccess: null,
+        }),
+      createUser: async (email, name, role) => {
+        set({ userCreateStatus: "creating", userCreateError: null, userCreateSuccess: null });
+        try {
+          const res = await fetch("/api/admin/users/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, name, role }),
+          });
+
+          if (!res.ok) {
+            const data = (await res.json()) as { error?: string };
+            set({ userCreateStatus: "error", userCreateError: data.error || "Failed to create user" });
+            return;
+          }
+
+          set({ userCreateStatus: "success", userCreateSuccess: "User created successfully" });
+
+          // Refresh the users table if it's the active table
+          const { activeTable, loadTable } = get();
+          if (activeTable === "users") {
+            await loadTable("users");
+          }
+
+          setTimeout(() => {
+            get().closeUserModal();
+          }, 1000);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Failed to create user";
+          set({ userCreateStatus: "error", userCreateError: message });
+        }
+      },
+      bulkCreateUsers: async (csvData) => {
+        set({ userCreateStatus: "creating", userCreateError: null, userCreateSuccess: null });
+        try {
+          const res = await fetch("/api/admin/users/bulk-create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ csvData }),
+          });
+
+          if (!res.ok) {
+            const data = (await res.json()) as { error?: string };
+            set({ userCreateStatus: "error", userCreateError: data.error || "Failed to create users" });
+            return;
+          }
+
+          const data = (await res.json()) as { created: number; skipped: string[]; errors: string[] };
+          let message = `${data.created} student${data.created !== 1 ? "s" : ""} created`;
+          if (data.skipped.length > 0) {
+            message += `. ${data.skipped.length} already exist${data.skipped.length !== 1 ? "" : "s"} and were skipped.`;
+          }
+          if (data.errors.length > 0) {
+            message += ` ${data.errors.length} error${data.errors.length !== 1 ? "s" : ""}: ${data.errors.join(", ")}`;
+          }
+
+          set({ userCreateStatus: "success", userCreateSuccess: message });
+
+          // Refresh the users table if it's the active table
+          const { activeTable, loadTable } = get();
+          if (activeTable === "users") {
+            await loadTable("users");
+          }
+
+          setTimeout(() => {
+            get().closeUserModal();
+          }, 2000);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Failed to create users";
+          set({ userCreateStatus: "error", userCreateError: message });
         }
       },
     }),

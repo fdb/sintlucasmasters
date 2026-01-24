@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { Bindings, Project, ProjectImage } from "../types";
 import { authMiddleware, requireAdmin } from "../middleware/auth";
+import { STUDENT_EMAIL_DOMAIN } from "../constants";
 
 type TableConfig = {
   select: string;
@@ -433,4 +434,142 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
   }
 
   return c.json({ success: true });
+});
+
+// =====================================================
+// User Creation Endpoints
+// =====================================================
+
+// Create single user
+adminApiRoutes.post("/users/create", async (c) => {
+  const body = await c.req.json<{ email: string; name: string; role: "student" | "editor" | "admin" }>();
+
+  const { email, name, role } = body;
+
+  if (!email || !email.trim()) {
+    return c.json({ error: "Email is required" }, 400);
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  // Check if user already exists
+  const existing = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?")
+    .bind(normalizedEmail)
+    .first<{ id: string }>();
+
+  if (existing) {
+    return c.json({ error: "Email already exists" }, 409);
+  }
+
+  // Validate role
+  const validRoles = ["student", "editor", "admin"];
+  if (!validRoles.includes(role)) {
+    return c.json({ error: "Invalid role" }, 400);
+  }
+
+  // Generate UUID and create user
+  const userId = crypto.randomUUID();
+  await c.env.DB.prepare(
+    "INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)"
+  )
+    .bind(userId, normalizedEmail, name?.trim() || null, role)
+    .run();
+
+  // Return created user
+  const newUser = await c.env.DB.prepare("SELECT * FROM users WHERE id = ?")
+    .bind(userId)
+    .first();
+
+  return c.json({ user: newUser }, 201);
+});
+
+// Bulk create users from CSV
+adminApiRoutes.post("/users/bulk-create", async (c) => {
+  const body = await c.req.json<{ csvData: string }>();
+  const { csvData } = body;
+
+  if (!csvData || !csvData.trim()) {
+    return c.json({ error: "CSV data is required" }, 400);
+  }
+
+  const lines = csvData.trim().split(/\r?\n/).filter((line) => line.trim());
+  if (lines.length === 0) {
+    return c.json({ error: "No data provided" }, 400);
+  }
+
+  // Detect delimiter: count tabs vs commas in first non-empty line
+  const firstLine = lines[0];
+  const tabCount = (firstLine.match(/\t/g) || []).length;
+  const commaCount = (firstLine.match(/,/g) || []).length;
+  const delimiter = tabCount >= commaCount ? "\t" : ",";
+
+  // Check for header row (contains "name" or "email" case-insensitive)
+  const firstLineLower = firstLine.toLowerCase();
+  let startIndex = 0;
+  if (firstLineLower.includes("name") || firstLineLower.includes("email")) {
+    startIndex = 1; // Skip header row
+  }
+
+  const results = {
+    created: 0,
+    skipped: [] as string[],
+    errors: [] as string[],
+  };
+
+  for (let i = startIndex; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const parts = line.split(delimiter).map((p) => p.trim().replace(/^"|"$/g, ""));
+
+    // Validate exactly 2 columns
+    if (parts.length !== 2) {
+      results.errors.push(`Row ${i + 1}: Expected 2 columns, got ${parts.length}`);
+      continue;
+    }
+
+    // Auto-detect column order (email contains "@")
+    let name: string;
+    let email: string;
+    if (parts[0].includes("@")) {
+      email = parts[0];
+      name = parts[1];
+    } else if (parts[1].includes("@")) {
+      name = parts[0];
+      email = parts[1];
+    } else {
+      results.errors.push(`Row ${i + 1}: Could not detect email column`);
+      continue;
+    }
+
+    // Validate student email domain
+    if (!email.endsWith(STUDENT_EMAIL_DOMAIN)) {
+      results.errors.push(`Row ${i + 1}: ${email} - must end with ${STUDENT_EMAIL_DOMAIN}`);
+      continue;
+    }
+
+    const normalizedEmail = email.toLowerCase();
+
+    // Check if already exists
+    const existing = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?")
+      .bind(normalizedEmail)
+      .first<{ id: string }>();
+
+    if (existing) {
+      results.skipped.push(normalizedEmail);
+      continue;
+    }
+
+    // Create user as student
+    const userId = crypto.randomUUID();
+    await c.env.DB.prepare(
+      "INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)"
+    )
+      .bind(userId, normalizedEmail, name || null, "student")
+      .run();
+
+    results.created++;
+  }
+
+  return c.json(results);
 });

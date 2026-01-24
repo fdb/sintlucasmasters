@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 
 export function AdminListView() {
@@ -18,6 +18,7 @@ export function AdminListView() {
     setSearchExpanded,
     selectProject,
     openEditForProject,
+    openUserModal,
   } = useAdminStore((state) => ({
     activeTable: state.activeTable,
     tableData: state.tableData,
@@ -33,10 +34,12 @@ export function AdminListView() {
     setSearchExpanded: state.setSearchExpanded,
     selectProject: state.selectProject,
     openEditForProject: state.openEditForProject,
+    openUserModal: state.openUserModal,
   }));
 
   const columns = tableData?.rows[0] ? Object.keys(tableData.rows[0]) : [];
   const isProjectsTable = activeTable === "projects";
+  const isUsersTable = activeTable === "users";
 
   const allYears =
     isProjectsTable && tableData
@@ -80,6 +83,14 @@ export function AdminListView() {
     <div className="admin-list">
       <div className="admin-list-header">
         <h2>{activeTable.replace("_", " ")}</h2>
+        {isUsersTable && (
+          <div className="detail-action-group">
+            <button type="button" className="detail-action-btn has-label" onClick={openUserModal} title="Add user">
+              <Plus size={14} />
+              Add
+            </button>
+          </div>
+        )}
         {isProjectsTable && tableData && (
           <div className="admin-filters">
             <select

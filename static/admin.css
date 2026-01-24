@@ -1651,6 +1651,38 @@ tr.status-draft td:first-child {
 }
 
 /* =====================================================
+   Tab buttons in modal header
+   ===================================================== */
+
+.modal-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.modal-tab {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--gray);
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modal-tab:hover {
+  color: var(--black);
+}
+
+.modal-tab.active {
+  color: var(--black);
+  border-bottom-color: var(--black);
+}
+
+/* =====================================================
    Responsive adjustments
    ===================================================== */
 

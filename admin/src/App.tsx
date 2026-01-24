@@ -5,6 +5,7 @@ import { AdminTabs } from "./components/AdminTabs";
 import { AdminListView } from "./components/AdminListView";
 import { ProjectDetailPanel } from "./components/ProjectDetailPanel";
 import { EditProjectModal } from "./components/EditProjectModal";
+import { CreateUserModal } from "./components/CreateUserModal";
 
 export default function App() {
   const { status, tables, darkMode, loadSession } = useAdminStore((state) => ({
@@ -41,6 +42,7 @@ export default function App() {
       )}
 
       <EditProjectModal />
+      <CreateUserModal />
     </div>
   );
 }
