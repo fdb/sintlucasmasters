@@ -25,7 +25,7 @@ import { useAdminStore } from "../store/adminStore";
 import type { ProjectImage } from "../store/adminStore";
 
 const ACCEPTED_TYPES = ".jpg,.jpeg,.png,.gif,.webp,.heic,.heif";
-const MAX_DIMENSION = 3000;
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export function EditImagesGrid() {
   const {
@@ -81,43 +81,20 @@ export function EditImagesGrid() {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    // Client-side dimension check
-    const validFiles: File[] = [];
-    for (const file of files) {
-      const isValid = await checkImageDimensions(file);
-      if (isValid) {
-        validFiles.push(file);
-      }
+    // Check file size
+    const oversizedFiles = files.filter((f) => f.size > MAX_FILE_SIZE);
+    if (oversizedFiles.length > 0) {
+      alert(`Files too large (max 10MB): ${oversizedFiles.map((f) => f.name).join(", ")}`);
     }
 
+    const validFiles = files.filter((f) => f.size <= MAX_FILE_SIZE);
     if (validFiles.length > 0) {
       await uploadImages(validFiles);
     }
 
-    // Reset input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
-
-  const checkImageDimensions = (file: File): Promise<boolean> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        URL.revokeObjectURL(img.src);
-        if (img.width > MAX_DIMENSION || img.height > MAX_DIMENSION) {
-          alert(`Image "${file.name}" exceeds maximum dimensions of ${MAX_DIMENSION}x${MAX_DIMENSION} pixels.`);
-          resolve(false);
-        } else {
-          resolve(true);
-        }
-      };
-      img.onerror = () => {
-        URL.revokeObjectURL(img.src);
-        resolve(true); // Let server handle validation
-      };
-      img.src = URL.createObjectURL(file);
-    });
   };
 
   const handleUploadClick = () => {

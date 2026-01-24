@@ -328,9 +328,9 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
 
   if (!uploadResult.success || !uploadResult.result) {
     const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
-    // Check for dimension error
+    // Check for dimension/size error
     if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
-      return c.json({ error: "Image too large. Maximum dimensions: 3000x3000 pixels" }, 400);
+      return c.json({ error: "Image too large. Maximum: 10MB, 12,000px on longest side." }, 400);
     }
     return c.json({ error: errorMsg }, 400);
   }

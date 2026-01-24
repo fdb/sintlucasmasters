@@ -459,7 +459,17 @@ export const useAdminStore = create<AdminState>()(
 
             if (!res.ok) {
               const error = (await res.json()) as { error?: string };
-              throw new Error(error.error || `Failed to upload ${file.name}`);
+              let message = error.error || `Failed to upload ${file.name}`;
+
+              // Make Cloudflare errors more user-friendly
+              if (res.status === 413 || message.toLowerCase().includes("too large")) {
+                message = `"${file.name}" is too large. Maximum file size is 10MB.`;
+              }
+              if (message.includes("dimension") || message.includes("12000")) {
+                message = `"${file.name}" exceeds maximum dimensions (12,000px on longest side).`;
+              }
+
+              throw new Error(message);
             }
 
             const data = (await res.json()) as { image: ProjectImage };
