@@ -1,24 +1,32 @@
 /* Admin and Auth styles */
 
+/* Light mode variables (default) */
+:root[data-theme="light"],
+:root:not([data-theme]) {
+  --black: #111;
+  --white: #fff;
+  --gray: #666;
+  --admin-bg: #fff;
+  --admin-bg-alt: #fafafa;
+  --admin-bg-hover: #f5f5f5;
+  --admin-border: #e0e0e0;
+  --admin-border-light: #f0f0f0;
+  --text-primary: #111;
+  --text-secondary: #666;
+}
+
 /* Dark mode variables */
 :root[data-theme="dark"] {
   --black: #fff;
   --white: #111;
-  --gray: #888;
-  --admin-bg: #111;
-  --admin-bg-alt: #1a1a1a;
-  --admin-bg-hover: #222;
-  --admin-border: #333;
-  --admin-border-light: #222;
-}
-
-:root[data-theme="light"],
-:root:not([data-theme]) {
-  --admin-bg: #fff;
-  --admin-bg-alt: #fafafa;
-  --admin-bg-hover: #f8f8f8;
-  --admin-border: #e0e0e0;
-  --admin-border-light: #f0f0f0;
+  --gray: #999;
+  --admin-bg: #0d0d0d;
+  --admin-bg-alt: #141414;
+  --admin-bg-hover: #1a1a1a;
+  --admin-border: #2a2a2a;
+  --admin-border-light: #1e1e1e;
+  --text-primary: #fff;
+  --text-secondary: #999;
 }
 
 /* Auth pages */

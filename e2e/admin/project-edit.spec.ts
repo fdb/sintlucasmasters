@@ -7,21 +7,24 @@ test.describe("admin project editing", () => {
     await expect(page.locator(".admin-list table")).toBeVisible();
   });
 
-  test("clicking row navigates to project detail", async ({ page }) => {
+  test("clicking row shows project detail in split view", async ({ page }) => {
     // Click first row
     const firstRow = page.locator("tbody tr").first();
     await firstRow.click();
 
-    // Should navigate to project detail page
-    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+$/);
+    // Should stay on admin page with selected parameter
+    await expect(page).toHaveURL(/\/admin\?selected=/);
 
-    // Should see project details
+    // Should see project details in right panel
     await expect(page.locator(".detail-header-row h3")).toBeVisible();
   });
 
   test("edit page has all sections", async ({ page }) => {
-    // Navigate to a project edit page
+    // Click on first row to select project
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
+
+    // Navigate to edit page
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Should be on edit page
@@ -39,6 +42,7 @@ test.describe("admin project editing", () => {
   test("can edit student name field", async ({ page }) => {
     // Navigate to edit page
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Find student name input
@@ -54,6 +58,7 @@ test.describe("admin project editing", () => {
   test("status buttons toggle correctly", async ({ page }) => {
     // Navigate to edit page
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Find status buttons (first project is "published" per seed data)
@@ -72,6 +77,7 @@ test.describe("admin project editing", () => {
   test("tags input accepts comma-separated values", async ({ page }) => {
     // Navigate to edit page
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Find tags input
@@ -89,9 +95,10 @@ test.describe("admin project editing", () => {
     await expect(tagsInput).toHaveValue(currentValue + ", newtag");
   });
 
-  test("cancel button goes back to detail page", async ({ page }) => {
+  test("cancel button goes back to detail view", async ({ page }) => {
     // Navigate to edit page
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Should be on edit page
@@ -100,7 +107,7 @@ test.describe("admin project editing", () => {
     // Click cancel
     await page.locator(".btn-secondary", { hasText: "Cancel" }).click();
 
-    // Should be back on detail page (not list page)
+    // Should be back on project detail page (not list page, not edit page)
     await expect(page).toHaveURL(/\/admin\/projects\/[^/]+$/);
     await expect(page).not.toHaveURL(/\/edit$/);
   });
@@ -108,6 +115,7 @@ test.describe("admin project editing", () => {
   test("can select context from dropdown", async ({ page }) => {
     // Navigate to edit page
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Find context select
@@ -122,6 +130,7 @@ test.describe("admin project editing", () => {
   test("save button submits form and shows success", async ({ page }) => {
     // Navigate to edit page
     await page.locator("tbody tr").first().click();
+    await expect(page).toHaveURL(/\/admin\?selected=/);
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Make a small change

@@ -17,17 +17,15 @@ test.describe("admin projects table", () => {
   });
 
   test("has expected columns", async ({ page }) => {
-    // Should have 6 columns (Student, Project, Context, Year, Status, Updated)
+    // Should have 4 columns (Student, Project, Context, Year)
     const headers = page.locator("thead th");
-    await expect(headers).toHaveCount(6);
+    await expect(headers).toHaveCount(4);
 
     // Verify expected column headers
     await expect(headers.nth(0)).toHaveText("Student");
     await expect(headers.nth(1)).toHaveText("Project");
     await expect(headers.nth(2)).toHaveText("Context");
     await expect(headers.nth(3)).toHaveText("Year");
-    await expect(headers.nth(4)).toHaveText("Status");
-    await expect(headers.nth(5)).toHaveText("Updated");
   });
 
   test("year filter works", async ({ page }) => {
@@ -35,7 +33,7 @@ test.describe("admin projects table", () => {
     const allRowsCount = await page.locator("tbody tr").count();
 
     // Select 2023-2024 year using the year filter select
-    const yearSelect = page.locator('select[name="year"]');
+    const yearSelect = page.locator(".filter-select");
     await yearSelect.selectOption("2023-2024");
 
     // Wait for page to reload with filter
@@ -47,18 +45,6 @@ test.describe("admin projects table", () => {
 
     // Should show Carol White's project
     await expect(page.locator("tbody")).toContainText("Carol White");
-  });
-
-  test("status filter works", async ({ page }) => {
-    // Select draft status
-    const statusSelect = page.locator('select[name="status"]');
-    await statusSelect.selectOption("draft");
-
-    // Wait for page to reload with filter
-    await page.waitForURL(/status=draft/);
-
-    // Should show Bob Jones's draft project
-    await expect(page.locator("tbody")).toContainText("Bob Jones");
   });
 
   test("search filter works", async ({ page }) => {
@@ -74,16 +60,17 @@ test.describe("admin projects table", () => {
     await expect(page.locator("tbody")).toContainText("Alice Smith");
   });
 
-  test("clicking row navigates to project detail", async ({ page }) => {
+  test("clicking row shows project detail in split view", async ({ page }) => {
     // Click on first row
     const firstRow = page.locator("tbody tr").first();
     await firstRow.click();
 
-    // Should navigate to project detail page
-    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+$/);
+    // Should stay on admin page but with selected parameter
+    await expect(page).toHaveURL(/\/admin\?selected=/);
 
     // Detail panel should show project info
     await expect(page.locator(".admin-detail-panel")).toBeVisible();
+    await expect(page.locator(".admin-detail-content")).toBeVisible();
   });
 
   test("row shows status styling", async ({ page }) => {
@@ -101,8 +88,9 @@ test.describe("admin projects table", () => {
     const bobRow = page.locator("tbody tr", { hasText: "Bob Jones" });
     await bobRow.click();
 
-    // Wait for detail page to load
-    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+$/);
+    // Wait for split view to show the project
+    await expect(page).toHaveURL(/\/admin\?selected=/);
+    await expect(page.locator(".admin-detail-content")).toBeVisible();
 
     // Navigate to edit page
     await page.locator(".detail-action-btn", { hasText: "Edit" }).click();

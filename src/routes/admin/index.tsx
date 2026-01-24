@@ -38,12 +38,13 @@ export const adminRoutes = new Hono<{
 // Apply auth middleware to all admin routes
 adminRoutes.use("*", authMiddleware, requireAdmin);
 
-// Projects list page
+// Projects list page (with optional selected project in split view)
 adminRoutes.get("/", async (c) => {
   const user = c.get("user");
   const yearFilter = c.req.query("year");
   const statusFilter = c.req.query("status");
   const search = c.req.query("q");
+  const selectedId = c.req.query("selected");
 
   // Build query
   let query = "SELECT * FROM projects";
@@ -82,92 +83,217 @@ adminRoutes.get("/", async (c) => {
 
   const years = yearResults.map((r) => r.academic_year);
 
-  // Get total count
-  const countResult = await c.env.DB.prepare("SELECT COUNT(*) as count FROM projects").first<{ count: number }>();
-  const totalCount = countResult?.count ?? 0;
+  // Load selected project if any
+  let selectedProject: Project | null = null;
+  let selectedImages: ProjectImage[] = [];
+  if (selectedId) {
+    selectedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(selectedId).first<Project>();
+    if (selectedProject) {
+      const { results: imgs } = await c.env.DB.prepare(
+        "SELECT * FROM project_images WHERE project_id = ? ORDER BY sort_order ASC, id ASC"
+      )
+        .bind(selectedId)
+        .all<ProjectImage>();
+      selectedImages = imgs;
+    }
+  }
+
+  // Build URL helper that preserves current filters
+  const buildUrl = (params: Record<string, string | undefined>) => {
+    const current = new URLSearchParams();
+    if (yearFilter) current.set("year", yearFilter);
+    if (statusFilter) current.set("status", statusFilter);
+    if (search) current.set("q", search);
+    for (const [key, val] of Object.entries(params)) {
+      if (val) current.set(key, val);
+      else current.delete(key);
+    }
+    return `/admin?${current.toString()}`;
+  };
+
+  const socialLinks: string[] = selectedProject?.social_links ? JSON.parse(selectedProject.social_links) : [];
+  const tags: string[] = selectedProject?.tags ? JSON.parse(selectedProject.tags) : [];
 
   return c.html(
     <AdminLayout title="Projects" user={user}>
       <div class="admin-panel">
         <AdminTabs activeTab="projects" />
-        <div class="admin-list">
-          <div class="admin-list-header">
-            <h2>Projects</h2>
-            <div class="admin-filters">
-              <form method="get" action="/admin" class="search-container">
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Search..."
-                  value={search || ""}
-                  class="search-input"
-                  style="width: 140px;"
-                />
-                {yearFilter && <input type="hidden" name="year" value={yearFilter} />}
-                {statusFilter && <input type="hidden" name="status" value={statusFilter} />}
-              </form>
-              <select
-                name="year"
-                class="filter-select"
-                onchange="window.location.href='/admin?' + new URLSearchParams({...Object.fromEntries(new URLSearchParams(window.location.search)), year: this.value}).toString()"
-              >
-                <option value="">All years</option>
-                {years.map((y) => (
-                  <option value={y} selected={yearFilter === y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
-              <select
-                name="status"
-                class="filter-select"
-                onchange="window.location.href='/admin?' + new URLSearchParams({...Object.fromEntries(new URLSearchParams(window.location.search)), status: this.value}).toString()"
-              >
-                <option value="">All statuses</option>
-                {STATUSES.map((s) => (
-                  <option value={s} selected={statusFilter === s}>
-                    {formatStatus(s)}
-                  </option>
-                ))}
-              </select>
-              <span class="filter-count">
-                {projects.length} / {totalCount}
-              </span>
+        <div class={`admin-split ${selectedProject ? "has-selection" : ""}`}>
+          <div class="admin-list">
+            <div class="admin-list-header">
+              <h2>Projects</h2>
+              <div class="admin-filters">
+                <form method="get" action="/admin" class="search-container">
+                  <input type="text" name="q" placeholder="Search..." value={search || ""} class="search-input" />
+                  {yearFilter && <input type="hidden" name="year" value={yearFilter} />}
+                  {statusFilter && <input type="hidden" name="status" value={statusFilter} />}
+                  {selectedId && <input type="hidden" name="selected" value={selectedId} />}
+                </form>
+                <select
+                  name="year"
+                  class="filter-select"
+                  onchange="const params = new URLSearchParams(window.location.search); if (this.value) params.set('year', this.value); else params.delete('year'); window.location.href = '/admin?' + params.toString();"
+                >
+                  <option value="">All years</option>
+                  {years.map((y) => (
+                    <option value={y} selected={yearFilter === y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div class="admin-list-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Project</th>
+                    <th>Context</th>
+                    <th>Year</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {projects.map((project) => (
+                    <tr
+                      class={`row-clickable ${getStatusClass(project.status)} ${selectedId === project.id ? "row-selected" : ""}`}
+                      onclick={`window.location.href='${buildUrl({ selected: project.id })}'`}
+                    >
+                      <td>{project.student_name}</td>
+                      <td>{project.project_title}</td>
+                      <td>{project.context.replace(" Context", "")}</td>
+                      <td>{project.academic_year}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {projects.length === 0 && <div class="admin-list-message">No projects found.</div>}
             </div>
           </div>
-          <div class="admin-list-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Project</th>
-                  <th>Context</th>
-                  <th>Year</th>
-                  <th>Status</th>
-                  <th>Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {projects.map((project) => (
-                  <tr
-                    class={`row-clickable ${getStatusClass(project.status)}`}
-                    onclick={`window.location.href='/admin/projects/${project.id}'`}
-                  >
-                    <td>{project.student_name}</td>
-                    <td>{project.project_title}</td>
-                    <td>{project.context.replace(" Context", "")}</td>
-                    <td>{project.academic_year}</td>
-                    <td>
-                      <span class={`status-badge ${getStatusClass(project.status)}`}>
-                        {formatStatus(project.status)}
-                      </span>
-                    </td>
-                    <td>{formatDate(project.updated_at)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {projects.length === 0 && <div class="admin-list-message">No projects found.</div>}
+          <div class="admin-detail-panel">
+            {selectedProject ? (
+              <div class="admin-detail-content">
+                <div class="detail-header-row">
+                  <h3>{selectedProject.student_name}</h3>
+                  <div class="detail-header-actions">
+                    <span class={`status-badge ${getStatusClass(selectedProject.status)}`}>
+                      {formatStatus(selectedProject.status)}
+                    </span>
+                    <div class="detail-action-group">
+                      <a href={`/admin/projects/${selectedProject.id}/edit`} class="detail-action-btn has-label">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                      </a>
+                      <a href={getStudentUrl(selectedProject)} target="_blank" rel="noopener" class="detail-action-btn">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <p class="detail-title">{selectedProject.project_title}</p>
+                <p class="detail-program-context">
+                  <span class="detail-context">{selectedProject.context}</span>
+                </p>
+                <p class="detail-year">{selectedProject.academic_year}</p>
+
+                {selectedProject.bio && (
+                  <div class="detail-section">
+                    <div class="detail-section-label">Bio</div>
+                    <div class="detail-text">{selectedProject.bio}</div>
+                  </div>
+                )}
+
+                {selectedProject.description && (
+                  <div class="detail-section">
+                    <div class="detail-section-label">Description</div>
+                    <div class="detail-text">{selectedProject.description}</div>
+                  </div>
+                )}
+
+                {tags.length > 0 && (
+                  <div class="detail-section">
+                    <div class="detail-section-label">Tags</div>
+                    <div class="detail-text">{tags.join(", ")}</div>
+                  </div>
+                )}
+
+                {selectedImages.length > 0 && (
+                  <div class="detail-section">
+                    <div class="detail-section-label">Images ({selectedImages.length})</div>
+                    <div class="detail-images">
+                      {selectedImages.map((img) => (
+                        <div
+                          class={`detail-image-thumb ${img.cloudflare_id === selectedProject.main_image_id ? "detail-image-main" : ""}`}
+                        >
+                          <img src={getImageUrl(img.cloudflare_id, "thumb")} alt={img.caption || ""} loading="lazy" />
+                          {img.cloudflare_id === selectedProject.main_image_id && <span class="image-badge">Main</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {socialLinks.length > 0 && (
+                  <div class="detail-section">
+                    <div class="detail-section-label">Links</div>
+                    <div class="detail-links">
+                      {socialLinks.map((link) => (
+                        <a href={link} target="_blank" rel="noopener noreferrer" class="detail-link">
+                          {new URL(link).hostname}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div class="detail-metadata">
+                  <div class="detail-meta-item">
+                    <span class="meta-label">ID</span>
+                    <span class="meta-value">{selectedProject.id}</span>
+                  </div>
+                  <div class="detail-meta-item">
+                    <span class="meta-label">Slug</span>
+                    <span class="meta-value">{selectedProject.slug}</span>
+                  </div>
+                  <div class="detail-meta-item">
+                    <span class="meta-label">Created</span>
+                    <span class="meta-value">{formatDate(selectedProject.created_at)}</span>
+                  </div>
+                  <div class="detail-meta-item">
+                    <span class="meta-label">Updated</span>
+                    <span class="meta-value">{formatDate(selectedProject.updated_at)}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div class="admin-detail-empty">
+                <span class="detail-icon">←</span>
+                <span>Select a project to view details</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -640,7 +766,7 @@ adminRoutes.get("/projects/:id/edit", async (c) => {
                         </div>
                       ))}
                       <label class="upload-tile" id="upload-tile">
-                        <input type="file" accept="image/*" style="display: none;" id="image-upload-input" />
+                        <input type="file" accept="image/*" multiple style="display: none;" id="image-upload-input" />
                         <span class="upload-tile-icon">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
