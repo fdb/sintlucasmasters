@@ -21,6 +21,7 @@
     "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote",
     "create-admin": "node scripts/create-admin.mjs --local",
     "create-admin:remote": "node scripts/create-admin.mjs --remote",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p admin/tsconfig.json",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,html,css,md}\""
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "gray-matter": "^4.0.3",
     "prettier": "^3.8.1",
     "vite": "^6.1.1",
-    "wrangler": "^4.59.1"
+    "wrangler": "^4.59.1",
+    "typescript": "^5.8.0"
   }
 }

@@ -71,7 +71,7 @@ export function ProjectDetailPanel() {
 
           <div className="detail-program-context">
             <span className="detail-program">{String(projectDetail.project.program || "")}</span>
-            {projectDetail.project.program && projectDetail.project.context && " · "}
+            {projectDetail.project.program && projectDetail.project.context ? " · " : null}
             <span className="detail-context">{String(projectDetail.project.context || "")}</span>
           </div>
 
@@ -80,7 +80,7 @@ export function ProjectDetailPanel() {
           <div className="detail-section">
             <div className="detail-section-label">Images</div>
             <div className="detail-images">
-              {projectDetail.project.main_image_id && (
+              {projectDetail.project.main_image_id ? (
                 <div className="detail-image-thumb detail-image-main">
                   <img
                     src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${projectDetail.project.main_image_id}/thumb`}
@@ -89,7 +89,7 @@ export function ProjectDetailPanel() {
                   />
                   <span className="image-badge">Main</span>
                 </div>
-              )}
+              ) : null}
               {projectDetail.images.map((img, idx) => {
                 const cloudflareId = String(img.cloudflare_id || "");
                 if (!cloudflareId) return null;
@@ -106,21 +106,14 @@ export function ProjectDetailPanel() {
             </div>
           </div>
 
-          {projectDetail.project.bio && (
-            <div className="detail-section">
-              <div className="detail-section-label">Bio</div>
-              <div className="detail-text">{String(projectDetail.project.bio)}</div>
-            </div>
-          )}
-
-          {projectDetail.project.description && (
+          {projectDetail.project.description ? (
             <div className="detail-section">
               <div className="detail-section-label">Description</div>
               <div className="detail-text">{String(projectDetail.project.description)}</div>
             </div>
-          )}
+          ) : null}
 
-          {projectDetail.project.social_links && (
+          {projectDetail.project.social_links ? (
             <div className="detail-section">
               <div className="detail-section-label">Social Links</div>
               <div className="detail-links">
@@ -137,7 +130,7 @@ export function ProjectDetailPanel() {
                 ))}
               </div>
             </div>
-          )}
+          ) : null}
 
           <div className="detail-metadata">
             <div className="detail-meta-item">
@@ -160,12 +153,12 @@ export function ProjectDetailPanel() {
               <span className="meta-label">Updated</span>
               <span className="meta-value">{formatDate(projectDetail.project.updated_at)}</span>
             </div>
-            {projectDetail.project.user_id && (
+            {projectDetail.project.user_id ? (
               <div className="detail-meta-item">
                 <span className="meta-label">User ID</span>
                 <span className="meta-value">{String(projectDetail.project.user_id)}</span>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       )}

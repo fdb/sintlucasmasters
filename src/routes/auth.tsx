@@ -185,13 +185,11 @@ authPageRoutes.get("/verify", async (c) => {
         <h1>Confirm sign in</h1>
         <p>Click the button below to sign in as {result.email}</p>
 
-        <form method="POST" action={`/auth/verify?token=${encodeURIComponent(token)}`} class="auth-form">
+        <form method="post" action={`/auth/verify?token=${encodeURIComponent(token)}`} class="auth-form">
           <button type="submit">Sign in</button>
         </form>
 
-        <p class="auth-note">
-          If you didn't request this link, you can safely ignore this page.
-        </p>
+        <p class="auth-note">If you didn't request this link, you can safely ignore this page.</p>
       </div>
     </AdminLayout>
   );
