@@ -100,6 +100,17 @@ See `.env.template` for the list of required secret environment variables.
 - **Admin UI style**: Avoid rounded corners. Keep a strict black/white palette with mid‑gray shades for contrast.
 - **Dark mode support**: All design updates must work in both light and dark mode. Check `static/admin.css` for the theme variable patterns.
 
+## Before Completing a Task
+
+**IMPORTANT**: Before handing control back to the user, always run:
+
+1. `npm run typecheck` - Ensure all TypeScript types are correct
+2. `npm run test:e2e` - Ensure all E2E tests pass
+
+All checks must pass before informing the user that the task is complete. If tests fail:
+- Fix the issues if they are related to your changes
+- If the failure is unrelated to your changes or requires user input, inform the user about the failing tests and what attention is needed
+
 ## Development Phases
 
 1. **Phase 1**: D1 schema + import script (import old data)
