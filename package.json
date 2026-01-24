@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -k -n worker,admin -c blue,magenta \"npm run dev:worker\" \"npm run dev:admin\"",
+    "dev": "concurrently -k -n worker,admin -c blue,yellow \"npm run dev:worker\" \"npm run dev:admin\"",
     "dev:worker": "wrangler dev",
     "dev:e2e": "npm run build:admin && npm run test:e2e:db:setup && wrangler dev --port 5174 --persist-to .wrangler/e2e-state --var E2E_SKIP_AUTH:true",
     "dev:admin": "node scripts/build-admin.mjs --watch",
