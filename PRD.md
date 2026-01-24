@@ -267,12 +267,17 @@ admin/
 
 ### Phase 4.4: Admin API (Write Operations)
 
-- [ ] `POST /api/admin/projects/:id/status` - Change project status
+- [x] `PUT /api/admin/projects/:id` - Update project (including status change)
 - [ ] `POST /api/admin/unlock-all` - Bulk unlock current year projects
+- [x] `GET /api/admin/users/:id` - Get user detail
 - [ ] `GET /api/admin/users` - List all users
-- [ ] `POST /api/admin/users` - Create new user
+- [x] `POST /api/admin/users/create` - Create single user
+- [x] `POST /api/admin/users/bulk-create` - Bulk create users from CSV
 - [ ] `PATCH /api/admin/users/:id` - Update user (role, name)
-- [ ] `DELETE /api/admin/users/:id` - Delete user
+- [x] `DELETE /api/admin/users/:id` - Delete user
+- [x] `POST /api/admin/projects/:id/images/upload` - Upload image
+- [x] `PUT /api/admin/projects/:id/images/reorder` - Reorder images
+- [x] `DELETE /api/admin/projects/:id/images/:imageId` - Delete image
 
 ### Phase 4.5: Student Portal (SSR)
 
