@@ -22,6 +22,10 @@
 }
 
 /* Auth pages */
+.auth-container button {
+  margin-top: 1rem;
+}
+
 .auth-container {
   max-width: 400px;
   margin: 4rem auto;
@@ -111,6 +115,10 @@
 }
 
 /* Admin app */
+#root {
+  min-height: 100vh;
+}
+
 .admin-shell {
   display: flex;
   flex-direction: column;

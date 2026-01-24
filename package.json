@@ -6,13 +6,12 @@
     "dev": "concurrently -k -n worker,admin -c blue,magenta \"npm run dev:worker\" \"npm run dev:admin\"",
     "dev:worker": "wrangler dev",
     "dev:e2e": "npm run build:admin && npm run test:e2e:db:setup && wrangler dev --port 5174 --persist-to .wrangler/e2e-state --var E2E_SKIP_AUTH:true",
-    "dev:admin": "vite build --watch --config admin/vite.config.ts",
-    "dev:admin:serve": "vite --config admin/vite.config.ts",
+    "dev:admin": "node scripts/build-admin.mjs --watch",
     "test:e2e": "playwright test",
     "test:e2e:db:init": "wrangler d1 execute sintlucasmasters --local --persist-to .wrangler/e2e-state --file=./schema.sql",
     "test:e2e:db:seed": "node scripts/seed-e2e.mjs",
     "test:e2e:db:setup": "npm run test:e2e:db:init && npm run test:e2e:db:seed",
-    "build:admin": "vite build --config admin/vite.config.ts",
+    "build:admin": "node scripts/build-admin.mjs",
     "build": "wrangler deploy --dry-run",
     "deploy": "npm run build:admin && wrangler deploy --env=''",
     "db:init": "wrangler d1 execute sintlucasmasters --local --file=./schema.sql",
@@ -43,13 +42,12 @@
     "@playwright/test": "^1.57.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^8.2.2",
     "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
     "prettier": "^3.8.1",
-    "vite": "^6.1.1",
-    "wrangler": "^4.59.1",
-    "typescript": "^5.8.0"
+    "rolldown": "^1.0.0-rc.1",
+    "typescript": "^5.8.0",
+    "wrangler": "^4.59.1"
   }
 }
