@@ -1,15 +1,16 @@
 import { useAdminStore } from "../store/adminStore";
 
+const TABLES = ["projects", "users"] as const;
+
 export function AdminTabs() {
-  const { tables, activeTable, setActiveTable } = useAdminStore((state) => ({
-    tables: state.tables,
+  const { activeTable, setActiveTable } = useAdminStore((state) => ({
     activeTable: state.activeTable,
     setActiveTable: state.setActiveTable,
   }));
 
   return (
     <nav className="admin-tabs">
-      {tables.map((table) => (
+      {TABLES.map((table) => (
         <button
           key={table}
           type="button"

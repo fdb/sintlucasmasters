@@ -148,12 +148,6 @@ const USERS_COLUMNS = [
   { key: "role", label: "Role", formatter: formatRole },
 ];
 
-const PROJECT_IMAGES_COLUMNS = [
-  { key: "cloudflare_id", label: "Cloudflare ID" },
-  { key: "sort_order", label: "Sort order" },
-  { key: "caption", label: "Caption" },
-];
-
 function AdminProjectsTable(): React.ReactNode {
   const tableData = useAdminStore((s) => s.tableData);
   const tableStatus = useAdminStore((s) => s.tableStatus);
@@ -191,22 +185,6 @@ function AdminProjectsTable(): React.ReactNode {
           onRowClick={handleRowClick}
           onRowDoubleClick={handleRowDoubleClick}
         />
-      )}
-    </>
-  );
-}
-
-function AdminProjectImagesTable(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
-  const tableStatus = useAdminStore((s) => s.tableStatus);
-
-  const rows = tableData?.table === "project_images" ? tableData.rows : [];
-
-  return (
-    <>
-      <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={rows.length > 0} />
-      {tableStatus === "ready" && rows.length > 0 && (
-        <DataTable columns={PROJECT_IMAGES_COLUMNS} rows={rows} activeTable="project_images" />
       )}
     </>
   );
@@ -250,7 +228,6 @@ function renderTableHeader(activeTable: string): React.ReactNode {
 
 function renderTableContent(activeTable: string): React.ReactNode {
   if (activeTable === "projects") return <AdminProjectsTable />;
-  if (activeTable === "project_images") return <AdminProjectImagesTable />;
   if (activeTable === "users") return <AdminUsersTable />;
   return null;
 }

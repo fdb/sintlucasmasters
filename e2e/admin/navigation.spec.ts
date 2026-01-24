@@ -29,11 +29,6 @@ test.describe("admin navigation", () => {
     await expect(tabs.filter({ hasText: "users" })).toHaveClass(/active/);
     await expect(page.locator(".admin-list h2")).toHaveText("users");
 
-    // Click on project images tab
-    await tabs.filter({ hasText: "project images" }).click();
-    await expect(tabs.filter({ hasText: "project images" })).toHaveClass(/active/);
-    await expect(page.locator(".admin-list h2")).toHaveText("project images");
-
     // Click back to projects
     await tabs.filter({ hasText: "projects" }).click();
     await expect(tabs.filter({ hasText: "projects" })).toHaveClass(/active/);
