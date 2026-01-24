@@ -104,10 +104,12 @@ See `.env.template` for the list of required secret environment variables.
 
 **IMPORTANT**: Before handing control back to the user, always run:
 
-1. `npm run typecheck` - Ensure all TypeScript types are correct
-2. `npm run test:e2e` - Ensure all E2E tests pass
+1. `npm run format` - Format code using Prettier
+2. `npm run typecheck` - Ensure all TypeScript types are correct
+3. `npm run test:e2e` - Ensure all E2E tests pass
 
 All checks must pass before informing the user that the task is complete. If tests fail:
+
 - Fix the issues if they are related to your changes
 - If the failure is unrelated to your changes or requires user input, inform the user about the failing tests and what attention is needed
 
