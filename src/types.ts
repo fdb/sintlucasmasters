@@ -12,6 +12,8 @@ export type Bindings = {
   // Cloudflare Images
   CLOUDFLARE_ACCOUNT_ID: string;
   CLOUDFLARE_API_TOKEN: string;
+  // E2E testing
+  E2E_SKIP_AUTH?: string;
 };
 
 export type UserRole = "student" | "editor" | "admin";

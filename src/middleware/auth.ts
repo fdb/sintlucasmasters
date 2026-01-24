@@ -23,10 +23,25 @@ declare module "hono" {
 
 type AuthBindings = {
   JWT_SECRET: string;
+  E2E_SKIP_AUTH?: string;
+};
+
+// E2E test user - matches the seeded admin in seed-e2e.mjs
+const E2E_TEST_USER: AuthUser = {
+  userId: "e2e-admin-001",
+  email: "e2e-admin@example.com",
+  role: "admin",
 };
 
 // Parse JWT from cookie and attach user to context (does not enforce auth)
 export async function authMiddleware(c: Context<{ Bindings: AuthBindings }>, next: Next): Promise<Response | void> {
+  // E2E bypass: inject fake admin user when E2E_SKIP_AUTH is enabled
+  if (c.env.E2E_SKIP_AUTH === "true") {
+    c.set("user", E2E_TEST_USER);
+    await next();
+    return;
+  }
+
   const token = getCookie(c, AUTH_COOKIE_NAME);
 
   if (token) {
