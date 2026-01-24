@@ -1,6 +1,7 @@
 import { Pencil, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 export function ProjectDetailPanel() {
   const {
@@ -187,45 +188,24 @@ export function ProjectDetailPanel() {
         </div>
       )}
 
-      {/* Delete confirmation dialog */}
-      {deleteConfirmOpen && (
-        <div className="confirm-overlay" onClick={closeDeleteConfirm}>
-          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <h3>Delete project?</h3>
-            <p>
-              Are you sure you want to delete{" "}
-              <strong>
-                {String(projectDetail?.project.student_name || "")}'s project "
-                {String(projectDetail?.project.project_title || "")}"
-              </strong>
-              ? This action cannot be undone.
-            </p>
-            <div className="confirm-actions">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={closeDeleteConfirm}
-                disabled={deleteStatus === "loading"}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={deleteProject}
-                disabled={deleteStatus === "loading"}
-              >
-                {deleteStatus === "loading" ? "Deleting…" : "Delete"}
-              </button>
-            </div>
-            {deleteStatus === "error" && (
-              <p className="error-message" style={{ marginTop: "1rem" }}>
-                Failed to delete project. Please try again.
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        title="Delete project?"
+        description={
+          <>
+            Are you sure you want to delete{" "}
+            <strong>
+              {String(projectDetail?.project.student_name || "")}'s project "
+              {String(projectDetail?.project.project_title || "")}"
+            </strong>
+            ? This action cannot be undone.
+          </>
+        }
+        onCancel={closeDeleteConfirm}
+        onConfirm={deleteProject}
+        isLoading={deleteStatus === "loading"}
+        errorMessage={deleteStatus === "error" ? "Failed to delete project. Please try again." : null}
+      />
     </div>
   );
 }

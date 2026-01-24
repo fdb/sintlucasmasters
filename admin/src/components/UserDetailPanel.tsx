@@ -1,6 +1,7 @@
 import { Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 function formatRole(role: string): string {
   return role.charAt(0).toUpperCase() + role.slice(1);
@@ -99,40 +100,19 @@ export function UserDetailPanel() {
         </div>
       )}
 
-      {/* Delete confirmation dialog */}
-      {deleteConfirmOpen && (
-        <div className="confirm-overlay" onClick={closeDeleteConfirm}>
-          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <h3>Delete user?</h3>
-            <p>
-              Are you sure you want to delete <strong>{userDetail?.user.email}</strong>? This action cannot be undone.
-            </p>
-            <div className="confirm-actions">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={closeDeleteConfirm}
-                disabled={deleteStatus === "loading"}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={deleteUser}
-                disabled={deleteStatus === "loading"}
-              >
-                {deleteStatus === "loading" ? "Deleting…" : "Delete"}
-              </button>
-            </div>
-            {deleteStatus === "error" && (
-              <p className="error-message" style={{ marginTop: "1rem" }}>
-                Failed to delete user. Please try again.
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        title="Delete user?"
+        description={
+          <>
+            Are you sure you want to delete <strong>{userDetail?.user.email}</strong>? This action cannot be undone.
+          </>
+        }
+        onCancel={closeDeleteConfirm}
+        onConfirm={deleteUser}
+        isLoading={deleteStatus === "loading"}
+        errorMessage={deleteStatus === "error" ? "Failed to delete user. Please try again." : null}
+      />
     </div>
   );
 }

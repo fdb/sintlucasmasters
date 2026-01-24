@@ -1,5 +1,6 @@
 import { useMemo, useState, useRef, forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
+import { ConfirmDialog } from "./ConfirmDialog";
 import {
   DndContext,
   DragOverlay,
@@ -96,13 +97,15 @@ export function EditImagesGrid() {
     fileInputRef.current?.click();
   };
 
-  const handleDeleteConfirm = async (imageId: string) => {
-    setConfirmDeleteId(null);
+  const handleDeleteConfirm = async () => {
+    if (!confirmDeleteId) return;
+    const imageId = confirmDeleteId;
     setDeletingId(imageId);
     try {
       await deleteImage(imageId);
     } finally {
       setDeletingId(null);
+      setConfirmDeleteId(null);
     }
   };
 
@@ -116,6 +119,14 @@ export function EditImagesGrid() {
     if (!activeId) return null;
     return editImages.find((img) => img.id === activeId) || null;
   }, [editImages, activeId]);
+
+  const confirmDeleteIndex = confirmDeleteId ? editImages.findIndex((img) => img.id === confirmDeleteId) : -1;
+  const confirmDeleteImage = confirmDeleteId ? editImages.find((img) => img.id === confirmDeleteId) || null : null;
+  const confirmDeleteLabel = confirmDeleteImage?.caption
+    ? `"${confirmDeleteImage.caption}"`
+    : confirmDeleteIndex >= 0
+      ? `Image ${confirmDeleteIndex + 1}`
+      : "this image";
 
   const dropAnimation = useMemo(
     () => ({
@@ -159,10 +170,7 @@ export function EditImagesGrid() {
                 onSetMain={setMainImage}
                 onEditCaption={() => setCaptionEditId(img.id)}
                 onDeleteClick={() => setConfirmDeleteId(img.id)}
-                isConfirmingDelete={confirmDeleteId === img.id}
                 isDeleting={deletingId === img.id}
-                onCancelDelete={() => setConfirmDeleteId(null)}
-                onConfirmDelete={() => handleDeleteConfirm(img.id)}
               />
             ))}
 
@@ -229,6 +237,19 @@ export function EditImagesGrid() {
           onClose={() => setCaptionEditId(null)}
         />
       )}
+
+      <ConfirmDialog
+        open={Boolean(confirmDeleteId)}
+        title="Delete image?"
+        description={
+          <>
+            Are you sure you want to delete <strong>{confirmDeleteLabel}</strong>? This action cannot be undone.
+          </>
+        }
+        onCancel={() => setConfirmDeleteId(null)}
+        onConfirm={handleDeleteConfirm}
+        isLoading={confirmDeleteId ? deletingId === confirmDeleteId : false}
+      />
     </div>
   );
 }
@@ -285,10 +306,7 @@ type SortableImageItemProps = {
   onSetMain: (cloudflareId: string) => void;
   onEditCaption: () => void;
   onDeleteClick: () => void;
-  isConfirmingDelete: boolean;
   isDeleting: boolean;
-  onCancelDelete: () => void;
-  onConfirmDelete: () => void;
 };
 
 function SortableImageItem({
@@ -298,10 +316,7 @@ function SortableImageItem({
   onSetMain,
   onEditCaption,
   onDeleteClick,
-  isConfirmingDelete,
   isDeleting,
-  onCancelDelete,
-  onConfirmDelete,
 }: SortableImageItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: image.id,
@@ -320,10 +335,7 @@ function SortableImageItem({
       onSetMain={onSetMain}
       onEditCaption={onEditCaption}
       onDeleteClick={onDeleteClick}
-      isConfirmingDelete={isConfirmingDelete}
       isDeleting={isDeleting}
-      onCancelDelete={onCancelDelete}
-      onConfirmDelete={onConfirmDelete}
       className={isDragging ? "is-dragging" : ""}
       style={style}
       ref={setNodeRef}
@@ -339,31 +351,14 @@ type ImageTileProps = {
   onSetMain?: (cloudflareId: string) => void;
   onEditCaption?: () => void;
   onDeleteClick?: () => void;
-  isConfirmingDelete?: boolean;
   isDeleting?: boolean;
-  onCancelDelete?: () => void;
-  onConfirmDelete?: () => void;
   className?: string;
   style?: CSSProperties;
   dragProps?: HTMLAttributes<HTMLDivElement>;
 };
 
 const ImageTile = forwardRef<HTMLDivElement, ImageTileProps>(function ImageTile(
-  {
-    image,
-    index,
-    mainImageId,
-    onSetMain,
-    onEditCaption,
-    onDeleteClick,
-    isConfirmingDelete,
-    isDeleting,
-    onCancelDelete,
-    onConfirmDelete,
-    className,
-    style,
-    dragProps,
-  },
+  { image, index, mainImageId, onSetMain, onEditCaption, onDeleteClick, isDeleting, className, style, dragProps },
   ref
 ) {
   const isMain = mainImageId === image.cloudflare_id;
@@ -390,37 +385,8 @@ const ImageTile = forwardRef<HTMLDivElement, ImageTileProps>(function ImageTile(
         </div>
       )}
 
-      {/* Delete confirmation overlay */}
-      {isConfirmingDelete && !isDeleting && (
-        <div className="delete-confirm-overlay">
-          <span className="delete-confirm-text">Delete?</span>
-          <div className="delete-confirm-actions">
-            <button
-              type="button"
-              className="delete-confirm-btn delete-confirm-yes"
-              onClick={(e) => {
-                e.stopPropagation();
-                onConfirmDelete?.();
-              }}
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              className="delete-confirm-btn delete-confirm-no"
-              onClick={(e) => {
-                e.stopPropagation();
-                onCancelDelete?.();
-              }}
-            >
-              No
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Action buttons - hide during delete confirmation or deleting */}
-      {!isConfirmingDelete && !isDeleting && onSetMain && (
+      {/* Action buttons - hide during deleting */}
+      {!isDeleting && onSetMain && (
         <div className="edit-image-actions">
           <button
             type="button"
@@ -452,9 +418,7 @@ const ImageTile = forwardRef<HTMLDivElement, ImageTileProps>(function ImageTile(
         </div>
       )}
 
-      {image.caption && !isConfirmingDelete && !isDeleting && (
-        <span className="edit-image-caption">{image.caption}</span>
-      )}
+      {image.caption && !isDeleting && <span className="edit-image-caption">{image.caption}</span>}
     </div>
   );
 });
