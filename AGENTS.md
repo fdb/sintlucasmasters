@@ -79,6 +79,10 @@ npm run deploy              # Deploy to Cloudflare
 # Admin
 npm run create-admin <email>         # Create admin user locally
 npm run create-admin:remote <email>  # Create admin user on production
+
+## Local workflow
+
+- Run `npm run typecheck` every time a change is made.
 ```
 
 ## Environment Variables
