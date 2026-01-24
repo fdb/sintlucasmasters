@@ -169,11 +169,11 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   return c.json({ project });
 });
 
-// Reorder project images
+// Reorder project images and update captions
 adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
   const projectId = c.req.param("id");
   const body = await c.req.json<{
-    imageOrder: Array<{ id: string; sort_order: number }>;
+    imageOrder: Array<{ id: string; sort_order: number; caption?: string | null }>;
     mainImageId?: string;
   }>();
 
@@ -183,13 +183,11 @@ adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
     return c.json({ error: "Project not found" }, 404);
   }
 
-  // Update sort orders
+  // Update sort orders and captions
   const statements = body.imageOrder.map((img) =>
-    c.env.DB.prepare("UPDATE project_images SET sort_order = ? WHERE id = ? AND project_id = ?").bind(
-      img.sort_order,
-      img.id,
-      projectId
-    )
+    c.env.DB.prepare(
+      "UPDATE project_images SET sort_order = ?, caption = ? WHERE id = ? AND project_id = ?"
+    ).bind(img.sort_order, img.caption ?? null, img.id, projectId)
   );
 
   // Update main image if provided
@@ -212,4 +210,227 @@ adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
     .all<ProjectImage>();
 
   return c.json({ images: images ?? [] });
+});
+
+// Generate a random alphanumeric ID (22 chars, similar to YouTube video IDs)
+function generateRandomId(length = 22): string {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const randomValues = new Uint8Array(length);
+  crypto.getRandomValues(randomValues);
+  return Array.from(randomValues, (v) => chars[v % chars.length]).join("");
+}
+
+// Slugify a string for use in image paths
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with hyphens
+    .replace(/^-+|-+$/g, "") // Trim hyphens from ends
+    .substring(0, 50); // Limit length
+}
+
+// Shorten academic year: "2024-2025" -> "24-25"
+function shortenAcademicYear(year: string): string {
+  const match = year.match(/^(\d{4})-(\d{4})$/);
+  if (match) {
+    return `${match[1].slice(2)}-${match[2].slice(2)}`;
+  }
+  return year.replace(/[^a-z0-9-]/gi, "").substring(0, 10);
+}
+
+// Get file extension from filename or mime type
+function getFileExtension(filename: string, mimeType: string): string {
+  // Try to get from filename first
+  const extMatch = filename.match(/\.([a-z0-9]+)$/i);
+  if (extMatch) {
+    return extMatch[1].toLowerCase();
+  }
+  // Fallback to mime type
+  const mimeExtensions: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/gif": "gif",
+    "image/webp": "webp",
+    "image/heic": "heic",
+    "image/heif": "heif",
+  };
+  return mimeExtensions[mimeType] || "jpg";
+}
+
+// Upload image to Cloudflare Images
+adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
+  const projectId = c.req.param("id");
+
+  // Get project with required fields for image path
+  const project = await c.env.DB.prepare(
+    "SELECT id, student_name, academic_year FROM projects WHERE id = ?"
+  )
+    .bind(projectId)
+    .first<{ id: string; student_name: string; academic_year: string }>();
+
+  if (!project) {
+    return c.json({ error: "Project not found" }, 404);
+  }
+
+  // Validate required fields for image path
+  if (!project.student_name || !project.student_name.trim()) {
+    return c.json({ error: "Student name is required before uploading images" }, 400);
+  }
+  if (!project.academic_year || !project.academic_year.trim()) {
+    return c.json({ error: "Academic year is required before uploading images" }, 400);
+  }
+
+  // Get the form data with the file
+  const formData = await c.req.formData();
+  const file = formData.get("file") as File | null;
+
+  if (!file) {
+    return c.json({ error: "No file provided" }, 400);
+  }
+
+  // Validate file type
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/heic", "image/heif"];
+  if (!allowedTypes.includes(file.type)) {
+    return c.json({ error: "Invalid file type. Allowed: JPEG, PNG, GIF, WebP, HEIC" }, 400);
+  }
+
+  // Generate custom image ID with prefix
+  // Format: slam/{year-short}/{student-slug}/{randomId}.{ext}
+  const yearShort = shortenAcademicYear(project.academic_year);
+  const studentSlug = slugify(project.student_name);
+  const randomId = generateRandomId();
+  const extension = getFileExtension(file.name, file.type);
+  const customImageId = `slam/${yearShort}/${studentSlug}/${randomId}.${extension}`;
+
+  // Upload to Cloudflare Images with custom ID
+  const cfFormData = new FormData();
+  cfFormData.append("file", file);
+  cfFormData.append("id", customImageId);
+
+  const uploadResponse = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+      },
+      body: cfFormData,
+    }
+  );
+
+  const uploadResult = (await uploadResponse.json()) as {
+    success: boolean;
+    errors?: Array<{ message: string }>;
+    result?: { id: string };
+  };
+
+  if (!uploadResult.success || !uploadResult.result) {
+    const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
+    // Check for dimension error
+    if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
+      return c.json({ error: "Image too large. Maximum dimensions: 3000x3000 pixels" }, 400);
+    }
+    return c.json({ error: errorMsg }, 400);
+  }
+
+  const cloudflareId = uploadResult.result.id;
+
+  // Get current max sort_order
+  const maxOrder = await c.env.DB.prepare(
+    "SELECT MAX(sort_order) as max_order FROM project_images WHERE project_id = ?"
+  )
+    .bind(projectId)
+    .first<{ max_order: number | null }>();
+
+  const newSortOrder = (maxOrder?.max_order ?? -1) + 1;
+
+  // Generate unique ID
+  const imageId = crypto.randomUUID();
+
+  // Insert into database
+  await c.env.DB.prepare(
+    "INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption) VALUES (?, ?, ?, ?, NULL)"
+  )
+    .bind(imageId, projectId, cloudflareId, newSortOrder)
+    .run();
+
+  // Return the new image
+  const newImage = await c.env.DB.prepare("SELECT * FROM project_images WHERE id = ?")
+    .bind(imageId)
+    .first<ProjectImage>();
+
+  return c.json({ image: newImage });
+});
+
+// Delete image
+adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
+  const projectId = c.req.param("id");
+  const imageId = c.req.param("imageId");
+
+  // Get the image to delete
+  const image = await c.env.DB.prepare(
+    "SELECT * FROM project_images WHERE id = ? AND project_id = ?"
+  )
+    .bind(imageId, projectId)
+    .first<ProjectImage>();
+
+  if (!image) {
+    return c.json({ error: "Image not found" }, 404);
+  }
+
+  // Delete from Cloudflare Images
+  try {
+    await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+        },
+      }
+    );
+  } catch {
+    // Continue even if Cloudflare delete fails - we still want to remove from DB
+  }
+
+  // Delete from database
+  await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(imageId).run();
+
+  // Check if this was the main image
+  const project = await c.env.DB.prepare("SELECT main_image_id FROM projects WHERE id = ?")
+    .bind(projectId)
+    .first<{ main_image_id: string }>();
+
+  if (project?.main_image_id === image.cloudflare_id) {
+    // Set a new main image if there are remaining images
+    const firstImage = await c.env.DB.prepare(
+      "SELECT cloudflare_id FROM project_images WHERE project_id = ? ORDER BY sort_order ASC LIMIT 1"
+    )
+      .bind(projectId)
+      .first<{ cloudflare_id: string }>();
+
+    if (firstImage) {
+      await c.env.DB.prepare("UPDATE projects SET main_image_id = ?, updated_at = datetime('now') WHERE id = ?")
+        .bind(firstImage.cloudflare_id, projectId)
+        .run();
+    }
+  }
+
+  // Reorder remaining images
+  const { results: remainingImages } = await c.env.DB.prepare(
+    "SELECT id FROM project_images WHERE project_id = ? ORDER BY sort_order ASC"
+  )
+    .bind(projectId)
+    .all<{ id: string }>();
+
+  if (remainingImages && remainingImages.length > 0) {
+    const reorderStatements = remainingImages.map((img, idx) =>
+      c.env.DB.prepare("UPDATE project_images SET sort_order = ? WHERE id = ?").bind(idx, img.id)
+    );
+    await c.env.DB.batch(reorderStatements);
+  }
+
+  return c.json({ success: true });
 });

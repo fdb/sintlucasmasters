@@ -17,6 +17,8 @@ database_id = "4227d715-382f-416a-aa9c-c5da32847400"
 # AWS_ACCESS_KEY_ID - AWS IAM access key for SES
 # AWS_SECRET_ACCESS_KEY - AWS IAM secret key for SES
 # AWS_REGION - AWS region for SES (e.g., eu-west-1)
+# CLOUDFLARE_ACCOUNT_ID - Cloudflare account ID for Images API
+# CLOUDFLARE_API_TOKEN - Cloudflare API token with Images permissions
 
 [vars]
 APP_BASE_URL = "https://dev.sintlucasmasters.com"

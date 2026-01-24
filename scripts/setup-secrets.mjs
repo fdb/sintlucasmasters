@@ -8,7 +8,7 @@ const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const envPath = resolve(projectRoot, '.env');
 dotenv.config({ path: envPath });
 
-const requiredKeys = ['RESEND_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION'];
+const requiredKeys = ['RESEND_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION', 'CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_API_TOKEN'];
 const optionalKeysLocal = ['APP_BASE_URL', 'SES_CONFIGURATION_SET'];
 const optionalKeysRemote = ['SES_CONFIGURATION_SET'];
 

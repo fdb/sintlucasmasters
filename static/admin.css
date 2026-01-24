@@ -1196,6 +1196,291 @@ tr.status-draft td:first-child {
 }
 
 /* =====================================================
+   Media Manager & Upload Widget
+   ===================================================== */
+
+.media-manager {
+  position: relative;
+}
+
+/* Upload Tile */
+.upload-tile {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  background: var(--admin-bg);
+  border: 2px dashed var(--admin-border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.upload-tile:hover {
+  border-color: var(--black);
+  background: var(--admin-bg-hover);
+}
+
+.upload-tile:hover .upload-tile-icon {
+  transform: scale(1.1);
+}
+
+.upload-tile.is-uploading {
+  border-color: var(--gray);
+  cursor: wait;
+}
+
+.upload-tile:disabled {
+  opacity: 0.7;
+}
+
+.upload-tile-icon {
+  color: var(--gray);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.upload-tile:hover .upload-tile-icon {
+  color: var(--black);
+}
+
+.upload-tile-spinner {
+  color: var(--gray);
+  animation: spin 1s linear infinite;
+}
+
+.upload-tile-label {
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+}
+
+.upload-tile:hover .upload-tile-label {
+  color: var(--black);
+}
+
+.upload-tile.is-blocked {
+  border-color: var(--admin-border);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.upload-tile.is-blocked:hover {
+  border-color: var(--admin-border);
+  background: var(--admin-bg);
+}
+
+.upload-tile.is-blocked:hover .upload-tile-icon,
+.upload-tile.is-blocked:hover .upload-tile-label {
+  color: var(--gray);
+}
+
+/* Upload blocked message */
+.upload-blocked-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  color: #a16207;
+  font-size: 0.75rem;
+}
+
+:root[data-theme="dark"] .upload-blocked-message {
+  background: #2d2a1f;
+  border-color: #5c5526;
+  color: #fcd34d;
+}
+
+/* Upload Error */
+.upload-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 0.75rem;
+}
+
+:root[data-theme="dark"] .upload-error {
+  background: #2d1f1f;
+  border-color: #5c2626;
+  color: #f87171;
+}
+
+/* Delete Progress Overlay */
+.delete-progress-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.delete-progress-spinner {
+  color: #fff;
+  animation: spin 1s linear infinite;
+}
+
+/* Delete Confirmation Overlay */
+.delete-confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.delete-confirm-text {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+.delete-confirm-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.delete-confirm-btn {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.delete-confirm-yes {
+  background: #dc2626;
+  color: #fff;
+}
+
+.delete-confirm-yes:hover {
+  background: #b91c1c;
+}
+
+.delete-confirm-no {
+  background: #4b5563;
+  color: #fff;
+}
+
+.delete-confirm-no:hover {
+  background: #6b7280;
+}
+
+/* Delete action button styling */
+.edit-image-action-delete:hover {
+  background: #dc2626;
+}
+
+/* =====================================================
+   Caption Editor Modal
+   ===================================================== */
+
+.caption-editor-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.caption-editor {
+  width: 90%;
+  max-width: 400px;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.caption-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-bg-alt);
+}
+
+.caption-editor-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.caption-editor-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.caption-editor-close:hover {
+  color: var(--black);
+}
+
+.caption-editor-input {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  line-height: 1.5;
+  background: var(--admin-bg);
+  color: var(--black);
+  border: none;
+  border-bottom: 1px solid var(--admin-border);
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+}
+
+.caption-editor-input:focus {
+  background: var(--admin-bg-hover);
+}
+
+.caption-editor-input::placeholder {
+  color: var(--gray);
+}
+
+.caption-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--admin-bg-alt);
+}
+
+/* =====================================================
    Tags Input
    ===================================================== */
 

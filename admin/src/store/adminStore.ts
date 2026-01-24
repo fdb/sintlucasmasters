@@ -93,6 +93,11 @@ type AdminState = {
   removeSocialLink: (index: number) => void;
   moveEditImage: (activeId: string, overId: string) => void;
   setMainImage: (cloudflareId: string) => void;
+  updateImageCaption: (imageId: string, caption: string) => void;
+  uploadImages: (files: File[]) => Promise<void>;
+  deleteImage: (imageId: string) => Promise<void>;
+  uploadStatus: "idle" | "uploading" | "error";
+  uploadError: string | null;
   saveProject: () => Promise<void>;
 };
 
@@ -189,6 +194,8 @@ export const useAdminStore = create<AdminState>()(
       editDraft: null,
       editImages: [],
       saveStatus: "idle",
+      uploadStatus: "idle",
+      uploadError: null,
       newTag: "",
       setDarkMode: (value) => set({ darkMode: value }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
@@ -427,6 +434,102 @@ export const useAdminStore = create<AdminState>()(
           };
         });
       },
+      updateImageCaption: (imageId, caption) => {
+        set((state) => ({
+          editImages: state.editImages.map((img) =>
+            img.id === imageId ? { ...img, caption: caption || null } : img
+          ),
+        }));
+      },
+      uploadImages: async (files) => {
+        const { selectedProjectId } = get();
+        if (!selectedProjectId || files.length === 0) return;
+
+        set({ uploadStatus: "uploading", uploadError: null });
+
+        try {
+          for (const file of files) {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const res = await fetch(`/api/admin/projects/${selectedProjectId}/images/upload`, {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!res.ok) {
+              const error = (await res.json()) as { error?: string };
+              throw new Error(error.error || `Failed to upload ${file.name}`);
+            }
+
+            const data = (await res.json()) as { image: ProjectImage };
+            set((state) => ({
+              editImages: [...state.editImages, {
+                id: data.image.id,
+                cloudflare_id: data.image.cloudflare_id,
+                sort_order: data.image.sort_order,
+                caption: data.image.caption,
+              }],
+            }));
+
+            // If this is the first image, set it as main
+            const { editImages, editDraft } = get();
+            if (editImages.length === 1 && editDraft && !editDraft.main_image_id) {
+              set({
+                editDraft: {
+                  ...editDraft,
+                  main_image_id: data.image.cloudflare_id,
+                },
+              });
+            }
+          }
+
+          set({ uploadStatus: "idle" });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Upload failed";
+          set({ uploadStatus: "error", uploadError: message });
+          setTimeout(() => set({ uploadStatus: "idle", uploadError: null }), 3000);
+        }
+      },
+      deleteImage: async (imageId) => {
+        const { selectedProjectId, editImages, editDraft } = get();
+        if (!selectedProjectId) return;
+
+        const imageToDelete = editImages.find((img) => img.id === imageId);
+        if (!imageToDelete) return;
+
+        try {
+          const res = await fetch(`/api/admin/projects/${selectedProjectId}/images/${imageId}`, {
+            method: "DELETE",
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to delete image");
+          }
+
+          // Remove from state
+          const newImages = editImages.filter((img) => img.id !== imageId);
+
+          // Update sort orders
+          const reorderedImages = newImages.map((img, idx) => ({
+            ...img,
+            sort_order: idx,
+          }));
+
+          // If deleted image was main, set first remaining as main
+          let newMainImageId = editDraft?.main_image_id || "";
+          if (editDraft && imageToDelete.cloudflare_id === editDraft.main_image_id) {
+            newMainImageId = reorderedImages[0]?.cloudflare_id || "";
+          }
+
+          set({
+            editImages: reorderedImages,
+            editDraft: editDraft ? { ...editDraft, main_image_id: newMainImageId } : null,
+          });
+        } catch (err) {
+          console.error("Delete image error:", err);
+        }
+      },
       saveProject: async () => {
         const { editDraft, selectedProjectId, editImages } = get();
         if (!editDraft || !selectedProjectId) return;
@@ -466,6 +569,7 @@ export const useAdminStore = create<AdminState>()(
                 imageOrder: editImages.map((img) => ({
                   id: img.id,
                   sort_order: img.sort_order,
+                  caption: img.caption,
                 })),
                 mainImageId: editDraft.main_image_id,
               }),
