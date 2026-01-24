@@ -51,9 +51,7 @@ export function UserDetailPanel() {
           <div className="detail-header-row">
             <h3>{userDetail.user.name || userDetail.user.email}</h3>
             <div className="detail-header-actions">
-              <div className={`role-pill role-${userDetail.user.role}`}>
-                {formatRole(userDetail.user.role)}
-              </div>
+              <div className={`role-pill role-${userDetail.user.role}`}>{formatRole(userDetail.user.role)}</div>
               <div className="detail-action-group">
                 <button
                   type="button"
@@ -107,8 +105,7 @@ export function UserDetailPanel() {
           <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
             <h3>Delete user?</h3>
             <p>
-              Are you sure you want to delete <strong>{userDetail?.user.email}</strong>?
-              This action cannot be undone.
+              Are you sure you want to delete <strong>{userDetail?.user.email}</strong>? This action cannot be undone.
             </p>
             <div className="confirm-actions">
               <button

@@ -197,7 +197,8 @@ export function EditProjectModal() {
                 <div className="edit-section-content">
                   <EditImagesGrid />
                   <p className="edit-images-hint">
-                    <GripVertical size={12} style={{ display: "inline", verticalAlign: "middle" }} /> Drag images to reorder. Click the star to set as main image.
+                    <GripVertical size={12} style={{ display: "inline", verticalAlign: "middle" }} /> Drag images to
+                    reorder. Click the star to set as main image.
                   </p>
                 </div>
               </div>

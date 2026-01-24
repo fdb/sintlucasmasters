@@ -13,12 +13,7 @@ import {
   type DragEndEvent,
   type DragCancelEvent,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  rectSortingStrategy,
-  useSortable,
-  sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
+import { SortableContext, rectSortingStrategy, useSortable, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Star, Plus, Trash2, X, AlertCircle, Loader2, Type } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
@@ -115,13 +110,8 @@ export function EditImagesGrid() {
   const activeIndex = activeId ? editImages.findIndex((img) => img.id === activeId) : -1;
 
   // Check if required fields are filled for upload
-  const canUpload =
-    editDraft &&
-    editDraft.student_name.trim() !== "" &&
-    editDraft.academic_year.trim() !== "";
-  const uploadBlockedReason = !canUpload
-    ? "Fill in student name and academic year before uploading images"
-    : null;
+  const canUpload = editDraft && editDraft.student_name.trim() !== "" && editDraft.academic_year.trim() !== "";
+  const uploadBlockedReason = !canUpload ? "Fill in student name and academic year before uploading images" : null;
   const activeImage = useMemo(() => {
     if (!activeId) return null;
     return editImages.find((img) => img.id === activeId) || null;
@@ -189,9 +179,7 @@ export function EditImagesGrid() {
               ) : (
                 <Plus className="upload-tile-icon" size={24} />
               )}
-              <span className="upload-tile-label">
-                {uploadStatus === "uploading" ? "Uploading..." : "Add Image"}
-              </span>
+              <span className="upload-tile-label">{uploadStatus === "uploading" ? "Uploading..." : "Add Image"}</span>
             </button>
           </div>
         </SortableContext>

@@ -156,9 +156,8 @@ export function CreateUserModal() {
                 disabled={isCreating}
               />
               <p style={{ fontSize: "0.75rem", color: "var(--gray)", marginTop: "0.5rem" }}>
-                Accepts tab or comma-separated values. Auto-detects column order.
-                Only emails ending with <strong>@student.kdg.be</strong> are accepted.
-                Creates users as students.
+                Accepts tab or comma-separated values. Auto-detects column order. Only emails ending with{" "}
+                <strong>@student.kdg.be</strong> are accepted. Creates users as students.
               </p>
             </div>
           )}
@@ -172,12 +171,8 @@ export function CreateUserModal() {
                 Creating...
               </span>
             )}
-            {userCreateStatus === "success" && (
-              <span className="save-indicator saved">{userCreateSuccess}</span>
-            )}
-            {userCreateStatus === "error" && (
-              <span className="save-indicator error">{userCreateError}</span>
-            )}
+            {userCreateStatus === "success" && <span className="save-indicator saved">{userCreateSuccess}</span>}
+            {userCreateStatus === "error" && <span className="save-indicator error">{userCreateError}</span>}
           </div>
           <div className="edit-modal-footer-right">
             <button type="button" className="btn btn-secondary" onClick={closeUserModal} disabled={isCreating}>
