@@ -1,38 +1,55 @@
 import { useEffect } from "react";
 import { Search, Plus } from "lucide-react";
+import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
 import { DataTable, formatRole } from "./DataTable";
 import { formatAcademicYear, formatContext } from "../utils";
 
-function AdminProjectsHeader() {
-  const {
-    tableData,
-    selectedYear,
-    selectedContext,
-    searchQuery,
-    searchExpanded,
-    setSelectedYear,
-    setSelectedContext,
-    setSearchQuery,
-    setSearchExpanded,
-  } = useAdminStore((state) => ({
-    tableData: state.tableData,
-    selectedYear: state.selectedYear,
-    selectedContext: state.selectedContext,
-    searchQuery: state.searchQuery,
-    searchExpanded: state.searchExpanded,
-    setSelectedYear: state.setSelectedYear,
-    setSelectedContext: state.setSelectedContext,
-    setSearchQuery: state.setSearchQuery,
-    setSearchExpanded: state.setSearchExpanded,
-  }));
+type LoadStatus = "idle" | "loading" | "ready" | "error";
+
+interface TableStatusMessagesProps {
+  status: LoadStatus;
+  hasRows: boolean;
+  hasFilteredRows: boolean;
+}
+
+function TableStatusMessages({ status, hasRows, hasFilteredRows }: TableStatusMessagesProps): React.ReactNode {
+  if (status === "loading") {
+    return <p className="admin-list-message">Loading data…</p>;
+  }
+  if (status === "error") {
+    return <p className="admin-list-message error-message">Failed to load data.</p>;
+  }
+  if (status === "ready" && !hasRows) {
+    return <p className="admin-list-message">No rows found.</p>;
+  }
+  if (status === "ready" && hasRows && !hasFilteredRows) {
+    return <p className="admin-list-message">No matches found.</p>;
+  }
+  return null;
+}
+
+function extractUniqueValues(rows: TableResponse["rows"], key: string): string[] {
+  return [...new Set(rows.map((r) => String(r[key] || "")).filter(Boolean))];
+}
+
+function AdminProjectsHeader(): React.ReactNode {
+  const tableData = useAdminStore((s) => s.tableData);
+  const selectedYear = useAdminStore((s) => s.selectedYear);
+  const selectedContext = useAdminStore((s) => s.selectedContext);
+  const searchQuery = useAdminStore((s) => s.searchQuery);
+  const searchExpanded = useAdminStore((s) => s.searchExpanded);
+  const setSelectedYear = useAdminStore((s) => s.setSelectedYear);
+  const setSelectedContext = useAdminStore((s) => s.setSelectedContext);
+  const setSearchQuery = useAdminStore((s) => s.setSearchQuery);
+  const setSearchExpanded = useAdminStore((s) => s.setSearchExpanded);
 
   const isProjectsData = tableData?.table === "projects";
   const allYears = isProjectsData
-    ? [...new Set(tableData.rows.map((r) => String(r.academic_year || "")).filter(Boolean))].sort().reverse()
+    ? extractUniqueValues(tableData.rows, "academic_year").sort().reverse()
     : [];
   const allContexts = isProjectsData
-    ? [...new Set(tableData.rows.map((r) => String(r.context || "")).filter(Boolean))].sort()
+    ? extractUniqueValues(tableData.rows, "context").sort()
     : [];
   const defaultYear = allYears[0] || "";
 
@@ -85,10 +102,8 @@ function AdminProjectsHeader() {
   );
 }
 
-function AdminUsersHeader() {
-  const { openUserModal } = useAdminStore((state) => ({
-    openUserModal: state.openUserModal,
-  }));
+function AdminUsersHeader(): React.ReactNode {
+  const openUserModal = useAdminStore((s) => s.openUserModal);
 
   return (
     <div className="detail-action-group">
@@ -100,157 +115,147 @@ function AdminUsersHeader() {
   );
 }
 
-function AdminProjectsTable() {
-  const {
-    tableData,
-    tableStatus,
-    selectedProjectId,
-    selectedYear,
-    selectedContext,
-    searchQuery,
-    selectProject,
-    openEditForProject,
-  } = useAdminStore((state) => ({
-    tableData: state.tableData,
-    tableStatus: state.tableStatus,
-    selectedProjectId: state.selectedProjectId,
-    selectedYear: state.selectedYear,
-    selectedContext: state.selectedContext,
-    searchQuery: state.searchQuery,
-    selectProject: state.selectProject,
-    openEditForProject: state.openEditForProject,
-  }));
+function filterProjects(
+  rows: TableResponse["rows"],
+  selectedYear: string,
+  selectedContext: string,
+  searchQuery: string
+): TableResponse["rows"] {
+  const searchLower = searchQuery.toLowerCase();
 
-  const filteredRows = tableData?.table === "projects"
-    ? tableData.rows.filter((row) => {
-        const yearMatch = !selectedYear || String(row.academic_year) === selectedYear;
-        const contextMatch = !selectedContext || String(row.context) === selectedContext;
-        const searchLower = searchQuery.toLowerCase();
-        const searchMatch =
-          !searchQuery ||
-          String(row.student_name || "")
-            .toLowerCase()
-            .includes(searchLower) ||
-          String(row.project_title || "")
-            .toLowerCase()
-            .includes(searchLower);
-        return yearMatch && contextMatch && searchMatch;
-      })
-    : [];
+  return rows.filter((row) => {
+    if (selectedYear && String(row.academic_year) !== selectedYear) return false;
+    if (selectedContext && String(row.context) !== selectedContext) return false;
+    if (searchQuery) {
+      const nameMatch = String(row.student_name || "").toLowerCase().includes(searchLower);
+      const titleMatch = String(row.project_title || "").toLowerCase().includes(searchLower);
+      if (!nameMatch && !titleMatch) return false;
+    }
+    return true;
+  });
+}
 
-  const columns = [
-    { key: "student_name", label: "Student name" },
-    { key: "project_title", label: "Project title" },
-    { key: "context", label: "Context", formatter: formatContext },
-    { key: "academic_year", label: "Academic year", formatter: formatAcademicYear },
-  ];
+const PROJECT_COLUMNS = [
+  { key: "student_name", label: "Student name" },
+  { key: "project_title", label: "Project title" },
+  { key: "context", label: "Context", formatter: formatContext },
+  { key: "academic_year", label: "Academic year", formatter: formatAcademicYear },
+];
+
+function AdminProjectsTable(): React.ReactNode {
+  const tableData = useAdminStore((s) => s.tableData);
+  const tableStatus = useAdminStore((s) => s.tableStatus);
+  const selectedProjectId = useAdminStore((s) => s.selectedProjectId);
+  const selectedYear = useAdminStore((s) => s.selectedYear);
+  const selectedContext = useAdminStore((s) => s.selectedContext);
+  const searchQuery = useAdminStore((s) => s.searchQuery);
+  const selectProject = useAdminStore((s) => s.selectProject);
+  const openEditForProject = useAdminStore((s) => s.openEditForProject);
+
+  const rows = tableData?.table === "projects" ? tableData.rows : [];
+  const filteredRows = filterProjects(rows, selectedYear, selectedContext, searchQuery);
+
+  const handleRowClick = (row: Record<string, unknown>): void => {
+    if (typeof row.id === "string") {
+      selectProject(row.id);
+    }
+  };
+
+  const handleRowDoubleClick = (row: Record<string, unknown>): void => {
+    if (typeof row.id === "string") {
+      openEditForProject(row.id);
+    }
+  };
 
   return (
     <>
-      {tableStatus === "loading" && <p className="admin-list-message">Loading data…</p>}
-      {tableStatus === "error" && <p className="admin-list-message error-message">Failed to load data.</p>}
-      {tableStatus === "ready" && (!tableData || tableData.rows.length === 0) && (
-        <p className="admin-list-message">No rows found.</p>
-      )}
-
-      {tableStatus === "ready" && tableData && filteredRows.length > 0 && (
+      <TableStatusMessages
+        status={tableStatus}
+        hasRows={rows.length > 0}
+        hasFilteredRows={filteredRows.length > 0}
+      />
+      {tableStatus === "ready" && filteredRows.length > 0 && (
         <DataTable
-          columns={columns}
+          columns={PROJECT_COLUMNS}
           rows={filteredRows}
           activeTable="projects"
           selectedProjectId={selectedProjectId}
-          onRowClick={(row) => {
-            if (typeof row.id !== "string") return;
-            selectProject(row.id);
-          }}
-          onRowDoubleClick={(row) => {
-            if (typeof row.id !== "string") return;
-            openEditForProject(row.id);
-          }}
+          onRowClick={handleRowClick}
+          onRowDoubleClick={handleRowDoubleClick}
         />
       )}
-      {tableStatus === "ready" && tableData && tableData.rows.length > 0 && filteredRows.length === 0 && (
-        <p className="admin-list-message">No matches found.</p>
-      )}
     </>
   );
 }
 
-function AdminProjectImagesTable() {
-  const { tableData, tableStatus } = useAdminStore((state) => ({
-    tableData: state.tableData,
-    tableStatus: state.tableStatus,
-  }));
+type ColumnFormatter = (value: unknown, row: Record<string, unknown>) => React.ReactNode;
 
-  const columns = tableData?.rows[0]
-    ? Object.keys(tableData.rows[0])
-        .slice(0, 4)
-        .map((col) => ({
-          key: col,
-          label: col.replace("_", " "),
-        }))
-    : [];
+function buildColumnsFromRow(
+  row: Record<string, unknown>,
+  formatters: Record<string, ColumnFormatter> = {}
+): Array<{ key: string; label: string; formatter?: ColumnFormatter }> {
+  return Object.keys(row)
+    .slice(0, 4)
+    .map((col) => ({
+      key: col,
+      label: col.replace("_", " "),
+      formatter: formatters[col],
+    }));
+}
+
+interface GenericTableProps {
+  activeTable: string;
+  formatters?: Record<string, ColumnFormatter>;
+}
+
+function GenericTable({ activeTable, formatters = {} }: GenericTableProps): React.ReactNode {
+  const tableData = useAdminStore((s) => s.tableData);
+  const tableStatus = useAdminStore((s) => s.tableStatus);
+
+  const rows = tableData?.rows ?? [];
+  const columns = rows[0] ? buildColumnsFromRow(rows[0], formatters) : [];
 
   return (
     <>
-      {tableStatus === "loading" && <p className="admin-list-message">Loading data…</p>}
-      {tableStatus === "error" && <p className="admin-list-message error-message">Failed to load data.</p>}
-      {tableStatus === "ready" && (!tableData || tableData.rows.length === 0) && (
-        <p className="admin-list-message">No rows found.</p>
-      )}
-      {tableStatus === "ready" && tableData && tableData.rows.length > 0 && (
-        <DataTable columns={columns} rows={tableData.rows} activeTable="project_images" />
+      <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={rows.length > 0} />
+      {tableStatus === "ready" && rows.length > 0 && (
+        <DataTable columns={columns} rows={rows} activeTable={activeTable} />
       )}
     </>
   );
 }
 
-function AdminUsersTable() {
-  const { tableData, tableStatus } = useAdminStore((state) => ({
-    tableData: state.tableData,
-    tableStatus: state.tableStatus,
-  }));
-
-  const columns = tableData?.rows[0]
-    ? Object.keys(tableData.rows[0])
-        .slice(0, 4)
-        .map((col) => ({
-          key: col,
-          label: col.replace("_", " "),
-          formatter: col === "role" ? formatRole : undefined,
-        }))
-    : [];
-
-  return (
-    <>
-      {tableStatus === "loading" && <p className="admin-list-message">Loading data…</p>}
-      {tableStatus === "error" && <p className="admin-list-message error-message">Failed to load data.</p>}
-      {tableStatus === "ready" && (!tableData || tableData.rows.length === 0) && (
-        <p className="admin-list-message">No rows found.</p>
-      )}
-      {tableStatus === "ready" && tableData && tableData.rows.length > 0 && (
-        <DataTable columns={columns} rows={tableData.rows} activeTable="users" />
-      )}
-    </>
-  );
+function AdminProjectImagesTable(): React.ReactNode {
+  return <GenericTable activeTable="project_images" />;
 }
 
-export function AdminListView() {
-  const { activeTable } = useAdminStore((state) => ({
-    activeTable: state.activeTable,
-  }));
+function AdminUsersTable(): React.ReactNode {
+  return <GenericTable activeTable="users" formatters={{ role: formatRole }} />;
+}
+
+function renderTableHeader(activeTable: string): React.ReactNode {
+  if (activeTable === "projects") return <AdminProjectsHeader />;
+  if (activeTable === "users") return <AdminUsersHeader />;
+  return null;
+}
+
+function renderTableContent(activeTable: string): React.ReactNode {
+  if (activeTable === "projects") return <AdminProjectsTable />;
+  if (activeTable === "project_images") return <AdminProjectImagesTable />;
+  if (activeTable === "users") return <AdminUsersTable />;
+  return null;
+}
+
+export function AdminListView(): React.ReactNode {
+  const activeTable = useAdminStore((s) => s.activeTable);
 
   return (
     <div className="admin-list">
       <div className="admin-list-header">
         <h2>{activeTable.replace("_", " ")}</h2>
-        {activeTable === "projects" && <AdminProjectsHeader />}
-        {activeTable === "users" && <AdminUsersHeader />}
+        {renderTableHeader(activeTable)}
       </div>
-
-      {activeTable === "projects" && <AdminProjectsTable />}
-      {activeTable === "project_images" && <AdminProjectImagesTable />}
-      {activeTable === "users" && <AdminUsersTable />}
+      {renderTableContent(activeTable)}
     </div>
   );
 }
