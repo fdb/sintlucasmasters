@@ -13,6 +13,7 @@ export default defineConfig(({ command }) => ({
   server: {
     port: 5173,
     proxy: {
+      "/": "http://localhost:8787",
       "/api": "http://localhost:8787",
       "/auth": "http://localhost:8787",
       "/styles.css": "http://localhost:8787",
