@@ -45,12 +45,8 @@ function AdminProjectsHeader(): React.ReactNode {
   const setSearchExpanded = useAdminStore((s) => s.setSearchExpanded);
 
   const isProjectsData = tableData?.table === "projects";
-  const allYears = isProjectsData
-    ? extractUniqueValues(tableData.rows, "academic_year").sort().reverse()
-    : [];
-  const allContexts = isProjectsData
-    ? extractUniqueValues(tableData.rows, "context").sort()
-    : [];
+  const allYears = isProjectsData ? extractUniqueValues(tableData.rows, "academic_year").sort().reverse() : [];
+  const allContexts = isProjectsData ? extractUniqueValues(tableData.rows, "context").sort() : [];
   const defaultYear = allYears[0] || "";
 
   useEffect(() => {
@@ -127,8 +123,12 @@ function filterProjects(
     if (selectedYear && String(row.academic_year) !== selectedYear) return false;
     if (selectedContext && String(row.context) !== selectedContext) return false;
     if (searchQuery) {
-      const nameMatch = String(row.student_name || "").toLowerCase().includes(searchLower);
-      const titleMatch = String(row.project_title || "").toLowerCase().includes(searchLower);
+      const nameMatch = String(row.student_name || "")
+        .toLowerCase()
+        .includes(searchLower);
+      const titleMatch = String(row.project_title || "")
+        .toLowerCase()
+        .includes(searchLower);
       if (!nameMatch && !titleMatch) return false;
     }
     return true;
@@ -140,6 +140,18 @@ const PROJECT_COLUMNS = [
   { key: "project_title", label: "Project title" },
   { key: "context", label: "Context", formatter: formatContext },
   { key: "academic_year", label: "Academic year", formatter: formatAcademicYear },
+];
+
+const USERS_COLUMNS = [
+  { key: "email", label: "Email" },
+  { key: "name", label: "Name" },
+  { key: "role", label: "Role", formatter: formatRole },
+];
+
+const PROJECT_IMAGES_COLUMNS = [
+  { key: "cloudflare_id", label: "Cloudflare ID" },
+  { key: "sort_order", label: "Sort order" },
+  { key: "caption", label: "Caption" },
 ];
 
 function AdminProjectsTable(): React.ReactNode {
@@ -169,11 +181,7 @@ function AdminProjectsTable(): React.ReactNode {
 
   return (
     <>
-      <TableStatusMessages
-        status={tableStatus}
-        hasRows={rows.length > 0}
-        hasFilteredRows={filteredRows.length > 0}
-      />
+      <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={filteredRows.length > 0} />
       {tableStatus === "ready" && filteredRows.length > 0 && (
         <DataTable
           columns={PROJECT_COLUMNS}
@@ -188,58 +196,29 @@ function AdminProjectsTable(): React.ReactNode {
   );
 }
 
-type ColumnFormatter = (value: unknown, row: Record<string, unknown>) => React.ReactNode;
-
-function buildColumnsFromRow(
-  row: Record<string, unknown>,
-  formatters: Record<string, ColumnFormatter> = {}
-): Array<{ key: string; label: string; formatter?: ColumnFormatter }> {
-  return Object.keys(row)
-    .slice(0, 4)
-    .map((col) => ({
-      key: col,
-      label: col.replace("_", " "),
-      formatter: formatters[col],
-    }));
-}
-
-interface GenericTableProps {
-  activeTable: string;
-  formatters?: Record<string, ColumnFormatter>;
-  selectedRowId?: string | null;
-  onRowClick?: (row: Record<string, unknown>) => void;
-}
-
-function GenericTable({ activeTable, formatters = {}, selectedRowId, onRowClick }: GenericTableProps): React.ReactNode {
+function AdminProjectImagesTable(): React.ReactNode {
   const tableData = useAdminStore((s) => s.tableData);
   const tableStatus = useAdminStore((s) => s.tableStatus);
 
-  const rows = tableData?.rows ?? [];
-  const columns = rows[0] ? buildColumnsFromRow(rows[0], formatters) : [];
+  const rows = tableData?.table === "project_images" ? tableData.rows : [];
 
   return (
     <>
       <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={rows.length > 0} />
       {tableStatus === "ready" && rows.length > 0 && (
-        <DataTable
-          columns={columns}
-          rows={rows}
-          activeTable={activeTable}
-          selectedRowId={selectedRowId}
-          onRowClick={onRowClick}
-        />
+        <DataTable columns={PROJECT_IMAGES_COLUMNS} rows={rows} activeTable="project_images" />
       )}
     </>
   );
 }
 
-function AdminProjectImagesTable(): React.ReactNode {
-  return <GenericTable activeTable="project_images" />;
-}
-
 function AdminUsersTable(): React.ReactNode {
+  const tableData = useAdminStore((s) => s.tableData);
+  const tableStatus = useAdminStore((s) => s.tableStatus);
   const selectedUserId = useAdminStore((s) => s.selectedUserId);
   const selectUser = useAdminStore((s) => s.selectUser);
+
+  const rows = tableData?.table === "users" ? tableData.rows : [];
 
   const handleRowClick = (row: Record<string, unknown>): void => {
     if (typeof row.id === "string") {
@@ -248,12 +227,18 @@ function AdminUsersTable(): React.ReactNode {
   };
 
   return (
-    <GenericTable
-      activeTable="users"
-      formatters={{ role: formatRole }}
-      selectedRowId={selectedUserId}
-      onRowClick={handleRowClick}
-    />
+    <>
+      <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={rows.length > 0} />
+      {tableStatus === "ready" && rows.length > 0 && (
+        <DataTable
+          columns={USERS_COLUMNS}
+          rows={rows}
+          activeTable="users"
+          selectedRowId={selectedUserId}
+          onRowClick={handleRowClick}
+        />
+      )}
+    </>
   );
 }
 

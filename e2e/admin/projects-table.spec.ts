@@ -17,6 +17,18 @@ test.describe("admin projects table", () => {
     await expect(headers.filter({ hasText: "Academic year" })).toBeVisible();
   });
 
+  test("has expected columns and no id column", async ({ page }) => {
+    // Should have exactly 4 columns
+    const headers = page.locator("thead th");
+    await expect(headers).toHaveCount(4);
+
+    // Verify each expected column header
+    await expect(headers.nth(0)).toHaveText("Student name");
+    await expect(headers.nth(1)).toHaveText("Project title");
+    await expect(headers.nth(2)).toHaveText("Context");
+    await expect(headers.nth(3)).toHaveText("Academic year");
+  });
+
   test("year filter works", async ({ page }) => {
     // Get initial row count
     const allRowsCount = await page.locator("tbody tr").count();

@@ -16,6 +16,17 @@ test.describe("admin users table", () => {
     await expect(page.locator("tbody")).toContainText(E2E_STUDENT.email);
   });
 
+  test("has expected columns and no id column", async ({ page }) => {
+    // Should have exactly 3 columns (email, name, role)
+    const headers = page.locator("thead th");
+    await expect(headers).toHaveCount(3);
+
+    // Verify each expected column header
+    await expect(headers.nth(0)).toHaveText("Email");
+    await expect(headers.nth(1)).toHaveText("Name");
+    await expect(headers.nth(2)).toHaveText("Role");
+  });
+
   test("shows role pills", async ({ page }) => {
     // Should have role pills
     await expect(page.locator(".role-pill.role-admin")).toBeVisible();
