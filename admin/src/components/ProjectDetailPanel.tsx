@@ -1,17 +1,31 @@
-import { Pencil, SquareArrowOutUpRight } from "lucide-react";
+import { Pencil, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
 
 export function ProjectDetailPanel() {
-  const { activeTable, selectedProjectId, projectDetail, projectStatus, openEditForProject } = useAdminStore(
-    (state) => ({
-      activeTable: state.activeTable,
-      selectedProjectId: state.selectedProjectId,
-      projectDetail: state.projectDetail,
-      projectStatus: state.projectStatus,
-      openEditForProject: state.openEditForProject,
-    })
-  );
+  const {
+    activeTable,
+    selectedProjectId,
+    projectDetail,
+    projectStatus,
+    openEditForProject,
+    deleteConfirmOpen,
+    deleteStatus,
+    openDeleteConfirm,
+    closeDeleteConfirm,
+    deleteProject,
+  } = useAdminStore((state) => ({
+    activeTable: state.activeTable,
+    selectedProjectId: state.selectedProjectId,
+    projectDetail: state.projectDetail,
+    projectStatus: state.projectStatus,
+    openEditForProject: state.openEditForProject,
+    deleteConfirmOpen: state.deleteConfirmOpen,
+    deleteStatus: state.deleteStatus,
+    openDeleteConfirm: state.openDeleteConfirm,
+    closeDeleteConfirm: state.closeDeleteConfirm,
+    deleteProject: state.deleteProject,
+  }));
 
   const isProjectsTable = activeTable === "projects";
 
@@ -54,6 +68,15 @@ export function ProjectDetailPanel() {
                 <button type="button" className="detail-action-btn has-label" onClick={() => openEditForProject()}>
                   <Pencil size={14} />
                   Edit
+                </button>
+                <button
+                  type="button"
+                  className="detail-action-btn has-label danger"
+                  onClick={openDeleteConfirm}
+                  title="Delete project"
+                >
+                  <Trash2 size={14} />
+                  Delete
                 </button>
                 <a
                   href={`/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
@@ -163,6 +186,46 @@ export function ProjectDetailPanel() {
           </div>
         </div>
       )}
+
+      {/* Delete confirmation dialog */}
+      {deleteConfirmOpen && (
+        <div className="confirm-overlay" onClick={closeDeleteConfirm}>
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Delete project?</h3>
+            <p>
+              Are you sure you want to delete{" "}
+              <strong>
+                {String(projectDetail?.project.student_name || "")}'s project "
+                {String(projectDetail?.project.project_title || "")}"
+              </strong>
+              ? This action cannot be undone.
+            </p>
+            <div className="confirm-actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={closeDeleteConfirm}
+                disabled={deleteStatus === "loading"}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={deleteProject}
+                disabled={deleteStatus === "loading"}
+              >
+                {deleteStatus === "loading" ? "Deleting…" : "Delete"}
+              </button>
+            </div>
+            {deleteStatus === "error" && (
+              <p className="error-message" style={{ marginTop: "1rem" }}>
+                Failed to delete project. Please try again.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -183,4 +246,3 @@ function parseSocialLinks(value: unknown): string[] {
   if (Array.isArray(value)) return value.filter((l) => typeof l === "string");
   return [];
 }
-

@@ -162,7 +162,9 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   const query = `UPDATE projects SET ${updates.join(", ")} WHERE id = ?`;
   values.push(id);
 
-  await c.env.DB.prepare(query).bind(...values).run();
+  await c.env.DB.prepare(query)
+    .bind(...values)
+    .run();
 
   // Return updated project
   const project = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(id).first<Project>();
@@ -186,9 +188,12 @@ adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
 
   // Update sort orders and captions
   const statements = body.imageOrder.map((img) =>
-    c.env.DB.prepare(
-      "UPDATE project_images SET sort_order = ?, caption = ? WHERE id = ? AND project_id = ?"
-    ).bind(img.sort_order, img.caption ?? null, img.id, projectId)
+    c.env.DB.prepare("UPDATE project_images SET sort_order = ?, caption = ? WHERE id = ? AND project_id = ?").bind(
+      img.sort_order,
+      img.caption ?? null,
+      img.id,
+      projectId
+    )
   );
 
   // Update main image if provided
@@ -265,9 +270,7 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   const projectId = c.req.param("id");
 
   // Get project with required fields for image path
-  const project = await c.env.DB.prepare(
-    "SELECT id, student_name, academic_year FROM projects WHERE id = ?"
-  )
+  const project = await c.env.DB.prepare("SELECT id, student_name, academic_year FROM projects WHERE id = ?")
     .bind(projectId)
     .first<{ id: string; student_name: string; academic_year: string }>();
 
@@ -371,9 +374,7 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
   const imageId = c.req.param("imageId");
 
   // Get the image to delete
-  const image = await c.env.DB.prepare(
-    "SELECT * FROM project_images WHERE id = ? AND project_id = ?"
-  )
+  const image = await c.env.DB.prepare("SELECT * FROM project_images WHERE id = ? AND project_id = ?")
     .bind(imageId, projectId)
     .first<ProjectImage>();
 
@@ -469,16 +470,12 @@ adminApiRoutes.post("/users/create", async (c) => {
 
   // Generate UUID and create user
   const userId = crypto.randomUUID();
-  await c.env.DB.prepare(
-    "INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)"
-  )
+  await c.env.DB.prepare("INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)")
     .bind(userId, normalizedEmail, name?.trim() || null, role)
     .run();
 
   // Return created user
-  const newUser = await c.env.DB.prepare("SELECT * FROM users WHERE id = ?")
-    .bind(userId)
-    .first();
+  const newUser = await c.env.DB.prepare("SELECT * FROM users WHERE id = ?").bind(userId).first();
 
   return c.json({ user: newUser }, 201);
 });
@@ -487,9 +484,7 @@ adminApiRoutes.post("/users/create", async (c) => {
 adminApiRoutes.get("/users/:id", async (c) => {
   const id = c.req.param("id");
 
-  const user = await c.env.DB.prepare(
-    "SELECT id, email, name, role, created_at, last_login_at FROM users WHERE id = ?"
-  )
+  const user = await c.env.DB.prepare("SELECT id, email, name, role, created_at, last_login_at FROM users WHERE id = ?")
     .bind(id)
     .first();
 
@@ -519,6 +514,25 @@ adminApiRoutes.delete("/users/:id", async (c) => {
   return c.json({ success: true, deletedEmail: user.email });
 });
 
+// Delete project
+adminApiRoutes.delete("/projects/:id", async (c) => {
+  const id = c.req.param("id");
+
+  // Get project details for response
+  const project = await c.env.DB.prepare("SELECT id, student_name, project_title FROM projects WHERE id = ?")
+    .bind(id)
+    .first<{ id: string; student_name: string; project_title: string }>();
+
+  if (!project) {
+    return c.json({ error: "Project not found" }, 404);
+  }
+
+  // Delete the project (CASCADE will delete associated images)
+  await c.env.DB.prepare("DELETE FROM projects WHERE id = ?").bind(id).run();
+
+  return c.json({ success: true, deletedProject: project });
+});
+
 // Bulk create users from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const body = await c.req.json<{ csvData: string }>();
@@ -528,7 +542,10 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
     return c.json({ error: "CSV data is required" }, 400);
   }
 
-  const lines = csvData.trim().split(/\r?\n/).filter((line) => line.trim());
+  const lines = csvData
+    .trim()
+    .split(/\r?\n/)
+    .filter((line) => line.trim());
   if (lines.length === 0) {
     return c.json({ error: "No data provided" }, 400);
   }
@@ -598,9 +615,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
 
     // Create user as student
     const userId = crypto.randomUUID();
-    await c.env.DB.prepare(
-      "INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)"
-    )
+    await c.env.DB.prepare("INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)")
       .bind(userId, normalizedEmail, name || null, "student")
       .run();
 

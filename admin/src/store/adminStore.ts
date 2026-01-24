@@ -124,10 +124,12 @@ type AdminState = {
   uploadStatus: "idle" | "uploading" | "error";
   uploadError: string | null;
   saveProject: () => Promise<void>;
-  // User selection and delete actions
-  selectUser: (userId: string | null) => Promise<void>;
+  // Project delete actions
   openDeleteConfirm: () => void;
   closeDeleteConfirm: () => void;
+  deleteProject: () => Promise<void>;
+  // User selection and delete actions
+  selectUser: (userId: string | null) => Promise<void>;
   deleteUser: () => Promise<void>;
   // User creation actions
   openUserModal: () => void;
@@ -485,9 +487,7 @@ export const useAdminStore = create<AdminState>()(
       },
       updateImageCaption: (imageId, caption) => {
         set((state) => ({
-          editImages: state.editImages.map((img) =>
-            img.id === imageId ? { ...img, caption: caption || null } : img
-          ),
+          editImages: state.editImages.map((img) => (img.id === imageId ? { ...img, caption: caption || null } : img)),
         }));
       },
       uploadImages: async (files) => {
@@ -523,12 +523,15 @@ export const useAdminStore = create<AdminState>()(
 
             const data = (await res.json()) as { image: ProjectImage };
             set((state) => ({
-              editImages: [...state.editImages, {
-                id: data.image.id,
-                cloudflare_id: data.image.cloudflare_id,
-                sort_order: data.image.sort_order,
-                caption: data.image.caption,
-              }],
+              editImages: [
+                ...state.editImages,
+                {
+                  id: data.image.id,
+                  cloudflare_id: data.image.cloudflare_id,
+                  sort_order: data.image.sort_order,
+                  caption: data.image.caption,
+                },
+              ],
             }));
 
             // If this is the first image, set it as main
@@ -665,6 +668,38 @@ export const useAdminStore = create<AdminState>()(
         } catch (err) {
           console.error("Save error:", err);
           set({ saveStatus: "error" });
+        }
+      },
+      // Project delete actions
+      deleteProject: async () => {
+        const projectId = get().selectedProjectId;
+        if (!projectId) return;
+
+        set({ deleteStatus: "loading" });
+        try {
+          const res = await fetch(`/api/admin/projects/${projectId}`, {
+            method: "DELETE",
+          });
+          if (!res.ok) {
+            set({ deleteStatus: "error" });
+            return;
+          }
+
+          set({
+            deleteConfirmOpen: false,
+            deleteStatus: "idle",
+            selectedProjectId: null,
+            projectDetail: null,
+            projectStatus: "idle",
+          });
+
+          // Refresh projects table
+          const { activeTable, loadTable } = get();
+          if (activeTable === "projects") {
+            await loadTable("projects");
+          }
+        } catch {
+          set({ deleteStatus: "error" });
         }
       },
       // User selection and delete actions

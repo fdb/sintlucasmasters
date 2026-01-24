@@ -526,7 +526,7 @@
   letter-spacing: 0.03em;
 }
 
-.detail-action-btn:first-child {
+.detail-action-btn:not(:last-child) {
   border-right: 1px solid var(--admin-border);
 }
 
@@ -1005,7 +1005,6 @@ tr.status-draft td:first-child {
 }
 
 .detail-action-btn.danger:hover {
-  border-color: #dc2626;
   background: rgba(220, 38, 38, 0.05);
 }
 

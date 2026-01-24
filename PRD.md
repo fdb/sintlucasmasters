@@ -269,6 +269,7 @@ admin/
 ### Phase 4.4: Admin API (Write Operations)
 
 - [x] `PUT /api/admin/projects/:id` - Update project (including status change)
+- [x] `DELETE /api/admin/projects/:id` - Delete project
 - [ ] `POST /api/admin/unlock-all` - Bulk unlock current year projects
 - [x] `GET /api/admin/users/:id` - Get user detail
 - [ ] `GET /api/admin/users` - List all users

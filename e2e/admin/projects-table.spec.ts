@@ -113,4 +113,36 @@ test.describe("admin projects table", () => {
     const publishedRow = page.locator("tbody tr", { hasText: "Alice Smith" });
     await expect(publishedRow).toHaveClass(/status-published/);
   });
+
+  test("deletes a project", async ({ page }) => {
+    // First, select "All years" to see all projects
+    await page.locator(".filter-select").first().selectOption("");
+
+    // Click on Bob Jones' project (draft status, good candidate for deletion)
+    const bobRow = page.locator("tbody tr", { hasText: "Bob Jones" });
+    await bobRow.click();
+
+    // Wait for detail panel to load
+    await expect(page.locator(".admin-detail-panel")).toBeVisible();
+
+    // Click delete button
+    await page.locator(".detail-action-btn.danger", { hasText: "Delete" }).click();
+
+    // Confirm dialog should appear
+    const confirmDialog = page.locator(".confirm-overlay");
+    await expect(confirmDialog).toBeVisible();
+    await expect(confirmDialog.locator("h3")).toHaveText("Delete project?");
+
+    // Click confirm
+    await confirmDialog.locator(".btn-danger").click();
+
+    // Wait for dialog to close
+    await expect(confirmDialog).not.toBeVisible();
+
+    // Project should be removed from table
+    await expect(page.locator("tbody")).not.toContainText("Bob Jones");
+
+    // Detail panel should be empty
+    await expect(page.locator(".admin-detail-empty")).toBeVisible();
+  });
 });
