@@ -63,6 +63,10 @@ social_links: []
 ```bash
 # Development
 npm run dev                 # Start local dev server on http://localhost:8787
+npm run dev:admin:serve     # Optional: Vite dev server with HMR on http://localhost:5173
+
+# Tests
+npm run test:e2e            # Builds admin, starts wrangler on 5174, runs Playwright
 
 # Database
 npm run db:init             # Create schema locally
@@ -83,6 +87,7 @@ npm run create-admin:remote <email>  # Create admin user on production
 ## Local workflow
 
 - Run `npm run typecheck` every time a change is made.
+- `npm run dev` serves admin from `static/admin`; changes are picked up by the Vite build watcher and require a refresh.
 ```
 
 ## Environment Variables

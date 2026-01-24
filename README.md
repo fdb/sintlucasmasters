@@ -11,6 +11,8 @@ Student exhibition website for Sint Lucas Antwerpen Masters program.
 
 ## Development
 
+`npm run dev` runs `wrangler dev` and a Vite build watcher that outputs admin assets to `static/admin`. Refresh `/admin` to see changes.
+
 ```bash
 # Install dependencies
 npm install
@@ -27,6 +29,13 @@ npm run import
 # Start development server (port 8787)
 # Visit http://localhost:8787
 npm run dev
+
+# (Optional) run the admin Vite dev server with HMR
+# Visit http://localhost:5173
+npm run dev:admin:serve
+
+# Run end-to-end tests (builds admin first, then starts wrangler on 5174)
+npm run test:e2e
 ```
 
 ## Deploying to Cloudflare

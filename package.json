@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "concurrently -k -n worker,admin -c blue,magenta \"npm run dev:worker\" \"npm run dev:admin\"",
     "dev:worker": "wrangler dev",
-    "dev:e2e": "wrangler dev --port 5174",
-    "dev:admin": "vite --config admin/vite.config.ts",
+    "dev:e2e": "npm run build:admin && wrangler dev --port 5174",
+    "dev:admin": "vite build --watch --config admin/vite.config.ts",
+    "dev:admin:serve": "vite --config admin/vite.config.ts",
     "test:e2e": "playwright test",
     "build:admin": "vite build --config admin/vite.config.ts",
     "build": "wrangler deploy --dry-run",
