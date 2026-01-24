@@ -2,20 +2,102 @@ import { useEffect } from "react";
 import { Search, Plus } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { DataTable, formatRole } from "./DataTable";
+import { formatAcademicYear, formatContext } from "../utils";
 
-function formatContext(value: unknown): string {
-  if (value === null || value === undefined) return "—";
-  return String(value).replace(/ Context$/, "");
+function AdminProjectsHeader() {
+  const {
+    tableData,
+    selectedYear,
+    selectedContext,
+    searchQuery,
+    searchExpanded,
+    setSelectedYear,
+    setSelectedContext,
+    setSearchQuery,
+    setSearchExpanded,
+  } = useAdminStore((state) => ({
+    tableData: state.tableData,
+    selectedYear: state.selectedYear,
+    selectedContext: state.selectedContext,
+    searchQuery: state.searchQuery,
+    searchExpanded: state.searchExpanded,
+    setSelectedYear: state.setSelectedYear,
+    setSelectedContext: state.setSelectedContext,
+    setSearchQuery: state.setSearchQuery,
+    setSearchExpanded: state.setSearchExpanded,
+  }));
+
+  const isProjectsData = tableData?.table === "projects";
+  const allYears = isProjectsData
+    ? [...new Set(tableData.rows.map((r) => String(r.academic_year || "")).filter(Boolean))].sort().reverse()
+    : [];
+  const allContexts = isProjectsData
+    ? [...new Set(tableData.rows.map((r) => String(r.context || "")).filter(Boolean))].sort()
+    : [];
+  const defaultYear = allYears[0] || "";
+
+  useEffect(() => {
+    if (isProjectsData && defaultYear && !selectedYear) {
+      setSelectedYear(defaultYear);
+    }
+  }, [defaultYear, isProjectsData, selectedYear, setSelectedYear]);
+
+  if (!isProjectsData) return null;
+
+  return (
+    <div className="admin-filters">
+      <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="filter-select">
+        <option value="">All years</option>
+        {allYears.map((year) => (
+          <option key={year} value={year}>
+            {formatAcademicYear(year)}
+          </option>
+        ))}
+      </select>
+      <select value={selectedContext} onChange={(e) => setSelectedContext(e.target.value)} className="filter-select">
+        <option value="">All contexts</option>
+        {allContexts.map((ctx) => (
+          <option key={ctx} value={ctx}>
+            {formatContext(ctx)}
+          </option>
+        ))}
+      </select>
+      <div className={`search-container ${searchExpanded ? "expanded" : ""}`}>
+        {searchExpanded ? (
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search..."
+            className="search-input"
+            autoFocus
+            onBlur={() => {
+              if (!searchQuery) setSearchExpanded(false);
+            }}
+          />
+        ) : (
+          <button type="button" className="search-toggle" onClick={() => setSearchExpanded(true)} title="Search">
+            <Search size={14} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
 }
 
-function formatAcademicYear(value: unknown): string {
-  if (value === null || value === undefined) return "—";
-  const str = String(value);
-  const match = str.match(/^(\d{4})-(\d{4})$/);
-  if (match) {
-    return `${match[1].slice(2)}-${match[2].slice(2)}`;
-  }
-  return str;
+function AdminUsersHeader() {
+  const { openUserModal } = useAdminStore((state) => ({
+    openUserModal: state.openUserModal,
+  }));
+
+  return (
+    <div className="detail-action-group">
+      <button type="button" className="detail-action-btn has-label" onClick={openUserModal} title="Add user">
+        <Plus size={14} />
+        Add
+      </button>
+    </div>
+  );
 }
 
 function AdminProjectsTable() {
@@ -26,11 +108,6 @@ function AdminProjectsTable() {
     selectedYear,
     selectedContext,
     searchQuery,
-    searchExpanded,
-    setSelectedYear,
-    setSelectedContext,
-    setSearchQuery,
-    setSearchExpanded,
     selectProject,
     openEditForProject,
   } = useAdminStore((state) => ({
@@ -40,30 +117,11 @@ function AdminProjectsTable() {
     selectedYear: state.selectedYear,
     selectedContext: state.selectedContext,
     searchQuery: state.searchQuery,
-    searchExpanded: state.searchExpanded,
-    setSelectedYear: state.setSelectedYear,
-    setSelectedContext: state.setSelectedContext,
-    setSearchQuery: state.setSearchQuery,
-    setSearchExpanded: state.setSearchExpanded,
     selectProject: state.selectProject,
     openEditForProject: state.openEditForProject,
   }));
 
-  const allYears = tableData
-    ? [...new Set(tableData.rows.map((r) => String(r.academic_year || "")).filter(Boolean))].sort().reverse()
-    : [];
-  const allContexts = tableData
-    ? [...new Set(tableData.rows.map((r) => String(r.context || "")).filter(Boolean))].sort()
-    : [];
-  const defaultYear = allYears[0] || "";
-
-  useEffect(() => {
-    if (defaultYear && !selectedYear) {
-      setSelectedYear(defaultYear);
-    }
-  }, [defaultYear, selectedYear, setSelectedYear]);
-
-  const filteredRows = tableData
+  const filteredRows = tableData?.table === "projects"
     ? tableData.rows.filter((row) => {
         const yearMatch = !selectedYear || String(row.academic_year) === selectedYear;
         const contextMatch = !selectedContext || String(row.context) === selectedContext;
@@ -89,44 +147,6 @@ function AdminProjectsTable() {
 
   return (
     <>
-      <div className="admin-filters">
-        <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="filter-select">
-          <option value="">All years</option>
-          {allYears.map((year) => (
-            <option key={year} value={year}>
-              {formatAcademicYear(year)}
-            </option>
-          ))}
-        </select>
-        <select value={selectedContext} onChange={(e) => setSelectedContext(e.target.value)} className="filter-select">
-          <option value="">All contexts</option>
-          {allContexts.map((ctx) => (
-            <option key={ctx} value={ctx}>
-              {ctx.replace(" Context", "")}
-            </option>
-          ))}
-        </select>
-        <div className={`search-container ${searchExpanded ? "expanded" : ""}`}>
-          {searchExpanded ? (
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search..."
-              className="search-input"
-              autoFocus
-              onBlur={() => {
-                if (!searchQuery) setSearchExpanded(false);
-              }}
-            />
-          ) : (
-            <button type="button" className="search-toggle" onClick={() => setSearchExpanded(true)} title="Search">
-              <Search size={14} />
-            </button>
-          )}
-        </div>
-      </div>
-
       {tableStatus === "loading" && <p className="admin-list-message">Loading data…</p>}
       {tableStatus === "error" && <p className="admin-list-message error-message">Failed to load data.</p>}
       {tableStatus === "ready" && (!tableData || tableData.rows.length === 0) && (
@@ -186,10 +206,9 @@ function AdminProjectImagesTable() {
 }
 
 function AdminUsersTable() {
-  const { tableData, tableStatus, openUserModal } = useAdminStore((state) => ({
+  const { tableData, tableStatus } = useAdminStore((state) => ({
     tableData: state.tableData,
     tableStatus: state.tableStatus,
-    openUserModal: state.openUserModal,
   }));
 
   const columns = tableData?.rows[0]
@@ -204,13 +223,6 @@ function AdminUsersTable() {
 
   return (
     <>
-      <div className="detail-action-group">
-        <button type="button" className="detail-action-btn has-label" onClick={openUserModal} title="Add user">
-          <Plus size={14} />
-          Add
-        </button>
-      </div>
-
       {tableStatus === "loading" && <p className="admin-list-message">Loading data…</p>}
       {tableStatus === "error" && <p className="admin-list-message error-message">Failed to load data.</p>}
       {tableStatus === "ready" && (!tableData || tableData.rows.length === 0) && (
@@ -232,6 +244,8 @@ export function AdminListView() {
     <div className="admin-list">
       <div className="admin-list-header">
         <h2>{activeTable.replace("_", " ")}</h2>
+        {activeTable === "projects" && <AdminProjectsHeader />}
+        {activeTable === "users" && <AdminUsersHeader />}
       </div>
 
       {activeTable === "projects" && <AdminProjectsTable />}

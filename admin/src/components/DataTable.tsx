@@ -1,5 +1,3 @@
-import { useAdminStore } from "../store/adminStore";
-
 interface ColumnConfig {
   key: string;
   label: string;
@@ -45,10 +43,11 @@ export function DataTable({
               ? `row-clickable status-${String(row.status || "draft").toLowerCase()}`
               : "";
             const customClassName = getRowClassName ? getRowClassName(row) : "";
+            const rowKey = rowId ? `${activeTable}-${rowId}` : `${activeTable}-${rowIndex}`;
 
             return (
               <tr
-                key={`${activeTable}-${rowIndex}`}
+                key={rowKey}
                 className={`${baseClassName} ${customClassName} ${isSelected ? "row-selected" : ""}`}
                 onClick={() => onRowClick?.(row)}
                 onDoubleClick={() => onRowDoubleClick?.(row)}
@@ -75,24 +74,7 @@ function formatCell(value: unknown): React.ReactNode {
   return JSON.stringify(value);
 }
 
-function formatContext(value: unknown): string {
-  if (value === null || value === undefined) return "—";
-  return String(value).replace(/ Context$/, "");
-}
-
-function formatAcademicYear(value: unknown): string {
-  if (value === null || value === undefined) return "—";
-  const str = String(value);
-  const match = str.match(/^(\d{4})-(\d{4})$/);
-  if (match) {
-    return `${match[1].slice(2)}-${match[2].slice(2)}`;
-  }
-  return str;
-}
-
 export function formatRole(value: unknown): React.ReactNode {
   const role = String(value || "student").toLowerCase();
   return <span className={`role-pill role-${role}`}>{role}</span>;
 }
-
-export { formatContext, formatAcademicYear };
