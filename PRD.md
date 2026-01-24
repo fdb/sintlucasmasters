@@ -40,25 +40,26 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 
 #### Project
 
-| Field          | Type        | Required | Description                                  |
-| -------------- | ----------- | -------- | -------------------------------------------- |
-| id             | TEXT        | yes      | Primary key (deterministic hash)             |
-| slug           | TEXT        | yes      | URL-safe identifier                          |
-| student_name   | TEXT        | yes      | Full name of the student                     |
-| sort_name      | TEXT        | yes      | ASCII-normalized name for sorting            |
-| project_title  | TEXT        | yes      | Title of the master project                  |
-| context        | TEXT        | yes      | One of the 5 contexts                        |
-| academic_year  | TEXT        | yes      | Format: "2024-2025"                          |
-| bio            | TEXT        | no       | Student biography/artist statement           |
-| description    | TEXT        | yes      | Project description (markdown)               |
-| main_image_id  | TEXT        | yes      | Cloudflare Images ID - used for print        |
-| thumb_image_id | TEXT        | no       | Square thumbnail (falls back to main_image)  |
-| tags           | TEXT (JSON) | no       | Material/medium tags as JSON array           |
-| social_links   | TEXT (JSON) | no       | Portfolio, Instagram, etc. as JSON array     |
-| status         | TEXT        | yes      | draft, submitted, ready_for_print, published |
-| user_id        | TEXT        | no       | Foreign key to users table                   |
-| created_at     | TEXT        | yes      | Timestamp                                    |
-| updated_at     | TEXT        | yes      | Timestamp                                    |
+| Field          | Type        | Required | Description                                          |
+| -------------- | ----------- | -------- | ---------------------------------------------------- |
+| id             | TEXT        | yes      | Primary key (deterministic hash)                     |
+| slug           | TEXT        | yes      | URL-safe identifier                                  |
+| student_name   | TEXT        | yes      | Full name of the student                             |
+| sort_name      | TEXT        | yes      | ASCII-normalized name for sorting                    |
+| project_title  | TEXT        | yes      | Title of the master project                          |
+| program        | TEXT        | yes      | Study program: "BA_FO", "BA_BK", "MA_BK", "PREMA_BK" |
+| context        | TEXT        | yes      | One of the 5 contexts                                |
+| academic_year  | TEXT        | yes      | Format: "2024-2025"                                  |
+| bio            | TEXT        | no       | Student biography/artist statement                   |
+| description    | TEXT        | yes      | Project description (markdown)                       |
+| main_image_id  | TEXT        | yes      | Cloudflare Images ID - used for print                |
+| thumb_image_id | TEXT        | no       | Square thumbnail (falls back to main_image)          |
+| tags           | TEXT (JSON) | no       | Material/medium tags as JSON array                   |
+| social_links   | TEXT (JSON) | no       | Portfolio, Instagram, etc. as JSON array             |
+| status         | TEXT        | yes      | draft, submitted, ready_for_print, published         |
+| user_id        | TEXT        | no       | Foreign key to users table                           |
+| created_at     | TEXT        | yes      | Timestamp                                            |
+| updated_at     | TEXT        | yes      | Timestamp                                            |
 
 #### ProjectImage
 
