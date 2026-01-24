@@ -36,7 +36,7 @@ export async function sendMagicLink(
   <h1 style="font-size: 24px; margin-bottom: 20px;">Sign in to Sint Lucas Masters</h1>
   <p>Click the button below to sign in to your account. This link will expire in 15 minutes.</p>
   <p style="margin: 30px 0;">
-    <a href="${loginUrl}" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
+    <a href="${loginUrl}" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; border: 2px solid #fff;">
       Sign in
     </a>
   </p>
