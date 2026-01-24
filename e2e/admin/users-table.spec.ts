@@ -3,9 +3,7 @@ import { E2E_ADMIN, E2E_STUDENT } from "./fixtures";
 
 test.describe("admin users table", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/admin");
-    // Switch to users tab
-    await page.locator(".admin-tabs button", { hasText: "users" }).click();
+    await page.goto("/admin/users");
     // Wait for users table to load
     await expect(page.locator(".admin-list table")).toBeVisible();
   });
@@ -16,15 +14,17 @@ test.describe("admin users table", () => {
     await expect(page.locator("tbody")).toContainText(E2E_STUDENT.email);
   });
 
-  test("has expected columns and no id column", async ({ page }) => {
-    // Should have exactly 3 columns (email, name, role)
+  test("has expected columns", async ({ page }) => {
+    // Should have 5 columns (Email, Name, Role, Created, Last Login)
     const headers = page.locator("thead th");
-    await expect(headers).toHaveCount(3);
+    await expect(headers).toHaveCount(5);
 
-    // Verify each expected column header
+    // Verify expected column headers
     await expect(headers.nth(0)).toHaveText("Email");
     await expect(headers.nth(1)).toHaveText("Name");
     await expect(headers.nth(2)).toHaveText("Role");
+    await expect(headers.nth(3)).toHaveText("Created");
+    await expect(headers.nth(4)).toHaveText("Last Login");
   });
 
   test("shows role pills", async ({ page }) => {
@@ -33,66 +33,33 @@ test.describe("admin users table", () => {
     await expect(page.locator(".role-pill.role-student")).toBeVisible();
   });
 
-  test("add button opens create user modal", async ({ page }) => {
-    // Click add button
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
+  test("new user button navigates to create page", async ({ page }) => {
+    // Click new user button
+    await page.locator("a", { hasText: "+ New User" }).click();
 
-    // Modal should open (use is-open overlay to find active modal)
-    const modal = page.locator(".edit-modal-overlay.is-open");
-    await expect(modal).toBeVisible();
-    await expect(modal.locator("h2")).toHaveText("Create User");
+    // Should navigate to new user page
+    await expect(page).toHaveURL(/\/admin\/users\/new/);
+    await expect(page.locator("h2")).toContainText("Create New User");
   });
 
-  test("create user modal has single and bulk tabs", async ({ page }) => {
-    // Open modal
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
-
-    const modal = page.locator(".edit-modal-overlay.is-open");
-
-    // Should have two tabs
-    const tabs = modal.locator(".modal-tabs .modal-tab");
-    await expect(tabs).toHaveCount(2);
-    await expect(tabs.nth(0)).toHaveText("Create User");
-    await expect(tabs.nth(1)).toHaveText("Bulk Create");
-  });
-
-  test("single user form has required fields", async ({ page }) => {
-    // Open modal
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
-
-    const modal = page.locator(".edit-modal-overlay.is-open");
-
-    // Should be on single user tab by default
-    await expect(modal.locator(".modal-tab", { hasText: "Create User" })).toHaveClass(/active/);
+  test("create user form has required fields", async ({ page }) => {
+    // Navigate to create page
+    await page.goto("/admin/users/new");
 
     // Should have email, name, and role fields
-    await expect(modal.locator('.edit-field:has-text("Email") input')).toBeVisible();
-    await expect(modal.locator('.edit-field:has-text("Name") input')).toBeVisible();
-    await expect(modal.locator('.edit-field:has-text("Role") select')).toBeVisible();
-  });
-
-  test("bulk create tab has csv textarea", async ({ page }) => {
-    // Open modal
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
-
-    const modal = page.locator(".edit-modal-overlay.is-open");
-
-    // Switch to bulk tab
-    await modal.locator(".modal-tab", { hasText: "Bulk Create" }).click();
-
-    // Should have CSV textarea
-    await expect(modal.locator('.edit-field:has-text("CSV Data") textarea')).toBeVisible();
+    await expect(page.locator("#email")).toBeVisible();
+    await expect(page.locator("#name")).toBeVisible();
+    await expect(page.locator("#role")).toBeVisible();
   });
 
   test("role dropdown has all options", async ({ page }) => {
-    // Open modal
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
+    // Navigate to create page
+    await page.goto("/admin/users/new");
 
-    const modal = page.locator(".edit-modal-overlay.is-open");
-
-    // Check role options exist (options inside select are hidden until dropdown opens)
-    const roleSelect = modal.locator('.edit-field:has-text("Role") select');
+    // Check role options exist
+    const roleSelect = page.locator("#role");
     await expect(roleSelect.locator("option")).toHaveCount(3);
+
     // Verify options can be selected
     await roleSelect.selectOption("editor");
     await expect(roleSelect).toHaveValue("editor");
@@ -102,34 +69,51 @@ test.describe("admin users table", () => {
     await expect(roleSelect).toHaveValue("student");
   });
 
-  test("create button is disabled without email", async ({ page }) => {
-    // Open modal
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
+  test("cancel button goes back to users list", async ({ page }) => {
+    // Navigate to create page
+    await page.goto("/admin/users/new");
 
-    const modal = page.locator(".edit-modal-overlay.is-open");
+    // Click cancel
+    await page.locator(".btn-secondary", { hasText: "Cancel" }).click();
 
-    // Create button should be disabled
-    const createBtn = modal.locator(".edit-modal-footer .btn-primary");
-    await expect(createBtn).toBeDisabled();
-
-    // Enter email
-    await modal.locator('.edit-field:has-text("Email") input').fill("test@example.com");
-
-    // Create button should be enabled
-    await expect(createBtn).toBeEnabled();
+    // Should be back on users list
+    await expect(page).toHaveURL(/\/admin\/users$/);
   });
 
-  test("escape key closes user modal", async ({ page }) => {
-    // Open modal
-    await page.locator(".detail-action-btn", { hasText: "Add" }).click();
+  test("clicking row navigates to user detail", async ({ page }) => {
+    // Click on first row
+    const firstRow = page.locator("tbody tr").first();
+    await firstRow.click();
 
-    const modalOverlay = page.locator(".edit-modal-overlay.is-open");
-    await expect(modalOverlay).toBeVisible();
+    // Should navigate to user detail page
+    await expect(page).toHaveURL(/\/admin\/users\/[^/]+$/);
 
-    // Press escape
-    await page.keyboard.press("Escape");
+    // Should show user details
+    await expect(page.locator(".admin-detail-panel")).toBeVisible();
+  });
 
-    // Modal should be closed (second overlay, as first is edit project modal)
-    await expect(page.locator(".edit-modal-overlay").nth(1)).not.toHaveClass(/is-open/);
+  test("role filter works", async ({ page }) => {
+    // Select admin role filter
+    const roleSelect = page.locator('select[name="role"]');
+    await roleSelect.selectOption("admin");
+
+    // Wait for page to reload with filter
+    await page.waitForURL(/role=admin/);
+
+    // Should show admin user
+    await expect(page.locator("tbody")).toContainText(E2E_ADMIN.email);
+  });
+
+  test("search filter works", async ({ page }) => {
+    // Type in search input
+    const searchInput = page.locator('.search-input[name="q"]');
+    await searchInput.fill(E2E_ADMIN.email.split("@")[0]);
+    await searchInput.press("Enter");
+
+    // Wait for page to reload with search
+    await page.waitForURL(/q=/);
+
+    // Should show admin user
+    await expect(page.locator("tbody")).toContainText(E2E_ADMIN.email);
   });
 });

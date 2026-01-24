@@ -21,37 +21,37 @@ test.describe("admin navigation", () => {
     await page.goto("/admin");
 
     // Should start on projects tab (first tab)
-    const tabs = page.locator(".admin-tabs button");
-    await expect(tabs.first()).toHaveClass(/active/);
+    const projectsTab = page.locator(".admin-tab", { hasText: "Projects" });
+    await expect(projectsTab).toHaveClass(/active/);
 
     // Click on users tab
-    await tabs.filter({ hasText: "users" }).click();
-    await expect(tabs.filter({ hasText: "users" })).toHaveClass(/active/);
-    await expect(page.locator(".admin-list h2")).toHaveText("users");
+    await page.locator(".admin-tab", { hasText: "Users" }).click();
+    await expect(page).toHaveURL(/\/admin\/users/);
+    await expect(page.locator(".admin-list-header h2")).toHaveText("Users");
 
     // Click back to projects
-    await tabs.filter({ hasText: "projects" }).click();
-    await expect(tabs.filter({ hasText: "projects" })).toHaveClass(/active/);
-    await expect(page.locator(".admin-list h2")).toHaveText("projects");
+    await page.locator(".admin-tab", { hasText: "Projects" }).click();
+    await expect(page).toHaveURL(/\/admin$/);
+    await expect(page.locator(".admin-list-header h2")).toHaveText("Projects");
   });
 
   test("dark mode toggle works", async ({ page }) => {
     await page.goto("/admin");
 
-    // Get initial theme
+    // Get initial theme (might be null or "light")
     const initialTheme = await page.locator("html").getAttribute("data-theme");
 
     // Click theme toggle
     await page.locator(".theme-toggle").click();
 
-    // Theme should change
+    // Theme should change to dark
     const newTheme = await page.locator("html").getAttribute("data-theme");
-    expect(newTheme).not.toBe(initialTheme);
+    expect(newTheme).toBe("dark");
 
     // Toggle back
     await page.locator(".theme-toggle").click();
     const finalTheme = await page.locator("html").getAttribute("data-theme");
-    expect(finalTheme).toBe(initialTheme);
+    expect(finalTheme).toBe("light");
   });
 
   test("user dropdown shows email and logout", async ({ page }) => {
@@ -64,6 +64,6 @@ test.describe("admin navigation", () => {
     const dropdown = page.locator(".user-dropdown");
     await expect(dropdown).toBeVisible();
     await expect(dropdown.locator(".user-dropdown-email")).toHaveText(E2E_ADMIN.email);
-    await expect(dropdown.locator("button")).toContainText("Log out");
+    await expect(dropdown.locator("button")).toContainText("Logout");
   });
 });

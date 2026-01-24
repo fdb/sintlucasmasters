@@ -63,10 +63,9 @@ social_links: []
 ```bash
 # Development
 npm run dev                 # Start local dev server on http://localhost:8787
-npm run dev:admin:serve     # Optional: Vite dev server with HMR on http://localhost:5173
 
 # Tests
-npm run test:e2e            # Builds admin, starts wrangler on 5174, runs Playwright
+npm run test:e2e            # Starts wrangler on 5174, runs Playwright
 
 # Database
 npm run db:init             # Create schema locally
@@ -87,7 +86,9 @@ npm run create-admin:remote <email>  # Create admin user on production
 ## Local workflow
 
 - Run `npm run typecheck` every time a change is made.
-- `npm run dev` serves admin from `static/admin`; changes are picked up by the Vite build watcher and require a refresh.
+- `npm run dev` starts only Wrangler (no separate build step needed).
+- Admin pages are server-rendered with Hono JSX.
+- Client-side JS in `static/admin/` provides drag-drop and dark mode.
 ```
 
 ## Environment Variables
@@ -115,7 +116,7 @@ All checks must pass before informing the user that the task is complete. If tes
 
 ## Development Phases
 
-1. **Phase 1**: D1 schema + import script (import old data)
-2. **Phase 2**: Simple Hono SSR frontend (list/detail views)
-3. **Phase 3**: Public pages with context filtering
-4. **Phase 4**: Admin section (future)
+1. **Phase 1**: D1 schema + import script (import old data) - DONE
+2. **Phase 2**: Simple Hono SSR frontend (list/detail views) - DONE
+3. **Phase 3**: Public pages with context filtering - DONE
+4. **Phase 4**: Admin section with SSR - DONE

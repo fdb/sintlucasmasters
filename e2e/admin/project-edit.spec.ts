@@ -7,39 +7,42 @@ test.describe("admin project editing", () => {
     await expect(page.locator(".admin-list table")).toBeVisible();
   });
 
-  test("double-clicking row opens edit modal", async ({ page }) => {
-    // Double-click first row
+  test("clicking row navigates to project detail", async ({ page }) => {
+    // Click first row
     const firstRow = page.locator("tbody tr").first();
-    await firstRow.dblclick();
+    await firstRow.click();
 
-    // Edit modal should open (use overlay with is-open to find the active modal)
-    const modalOverlay = page.locator(".edit-modal-overlay.is-open");
-    await expect(modalOverlay).toBeVisible();
-    await expect(modalOverlay.locator("h2")).toHaveText("Edit Project");
+    // Should navigate to project detail page
+    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+$/);
+
+    // Should see project details
+    await expect(page.locator(".detail-header-row h3")).toBeVisible();
   });
 
-  test("edit modal has all sections", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
+  test("edit page has all sections", async ({ page }) => {
+    // Navigate to a project edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
-    const modal = page.locator(".edit-modal-overlay.is-open .edit-modal");
+    // Should be on edit page
+    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+\/edit/);
 
     // Check all sections are present
-    await expect(modal.locator(".edit-section-title", { hasText: "Identity" })).toBeVisible();
-    await expect(modal.locator(".edit-section-title", { hasText: "Classification" })).toBeVisible();
-    await expect(modal.locator(".edit-section-title", { hasText: "Content" })).toBeVisible();
-    await expect(modal.locator(".edit-section-title", { hasText: "Media" })).toBeVisible();
-    await expect(modal.locator(".edit-section-title", { hasText: "Links & Tags" })).toBeVisible();
+    await expect(page.locator(".edit-section-title", { hasText: "Identity" })).toBeVisible();
+    await expect(page.locator(".edit-section-title", { hasText: "Status" })).toBeVisible();
+    await expect(page.locator(".edit-section-title", { hasText: "Bio & Description" })).toBeVisible();
+    await expect(page.locator(".edit-section-title", { hasText: "Tags" })).toBeVisible();
+    await expect(page.locator(".edit-section-title", { hasText: "Social Links" })).toBeVisible();
+    await expect(page.locator(".edit-section-title", { hasText: "Images" })).toBeVisible();
   });
 
   test("can edit student name field", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
-
-    const modal = page.locator(".edit-modal-overlay.is-open");
+    // Navigate to edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Find student name input
-    const studentNameInput = modal.locator('.edit-field:has-text("Student Name") input');
+    const studentNameInput = page.locator("#student_name");
     await expect(studentNameInput).toBeVisible();
 
     // Clear and type new value
@@ -49,103 +52,87 @@ test.describe("admin project editing", () => {
   });
 
   test("status buttons toggle correctly", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
+    // Navigate to edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
-    const modal = page.locator(".edit-modal-overlay.is-open");
+    // Find status buttons (first project is "published" per seed data)
+    const draftBtn = page.locator(".edit-status-option", { hasText: "draft" });
+    const publishedBtn = page.locator(".edit-status-option", { hasText: "published" });
 
-    // Find status buttons
-    const draftBtn = modal.locator(".edit-status-option", { hasText: "draft" });
-    const publishedBtn = modal.locator(".edit-status-option", { hasText: "published" });
+    // Published should be active initially (first project is Alice Smith, status: published)
+    await expect(publishedBtn).toHaveClass(/active/);
 
-    // Click draft
+    // Click draft - it should become active
     await draftBtn.click();
     await expect(draftBtn).toHaveClass(/active/);
-
-    // Click published
-    await publishedBtn.click();
-    await expect(publishedBtn).toHaveClass(/active/);
-    await expect(draftBtn).not.toHaveClass(/active/);
+    await expect(publishedBtn).not.toHaveClass(/active/);
   });
 
-  test("can add and remove tags", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
+  test("tags input accepts comma-separated values", async ({ page }) => {
+    // Navigate to edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
-    const modal = page.locator(".edit-modal-overlay.is-open");
-    await expect(modal).toBeVisible();
+    // Find tags input
+    const tagsInput = page.locator("#tags");
+    await expect(tagsInput).toBeVisible();
 
-    // Wait for modal body content to be loaded (Tags section visible)
-    const tagsField = modal.locator('.edit-field:has-text("Tags")');
-    await expect(tagsField).toBeVisible();
-
-    // Wait for existing tags to be rendered (seeded data has tags)
-    const tagInput = tagsField.locator(".edit-tag-input");
-    await expect(tagInput).toBeVisible();
-
-    // Get initial tag count (wait for at least some tags to be present)
-    await expect(tagsField.locator(".edit-tag")).not.toHaveCount(0);
-    const initialTagCount = await tagsField.locator(".edit-tag").count();
+    // Get current value
+    const currentValue = await tagsInput.inputValue();
 
     // Add a new tag
-    await tagInput.fill("newtag");
-    await tagInput.press("Enter");
+    await tagsInput.clear();
+    await tagsInput.fill(currentValue + ", newtag");
 
-    // Should have one more tag
-    await expect(tagsField.locator(".edit-tag")).toHaveCount(initialTagCount + 1);
-
-    // Remove the new tag
-    const newTag = tagsField.locator(".edit-tag", { hasText: "newtag" });
-    await newTag.locator(".edit-tag-remove").click();
-
-    // Should be back to original count
-    await expect(tagsField.locator(".edit-tag")).toHaveCount(initialTagCount);
+    // Should have new value
+    await expect(tagsInput).toHaveValue(currentValue + ", newtag");
   });
 
-  test("escape key closes modal", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
+  test("cancel button goes back to detail page", async ({ page }) => {
+    // Navigate to edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
-    const modalOverlay = page.locator(".edit-modal-overlay.is-open");
-
-    // Modal should be visible
-    await expect(modalOverlay).toBeVisible();
-
-    // Press escape
-    await page.keyboard.press("Escape");
-
-    // Modal should be hidden (no is-open class on first overlay)
-    await expect(page.locator(".edit-modal-overlay").first()).not.toHaveClass(/is-open/);
-  });
-
-  test("cancel button closes modal", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
-
-    const modalOverlay = page.locator(".edit-modal-overlay.is-open");
-
-    // Modal should be visible
-    await expect(modalOverlay).toBeVisible();
+    // Should be on edit page
+    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+\/edit/);
 
     // Click cancel
-    await modalOverlay.locator(".edit-modal-footer .btn-secondary").click();
+    await page.locator(".btn-secondary", { hasText: "Cancel" }).click();
 
-    // Modal should be hidden
-    await expect(page.locator(".edit-modal-overlay").first()).not.toHaveClass(/is-open/);
+    // Should be back on detail page (not list page)
+    await expect(page).toHaveURL(/\/admin\/projects\/[^/]+$/);
+    await expect(page).not.toHaveURL(/\/edit$/);
   });
 
   test("can select context from dropdown", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
-
-    const modal = page.locator(".edit-modal-overlay.is-open");
+    // Navigate to edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
 
     // Find context select
-    const contextSelect = modal.locator('.edit-field:has-text("Context") select');
+    const contextSelect = page.locator("#context");
     await expect(contextSelect).toBeVisible();
 
     // Select a different context
     await contextSelect.selectOption("Applied Context");
     await expect(contextSelect).toHaveValue("Applied Context");
+  });
+
+  test("save button submits form and shows success", async ({ page }) => {
+    // Navigate to edit page
+    await page.locator("tbody tr").first().click();
+    await page.locator(".detail-action-btn", { hasText: "Edit" }).click();
+
+    // Make a small change
+    const descriptionInput = page.locator("#description");
+    await descriptionInput.fill("Updated description for test");
+
+    // Click save
+    await page.locator(".btn-primary", { hasText: "Save Changes" }).click();
+
+    // Should stay on edit page with success message
+    await expect(page).toHaveURL(/message=saved/);
+    await expect(page.locator(".save-indicator.saved")).toBeVisible();
   });
 });

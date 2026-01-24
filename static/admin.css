@@ -261,7 +261,8 @@
   border-bottom: 1px solid var(--admin-border);
 }
 
-.admin-tabs button {
+.admin-tabs button,
+.admin-tab {
   border: none;
   background: transparent;
   color: var(--gray);
@@ -272,13 +273,16 @@
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   transition: all 0.15s ease;
+  text-decoration: none;
 }
 
-.admin-tabs button:hover {
+.admin-tabs button:hover,
+.admin-tab:hover {
   color: var(--black);
 }
 
-.admin-tabs button.active {
+.admin-tabs button.active,
+.admin-tab.active {
   color: var(--black);
   border-bottom-color: var(--black);
 }
