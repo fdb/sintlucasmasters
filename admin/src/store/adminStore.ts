@@ -899,7 +899,10 @@ export const useAdminStore = create<AdminState>()(
     }),
     {
       name: "admin-ui",
-      partialize: (state) => ({ darkMode: state.darkMode }),
+      partialize: (state) => ({
+        darkMode: state.darkMode,
+        impersonatedUser: state.impersonatedUser,
+      }),
     }
   )
 );
