@@ -391,6 +391,19 @@ function getFileExtension(filename: string, mimeType: string): string {
   return mimeExtensions[mimeType] || "jpg";
 }
 
+// Sanitize filename for safe use in R2 keys (keep it recognizable)
+function sanitizeFilename(filename: string): string {
+  // Remove extension first
+  const lastDot = filename.lastIndexOf(".");
+  const name = lastDot > 0 ? filename.slice(0, lastDot) : filename;
+  // Replace spaces with underscores, remove unsafe characters, collapse multiple underscores
+  return name
+    .replace(/\s+/g, "_")
+    .replace(/[^a-zA-Z0-9_.-]/g, "")
+    .replace(/_+/g, "_")
+    .slice(0, 100); // Limit length
+}
+
 // Get email slug for a project (looks up user email)
 async function getProjectEmailSlug(c: Context<{ Bindings: Bindings }>, project: Project): Promise<string | null> {
   if (!project.user_id) return null;
@@ -544,13 +557,13 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     return c.json({ error: "Invalid file type. Only JPEG and PNG are allowed for print images." }, 400);
   }
 
-  // Generate R2 key
+  // Generate R2 key using original filename
   const userEmailSlug = await getProjectEmailSlug(c, project);
   const yearShort = shortenAcademicYear(project.academic_year);
   const studentSlug = userEmailSlug || slugify(project.student_name);
-  const randomId = generateRandomId();
+  const sanitizedName = sanitizeFilename(file.name);
   const extension = getFileExtension(file.name, file.type);
-  const r2Key = `print-images/${yearShort}/${studentSlug}/${randomId}.${extension}`;
+  const r2Key = `print-images/${yearShort}/${studentSlug}/${sanitizedName}.${extension}`;
 
   // Check if there's already a print image - delete it first
   const existingPrintImage = await c.env.DB.prepare(
