@@ -35,6 +35,13 @@ export const E2E_STUDENT = {
   role: "student",
 };
 
+export const E2E_SUBMIT_STUDENT = {
+  id: "e2e-student-submit",
+  email: "submit-student@example.com",
+  name: "Submit Student",
+  role: "student",
+};
+
 export const E2E_PROJECTS = [
   {
     id: "e2e-project-001",
@@ -97,6 +104,22 @@ export const E2E_PROJECTS = [
     tags: '["video", "documentation"]',
     user_id: null,
   },
+  {
+    id: "e2e-project-submittable",
+    slug: "submit-student",
+    student_name: "Submit Student",
+    sort_name: "Student, Submit",
+    project_title: "Submittable Project",
+    program: "MA_BK",
+    context: "Digital Context",
+    academic_year: "2024-2025",
+    bio: "Test student for submission testing.",
+    description: "A project with all fields complete for submission testing.",
+    main_image_id: "e2e-cf-submit-main",
+    status: "draft",
+    tags: '["test"]',
+    user_id: "e2e-student-submit",
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
@@ -106,6 +129,7 @@ export const E2E_PROJECT_IMAGES = [
     cloudflare_id: "e2e-cf-image-001",
     sort_order: 0,
     caption: "Main view",
+    type: "web",
   },
   {
     id: "e2e-pimg-002",
@@ -113,6 +137,24 @@ export const E2E_PROJECT_IMAGES = [
     cloudflare_id: "e2e-cf-image-002",
     sort_order: 1,
     caption: "Detail shot",
+    type: "web",
+  },
+  // Submittable project images (has main image + print image with caption)
+  {
+    id: "e2e-pimg-submit-main",
+    project_id: "e2e-project-submittable",
+    cloudflare_id: "e2e-cf-submit-main",
+    sort_order: 0,
+    caption: "Main image",
+    type: "web",
+  },
+  {
+    id: "e2e-pimg-submit-print",
+    project_id: "e2e-project-submittable",
+    cloudflare_id: "e2e-cf-submit-print",
+    sort_order: 0,
+    caption: "Print image caption for submission",
+    type: "print",
   },
 ];
 
@@ -183,11 +225,17 @@ async function main() {
     `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_STUDENT.id)}, ${escapeSql(E2E_STUDENT.email)}, ${escapeSql(E2E_STUDENT.name)}, ${escapeSql(E2E_STUDENT.role)}, datetime('now'))`
   );
 
+  // Insert submit test student user
+  console.log("Creating submit test student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_SUBMIT_STUDENT.id)}, ${escapeSql(E2E_SUBMIT_STUDENT.email)}, ${escapeSql(E2E_SUBMIT_STUDENT.name)}, ${escapeSql(E2E_SUBMIT_STUDENT.role)}, datetime('now'))`
+  );
+
   // Insert projects
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
     await runWrangler(
-      `INSERT INTO projects (id, slug, student_name, sort_name, project_title, context, academic_year, bio, description, main_image_id, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(project.bio)}, ${escapeSql(project.description)}, ${escapeSql(project.main_image_id)}, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
+      `INSERT INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, main_image_id, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(project.bio)}, ${escapeSql(project.description)}, ${escapeSql(project.main_image_id)}, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
     );
   }
 
@@ -195,13 +243,13 @@ async function main() {
   console.log("Creating project images...");
   for (const image of E2E_PROJECT_IMAGES) {
     await runWrangler(
-      `INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption, type) VALUES (${escapeSql(image.id)}, ${escapeSql(image.project_id)}, ${escapeSql(image.cloudflare_id)}, ${image.sort_order}, ${escapeSql(image.caption)}, 'web')`
+      `INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption, type) VALUES (${escapeSql(image.id)}, ${escapeSql(image.project_id)}, ${escapeSql(image.cloudflare_id)}, ${image.sort_order}, ${escapeSql(image.caption)}, ${escapeSql(image.type || "web")})`
     );
   }
 
   console.log("\nE2E database seeded successfully!");
   console.log(`  - 1 admin user: ${E2E_ADMIN.email}`);
-  console.log(`  - 1 student user: ${E2E_STUDENT.email}`);
+  console.log(`  - 2 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}`);
   console.log(`  - ${E2E_PROJECTS.length} projects`);
   console.log(`  - ${E2E_PROJECT_IMAGES.length} project images`);
 }

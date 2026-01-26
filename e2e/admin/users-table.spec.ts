@@ -28,9 +28,9 @@ test.describe("admin users table", () => {
   });
 
   test("shows role pills", async ({ page }) => {
-    // Should have role pills
+    // Should have role pills (use .first() to handle multiple students)
     await expect(page.locator(".role-pill.role-admin")).toBeVisible();
-    await expect(page.locator(".role-pill.role-student")).toBeVisible();
+    await expect(page.locator(".role-pill.role-student").first()).toBeVisible();
   });
 
   test("add button opens create user modal", async ({ page }) => {
