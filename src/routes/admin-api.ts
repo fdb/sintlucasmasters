@@ -533,6 +533,22 @@ adminApiRoutes.delete("/projects/:id", async (c) => {
   return c.json({ success: true, deletedProject: project });
 });
 
+// Get students with their projects for impersonation dropdown
+adminApiRoutes.get("/students-with-projects", async (c) => {
+  // Get all students who have at least one project
+  const { results: students } = await c.env.DB.prepare(
+    `
+    SELECT DISTINCT u.id, u.email, u.name, p.academic_year
+    FROM users u
+    INNER JOIN projects p ON p.user_id = u.id
+    WHERE u.role = 'student'
+    ORDER BY u.name, u.email
+  `
+  ).all<{ id: string; email: string; name: string | null; academic_year: string }>();
+
+  return c.json({ students: students ?? [] });
+});
+
 // Bulk create users from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const body = await c.req.json<{ csvData: string }>();

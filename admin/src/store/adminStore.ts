@@ -35,6 +35,13 @@ export type UserDetailResponse = {
   };
 };
 
+export type StudentForImpersonation = {
+  id: string;
+  email: string;
+  name: string | null;
+  academic_year: string;
+};
+
 export type ProjectImage = {
   id: string;
   cloudflare_id: string;
@@ -95,6 +102,10 @@ type AdminState = {
   userCreateStatus: UserCreateStatus;
   userCreateError: string | null;
   userCreateSuccess: string | null;
+  // Impersonation state
+  impersonatedUser: StudentForImpersonation | null;
+  studentsForImpersonation: StudentForImpersonation[];
+  impersonationDropdownOpen: boolean;
   setDarkMode: (value: boolean) => void;
   toggleDarkMode: () => void;
   setUserMenuOpen: (open: boolean) => void;
@@ -137,6 +148,10 @@ type AdminState = {
   setUserModalTab: (tab: UserModalTab) => void;
   createUser: (email: string, name: string, role: string) => Promise<void>;
   bulkCreateUsers: (csvData: string) => Promise<void>;
+  // Impersonation actions
+  loadStudentsForImpersonation: () => Promise<void>;
+  setImpersonatedUser: (student: StudentForImpersonation | null) => void;
+  setImpersonationDropdownOpen: (open: boolean) => void;
 };
 
 const getInitialDarkMode = () => {
@@ -245,6 +260,9 @@ export const useAdminStore = create<AdminState>()(
       userCreateStatus: "idle",
       userCreateError: null,
       userCreateSuccess: null,
+      impersonatedUser: null,
+      studentsForImpersonation: [],
+      impersonationDropdownOpen: false,
       setDarkMode: (value) => set({ darkMode: value }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       setUserMenuOpen: (open) => set({ userMenuOpen: open }),
@@ -856,6 +874,26 @@ export const useAdminStore = create<AdminState>()(
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed to create users";
           set({ userCreateStatus: "error", userCreateError: message });
+        }
+      },
+      // Impersonation actions
+      loadStudentsForImpersonation: async () => {
+        try {
+          const res = await fetch("/api/admin/students-with-projects");
+          if (res.ok) {
+            const data = (await res.json()) as { students: StudentForImpersonation[] };
+            set({ studentsForImpersonation: data.students });
+          }
+        } catch {
+          // Silently fail - impersonation is optional
+        }
+      },
+      setImpersonatedUser: (student) => set({ impersonatedUser: student, impersonationDropdownOpen: false }),
+      setImpersonationDropdownOpen: (open) => {
+        set({ impersonationDropdownOpen: open });
+        // Load students when opening dropdown if not already loaded
+        if (open && get().studentsForImpersonation.length === 0) {
+          get().loadStudentsForImpersonation();
         }
       },
     }),

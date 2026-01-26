@@ -288,6 +288,148 @@
   background: var(--admin-bg-hover);
 }
 
+/* Impersonation UI */
+.impersonation-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 2rem;
+  background: #f5f0e6;
+  color: #5c4d3a;
+  font-size: 0.8125rem;
+  border-bottom: 1px solid #e5dfd3;
+}
+
+:root[data-theme="dark"] .impersonation-banner {
+  background: #2a2520;
+  color: #c9b99a;
+  border-bottom-color: #3a352e;
+}
+
+.impersonation-banner strong {
+  font-weight: 600;
+}
+
+.impersonation-banner button {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.impersonation-banner button:hover {
+  opacity: 1;
+}
+
+.impersonation-menu {
+  position: relative;
+}
+
+.impersonation-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+}
+
+.impersonation-dropdown-header {
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.impersonation-dropdown-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+.impersonation-dropdown-empty {
+  padding: 1rem;
+  font-size: 0.8125rem;
+  color: var(--gray);
+  text-align: center;
+}
+
+.impersonation-dropdown-list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  color: var(--black);
+  border: none;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.impersonation-dropdown-list button:hover {
+  background: var(--admin-bg-hover);
+}
+
+.impersonation-dropdown-list button.active {
+  background: var(--admin-bg-alt);
+}
+
+.impersonation-dropdown-list .student-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.impersonation-dropdown-list .student-year {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+.impersonation-dropdown-stop {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  color: var(--black);
+  border: none;
+  border-top: 1px solid var(--admin-border);
+  font-size: 0.8125rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+
+.impersonation-dropdown-stop:hover {
+  background: var(--admin-bg-hover);
+}
+
 .admin-panel {
   flex: 1;
   display: flex;

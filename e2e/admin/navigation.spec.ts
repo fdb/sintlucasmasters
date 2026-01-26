@@ -41,15 +41,16 @@ test.describe("admin navigation", () => {
     // Get initial theme
     const initialTheme = await page.locator("html").getAttribute("data-theme");
 
-    // Click theme toggle
-    await page.locator(".theme-toggle").click();
+    // Click theme toggle (the one for dark/light mode, not the impersonation button)
+    const themeToggle = page.locator(".theme-toggle[title*='mode']");
+    await themeToggle.click();
 
     // Theme should change
     const newTheme = await page.locator("html").getAttribute("data-theme");
     expect(newTheme).not.toBe(initialTheme);
 
     // Toggle back
-    await page.locator(".theme-toggle").click();
+    await themeToggle.click();
     const finalTheme = await page.locator("html").getAttribute("data-theme");
     expect(finalTheme).toBe(initialTheme);
   });
