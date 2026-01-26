@@ -81,6 +81,22 @@ export const E2E_PROJECTS = [
     tags: '["design", "systems"]',
     user_id: null,
   },
+  {
+    id: "e2e-project-video",
+    slug: "video-student",
+    student_name: "Video Student",
+    sort_name: "Student, Video",
+    project_title: "Video Documentation Project",
+    context: "Digital Context",
+    academic_year: "2024-2025",
+    bio: "Video Student explores multimedia storytelling.",
+    description:
+      "This project explores video documentation.\n\nWatch the YouTube video: https://www.youtube.com/watch?v=dQw4w9WgXcQ\n\nAnd here is a Vimeo video: https://vimeo.com/123456789\n\nThank you for watching!",
+    main_image_id: "e2e-image-video-main",
+    status: "published",
+    tags: '["video", "documentation"]',
+    user_id: null,
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
