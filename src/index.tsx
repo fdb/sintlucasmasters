@@ -223,11 +223,14 @@ app.get("/:year/students/:slug/", async (c) => {
     );
   }
 
-  const { results: images } = await c.env.DB.prepare(
+  const { results: allImages } = await c.env.DB.prepare(
     "SELECT * FROM project_images WHERE project_id = ? ORDER BY sort_order"
   )
     .bind(project.id)
     .all<ProjectImage>();
+
+  // Filter out print images - they should not be shown in the public gallery
+  const images = allImages.filter((img) => img.type !== "print");
 
   const socialLinks: string[] = project.social_links ? JSON.parse(project.social_links) : [];
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
