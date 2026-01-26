@@ -222,7 +222,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                 className="edit-textarea"
                 value={editDraft.bio}
                 onChange={(e) => updateEditField("bio", e.target.value)}
-                placeholder="Short biography of the student..."
+                placeholder="A brief introduction about yourself and your practice..."
                 disabled={isLocked}
               />
             </div>
