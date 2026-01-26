@@ -2334,10 +2334,16 @@ tr.status-draft td:first-child {
 
 /* Checklist */
 .submit-checklist {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.5rem;
   margin-bottom: 1rem;
+}
+
+@media (min-width: 400px) {
+  .submit-checklist {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .checklist-item {
@@ -2556,18 +2562,17 @@ tr.status-draft td:first-child {
 .student-split-view {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 80px);
+  flex: 1;
+  min-height: 0;
 }
 
 .student-edit-pane {
   border-right: 1px solid var(--admin-border);
   overflow-y: auto;
-  max-height: calc(100vh - 80px);
 }
 
 .student-preview-pane {
   overflow-y: auto;
-  max-height: calc(100vh - 80px);
   background: var(--admin-bg-alt);
 }
 
@@ -2797,18 +2802,25 @@ tr.status-draft td:first-child {
 
 /* Mobile responsive for student page */
 @media (max-width: 1024px) {
+  .student-shell {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
   .student-split-view {
     grid-template-columns: 1fr;
+    flex: none;
   }
 
   .student-edit-pane {
     border-right: none;
     border-bottom: 1px solid var(--admin-border);
-    max-height: none;
+    overflow-y: visible;
   }
 
   .student-preview-pane {
-    max-height: none;
+    overflow-y: visible;
   }
 }
 
