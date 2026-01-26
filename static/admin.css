@@ -1798,6 +1798,25 @@ tr.status-draft td:first-child {
 }
 
 /* =====================================================
+   Bulk Settings Box
+   ===================================================== */
+
+.bulk-settings-box {
+  padding: 1rem 1.25rem;
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+}
+
+.bulk-settings-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  margin-bottom: 1rem;
+}
+
+/* =====================================================
    Responsive adjustments
    ===================================================== */
 

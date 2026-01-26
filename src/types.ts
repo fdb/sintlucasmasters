@@ -37,7 +37,7 @@ export interface Project {
   academic_year: string;
   bio: string | null;
   description: string;
-  main_image_id: string;
+  main_image_id: string | null;
   thumb_image_id: string | null;
   tags: string | null;
   social_links: string | null;
@@ -76,7 +76,8 @@ const CF_ACCOUNT_HASH = "7-GLn6-56OyK7JwwGe0hfg";
 // Note: 'public' and 'private' variants are NOT publicly accessible
 export type ImageVariant = "thumb" | "medium" | "large" | "xl";
 
-export function getImageUrl(imageId: string, variant: ImageVariant = "medium"): string {
+export function getImageUrl(imageId: string | null | undefined, variant: ImageVariant = "medium"): string | undefined {
+  if (!imageId) return undefined;
   return `https://imagedelivery.net/${CF_ACCOUNT_HASH}/${imageId}/${variant}`;
 }
 
