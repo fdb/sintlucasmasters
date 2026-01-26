@@ -1959,3 +1959,399 @@ tr.status-draft td:first-child {
     margin-top: 1rem;
   }
 }
+
+/* =====================================================
+   Student Mode & Print Image Section
+   ===================================================== */
+
+/* Student mode badge in modal header */
+.student-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--gray);
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+/* Read-only badge for classification section */
+.read-only-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--gray);
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+}
+
+/* Status display for students (read-only) */
+.status-display {
+  padding-top: 0.5rem;
+}
+
+/* Required field marker */
+.required-marker {
+  color: #c00;
+}
+
+/* Locked project banner */
+.edit-locked-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--admin-bg-alt);
+  border-bottom: 1px solid var(--admin-border);
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
+/* Print Image Section */
+.print-image-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.print-image-section h4 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.print-image-description {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+/* Template download links */
+.print-templates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+}
+
+.templates-label {
+  font-size: 0.8125rem;
+  color: var(--gray);
+  margin-right: 0.25rem;
+}
+
+.template-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.template-link {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--black);
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.template-link:hover {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* Print image preview */
+.print-image-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.print-image-container {
+  position: relative;
+  display: inline-block;
+  max-width: 300px;
+  border: 1px solid var(--admin-border);
+}
+
+.print-image-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.delete-print-image {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid var(--admin-border);
+  color: var(--black);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.print-image-container:hover .delete-print-image {
+  opacity: 1;
+}
+
+.delete-print-image:hover {
+  background: #c00;
+  border-color: #c00;
+  color: #fff;
+}
+
+/* Print image caption */
+.print-image-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.print-image-caption label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.print-image-caption input {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  border: 1px solid var(--admin-border);
+  border-radius: 0;
+  background: var(--admin-bg);
+  color: var(--black);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.print-image-caption input:focus {
+  border-color: var(--black);
+}
+
+.print-image-caption input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.caption-saving {
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+/* Print image upload area */
+.print-image-upload {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-print-image-btn {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--white);
+  background: var(--black);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.upload-print-image-btn:hover {
+  opacity: 0.85;
+}
+
+.upload-print-image-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upload-hint {
+  font-size: 0.8125rem;
+  color: var(--gray);
+}
+
+/* Print image error */
+.print-image-error {
+  padding: 0.75rem 1rem;
+  background: #fff0f0;
+  border: 1px solid #fcc;
+  color: #900;
+  font-size: 0.8125rem;
+}
+
+:root[data-theme="dark"] .print-image-error {
+  background: rgba(200, 0, 0, 0.1);
+  border-color: rgba(200, 0, 0, 0.3);
+  color: #f88;
+}
+
+.dimensions-info {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.no-edit-hint {
+  font-size: 0.8125rem;
+  color: var(--gray);
+  font-style: italic;
+}
+
+/* =====================================================
+   Submission Section
+   ===================================================== */
+
+.detail-submit-section {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+}
+
+.submit-section-header h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.submit-section-header p {
+  margin: 0 0 1rem 0;
+  font-size: 0.8125rem;
+  color: var(--gray);
+}
+
+/* Checklist */
+.submit-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.checklist-item.valid {
+  color: #080;
+}
+
+.checklist-item.invalid {
+  color: #800;
+}
+
+:root[data-theme="dark"] .checklist-item.valid {
+  color: #4c8;
+}
+
+:root[data-theme="dark"] .checklist-item.invalid {
+  color: #c88;
+}
+
+/* Submit button */
+.submit-project-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.submit-project-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-hint {
+  margin: 0.75rem 0 0 0;
+  font-size: 0.8125rem;
+  color: var(--gray);
+}
+
+/* Submit messages */
+.submit-success-message {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #f0fff0;
+  border: 1px solid #afa;
+  color: #060;
+  font-size: 0.875rem;
+}
+
+.submit-error-message {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #fff0f0;
+  border: 1px solid #fcc;
+  color: #900;
+  font-size: 0.875rem;
+}
+
+:root[data-theme="dark"] .submit-success-message {
+  background: rgba(0, 128, 0, 0.1);
+  border-color: rgba(0, 200, 0, 0.3);
+  color: #8d8;
+}
+
+:root[data-theme="dark"] .submit-error-message {
+  background: rgba(200, 0, 0, 0.1);
+  border-color: rgba(200, 0, 0, 0.3);
+  color: #f88;
+}
+
+/* Submitted and locked banners in detail panel */
+.detail-submitted-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f0fff0;
+  border: 1px solid #afa;
+  color: #060;
+  font-size: 0.875rem;
+}
+
+.detail-locked-banner {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
+:root[data-theme="dark"] .detail-submitted-banner {
+  background: rgba(0, 128, 0, 0.1);
+  border-color: rgba(0, 200, 0, 0.3);
+  color: #8d8;
+}

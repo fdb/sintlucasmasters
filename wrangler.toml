@@ -29,6 +29,10 @@ SES_CONFIGURATION_SET = "sintlucasmasters-events"
 APP_BASE_URL = "https://sintlucasmasters.com"
 SES_CONFIGURATION_SET = "sintlucasmasters-events"
 
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "sintlucasmasters"
+
 # Cron trigger for cleaning up expired auth tokens
 [triggers]
 crons = ["0 0 * * *"]

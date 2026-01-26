@@ -9,9 +9,10 @@
     "dev:admin": "vite build --watch --config admin/vite.config.ts",
 
     "test:e2e": "playwright test",
+    "test:e2e:db:reset": "wrangler d1 execute sintlucasmasters --local --persist-to .wrangler/e2e-state --command \"DROP TABLE IF EXISTS project_images; DROP TABLE IF EXISTS projects; DROP TABLE IF EXISTS auth_tokens; DROP TABLE IF EXISTS users;\"",
     "test:e2e:db:init": "wrangler d1 execute sintlucasmasters --local --persist-to .wrangler/e2e-state --file=./schema.sql",
     "test:e2e:db:seed": "node scripts/seed-e2e.mjs",
-    "test:e2e:db:setup": "npm run test:e2e:db:init && npm run test:e2e:db:seed",
+    "test:e2e:db:setup": "npm run test:e2e:db:reset && npm run test:e2e:db:init && npm run test:e2e:db:seed",
     "build:admin": "vite build --config admin/vite.config.ts",
     "build": "wrangler deploy --dry-run",
     "deploy": "npm run build:admin && wrangler deploy --env=''",

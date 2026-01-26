@@ -1,9 +1,12 @@
-import { Pencil, SquareArrowOutUpRight, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, XCircle, Send } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 
 export function ProjectDetailPanel() {
+  const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+
   const {
     activeTable,
     selectedProjectId,
@@ -15,6 +18,13 @@ export function ProjectDetailPanel() {
     openDeleteConfirm,
     closeDeleteConfirm,
     deleteProject,
+    isStudentMode,
+    submitValidation,
+    submitStatus,
+    submitError,
+    loadSubmitValidation,
+    submitProject,
+    user,
   } = useAdminStore((state) => ({
     activeTable: state.activeTable,
     selectedProjectId: state.selectedProjectId,
@@ -26,9 +36,72 @@ export function ProjectDetailPanel() {
     openDeleteConfirm: state.openDeleteConfirm,
     closeDeleteConfirm: state.closeDeleteConfirm,
     deleteProject: state.deleteProject,
+    isStudentMode: state.isStudentMode,
+    submitValidation: state.submitValidation,
+    submitStatus: state.submitStatus,
+    submitError: state.submitError,
+    loadSubmitValidation: state.loadSubmitValidation,
+    submitProject: state.submitProject,
+    user: state.user,
   }));
 
+  const studentMode = isStudentMode();
   const isProjectsTable = activeTable === "projects";
+  const projectStatus_ = String(projectDetail?.project.status || "draft");
+  const canSubmit = projectStatus_ === "draft";
+  const isAdminOrEditor = user?.role === "admin" || user?.role === "editor";
+
+  // Load validation when project changes and in student mode
+  useEffect(() => {
+    if (studentMode && selectedProjectId && projectStatus === "ready" && canSubmit) {
+      loadSubmitValidation();
+    }
+  }, [studentMode, selectedProjectId, projectStatus, canSubmit, loadSubmitValidation]);
+
+  const handleSubmit = async () => {
+    setShowSubmitConfirm(false);
+    await submitProject();
+  };
+
+  // Validation checklist items
+  const getValidationChecklist = () => {
+    if (!projectDetail) return [];
+
+    const project = projectDetail.project;
+    const images = projectDetail.images || [];
+    const printImage = images.find((img) => img.type === "print");
+    const webImages = images.filter((img) => img.type !== "print");
+
+    return [
+      {
+        label: "Project Title",
+        valid: !!String(project.project_title || "").trim(),
+      },
+      {
+        label: "Bio",
+        valid: !!String(project.bio || "").trim(),
+      },
+      {
+        label: "Description",
+        valid: !!String(project.description || "").trim(),
+      },
+      {
+        label: "Print Image",
+        valid: !!printImage,
+      },
+      {
+        label: "Print Image Caption",
+        valid: !!printImage && !!String(printImage.caption || "").trim(),
+      },
+      {
+        label: "Main Image",
+        valid: !!String(project.main_image_id || "").trim(),
+      },
+    ];
+  };
+
+  const checklist = getValidationChecklist();
+  const allValid = checklist.every((item) => item.valid);
 
   return (
     <div className="admin-detail-panel">
@@ -62,23 +135,26 @@ export function ProjectDetailPanel() {
           <div className="detail-header-row">
             <h3>{String(projectDetail.project.student_name || "Untitled")}</h3>
             <div className="detail-header-actions">
-              <div className={`status-badge status-${String(projectDetail.project.status || "draft").toLowerCase()}`}>
-                {String(projectDetail.project.status || "draft").replace(/_/g, " ")}
+              <div className={`status-badge status-${projectStatus_.toLowerCase()}`}>
+                {projectStatus_.replace(/_/g, " ")}
               </div>
               <div className="detail-action-group">
                 <button type="button" className="detail-action-btn has-label" onClick={() => openEditForProject()}>
                   <Pencil size={14} />
                   Edit
                 </button>
-                <button
-                  type="button"
-                  className="detail-action-btn has-label danger"
-                  onClick={openDeleteConfirm}
-                  title="Delete project"
-                >
-                  <Trash2 size={14} />
-                  Delete
-                </button>
+                {/* Only show delete for admins/editors */}
+                {isAdminOrEditor && (
+                  <button
+                    type="button"
+                    className="detail-action-btn has-label danger"
+                    onClick={openDeleteConfirm}
+                    title="Delete project"
+                  >
+                    <Trash2 size={14} />
+                    Delete
+                  </button>
+                )}
                 <a
                   href={`/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
                   target="_blank"
@@ -102,6 +178,58 @@ export function ProjectDetailPanel() {
 
           <div className="detail-year">{String(projectDetail.project.academic_year || "")}</div>
 
+          {/* Submission section for students */}
+          {studentMode && canSubmit && (
+            <div className="detail-submit-section">
+              <div className="submit-section-header">
+                <h4>Submit for Review</h4>
+                <p>Complete all required fields before submitting your project.</p>
+              </div>
+
+              <div className="submit-checklist">
+                {checklist.map((item) => (
+                  <div key={item.label} className={`checklist-item ${item.valid ? "valid" : "invalid"}`}>
+                    {item.valid ? <CheckCircle size={16} /> : <XCircle size={16} />}
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {submitStatus === "success" && (
+                <div className="submit-success-message">Project submitted successfully!</div>
+              )}
+
+              {submitError && <div className="submit-error-message">{submitError}</div>}
+
+              <button
+                type="button"
+                className="btn btn-primary submit-project-btn"
+                disabled={!allValid || submitStatus === "submitting"}
+                onClick={() => setShowSubmitConfirm(true)}
+              >
+                <Send size={14} />
+                {submitStatus === "submitting" ? "Submitting..." : "Submit Project"}
+              </button>
+
+              {!allValid && <p className="submit-hint">Complete all checklist items to enable submission.</p>}
+            </div>
+          )}
+
+          {/* Submitted badge for students */}
+          {studentMode && projectStatus_ === "submitted" && (
+            <div className="detail-submitted-banner">
+              <CheckCircle size={18} />
+              <span>Your project has been submitted and is awaiting review.</span>
+            </div>
+          )}
+
+          {/* Ready for print badge for students */}
+          {studentMode && projectStatus_ === "ready_for_print" && (
+            <div className="detail-locked-banner">
+              <span>Your project is locked for printing. Contact an administrator if changes are needed.</span>
+            </div>
+          )}
+
           <div className="detail-section">
             <div className="detail-section-label">Images</div>
             <div className="detail-images">
@@ -115,19 +243,21 @@ export function ProjectDetailPanel() {
                   <span className="image-badge">Main</span>
                 </div>
               ) : null}
-              {projectDetail.images.map((img, idx) => {
-                const cloudflareId = String(img.cloudflare_id || "");
-                if (!cloudflareId) return null;
-                return (
-                  <div key={idx} className="detail-image-thumb">
-                    <img
-                      src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${cloudflareId}/thumb`}
-                      alt={`Image ${idx + 1}`}
-                      loading="lazy"
-                    />
-                  </div>
-                );
-              })}
+              {projectDetail.images
+                .filter((img) => img.type !== "print")
+                .map((img, idx) => {
+                  const cloudflareId = String(img.cloudflare_id || "");
+                  if (!cloudflareId) return null;
+                  return (
+                    <div key={idx} className="detail-image-thumb">
+                      <img
+                        src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${cloudflareId}/thumb`}
+                        alt={`Image ${idx + 1}`}
+                        loading="lazy"
+                      />
+                    </div>
+                  );
+                })}
             </div>
           </div>
 
@@ -205,6 +335,23 @@ export function ProjectDetailPanel() {
         onConfirm={deleteProject}
         isLoading={deleteStatus === "loading"}
         errorMessage={deleteStatus === "error" ? "Failed to delete project. Please try again." : null}
+      />
+
+      <ConfirmDialog
+        open={showSubmitConfirm}
+        title="Submit project?"
+        description={
+          <>
+            Are you sure you want to submit your project for review? You can still edit it after submission, but the
+            status will change to "submitted".
+          </>
+        }
+        onCancel={() => setShowSubmitConfirm(false)}
+        onConfirm={handleSubmit}
+        isLoading={submitStatus === "submitting"}
+        errorMessage={submitError}
+        confirmLabel="Submit"
+        confirmVariant="primary"
       />
     </div>
   );

@@ -164,8 +164,8 @@ VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(projec
  * Generate SQL INSERT statement for an image
  */
 function imageToSql(image) {
-    return `INSERT OR REPLACE INTO project_images (id, project_id, cloudflare_id, sort_order, caption)
-VALUES (${sqlEscape(image.id)}, ${sqlEscape(image.project_id)}, ${sqlEscape(image.cloudflare_id)}, ${image.sort_order}, ${sqlEscape(image.caption)});`;
+    return `INSERT OR REPLACE INTO project_images (id, project_id, cloudflare_id, sort_order, caption, type)
+VALUES (${sqlEscape(image.id)}, ${sqlEscape(image.project_id)}, ${sqlEscape(image.cloudflare_id)}, ${image.sort_order}, ${sqlEscape(image.caption)}, 'web');`;
 }
 
 /**

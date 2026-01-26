@@ -195,7 +195,7 @@ async function main() {
   console.log("Creating project images...");
   for (const image of E2E_PROJECT_IMAGES) {
     await runWrangler(
-      `INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption) VALUES (${escapeSql(image.id)}, ${escapeSql(image.project_id)}, ${escapeSql(image.cloudflare_id)}, ${image.sort_order}, ${escapeSql(image.caption)})`
+      `INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption, type) VALUES (${escapeSql(image.id)}, ${escapeSql(image.project_id)}, ${escapeSql(image.cloudflare_id)}, ${image.sort_order}, ${escapeSql(image.caption)}, 'web')`
     );
   }
 

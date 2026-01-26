@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { X, GripVertical, Plus, Trash2 } from "lucide-react";
+import { X, GripVertical, Plus, Trash2, Lock } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
+import { PrintImageSection } from "./PrintImageSection";
 
 const CONTEXTS = [
   "Autonomous Context",
@@ -30,6 +31,8 @@ export function EditProjectModal() {
     updateSocialLink,
     removeSocialLink,
     saveProject,
+    isStudentMode,
+    canEditProject,
   } = useAdminStore((state) => ({
     editModalOpen: state.editModalOpen,
     editDraft: state.editDraft,
@@ -44,7 +47,13 @@ export function EditProjectModal() {
     updateSocialLink: state.updateSocialLink,
     removeSocialLink: state.removeSocialLink,
     saveProject: state.saveProject,
+    isStudentMode: state.isStudentMode,
+    canEditProject: state.canEditProject,
   }));
+
+  const studentMode = isStudentMode();
+  const editCheck = canEditProject();
+  const isLocked = !editCheck.allowed;
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -61,14 +70,24 @@ export function EditProjectModal() {
       <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
         <div className="edit-modal-header">
           <h2>Edit Project</h2>
+          {studentMode && <span className="student-mode-badge">Student View</span>}
           <button type="button" className="edit-modal-close" onClick={closeEdit}>
             <X size={18} />
           </button>
         </div>
 
+        {/* Locked project warning */}
+        {isLocked && (
+          <div className="edit-locked-banner">
+            <Lock size={16} />
+            <span>{editCheck.reason}</span>
+          </div>
+        )}
+
         <div className="edit-modal-body">
           {editDraft && (
             <div className="edit-sections">
+              {/* Section 1: Identity */}
               <div className="edit-section">
                 <div className="edit-section-header">
                   <h3 className="edit-section-title">Identity</h3>
@@ -82,24 +101,30 @@ export function EditProjectModal() {
                         className="edit-input"
                         value={editDraft.student_name}
                         onChange={(e) => updateEditField("student_name", e.target.value)}
+                        disabled={isLocked}
                       />
                     </div>
                     <div className="edit-field">
-                      <label className="edit-label">Project Title</label>
+                      <label className="edit-label">
+                        Project Title <span className="required-marker">*</span>
+                      </label>
                       <input
                         type="text"
                         className="edit-input"
                         value={editDraft.project_title}
                         onChange={(e) => updateEditField("project_title", e.target.value)}
+                        disabled={isLocked}
                       />
                     </div>
                   </div>
                 </div>
               </div>
 
+              {/* Section 2: Classification (restricted for students) */}
               <div className="edit-section">
                 <div className="edit-section-header">
                   <h3 className="edit-section-title">Classification</h3>
+                  {studentMode && <span className="read-only-badge">Read-only</span>}
                 </div>
                 <div className="edit-section-content">
                   <div className="edit-row">
@@ -109,6 +134,7 @@ export function EditProjectModal() {
                         className="edit-select"
                         value={editDraft.context}
                         onChange={(e) => updateEditField("context", e.target.value)}
+                        disabled={studentMode || isLocked}
                       >
                         <option value="">Select context...</option>
                         {CONTEXTS.map((ctx) => (
@@ -124,6 +150,7 @@ export function EditProjectModal() {
                         className="edit-select"
                         value={editDraft.program}
                         onChange={(e) => updateEditField("program", e.target.value)}
+                        disabled={studentMode || isLocked}
                       >
                         <option value="">Select program...</option>
                         {PROGRAMS.map((prog) => (
@@ -143,66 +170,97 @@ export function EditProjectModal() {
                         value={editDraft.academic_year}
                         onChange={(e) => updateEditField("academic_year", e.target.value)}
                         placeholder="2024-2025"
+                        disabled={studentMode || isLocked}
                       />
                     </div>
                     <div className="edit-field">
                       <label className="edit-label">Status</label>
-                      <div className="edit-status-row">
-                        {STATUSES.map((status) => (
-                          <button
-                            key={status}
-                            type="button"
-                            className={`edit-status-option ${editDraft.status === status ? "active" : ""}`}
-                            onClick={() => updateEditField("status", status)}
-                          >
-                            {status.replace(/_/g, " ")}
-                          </button>
-                        ))}
-                      </div>
+                      {studentMode ? (
+                        <div className="status-display">
+                          <span className={`status-badge status-${editDraft.status}`}>
+                            {editDraft.status.replace(/_/g, " ")}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="edit-status-row">
+                          {STATUSES.map((status) => (
+                            <button
+                              key={status}
+                              type="button"
+                              className={`edit-status-option ${editDraft.status === status ? "active" : ""}`}
+                              onClick={() => updateEditField("status", status)}
+                              disabled={isLocked}
+                            >
+                              {status.replace(/_/g, " ")}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
 
+              {/* Section 3: Print Image (for postcards) */}
+              <div className="edit-section">
+                <div className="edit-section-header">
+                  <h3 className="edit-section-title">Print Image</h3>
+                </div>
+                <div className="edit-section-content">
+                  <PrintImageSection />
+                </div>
+              </div>
+
+              {/* Section 4: Content */}
               <div className="edit-section">
                 <div className="edit-section-header">
                   <h3 className="edit-section-title">Content</h3>
                 </div>
                 <div className="edit-section-content">
                   <div className="edit-field">
-                    <label className="edit-label">Bio</label>
+                    <label className="edit-label">
+                      Bio <span className="required-marker">*</span>
+                    </label>
                     <textarea
                       className="edit-textarea"
                       value={editDraft.bio}
                       onChange={(e) => updateEditField("bio", e.target.value)}
                       placeholder="Short biography of the student..."
+                      disabled={isLocked}
                     />
                   </div>
                   <div className="edit-field">
-                    <label className="edit-label">Project Description</label>
+                    <label className="edit-label">
+                      Project Description <span className="required-marker">*</span>
+                    </label>
                     <textarea
                       className="edit-textarea tall"
                       value={editDraft.description}
                       onChange={(e) => updateEditField("description", e.target.value)}
                       placeholder="Describe the project..."
+                      disabled={isLocked}
                     />
                   </div>
                 </div>
               </div>
 
+              {/* Section 5: Media */}
               <div className="edit-section">
                 <div className="edit-section-header">
                   <h3 className="edit-section-title">Media</h3>
                 </div>
                 <div className="edit-section-content">
                   <EditImagesGrid />
-                  <p className="edit-images-hint">
-                    <GripVertical size={12} style={{ display: "inline", verticalAlign: "middle" }} /> Drag images to
-                    reorder. Click the star to set as main image.
-                  </p>
+                  {!isLocked && (
+                    <p className="edit-images-hint">
+                      <GripVertical size={12} style={{ display: "inline", verticalAlign: "middle" }} /> Drag images to
+                      reorder. Click the star to set as main image.
+                    </p>
+                  )}
                 </div>
               </div>
 
+              {/* Section 6: Links & Tags */}
               <div className="edit-section">
                 <div className="edit-section-header">
                   <h3 className="edit-section-title">Links & Tags</h3>
@@ -214,24 +272,28 @@ export function EditProjectModal() {
                       {editDraft.tags.map((tag) => (
                         <span key={tag} className="edit-tag">
                           {tag}
-                          <button type="button" className="edit-tag-remove" onClick={() => removeTag(tag)}>
-                            <X size={10} />
-                          </button>
+                          {!isLocked && (
+                            <button type="button" className="edit-tag-remove" onClick={() => removeTag(tag)}>
+                              <X size={10} />
+                            </button>
+                          )}
                         </span>
                       ))}
-                      <input
-                        type="text"
-                        className="edit-tag-input"
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            addTag();
-                          }
-                        }}
-                        placeholder="Add tag..."
-                      />
+                      {!isLocked && (
+                        <input
+                          type="text"
+                          className="edit-tag-input"
+                          value={newTag}
+                          onChange={(e) => setNewTag(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              addTag();
+                            }
+                          }}
+                          placeholder="Add tag..."
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="edit-field">
@@ -245,16 +307,21 @@ export function EditProjectModal() {
                             value={link}
                             onChange={(e) => updateSocialLink(idx, e.target.value)}
                             placeholder="https://..."
+                            disabled={isLocked}
                           />
-                          <button type="button" className="edit-link-remove" onClick={() => removeSocialLink(idx)}>
-                            <Trash2 size={14} />
-                          </button>
+                          {!isLocked && (
+                            <button type="button" className="edit-link-remove" onClick={() => removeSocialLink(idx)}>
+                              <Trash2 size={14} />
+                            </button>
+                          )}
                         </div>
                       ))}
-                      <button type="button" className="edit-link-add" onClick={addSocialLink}>
-                        <Plus size={12} />
-                        Add link
-                      </button>
+                      {!isLocked && (
+                        <button type="button" className="edit-link-add" onClick={addSocialLink}>
+                          <Plus size={12} />
+                          Add link
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -276,11 +343,18 @@ export function EditProjectModal() {
           </div>
           <div className="edit-modal-footer-right">
             <button type="button" className="btn btn-secondary" onClick={closeEdit}>
-              Cancel
+              {isLocked ? "Close" : "Cancel"}
             </button>
-            <button type="button" className="btn btn-primary" onClick={saveProject} disabled={saveStatus === "saving"}>
-              Save Changes
-            </button>
+            {!isLocked && (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={saveProject}
+                disabled={saveStatus === "saving"}
+              >
+                Save Changes
+              </button>
+            )}
           </div>
         </div>
       </div>
