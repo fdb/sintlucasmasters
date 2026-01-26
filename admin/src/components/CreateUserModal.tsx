@@ -9,14 +9,6 @@ const PROGRAMS = [
   { value: "BA_FO", label: "BA Photography" },
 ] as const;
 
-const CONTEXTS = [
-  { value: "Autonomous Context", label: "Autonomous Context" },
-  { value: "Applied Context", label: "Applied Context" },
-  { value: "Digital Context", label: "Digital Context" },
-  { value: "Socio-Political Context", label: "Socio-Political Context" },
-  { value: "Jewelry Context", label: "Jewelry Context" },
-] as const;
-
 // Generate academic years from 2020-2021 to current+1
 function generateAcademicYears(): string[] {
   const currentYear = new Date().getFullYear();
@@ -61,11 +53,10 @@ export function CreateUserModal() {
   const [bulkCsvData, setBulkCsvData] = useState("");
   const [bulkSettings, setBulkSettings] = useState({
     program: "MA_BK",
-    context: "",
     academicYear: currentAcademicYear,
   });
 
-  // Context is required for MA_BK and PREMA_BK
+  // Context is required for MA_BK and PREMA_BK (provided in CSV)
   const contextRequired = bulkSettings.program === "MA_BK" || bulkSettings.program === "PREMA_BK";
 
   // Reset form when modal closes
@@ -75,7 +66,6 @@ export function CreateUserModal() {
       setBulkCsvData("");
       setBulkSettings({
         program: "MA_BK",
-        context: "",
         academicYear: currentAcademicYear,
       });
     }
@@ -104,25 +94,8 @@ export function CreateUserModal() {
   const handleBulkSubmit = async () => {
     if (!bulkCsvData.trim()) return;
 
-    // Validate context is set when required
-    if (contextRequired && !bulkSettings.context) {
-      return;
-    }
-
-    await bulkCreateUsers(
-      bulkCsvData.trim(),
-      bulkSettings.program,
-      contextRequired ? bulkSettings.context : null,
-      bulkSettings.academicYear
-    );
+    await bulkCreateUsers(bulkCsvData.trim(), bulkSettings.program, bulkSettings.academicYear);
   };
-
-  // Clear context when switching to a program that doesn't need it
-  useEffect(() => {
-    if (!contextRequired && bulkSettings.context) {
-      setBulkSettings((prev) => ({ ...prev, context: "" }));
-    }
-  }, [contextRequired, bulkSettings.context]);
 
   const isCreating = userCreateStatus === "creating";
 
@@ -239,24 +212,6 @@ export function CreateUserModal() {
                     </select>
                   </div>
                 </div>
-                {contextRequired && (
-                  <div className="edit-field" style={{ marginTop: "1rem" }}>
-                    <label className="edit-label">Context</label>
-                    <select
-                      className="edit-select"
-                      value={bulkSettings.context}
-                      onChange={(e) => setBulkSettings({ ...bulkSettings, context: e.target.value })}
-                      disabled={isCreating}
-                    >
-                      <option value="">Select context...</option>
-                      {CONTEXTS.map((ctx) => (
-                        <option key={ctx.value} value={ctx.value}>
-                          {ctx.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
               </div>
 
               {/* CSV Data */}
@@ -271,12 +226,25 @@ export function CreateUserModal() {
                   className="edit-textarea tall"
                   value={bulkCsvData}
                   onChange={(e) => setBulkCsvData(e.target.value)}
-                  placeholder="Name, Email&#10;Jane Doe, jane.doe@student.kdg.be&#10;John Smith, john.smith@student.kdg.be"
+                  placeholder={
+                    contextRequired
+                      ? "name, email, context\nJane Doe, jane.doe@student.kdg.be, digital\nJohn Smith, john.smith@student.kdg.be, autonomous"
+                      : "name, email\nJane Doe, jane.doe@student.kdg.be\nJohn Smith, john.smith@student.kdg.be"
+                  }
                   disabled={isCreating}
                 />
                 <p style={{ fontSize: "0.75rem", color: "var(--gray)", marginTop: "0.5rem" }}>
-                  Accepts tab or comma-separated values. Auto-detects column order. Only emails ending with{" "}
-                  <strong>@student.kdg.be</strong> are accepted.
+                  {contextRequired ? (
+                    <>
+                      Header row required: <strong>name</strong>, <strong>email</strong>, <strong>context</strong>.
+                      Context values: autonomous, applied, digital, socio-political, jewelry.
+                    </>
+                  ) : (
+                    <>
+                      Header row required: <strong>name</strong>, <strong>email</strong>.
+                    </>
+                  )}{" "}
+                  Only emails ending with <strong>@student.kdg.be</strong> are accepted.
                 </p>
               </div>
             </>
@@ -312,7 +280,7 @@ export function CreateUserModal() {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleBulkSubmit}
-                disabled={isCreating || !bulkCsvData.trim() || (contextRequired && !bulkSettings.context)}
+                disabled={isCreating || !bulkCsvData.trim()}
               >
                 <Plus size={14} style={{ display: "inline", verticalAlign: "middle", marginRight: "0.375rem" }} />
                 Bulk Create

@@ -564,15 +564,37 @@ const VALID_CONTEXTS = [
   "Jewelry Context",
 ] as const;
 
+// Normalize context value to canonical form (case-insensitive, with or without "Context" suffix)
+function normalizeContext(input: string): string | null {
+  const normalized = input.trim().toLowerCase();
+
+  // Map short names to full context names
+  const contextMap: Record<string, string> = {
+    autonomous: "Autonomous Context",
+    "autonomous context": "Autonomous Context",
+    applied: "Applied Context",
+    "applied context": "Applied Context",
+    digital: "Digital Context",
+    "digital context": "Digital Context",
+    "socio-political": "Socio-Political Context",
+    "socio-political context": "Socio-Political Context",
+    sociopolitical: "Socio-Political Context",
+    "sociopolitical context": "Socio-Political Context",
+    jewelry: "Jewelry Context",
+    "jewelry context": "Jewelry Context",
+  };
+
+  return contextMap[normalized] || null;
+}
+
 // Bulk create users and projects from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const body = await c.req.json<{
     csvData: string;
     program?: string;
-    context?: string | null;
     academic_year?: string;
   }>();
-  const { csvData, program, context, academic_year } = body;
+  const { csvData, program, academic_year } = body;
 
   if (!csvData || !csvData.trim()) {
     return c.json({ error: "CSV data is required" }, 400);
@@ -583,15 +605,8 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
     return c.json({ error: "Invalid program" }, 400);
   }
 
-  // Validate context if provided
-  if (context && !VALID_CONTEXTS.includes(context as (typeof VALID_CONTEXTS)[number])) {
-    return c.json({ error: "Invalid context" }, 400);
-  }
-
-  // Context is required for MA_BK and PREMA_BK
-  if ((program === "MA_BK" || program === "PREMA_BK") && !context) {
-    return c.json({ error: "Context is required for MA_BK and PREMA_BK programs" }, 400);
-  }
+  // Context is required for MA_BK and PREMA_BK (will be validated per-row from CSV)
+  const contextRequired = program === "MA_BK" || program === "PREMA_BK";
 
   // Validate academic_year format (e.g., "2024-2025")
   if (academic_year && !/^\d{4}-\d{4}$/.test(academic_year)) {
@@ -612,11 +627,35 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
   const commaCount = (firstLine.match(/,/g) || []).length;
   const delimiter = tabCount >= commaCount ? "\t" : ",";
 
-  // Check for header row (contains "name" or "email" case-insensitive)
-  const firstLineLower = firstLine.toLowerCase();
-  let startIndex = 0;
-  if (firstLineLower.includes("name") || firstLineLower.includes("email")) {
-    startIndex = 1; // Skip header row
+  // Parse header row (required)
+  const headerParts = firstLine.split(delimiter).map((h) => h.trim().replace(/^"|"$/g, "").toLowerCase());
+
+  // Validate required columns exist
+  const nameIndex = headerParts.indexOf("name");
+  const emailIndex = headerParts.indexOf("email");
+  const contextIndex = headerParts.indexOf("context");
+
+  if (nameIndex === -1 || emailIndex === -1) {
+    return c.json(
+      {
+        error:
+          'CSV must have a header row with "name" and "email" columns. ' +
+          `Found columns: ${headerParts.map((h) => `"${h}"`).join(", ") || "(none)"}`,
+      },
+      400
+    );
+  }
+
+  // Context column is required for programs that need it
+  if (contextRequired && contextIndex === -1) {
+    return c.json(
+      {
+        error:
+          'CSV must have a "context" column for MA_BK and PREMA_BK programs. ' +
+          `Found columns: ${headerParts.map((h) => `"${h}"`).join(", ")}`,
+      },
+      400
+    );
   }
 
   const results = {
@@ -630,29 +669,56 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
   // Determine if we're creating projects
   const createProjects = !!(program && academic_year);
 
-  for (let i = startIndex; i < lines.length; i++) {
+  // Process data rows (skip header at index 0)
+  for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
 
     const parts = line.split(delimiter).map((p) => p.trim().replace(/^"|"$/g, ""));
 
-    // Validate exactly 2 columns
-    if (parts.length !== 2) {
-      results.errors.push(`Row ${i + 1}: Expected 2 columns, got ${parts.length}`);
+    // Validate column count matches header
+    if (parts.length !== headerParts.length) {
+      results.errors.push(
+        `Row ${i + 1}: Expected ${headerParts.length} columns (matching header), got ${parts.length}`
+      );
       continue;
     }
 
-    // Auto-detect column order (email contains "@")
-    let name: string;
-    let email: string;
-    if (parts[0].includes("@")) {
-      email = parts[0];
-      name = parts[1];
-    } else if (parts[1].includes("@")) {
-      name = parts[0];
-      email = parts[1];
-    } else {
-      results.errors.push(`Row ${i + 1}: Could not detect email column`);
+    const name = parts[nameIndex];
+    const email = parts[emailIndex];
+    let context: string | null = null;
+
+    // Parse context if column exists
+    if (contextIndex !== -1) {
+      const rawContext = parts[contextIndex];
+      if (rawContext) {
+        context = normalizeContext(rawContext);
+        if (!context) {
+          results.errors.push(
+            `Row ${i + 1}: Invalid context "${rawContext}". ` +
+              `Valid values: autonomous, applied, digital, socio-political, jewelry ` +
+              `(with or without "Context" suffix, case-insensitive)`
+          );
+          continue;
+        }
+      }
+    }
+
+    // Validate context is present when required
+    if (contextRequired && !context) {
+      results.errors.push(`Row ${i + 1}: Context is required for ${program} program`);
+      continue;
+    }
+
+    // Validate name is not empty
+    if (!name) {
+      results.errors.push(`Row ${i + 1}: Name cannot be empty`);
+      continue;
+    }
+
+    // Validate email is not empty
+    if (!email) {
+      results.errors.push(`Row ${i + 1}: Email cannot be empty`);
       continue;
     }
 
@@ -711,7 +777,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
             sortName,
             "", // Empty project title
             program,
-            context || null,
+            context,
             academic_year,
             null, // bio
             "", // Empty description

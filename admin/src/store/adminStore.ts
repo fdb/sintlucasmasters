@@ -136,7 +136,7 @@ type AdminState = {
   closeUserModal: () => void;
   setUserModalTab: (tab: UserModalTab) => void;
   createUser: (email: string, name: string, role: string) => Promise<void>;
-  bulkCreateUsers: (csvData: string, program?: string, context?: string | null, academicYear?: string) => Promise<void>;
+  bulkCreateUsers: (csvData: string, program?: string, academicYear?: string) => Promise<void>;
 };
 
 const getInitialDarkMode = () => {
@@ -822,7 +822,7 @@ export const useAdminStore = create<AdminState>()(
           set({ userCreateStatus: "error", userCreateError: message });
         }
       },
-      bulkCreateUsers: async (csvData, program, context, academicYear) => {
+      bulkCreateUsers: async (csvData, program, academicYear) => {
         set({ userCreateStatus: "creating", userCreateError: null, userCreateSuccess: null });
         try {
           const res = await fetch("/api/admin/users/bulk-create", {
@@ -831,7 +831,6 @@ export const useAdminStore = create<AdminState>()(
             body: JSON.stringify({
               csvData,
               program,
-              context,
               academic_year: academicYear,
             }),
           });
