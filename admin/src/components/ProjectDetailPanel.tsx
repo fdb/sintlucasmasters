@@ -46,7 +46,8 @@ export function ProjectDetailPanel() {
   }));
 
   const studentMode = isStudentMode();
-  const isProjectsTable = activeTable === "projects";
+  // Show project content if we're on the projects table OR in student mode (viewing StudentPage)
+  const isProjectsTable = activeTable === "projects" || studentMode;
   const projectStatus_ = String(projectDetail?.project.status || "draft");
   const canSubmit = projectStatus_ === "draft";
   const isAdminOrEditor = user?.role === "admin" || user?.role === "editor";

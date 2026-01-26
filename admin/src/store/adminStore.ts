@@ -40,6 +40,16 @@ export type StudentForImpersonation = {
   email: string;
   name: string | null;
   academic_year: string;
+  project_id?: string;
+};
+
+export type StudentProject = {
+  id: string;
+  student_name: string;
+  project_title: string;
+  academic_year: string;
+  context: string;
+  status: string;
 };
 
 export type ProjectImageType = "web" | "print";
@@ -125,6 +135,9 @@ type AdminState = {
   submitValidation: SubmitValidationResult | null;
   submitStatus: SubmitStatus;
   submitError: string | null;
+  // Student page state
+  studentProjects: StudentProject[];
+  studentProjectsStatus: LoadStatus;
   setDarkMode: (value: boolean) => void;
   toggleDarkMode: () => void;
   setUserMenuOpen: (open: boolean) => void;
@@ -178,6 +191,9 @@ type AdminState = {
   // Submit actions
   loadSubmitValidation: () => Promise<void>;
   submitProject: () => Promise<void>;
+  // Student page actions
+  loadStudentProjects: (userId?: string) => Promise<void>;
+  selectStudentProject: (projectId: string) => Promise<void>;
   // Computed helpers
   isStudentMode: () => boolean;
   canEditProject: () => { allowed: boolean; reason?: string };
@@ -303,6 +319,9 @@ export const useAdminStore = create<AdminState>()(
       submitValidation: null,
       submitStatus: "idle",
       submitError: null,
+      // Student page state
+      studentProjects: [],
+      studentProjectsStatus: "idle",
       setDarkMode: (value) => set({ darkMode: value }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       setUserMenuOpen: (open) => set({ userMenuOpen: open }),
@@ -1119,6 +1138,49 @@ export const useAdminStore = create<AdminState>()(
           const message = err instanceof Error ? err.message : "Submission failed";
           set({ submitStatus: "error", submitError: message });
         }
+      },
+      // Student page actions
+      loadStudentProjects: async (userId?: string) => {
+        const { user, impersonatedUser } = get();
+        const targetUserId = userId ?? impersonatedUser?.id ?? user?.id;
+        if (!targetUserId) return;
+
+        set({ studentProjectsStatus: "loading" });
+        try {
+          const res = await fetch(`/api/admin/table/projects?limit=1000`);
+          if (!res.ok) {
+            set({ studentProjectsStatus: "error" });
+            return;
+          }
+          const data = (await res.json()) as TableResponse;
+
+          // Filter projects to only those belonging to the target user
+          const userProjects = data.rows
+            .filter((row) => row.user_id === targetUserId)
+            .map((row) => ({
+              id: String(row.id),
+              student_name: String(row.student_name || ""),
+              project_title: String(row.project_title || ""),
+              academic_year: String(row.academic_year || ""),
+              context: String(row.context || ""),
+              status: String(row.status || "draft"),
+            }));
+
+          set({
+            studentProjects: userProjects,
+            studentProjectsStatus: "ready",
+          });
+
+          // Auto-select the first project if none selected
+          if (userProjects.length > 0 && !get().selectedProjectId) {
+            await get().selectProject(userProjects[0].id);
+          }
+        } catch {
+          set({ studentProjectsStatus: "error" });
+        }
+      },
+      selectStudentProject: async (projectId: string) => {
+        await get().selectProject(projectId);
       },
       // Computed helpers
       isStudentMode: () => {

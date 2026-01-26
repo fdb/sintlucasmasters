@@ -2374,3 +2374,176 @@ tr.status-draft td:first-child {
   border-color: rgba(0, 200, 0, 0.3);
   color: #8d8;
 }
+
+/* Student Page Styles */
+.student-shell {
+  min-height: 100vh;
+  background: var(--admin-bg);
+}
+
+.student-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: var(--admin-bg);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.student-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.student-header-left h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.student-header-subtitle {
+  color: var(--gray);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.student-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.student-header-actions .theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  color: var(--gray);
+  border: 1px solid var(--admin-border);
+  cursor: pointer;
+}
+
+.student-header-actions .theme-toggle:hover {
+  color: var(--black);
+  border-color: var(--black);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--admin-border);
+  color: var(--black);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.logout-btn:hover {
+  background: var(--admin-bg-hover);
+}
+
+/* Project selector dropdown */
+.project-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.project-selector select {
+  appearance: none;
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+  color: var(--black);
+  font-size: 0.875rem;
+  font-family: inherit;
+  padding: 0.375rem 2rem 0.375rem 0.75rem;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.project-selector select:hover {
+  background: var(--admin-bg-hover);
+}
+
+.project-selector select:focus {
+  outline: none;
+  border-color: var(--black);
+}
+
+.project-selector .select-icon {
+  position: absolute;
+  right: 0.5rem;
+  pointer-events: none;
+  color: var(--gray);
+}
+
+/* Student content area */
+.student-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.student-content .admin-detail-panel {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+.student-content .admin-detail-empty {
+  display: none;
+}
+
+.student-content .detail-header-row {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Loading and error states for student page */
+.student-loading,
+.student-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.student-loading p,
+.student-error p {
+  color: var(--gray);
+  font-size: 0.9375rem;
+}
+
+.student-error .error-message {
+  color: #c00;
+}
+
+/* Mobile responsive for student page */
+@media (max-width: 768px) {
+  .student-header {
+    padding: 1rem;
+  }
+
+  .student-header-left h1 {
+    font-size: 1.25rem;
+  }
+
+  .student-content {
+    padding: 1rem;
+  }
+
+  .project-selector select {
+    min-width: 150px;
+    font-size: 0.8125rem;
+  }
+}

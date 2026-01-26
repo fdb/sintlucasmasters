@@ -46,10 +46,12 @@ export function AdminHeader() {
 
   const handleSelectStudent = (student: StudentForImpersonation) => {
     setImpersonatedUser(student);
+    // App.tsx will re-render and show StudentPage
   };
 
   const handleStopImpersonation = () => {
     setImpersonatedUser(null);
+    // App.tsx will re-render and show AdminPage
   };
 
   const handleLogout = async () => {
