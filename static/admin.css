@@ -2449,7 +2449,10 @@ tr.status-draft td:first-child {
 
 /* Student Page Styles */
 .student-shell {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
   background: var(--admin-bg);
 }
 
@@ -2460,6 +2463,7 @@ tr.status-draft td:first-child {
   padding: 1.5rem 2rem;
   background: var(--admin-bg);
   border-bottom: 1px solid var(--admin-border);
+  flex-shrink: 0;
 }
 
 .student-header-left {
@@ -2786,6 +2790,7 @@ tr.status-draft td:first-child {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
   padding: 4rem 2rem;
   text-align: center;
 }
