@@ -1119,18 +1119,33 @@ export const useAdminStore = create<AdminState>()(
           // Refresh project detail to get updated status
           try {
             const refreshed = await fetchProjectDetail(selectedProjectId);
-            set((state) => ({
-              projectDetail: refreshed,
-              projectStatus: "ready",
-              tableData: state.tableData
-                ? {
-                    ...state.tableData,
-                    rows: state.tableData.rows.map((row) =>
-                      row.id === selectedProjectId ? { ...row, ...refreshed.project } : row
-                    ),
-                  }
-                : state.tableData,
-            }));
+            set((state) => {
+              const updates = {
+                projectDetail: refreshed,
+                projectStatus: "ready" as const,
+                tableData: state.tableData
+                  ? {
+                      ...state.tableData,
+                      rows: state.tableData.rows.map((row) =>
+                        row.id === selectedProjectId ? { ...row, ...refreshed.project } : row
+                      ),
+                    }
+                  : state.tableData,
+              };
+
+              // Also update editDraft to reflect the new status
+              if (state.editDraft) {
+                return {
+                  ...updates,
+                  editDraft: {
+                    ...state.editDraft,
+                    status: String(refreshed.project.status || "submitted"),
+                  },
+                };
+              }
+
+              return updates;
+            });
           } catch {
             // ignore refresh failure
           }
