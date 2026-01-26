@@ -27,7 +27,7 @@ app.get("/:year/", async (c) => {
   const year = c.req.param("year");
   const context = c.req.query("context");
 
-  let query = "SELECT * FROM projects WHERE academic_year = ?";
+  let query = "SELECT * FROM projects WHERE academic_year = ? AND status = 'published'";
   const params: string[] = [year];
 
   if (context && CONTEXTS.includes(context as any)) {
@@ -114,9 +114,9 @@ app.get("/archive", async (c) => {
   const year = c.req.query("year");
   const context = c.req.query("context");
 
-  // Get available years
+  // Get available years (only years with published projects)
   const { results: yearResults } = await c.env.DB.prepare(
-    "SELECT DISTINCT academic_year FROM projects ORDER BY academic_year DESC"
+    "SELECT DISTINCT academic_year FROM projects WHERE status = 'published' ORDER BY academic_year DESC"
   ).all<{ academic_year: string }>();
 
   const years = yearResults.map((r) => r.academic_year);
@@ -124,7 +124,7 @@ app.get("/archive", async (c) => {
 
   let query = "SELECT * FROM projects";
   const params: string[] = [];
-  const conditions: string[] = [];
+  const conditions: string[] = ["status = 'published'"];
 
   if (selectedYear) {
     conditions.push("academic_year = ?");
@@ -136,9 +136,7 @@ app.get("/archive", async (c) => {
     params.push(context);
   }
 
-  if (conditions.length > 0) {
-    query += " WHERE " + conditions.join(" AND ");
-  }
+  query += " WHERE " + conditions.join(" AND ");
 
   query += " ORDER BY sort_name";
 
@@ -209,7 +207,9 @@ app.get("/:year/students/:slug/", async (c) => {
   const year = c.req.param("year");
   const slug = c.req.param("slug");
 
-  const project = await c.env.DB.prepare("SELECT * FROM projects WHERE academic_year = ? AND slug = ?")
+  const project = await c.env.DB.prepare(
+    "SELECT * FROM projects WHERE academic_year = ? AND slug = ? AND status = 'published'"
+  )
     .bind(year, slug)
     .first<Project>();
 

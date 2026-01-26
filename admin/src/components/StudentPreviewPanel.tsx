@@ -101,16 +101,23 @@ export function StudentPreviewPanel() {
     <div className="student-preview-panel">
       <div className="preview-header">
         <h3>Preview</h3>
-        <a
-          href={`/${projectDetail?.project.academic_year || ""}/students/${projectDetail?.project.slug || ""}/`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="preview-external-link"
-          title="Open project page"
-        >
-          <SquareArrowOutUpRight size={14} />
-          View live page
-        </a>
+        {status === "published" ? (
+          <a
+            href={`/${projectDetail?.project.academic_year || ""}/students/${projectDetail?.project.slug || ""}/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="preview-external-link"
+            title="Open project page"
+          >
+            <SquareArrowOutUpRight size={14} />
+            View live page
+          </a>
+        ) : (
+          <span className="preview-external-link disabled" title="Project is not published yet">
+            <SquareArrowOutUpRight size={14} />
+            Not published
+          </span>
+        )}
       </div>
 
       {/* Submit for Review section */}

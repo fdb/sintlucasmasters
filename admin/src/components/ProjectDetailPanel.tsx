@@ -156,15 +156,21 @@ export function ProjectDetailPanel() {
                     Delete
                   </button>
                 )}
-                <a
-                  href={`/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="detail-action-btn"
-                  title="Open project page"
-                >
-                  <SquareArrowOutUpRight size={14} />
-                </a>
+                {projectDetail.project.status === "published" ? (
+                  <a
+                    href={`/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="detail-action-btn"
+                    title="Open project page"
+                  >
+                    <SquareArrowOutUpRight size={14} />
+                  </a>
+                ) : (
+                  <span className="detail-action-btn disabled" title="Project is not published yet">
+                    <SquareArrowOutUpRight size={14} />
+                  </span>
+                )}
               </div>
             </div>
           </div>

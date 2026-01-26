@@ -719,6 +719,16 @@
   background: var(--admin-bg-hover);
 }
 
+.detail-action-btn.disabled {
+  color: var(--gray);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.detail-action-btn.disabled:hover {
+  background: var(--admin-bg);
+}
+
 .detail-action-btn svg {
   width: 14px;
   height: 14px;
@@ -2687,6 +2697,16 @@ tr.status-draft td:first-child {
 
 .preview-external-link:hover {
   color: var(--black);
+}
+
+.preview-external-link.disabled {
+  color: var(--gray);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.preview-external-link.disabled:hover {
+  color: var(--gray);
 }
 
 .preview-content {
