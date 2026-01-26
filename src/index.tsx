@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
+import { RichDescription } from "./lib/video-embed";
 import type { Bindings, Project, ProjectImage } from "./types";
 import { CONTEXTS, getImageUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
@@ -249,12 +250,12 @@ app.get("/:year/students/:slug/", async (c) => {
         {project.bio && (
           <div>
             <h3>Bio</h3>
-            <p class="description">{project.bio}</p>
+            <RichDescription text={project.bio} />
           </div>
         )}
         <div>
           <h3>About the project</h3>
-          <p class="description">{project.description}</p>
+          <RichDescription text={project.description} />
         </div>
         {tags.length > 0 && (
           <div>
