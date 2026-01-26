@@ -7,7 +7,6 @@
     "dev:worker": "wrangler dev",
     "dev:e2e": "npm run build:admin && npm run test:e2e:db:setup && wrangler dev --port 5174 --persist-to .wrangler/e2e-state --var E2E_SKIP_AUTH:true",
     "dev:admin": "vite build --watch --config admin/vite.config.ts",
-
     "test:e2e": "playwright test",
     "test:e2e:db:init": "wrangler d1 execute sintlucasmasters --local --persist-to .wrangler/e2e-state --file=./schema.sql",
     "test:e2e:db:seed": "node scripts/seed-e2e.mjs",
@@ -53,7 +52,6 @@
     "typescript": "^5.9.3",
     "vite": "^6.1.1",
     "vitest": "^2.1.0",
-    "wrangler": "^4.59.1",
-    "typescript": "^5.8.0"
+    "wrangler": "^4.59.1"
   }
 }
