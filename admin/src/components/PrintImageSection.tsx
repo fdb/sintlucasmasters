@@ -1,5 +1,7 @@
 import { useRef, useState, useCallback } from "react";
+import { FileCheck, FileImage, Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { ConfirmDialog } from "./ConfirmDialog";
 import {
   validatePrintImageDimensions,
   isPrintImageSupported,
@@ -10,17 +12,33 @@ import {
 const TEMPLATE_BASE_URL = "https://files.sintlucasmasters.com/postcard-templates";
 
 const TEMPLATES = [
-  { name: "Landscape PDF", url: `${TEMPLATE_BASE_URL}/postcard-a6-landscape.pdf` },
-  { name: "Portrait PDF", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.pdf` },
-  { name: "Landscape PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-landscape.png` },
-  { name: "Portrait PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.png` },
+  { orientation: "Landscape", format: "PDF", url: `${TEMPLATE_BASE_URL}/postcard-a6-landscape.pdf` },
+  { orientation: "Landscape", format: "PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-landscape.png` },
+  { orientation: "Portrait", format: "PDF", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.pdf` },
+  { orientation: "Portrait", format: "PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.png` },
 ];
+
+// Get basename from a path and split into name + extension
+function getFilenameParts(filepath: string): { name: string; extension: string } {
+  const parts = filepath.split("/");
+  const basename = parts[parts.length - 1] || filepath;
+  const dotIndex = basename.lastIndexOf(".");
+  if (dotIndex === -1) {
+    return { name: basename, extension: "" };
+  }
+  return {
+    name: basename.slice(0, dotIndex),
+    extension: basename.slice(dotIndex), // includes the dot
+  };
+}
 
 export function PrintImageSection() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationResult, setValidationResult] = useState<PrintImageValidationResult | null>(null);
   const [captionValue, setCaptionValue] = useState("");
   const [captionSaving, setCaptionSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const printImage = useAdminStore((state) => state.printImage);
   const printImageStatus = useAdminStore((state) => state.printImageStatus);
@@ -28,7 +46,6 @@ export function PrintImageSection() {
   const uploadPrintImage = useAdminStore((state) => state.uploadPrintImage);
   const updatePrintImageCaption = useAdminStore((state) => state.updatePrintImageCaption);
   const deletePrintImage = useAdminStore((state) => state.deletePrintImage);
-  const isStudentMode = useAdminStore((state) => state.isStudentMode);
   const canEditProject = useAdminStore((state) => state.canEditProject);
 
   const editAllowed = canEditProject().allowed;
@@ -83,58 +100,42 @@ export function PrintImageSection() {
   };
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete the print image?")) return;
+    setIsDeleting(true);
     await deletePrintImage();
+    setIsDeleting(false);
+    setShowDeleteConfirm(false);
     setValidationResult(null);
     setCaptionValue("");
   };
 
-  // Construct R2 URL for print image preview
-  const getPrintImageUrl = (cloudflareId: string) => {
-    return `https://files.sintlucasmasters.com/${cloudflareId}`;
-  };
-
   return (
     <div className="print-image-section">
-      <h4>Print Image (Postcard)</h4>
+      <h4>Print Image for Postcard</h4>
       <p className="print-image-description">
         {PRINT_IMAGE_REQUIREMENTS.description}. Minimum dimensions: {PRINT_IMAGE_REQUIREMENTS.minPortrait.width}x
         {PRINT_IMAGE_REQUIREMENTS.minPortrait.height}px (portrait) or {PRINT_IMAGE_REQUIREMENTS.minLandscape.width}x
         {PRINT_IMAGE_REQUIREMENTS.minLandscape.height}px (landscape).
       </p>
 
-      {/* Templates section */}
-      <div className="print-templates">
-        <span className="templates-label">Download templates:</span>
-        <div className="template-links">
-          {TEMPLATES.map((template) => (
-            <a
-              key={template.url}
-              href={template.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="template-link"
-            >
-              {template.name}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Current print image */}
+      {/* Current print image - show as file indicator, not preview */}
       {printImage && (
-        <div className="print-image-preview">
-          <div className="print-image-container">
-            <img src={getPrintImageUrl(printImage.cloudflare_id)} alt="Print image" />
+        <div className="print-image-file">
+          <div className="print-image-file-info">
+            <FileCheck size={20} className="file-icon" />
+            <span
+              className="file-name"
+              title={`${getFilenameParts(printImage.cloudflare_id).name}${getFilenameParts(printImage.cloudflare_id).extension}`}
+            >
+              <span className="file-name-base">{getFilenameParts(printImage.cloudflare_id).name}</span>
+              <span className="file-name-ext">{getFilenameParts(printImage.cloudflare_id).extension}</span>
+            </span>
             {editAllowed && (
-              <button className="delete-print-image" onClick={handleDelete} title="Delete print image">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                  <path
-                    fillRule="evenodd"
-                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                  />
-                </svg>
+              <button
+                className="delete-print-image-btn"
+                onClick={() => setShowDeleteConfirm(true)}
+                title="Delete print image"
+              >
+                <Trash2 size={16} />
               </button>
             )}
           </div>
@@ -156,23 +157,48 @@ export function PrintImageSection() {
 
       {/* Upload area */}
       {!printImage && editAllowed && (
-        <div className="print-image-upload">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/jpeg,image/png"
-            onChange={handleFileSelect}
-            style={{ display: "none" }}
-          />
-          <button
-            className="upload-print-image-btn"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={printImageStatus === "uploading"}
-          >
-            {printImageStatus === "uploading" ? "Uploading..." : "Upload Print Image"}
-          </button>
-          <span className="upload-hint">JPEG or PNG only</span>
-        </div>
+        <>
+          <div className="print-image-upload">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png"
+              onChange={handleFileSelect}
+              style={{ display: "none" }}
+            />
+            <button
+              className="upload-print-image-btn"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={printImageStatus === "uploading"}
+            >
+              {printImageStatus === "uploading" ? "Uploading..." : "Upload Print Image"}
+            </button>
+            <span className="upload-hint">JPEG or PNG only</span>
+          </div>
+
+          {/* Templates section */}
+          <div className="print-templates">
+            <div className="templates-header">
+              <span className="templates-label">Download templates</span>
+              <span className="templates-hint">Red border indicates the bleed area (will be trimmed)</span>
+            </div>
+            <div className="template-links">
+              {TEMPLATES.map((template) => (
+                <a
+                  key={template.url}
+                  href={template.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="template-link"
+                >
+                  <FileImage size={16} className="template-icon" />
+                  <span className="template-orientation">{template.orientation}</span>
+                  <span className="template-format">{template.format}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </>
       )}
 
       {/* Validation error */}
@@ -192,6 +218,17 @@ export function PrintImageSection() {
 
       {/* No edit hint for students */}
       {!editAllowed && !printImage && <p className="no-edit-hint">Editing is disabled for this project.</p>}
+
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        title="Delete print image?"
+        description="This will permanently remove the print image from storage."
+        onCancel={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        confirmLabel="Delete"
+        confirmVariant="danger"
+      />
     </div>
   );
 }

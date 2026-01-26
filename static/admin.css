@@ -2058,30 +2058,48 @@ tr.status-draft td:first-child {
 /* Template download links */
 .print-templates {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
   background: var(--admin-bg-alt);
   border: 1px solid var(--admin-border);
 }
 
+.templates-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
 .templates-label {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.templates-hint {
+  font-size: 0.75rem;
   color: var(--gray);
-  margin-right: 0.25rem;
 }
 
 .template-links {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
 }
 
+@media (max-width: 480px) {
+  .template-links {
+    grid-template-columns: 1fr;
+  }
+}
+
 .template-link {
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.8125rem;
   color: var(--black);
   background: var(--admin-bg);
   border: 1px solid var(--admin-border);
@@ -2095,51 +2113,99 @@ tr.status-draft td:first-child {
   border-color: var(--black);
 }
 
-/* Print image preview */
-.print-image-preview {
+.template-link .template-icon {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.template-link:hover .template-icon {
+  opacity: 1;
+}
+
+.template-link .template-orientation {
+  flex: 1;
+  font-weight: 500;
+}
+
+.template-link .template-format {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.125rem 0.375rem;
+  background: var(--admin-border);
+  color: var(--gray);
+}
+
+.template-link:hover .template-format {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+/* Print image file display */
+.print-image-file {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.print-image-container {
-  position: relative;
-  display: inline-block;
-  max-width: 300px;
+.print-image-file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--admin-bg-alt);
   border: 1px solid var(--admin-border);
 }
 
-.print-image-container img {
-  display: block;
-  width: 100%;
-  height: auto;
+.print-image-file-info .file-icon {
+  color: #080;
+  flex-shrink: 0;
 }
 
-.delete-print-image {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 28px;
-  height: 28px;
+.print-image-file-info .file-name {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-family: monospace;
+  color: var(--black);
+}
+
+.print-image-file-info .file-name-base {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.print-image-file-info .file-name-ext {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.delete-print-image-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--white);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
   border: 1px solid var(--admin-border);
-  color: var(--black);
+  color: var(--gray);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
 }
 
-.print-image-container:hover .delete-print-image {
-  opacity: 1;
-}
-
-.delete-print-image:hover {
+.delete-print-image-btn:hover {
   background: #c00;
   border-color: #c00;
   color: #fff;
+}
+
+:root[data-theme="dark"] .print-image-file-info .file-icon {
+  color: #8d8;
 }
 
 /* Print image caption */
