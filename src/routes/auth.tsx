@@ -115,9 +115,35 @@ authPageRoutes.get("/login", (c) => {
           <button type="submit">Send sign-in link</button>
         </form>
 
-        <p id="success-message" class="success-message" style="display: none;">
-          Check your email for a sign-in link.
-        </p>
+        <div id="success-message" class="email-sent-card" style="display: none;">
+          <div class="email-sent-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8Z" />
+              <polyline points="15,9 18,9 18,11" />
+              <path d="M6.5 5C9 5 11 7 11 9.5V17a2 2 0 0 1-2 2" />
+              <line x1="6" x2="7" y1="10" y2="10" />
+            </svg>
+          </div>
+          <p class="email-sent-title">To continue, click the link sent to</p>
+          <p class="email-sent-address" id="sent-email"></p>
+          <p class="email-sent-retry">
+            Not seeing the email in your inbox?
+            <br />
+            <a href="#" id="try-again-link">
+              Try sending again
+            </a>
+          </p>
+        </div>
 
         <script
           dangerouslySetInnerHTML={{
@@ -127,21 +153,22 @@ authPageRoutes.get("/login", (c) => {
 						const form = e.target;
 						const email = form.email.value;
 						const button = form.querySelector('button');
-						
+
 						button.disabled = true;
 						button.textContent = 'Sending...';
-						
+
 						try {
 							const res = await fetch('/api/auth/login', {
 								method: 'POST',
 								headers: { 'Content-Type': 'application/json' },
 								body: JSON.stringify({ email })
 							});
-							
+
 							const data = await res.json();
-							
+
 							if (res.ok) {
 								form.style.display = 'none';
+								document.getElementById('sent-email').textContent = email;
 								document.getElementById('success-message').style.display = 'block';
 							} else {
 								alert(data.error || 'Failed to send email');
@@ -153,6 +180,16 @@ authPageRoutes.get("/login", (c) => {
 							button.disabled = false;
 							button.textContent = 'Send sign-in link';
 						}
+					});
+
+					document.getElementById('try-again-link').addEventListener('click', (e) => {
+						e.preventDefault();
+						document.getElementById('success-message').style.display = 'none';
+						const form = document.getElementById('login-form');
+						form.style.display = '';
+						const button = form.querySelector('button');
+						button.disabled = false;
+						button.textContent = 'Send sign-in link';
 					});
 				`,
           }}

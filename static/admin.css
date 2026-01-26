@@ -104,6 +104,49 @@
   font-size: 0.9375rem;
 }
 
+/* Email sent card (Anthropic-style) */
+.email-sent-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--admin-bg-alt);
+  border: 1px solid var(--admin-border);
+}
+
+.email-sent-icon {
+  color: var(--black);
+  margin-bottom: 1.5rem;
+}
+
+.email-sent-title {
+  font-size: 1.125rem;
+  color: var(--gray);
+  margin: 0 0 0.25rem 0;
+}
+
+.email-sent-address {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--black);
+  margin: 0 0 2.5rem 0;
+  word-break: break-all;
+}
+
+.email-sent-retry {
+  font-size: 0.875rem;
+  color: var(--gray);
+  margin: 0;
+}
+
+.email-sent-retry a {
+  color: var(--gray);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.email-sent-retry a:hover {
+  color: var(--black);
+}
+
 .auth-note {
   font-size: 0.875rem;
   color: var(--gray);
