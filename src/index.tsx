@@ -245,7 +245,9 @@ app.get("/:year/students/:slug/", async (c) => {
         <p class="meta">
           {project.project_title} · {project.context} · {project.academic_year}
         </p>
-        <img src={getImageUrl(project.main_image_id, "large")} alt={project.project_title} class="main-image" />
+        {project.main_image_id && (
+          <img src={getImageUrl(project.main_image_id, "large")} alt={project.project_title} class="main-image" />
+        )}
         {project.bio && (
           <div>
             <h3>Bio</h3>

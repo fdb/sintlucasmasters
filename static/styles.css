@@ -135,6 +135,14 @@ main {
   transition: opacity 0.15s ease;
 }
 
+.card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
 .card:hover .card-image {
   opacity: 0.85;
 }

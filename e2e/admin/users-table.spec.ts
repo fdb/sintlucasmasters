@@ -71,7 +71,7 @@ test.describe("admin users table", () => {
     await expect(modal.locator('.edit-field:has-text("Role") select')).toBeVisible();
   });
 
-  test("bulk create tab has csv textarea", async ({ page }) => {
+  test("bulk create tab has csv textarea and project settings", async ({ page }) => {
     // Open modal
     await page.locator(".detail-action-btn", { hasText: "Add" }).click();
 
@@ -80,8 +80,13 @@ test.describe("admin users table", () => {
     // Switch to bulk tab
     await modal.locator(".modal-tab", { hasText: "Bulk Create" }).click();
 
+    // Should have project settings box
+    await expect(modal.locator(".bulk-settings-box")).toBeVisible();
+    await expect(modal.locator('.edit-field:has-text("Program") select')).toBeVisible();
+    await expect(modal.locator('.edit-field:has-text("Academic Year") select')).toBeVisible();
+
     // Should have CSV textarea
-    await expect(modal.locator('.edit-field:has-text("CSV Data") textarea')).toBeVisible();
+    await expect(modal.locator('.edit-field:has-text("Student List") textarea')).toBeVisible();
   });
 
   test("role dropdown has all options", async ({ page }) => {

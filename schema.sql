@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS projects (
     academic_year TEXT NOT NULL,
     bio TEXT,
     description TEXT NOT NULL,
-    main_image_id TEXT NOT NULL,
+    main_image_id TEXT,
     thumb_image_id TEXT,
     tags TEXT, -- JSON array
     social_links TEXT, -- JSON array

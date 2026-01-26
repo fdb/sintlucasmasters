@@ -2,7 +2,7 @@ import type { FC, PropsWithChildren } from "hono/jsx";
 
 type LayoutProps = PropsWithChildren<{
   title?: string;
-  ogImage?: string;
+  ogImage?: string | null;
   ogDescription?: string;
   ogUrl?: string;
 }>;
