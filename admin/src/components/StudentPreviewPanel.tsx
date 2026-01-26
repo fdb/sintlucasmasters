@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { CheckCircle, XCircle, Send, SquareArrowOutUpRight } from "lucide-react";
+import { CheckCircle, XCircle, Send, SquareArrowOutUpRight, Undo2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { ConfirmDialog } from "./ConfirmDialog";
 
 export function StudentPreviewPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+  const [showRevertConfirm, setShowRevertConfirm] = useState(false);
+  const [isReverting, setIsReverting] = useState(false);
 
   const {
     editDraft,
@@ -15,6 +17,8 @@ export function StudentPreviewPanel() {
     submitError,
     submitProject,
     printImage,
+    updateEditField,
+    saveProject,
   } = useAdminStore((state) => ({
     editDraft: state.editDraft,
     editImages: state.editImages,
@@ -24,11 +28,21 @@ export function StudentPreviewPanel() {
     submitError: state.submitError,
     submitProject: state.submitProject,
     printImage: state.printImage,
+    updateEditField: state.updateEditField,
+    saveProject: state.saveProject,
   }));
 
   const handleSubmit = async () => {
     setShowSubmitConfirm(false);
     await submitProject();
+  };
+
+  const handleRevertToDraft = async () => {
+    setIsReverting(true);
+    updateEditField("status", "draft");
+    await saveProject();
+    setIsReverting(false);
+    setShowRevertConfirm(false);
   };
 
   // Use editDraft for live preview, falling back to projectDetail
@@ -137,8 +151,14 @@ export function StudentPreviewPanel() {
       {/* Submitted status */}
       {status === "submitted" && (
         <div className="detail-submitted-banner">
-          <CheckCircle size={18} />
-          <span>Your project has been submitted and is awaiting review.</span>
+          <div className="submitted-banner-content">
+            <CheckCircle size={18} />
+            <span>Your project has been submitted and is awaiting review.</span>
+          </div>
+          <button type="button" className="btn btn-secondary btn-small" onClick={() => setShowRevertConfirm(true)}>
+            <Undo2 size={14} />
+            Return to Draft
+          </button>
         </div>
       )}
 
@@ -247,8 +267,8 @@ export function StudentPreviewPanel() {
         title="Submit project?"
         description={
           <>
-            Are you sure you want to submit your project for review? You can still edit it after submission, but the
-            status will change to "submitted".
+            Submitting a project means it's ready for print. You can still edit it after submission until the print
+            deadline.
           </>
         }
         onCancel={() => setShowSubmitConfirm(false)}
@@ -256,6 +276,17 @@ export function StudentPreviewPanel() {
         isLoading={submitStatus === "submitting"}
         errorMessage={submitError}
         confirmLabel="Submit"
+        confirmVariant="primary"
+      />
+
+      <ConfirmDialog
+        open={showRevertConfirm}
+        title="Return to draft?"
+        description="This will change your project status back to draft. You can submit it again when ready."
+        onCancel={() => setShowRevertConfirm(false)}
+        onConfirm={handleRevertToDraft}
+        isLoading={isReverting}
+        confirmLabel="Return to Draft"
         confirmVariant="primary"
       />
     </div>
