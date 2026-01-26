@@ -166,7 +166,7 @@ type AdminState = {
   closeUserModal: () => void;
   setUserModalTab: (tab: UserModalTab) => void;
   createUser: (email: string, name: string, role: string) => Promise<void>;
-  bulkCreateUsers: (csvData: string) => Promise<void>;
+  bulkCreateUsers: (csvData: string, program?: string, academicYear?: string) => Promise<void>;
   // Impersonation actions
   loadStudentsForImpersonation: () => Promise<void>;
   setImpersonatedUser: (student: StudentForImpersonation | null) => void;
@@ -894,13 +894,17 @@ export const useAdminStore = create<AdminState>()(
           set({ userCreateStatus: "error", userCreateError: message });
         }
       },
-      bulkCreateUsers: async (csvData) => {
+      bulkCreateUsers: async (csvData, program, academicYear) => {
         set({ userCreateStatus: "creating", userCreateError: null, userCreateSuccess: null });
         try {
           const res = await fetch("/api/admin/users/bulk-create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ csvData }),
+            body: JSON.stringify({
+              csvData,
+              program,
+              academic_year: academicYear,
+            }),
           });
 
           if (!res.ok) {
@@ -909,21 +913,49 @@ export const useAdminStore = create<AdminState>()(
             return;
           }
 
-          const data = (await res.json()) as { created: number; skipped: string[]; errors: string[] };
-          let message = `${data.created} student${data.created !== 1 ? "s" : ""} created`;
-          if (data.skipped.length > 0) {
-            message += `. ${data.skipped.length} already exist${data.skipped.length !== 1 ? "" : "s"} and were skipped.`;
+          const data = (await res.json()) as {
+            usersCreated: number;
+            usersExisting: number;
+            projectsCreated: number;
+            projectsSkipped: number;
+            errors: string[];
+          };
+
+          // Build success message
+          const parts: string[] = [];
+
+          if (data.usersCreated > 0) {
+            parts.push(`Created ${data.usersCreated} user${data.usersCreated !== 1 ? "s" : ""}`);
+          }
+          if (data.projectsCreated > 0) {
+            parts.push(`${data.projectsCreated} project${data.projectsCreated !== 1 ? "s" : ""}`);
+          }
+
+          let message = parts.join(" and ");
+          if (!message) {
+            message = "No new users or projects created";
+          }
+          message += ".";
+
+          if (data.usersExisting > 0) {
+            message += ` ${data.usersExisting} existing user${data.usersExisting !== 1 ? "s" : ""} received new projects.`;
+          }
+          if (data.projectsSkipped > 0) {
+            message += ` ${data.projectsSkipped} skipped (already have projects for this year).`;
           }
           if (data.errors.length > 0) {
-            message += ` ${data.errors.length} error${data.errors.length !== 1 ? "s" : ""}: ${data.errors.join(", ")}`;
+            message += ` ${data.errors.length} error${data.errors.length !== 1 ? "s" : ""}: ${data.errors.slice(0, 3).join("; ")}`;
+            if (data.errors.length > 3) {
+              message += `... and ${data.errors.length - 3} more`;
+            }
           }
 
           set({ userCreateStatus: "success", userCreateSuccess: message });
 
-          // Refresh the users table if it's the active table
+          // Refresh the users and projects tables
           const { activeTable, loadTable } = get();
-          if (activeTable === "users") {
-            await loadTable("users");
+          if (activeTable === "users" || activeTable === "projects") {
+            await loadTable(activeTable);
           }
         } catch (err) {
           const message = err instanceof Error ? err.message : "Failed to create users";

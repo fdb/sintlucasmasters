@@ -1,6 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { X, Plus } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+
+const PROGRAMS = [
+  { value: "MA_BK", label: "MA Fine Arts" },
+  { value: "PREMA_BK", label: "PreMA Fine Arts" },
+  { value: "BA_BK", label: "BA Fine Arts" },
+  { value: "BA_FO", label: "BA Photography" },
+] as const;
+
+// Generate academic years from 2020-2021 to current+1
+function generateAcademicYears(): string[] {
+  const currentYear = new Date().getFullYear();
+  const years: string[] = [];
+  for (let year = currentYear + 1; year >= 2020; year--) {
+    years.push(`${year}-${year + 1}`);
+  }
+  return years;
+}
 
 export function CreateUserModal() {
   const {
@@ -25,16 +42,34 @@ export function CreateUserModal() {
     bulkCreateUsers: state.bulkCreateUsers,
   }));
 
+  const academicYears = useMemo(() => generateAcademicYears(), []);
+  const currentAcademicYear = useMemo(() => {
+    const now = new Date();
+    const year = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+    return `${year}-${year + 1}`;
+  }, []);
+
   const [singleUserForm, setSingleUserForm] = useState({ email: "", name: "", role: "student" });
   const [bulkCsvData, setBulkCsvData] = useState("");
+  const [bulkSettings, setBulkSettings] = useState({
+    program: "MA_BK",
+    academicYear: currentAcademicYear,
+  });
+
+  // Context is required for MA_BK and PREMA_BK (provided in CSV)
+  const contextRequired = bulkSettings.program === "MA_BK" || bulkSettings.program === "PREMA_BK";
 
   // Reset form when modal closes
   useEffect(() => {
     if (!userModalOpen) {
       setSingleUserForm({ email: "", name: "", role: "student" });
       setBulkCsvData("");
+      setBulkSettings({
+        program: "MA_BK",
+        academicYear: currentAcademicYear,
+      });
     }
-  }, [userModalOpen]);
+  }, [userModalOpen, currentAcademicYear]);
 
   // Handle escape key
   useEffect(() => {
@@ -59,7 +94,7 @@ export function CreateUserModal() {
   const handleBulkSubmit = async () => {
     if (!bulkCsvData.trim()) return;
 
-    await bulkCreateUsers(bulkCsvData.trim());
+    await bulkCreateUsers(bulkCsvData.trim(), bulkSettings.program, bulkSettings.academicYear);
   };
 
   const isCreating = userCreateStatus === "creating";
@@ -141,25 +176,78 @@ export function CreateUserModal() {
 
           {/* Bulk Create Tab */}
           {userModalTab === "bulk" && (
-            <div className="edit-field">
-              <label className="edit-label">
-                CSV Data
-                <span style={{ fontWeight: 400, color: "var(--gray)", marginLeft: "0.5rem" }}>
-                  (Paste from Google Sheets or Excel)
-                </span>
-              </label>
-              <textarea
-                className="edit-textarea tall"
-                value={bulkCsvData}
-                onChange={(e) => setBulkCsvData(e.target.value)}
-                placeholder="Student Name&#10;jane.doe@student.kdg.be&#10;&#10;Or with headers:&#10;Name,Email&#10;John Smith,john.smith@student.kdg.be"
-                disabled={isCreating}
-              />
-              <p style={{ fontSize: "0.75rem", color: "var(--gray)", marginTop: "0.5rem" }}>
-                Accepts tab or comma-separated values. Auto-detects column order. Only emails ending with{" "}
-                <strong>@student.kdg.be</strong> are accepted. Creates users as students.
-              </p>
-            </div>
+            <>
+              {/* Project Settings */}
+              <div className="bulk-settings-box">
+                <div className="bulk-settings-title">Project Settings</div>
+                <div className="edit-row">
+                  <div className="edit-field">
+                    <label className="edit-label">Program</label>
+                    <select
+                      className="edit-select"
+                      value={bulkSettings.program}
+                      onChange={(e) => setBulkSettings({ ...bulkSettings, program: e.target.value })}
+                      disabled={isCreating}
+                    >
+                      {PROGRAMS.map((p) => (
+                        <option key={p.value} value={p.value}>
+                          {p.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="edit-field">
+                    <label className="edit-label">Academic Year</label>
+                    <select
+                      className="edit-select"
+                      value={bulkSettings.academicYear}
+                      onChange={(e) => setBulkSettings({ ...bulkSettings, academicYear: e.target.value })}
+                      disabled={isCreating}
+                    >
+                      {academicYears.map((y) => (
+                        <option key={y} value={y}>
+                          {y}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* CSV Data */}
+              <div className="edit-field" style={{ marginTop: "1.5rem" }}>
+                <label className="edit-label">
+                  Student List (CSV)
+                  <span style={{ fontWeight: 400, color: "var(--gray)", marginLeft: "0.5rem" }}>
+                    (Paste from Google Sheets or Excel)
+                  </span>
+                </label>
+                <textarea
+                  className="edit-textarea tall"
+                  value={bulkCsvData}
+                  onChange={(e) => setBulkCsvData(e.target.value)}
+                  placeholder={
+                    contextRequired
+                      ? "name, email, context\nJane Doe, jane.doe@student.kdg.be, digital\nJohn Smith, john.smith@student.kdg.be, autonomous"
+                      : "name, email\nJane Doe, jane.doe@student.kdg.be\nJohn Smith, john.smith@student.kdg.be"
+                  }
+                  disabled={isCreating}
+                />
+                <p style={{ fontSize: "0.75rem", color: "var(--gray)", marginTop: "0.5rem" }}>
+                  {contextRequired ? (
+                    <>
+                      Header row required: <strong>name</strong>, <strong>email</strong>, <strong>context</strong>.
+                      Context values: autonomous, applied, digital, socio-political, jewelry.
+                    </>
+                  ) : (
+                    <>
+                      Header row required: <strong>name</strong>, <strong>email</strong>.
+                    </>
+                  )}{" "}
+                  Only emails ending with <strong>@student.kdg.be</strong> are accepted.
+                </p>
+              </div>
+            </>
           )}
         </div>
 

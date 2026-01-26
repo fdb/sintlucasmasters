@@ -872,6 +872,60 @@ adminApiRoutes.delete("/projects/:id", async (c) => {
   return c.json({ success: true, deletedProject: project });
 });
 
+// Generate sort name (ASCII-normalized for sorting)
+function generateSortName(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    .toLowerCase();
+}
+
+// Generate project ID using SHA256 hash
+async function generateProjectId(name: string, academicYear: string): Promise<string> {
+  const input = `${name}:${academicYear}`;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Valid programs
+const VALID_PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"] as const;
+type Program = (typeof VALID_PROGRAMS)[number];
+
+// Valid contexts
+const VALID_CONTEXTS = [
+  "Autonomous Context",
+  "Applied Context",
+  "Digital Context",
+  "Socio-Political Context",
+  "Jewelry Context",
+] as const;
+
+// Normalize context value to canonical form (case-insensitive, with or without "Context" suffix)
+function normalizeContext(input: string): string | null {
+  const normalized = input.trim().toLowerCase();
+
+  // Map short names to full context names
+  const contextMap: Record<string, string> = {
+    autonomous: "Autonomous Context",
+    "autonomous context": "Autonomous Context",
+    applied: "Applied Context",
+    "applied context": "Applied Context",
+    digital: "Digital Context",
+    "digital context": "Digital Context",
+    "socio-political": "Socio-Political Context",
+    "socio-political context": "Socio-Political Context",
+    sociopolitical: "Socio-Political Context",
+    "sociopolitical context": "Socio-Political Context",
+    jewelry: "Jewelry Context",
+    "jewelry context": "Jewelry Context",
+  };
+
+  return contextMap[normalized] || null;
+}
+
 // =====================================================
 // User Management Routes (admin/editor only)
 // =====================================================
@@ -973,17 +1027,35 @@ adminApiRoutes.get("/students-with-projects", async (c) => {
   return c.json({ students: students ?? [] });
 });
 
+// Bulk create users and projects from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const user = c.get("user");
   if (!isAdminOrEditor(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 
-  const body = await c.req.json<{ csvData: string }>();
-  const { csvData } = body;
+  const body = await c.req.json<{
+    csvData: string;
+    program?: string;
+    academic_year?: string;
+  }>();
+  const { csvData, program, academic_year } = body;
 
   if (!csvData || !csvData.trim()) {
     return c.json({ error: "CSV data is required" }, 400);
+  }
+
+  // Validate program if provided
+  if (program && !VALID_PROGRAMS.includes(program as Program)) {
+    return c.json({ error: "Invalid program" }, 400);
+  }
+
+  // Context is required for MA_BK and PREMA_BK (will be validated per-row from CSV)
+  const contextRequired = program === "MA_BK" || program === "PREMA_BK";
+
+  // Validate academic_year format (e.g., "2024-2025")
+  if (academic_year && !/^\d{4}-\d{4}$/.test(academic_year)) {
+    return c.json({ error: "Invalid academic year format. Expected: YYYY-YYYY" }, 400);
   }
 
   const lines = csvData
@@ -999,39 +1071,98 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
   const commaCount = (firstLine.match(/,/g) || []).length;
   const delimiter = tabCount >= commaCount ? "\t" : ",";
 
-  const firstLineLower = firstLine.toLowerCase();
-  let startIndex = 0;
-  if (firstLineLower.includes("name") || firstLineLower.includes("email")) {
-    startIndex = 1;
+  // Parse header row (required)
+  const headerParts = firstLine.split(delimiter).map((h) => h.trim().replace(/^"|"$/g, "").toLowerCase());
+
+  // Validate required columns exist
+  const nameIndex = headerParts.indexOf("name");
+  const emailIndex = headerParts.indexOf("email");
+  const contextIndex = headerParts.indexOf("context");
+
+  if (nameIndex === -1 || emailIndex === -1) {
+    return c.json(
+      {
+        error:
+          'CSV must have a header row with "name" and "email" columns. ' +
+          `Found columns: ${headerParts.map((h) => `"${h}"`).join(", ") || "(none)"}`,
+      },
+      400
+    );
+  }
+
+  // Context column is required for programs that need it
+  if (contextRequired && contextIndex === -1) {
+    return c.json(
+      {
+        error:
+          'CSV must have a "context" column for MA_BK and PREMA_BK programs. ' +
+          `Found columns: ${headerParts.map((h) => `"${h}"`).join(", ")}`,
+      },
+      400
+    );
   }
 
   const results = {
-    created: 0,
-    skipped: [] as string[],
+    usersCreated: 0,
+    usersExisting: 0,
+    projectsCreated: 0,
+    projectsSkipped: 0,
     errors: [] as string[],
   };
 
-  for (let i = startIndex; i < lines.length; i++) {
+  // Determine if we're creating projects
+  const createProjects = !!(program && academic_year);
+
+  // Process data rows (skip header at index 0)
+  for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
 
     const parts = line.split(delimiter).map((p) => p.trim().replace(/^"|"$/g, ""));
 
-    if (parts.length !== 2) {
-      results.errors.push(`Row ${i + 1}: Expected 2 columns, got ${parts.length}`);
+    // Validate column count matches header
+    if (parts.length !== headerParts.length) {
+      results.errors.push(
+        `Row ${i + 1}: Expected ${headerParts.length} columns (matching header), got ${parts.length}`
+      );
       continue;
     }
 
-    let name: string;
-    let email: string;
-    if (parts[0].includes("@")) {
-      email = parts[0];
-      name = parts[1];
-    } else if (parts[1].includes("@")) {
-      name = parts[0];
-      email = parts[1];
-    } else {
-      results.errors.push(`Row ${i + 1}: Could not detect email column`);
+    const name = parts[nameIndex];
+    const email = parts[emailIndex];
+    let context: string | null = null;
+
+    // Parse context if column exists
+    if (contextIndex !== -1) {
+      const rawContext = parts[contextIndex];
+      if (rawContext) {
+        context = normalizeContext(rawContext);
+        if (!context) {
+          results.errors.push(
+            `Row ${i + 1}: Invalid context "${rawContext}". ` +
+              `Valid values: autonomous, applied, digital, socio-political, jewelry ` +
+              `(with or without "Context" suffix, case-insensitive)`
+          );
+          continue;
+        }
+      }
+    }
+
+    // Validate context is present when required
+    if (contextRequired && !context) {
+      results.errors.push(`Row ${i + 1}: Context is required for ${program} program`);
+      continue;
+    }
+
+    // Validate name is not empty
+    if (!name) {
+      results.errors.push(`Row ${i + 1}: Name cannot be empty`);
+      continue;
+    }
+
+    // Validate email is not empty
+    if (!email) {
+      results.errors.push(`Row ${i + 1}: Email cannot be empty`);
       continue;
     }
 
@@ -1042,21 +1173,65 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
 
     const normalizedEmail = email.toLowerCase();
 
-    const existing = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?")
+    // Get or create user
+    let userId: string;
+    const existingUser = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?")
       .bind(normalizedEmail)
       .first<{ id: string }>();
 
-    if (existing) {
-      results.skipped.push(normalizedEmail);
-      continue;
+    if (existingUser) {
+      userId = existingUser.id;
+      results.usersExisting++;
+    } else {
+      // Create user as student
+      userId = crypto.randomUUID();
+      await c.env.DB.prepare("INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)")
+        .bind(userId, normalizedEmail, name || null, "student")
+        .run();
+      results.usersCreated++;
     }
 
-    const userId = crypto.randomUUID();
-    await c.env.DB.prepare("INSERT INTO users (id, email, name, role) VALUES (?, ?, ?, ?)")
-      .bind(userId, normalizedEmail, name || null, "student")
-      .run();
+    // Create project if program and academic_year are provided
+    if (createProjects) {
+      const projectId = await generateProjectId(name, academic_year);
 
-    results.created++;
+      // Check if project already exists
+      const existingProject = await c.env.DB.prepare("SELECT id FROM projects WHERE id = ?")
+        .bind(projectId)
+        .first<{ id: string }>();
+
+      if (existingProject) {
+        results.projectsSkipped++;
+      } else {
+        // Create blank project
+        const slug = slugify(name);
+        const sortName = generateSortName(name);
+
+        await c.env.DB.prepare(
+          `INSERT INTO projects (
+            id, slug, student_name, sort_name, project_title, program, context,
+            academic_year, bio, description, main_image_id, status, user_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        )
+          .bind(
+            projectId,
+            slug,
+            name,
+            sortName,
+            "", // Empty project title
+            program,
+            context,
+            academic_year,
+            null, // bio
+            "", // Empty description
+            null, // main_image_id is now nullable
+            "draft",
+            userId
+          )
+          .run();
+        results.projectsCreated++;
+      }
+    }
   }
 
   return c.json(results);
