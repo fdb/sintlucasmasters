@@ -1212,12 +1212,20 @@ export const useAdminStore = create<AdminState>()(
 
         const status = projectDetail.project.status as string;
 
-        // Students cannot edit ready_for_print projects
-        if (isStudentMode() && status === "ready_for_print") {
-          return {
-            allowed: false,
-            reason: "Project is locked for printing. Contact an administrator if changes are needed.",
-          };
+        // Students cannot edit submitted or ready_for_print projects
+        if (isStudentMode()) {
+          if (status === "submitted") {
+            return {
+              allowed: false,
+              reason: "Project is submitted. Click 'Return to Draft' to make changes.",
+            };
+          }
+          if (status === "ready_for_print") {
+            return {
+              allowed: false,
+              reason: "Project is locked for printing. Contact an administrator if changes are needed.",
+            };
+          }
         }
 
         return { allowed: true };

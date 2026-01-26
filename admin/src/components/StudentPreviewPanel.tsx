@@ -267,8 +267,8 @@ export function StudentPreviewPanel() {
         title="Submit project?"
         description={
           <>
-            Submitting a project means it's ready for print. You can still edit it after submission until the print
-            deadline.
+            Once submitted, your project will be locked for editing. If you need to make changes later, you can click
+            "Return to Draft" to unlock it and edit again.
           </>
         }
         onCancel={() => setShowSubmitConfirm(false)}
