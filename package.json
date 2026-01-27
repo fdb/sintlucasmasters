@@ -33,25 +33,25 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "hono": "^4.11.4",
-    "lucide-react": "^0.562.0",
+    "hono": "^4.11.7",
+    "lucide-react": "^0.563.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260113.0",
-    "@playwright/test": "^1.57.0",
+    "@cloudflare/workers-types": "^4.20260127.0",
+    "@playwright/test": "^1.58.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.2.1",
     "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
     "vite": "^6.1.1",
-    "vitest": "^2.1.0",
-    "wrangler": "^4.59.1"
+    "vitest": "^4.0.18",
+    "wrangler": "^4.61.0"
   }
 }
