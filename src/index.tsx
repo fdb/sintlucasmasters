@@ -89,7 +89,9 @@ app.get("/:year/", async (c) => {
 
   return c.html(
     <Layout title={year}>
-      <ContextFilter basePath={basePath} activeContext={context} />
+      <div class="page-filters">
+        <ContextFilter basePath={basePath} activeContext={context} showLabel />
+      </div>
       <div class="grid">
         {projects.map((project) => (
           <ProjectCard project={project} />

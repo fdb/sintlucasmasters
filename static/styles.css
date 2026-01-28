@@ -163,9 +163,10 @@ a:hover {
 }
 
 /* ───────────────────────────────────
-   Archive filters
+   Page filters (homepage & archive)
    ─────────────────────────────────── */
 
+.page-filters,
 .archive-filters {
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
