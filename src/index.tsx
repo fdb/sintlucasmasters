@@ -116,7 +116,25 @@ app.get("/about", (c) => {
           .
         </p>
         <h3>Credits</h3>
-        <p>
+        <dl class="credits-list">
+          <div class="credits-entry">
+            <dt>Head of the Master</dt>
+            <dd>Reg Herygers</dd>
+          </div>
+          <div class="credits-entry">
+            <dt>Communication</dt>
+            <dd>Nicolas Van Herck</dd>
+          </div>
+          <div class="credits-entry">
+            <dt>Development</dt>
+            <dd>Frederik De Bleser</dd>
+          </div>
+          <div class="credits-entry">
+            <dt>Design</dt>
+            <dd>Chloé D'Hauwe</dd>
+          </div>
+        </dl>
+        <p class="credits-source">
           The code for this website is free software, available on{" "}
           <a href="https://github.com/fdb/sintlucasmasters/" target="_blank" rel="noopener noreferrer">
             GitHub

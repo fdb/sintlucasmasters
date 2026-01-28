@@ -630,6 +630,37 @@ body.lightbox-open {
   text-decoration: underline;
 }
 
+.credits-list {
+  margin: 1.5rem 0 2rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.credits-entry {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.credits-entry dt {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray);
+  min-width: 160px;
+  flex-shrink: 0;
+}
+
+.credits-entry dd {
+  font-weight: 600;
+}
+
+.credits-source {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: var(--gray);
+}
+
 /* ───────────────────────────────────
    Empty state
    ─────────────────────────────────── */

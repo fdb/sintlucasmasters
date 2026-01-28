@@ -96,7 +96,7 @@ export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, 
                   Sint Lucas Antwerpen, School of Arts, is part of KdG University of Applied Sciences and Arts.
                 </p>
                 <a
-                  href="https://www.sintlucasantwerpen.be/inschrijven/"
+                  href="https://www.kdg.be/en/programmes/apply-english-taught-master-programme"
                   class="footer-arrow-link"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -123,7 +123,6 @@ export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, 
             </div>
             <div class="footer-bottom">
               <p>© Sint Lucas Antwerpen · Terms of Use · Privacy</p>
-              <p>© 2026 Credits Design &amp; Development</p>
             </div>
           </div>
         </footer>
