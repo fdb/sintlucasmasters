@@ -86,6 +86,49 @@ a:hover {
   line-height: 1.5;
 }
 
+/* Header with logo (AdminLayout) */
+.header-inner:has(.logo) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.site-header:has(.logo) {
+  background: var(--black);
+  border-bottom: none;
+  padding: 1.25rem 2rem;
+}
+
+.logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+.logo img {
+  display: block;
+  height: 24px;
+  width: auto;
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.site-nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity 0.15s ease;
+}
+
+.site-nav a:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}
+
 /* ───────────────────────────────────
    Sub-header navigation
    ─────────────────────────────────── */
@@ -784,6 +827,22 @@ body.lightbox-open {
 @media (max-width: 768px) {
   .site-header {
     padding: 1.75rem 1.25rem 1.5rem;
+  }
+
+  .site-header:has(.logo) {
+    padding: 1rem 1.25rem;
+  }
+
+  .logo img {
+    height: 20px;
+  }
+
+  .site-nav {
+    gap: 1rem;
+  }
+
+  .site-nav a {
+    font-size: 0.8125rem;
   }
 
   .site-title {
