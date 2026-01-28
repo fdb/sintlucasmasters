@@ -122,7 +122,12 @@ export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, 
               </div>
             </div>
             <div class="footer-bottom">
-              <p>© Sint Lucas Antwerpen · Terms of Use · Privacy</p>
+              <p>
+                © Sint Lucas Antwerpen ·{" "}
+                <a href="https://www.kdg.be/en/terms-use-privacy" target="_blank" rel="noopener noreferrer">
+                  Terms of Use &amp; Privacy
+                </a>
+              </p>
             </div>
           </div>
         </footer>
