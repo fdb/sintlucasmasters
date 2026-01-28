@@ -10,6 +10,7 @@ type ProjectCardProps = {
 export const ProjectCard: FC<ProjectCardProps> = ({ project, showYear }) => {
   const imageId = project.thumb_image_id || project.main_image_id;
   const imageUrl = getImageUrl(imageId, "thumb");
+  const vtName = `student-${project.slug}`;
 
   return (
     <a href={getStudentUrl(project)} class="card">
@@ -18,11 +19,15 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, showYear }) => {
       ) : (
         <div class="card-image card-image-placeholder" />
       )}
-      <div class="card-header">
-        <h2 class="card-title">{project.student_name}</h2>
+      <div class="card-body">
+        <h2 class="card-title" style={`view-transition-name: name-${vtName}`}>
+          {project.student_name}
+        </h2>
+        <p class="card-subtitle" style={`view-transition-name: title-${vtName}`}>
+          {project.project_title}
+        </p>
         {showYear && <span class="card-year">{project.academic_year}</span>}
       </div>
-      <p class="card-subtitle">{project.project_title}</p>
     </a>
   );
 };

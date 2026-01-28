@@ -4,10 +4,9 @@ test.describe("layout", () => {
   test("header and navigation are present on all pages", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("header.site-header")).toBeVisible();
-    await expect(page.locator("header .logo")).toBeVisible();
-    await expect(page.locator("nav.site-nav")).toBeVisible();
-    await expect(page.locator('nav.site-nav a[href="/"]')).toBeVisible();
-    await expect(page.locator('nav.site-nav a[href="/archive"]')).toBeVisible();
+    await expect(page.locator(".site-title")).toBeVisible();
+    await expect(page.locator("nav.sub-header")).toBeVisible();
+    await expect(page.locator('.sub-header a[href="/archive"]')).toBeVisible();
   });
 });
 
@@ -20,7 +19,7 @@ test.describe("homepage", () => {
 
   test("shows context filters", async ({ page }) => {
     await page.goto("/");
-    const filters = page.locator(".filter-nav-row");
+    const filters = page.locator(".context-nav");
     await expect(filters).toBeVisible();
     // Should have "All" filter and context filters
     await expect(filters.locator("a")).toHaveCount(6); // All + 5 contexts
@@ -44,12 +43,12 @@ test.describe("homepage", () => {
   test("context filter navigation works", async ({ page }) => {
     await page.goto("/");
     // Click on a context filter (not "All")
-    const contextFilter = page.locator(".filter-nav-row a").nth(1);
+    const contextFilter = page.locator(".context-nav a").nth(1);
     await contextFilter.click();
     // URL should have context query param
     await expect(page).toHaveURL(/\?context=/);
     // "All" filter should not be active, clicked filter should be
-    await expect(page.locator(".filter-nav-row a.active")).toHaveCount(1);
+    await expect(page.locator(".context-nav a.active")).toHaveCount(1);
   });
 });
 
@@ -57,15 +56,13 @@ test.describe("archive page", () => {
   test("shows archive heading", async ({ page }) => {
     await page.goto("/archive");
     await expect(page).toHaveTitle(/Archive/);
-    // Archive page uses h1 with page-title class that includes "Archive"
-    await expect(page.locator("h1.page-title")).toContainText("Archive");
   });
 
   test("shows year and context filters", async ({ page }) => {
     await page.goto("/archive");
-    // Should have two filter rows (years and contexts)
-    const filters = page.locator(".filter-nav-row");
-    await expect(filters).toHaveCount(2);
+    // Should have year nav and context nav
+    await expect(page.locator(".year-nav")).toBeVisible();
+    await expect(page.locator(".context-nav")).toBeVisible();
   });
 
   test("shows project grid", async ({ page }) => {
@@ -76,14 +73,14 @@ test.describe("archive page", () => {
   test("year filter navigation works", async ({ page }) => {
     await page.goto("/archive");
     // Click on a year filter (not "All")
-    const yearFilter = page.locator(".filter-nav-row").first().locator("a").nth(1);
+    const yearFilter = page.locator(".year-nav a").nth(1);
     await yearFilter.click();
     await expect(page).toHaveURL(/\?year=/);
   });
 
   test("navigating from nav link works", async ({ page }) => {
     await page.goto("/");
-    await page.locator('nav.site-nav a[href="/archive"]').click();
+    await page.locator('.sub-header a[href="/archive"]').click();
     await expect(page).toHaveURL("/archive");
   });
 });
@@ -106,11 +103,11 @@ test.describe("project detail page", () => {
   test("shows project detail structure", async ({ page }) => {
     await page.goto("/");
     await page.locator(".grid a.card").first().click();
-    const detail = page.locator(".project-detail");
+    const detail = page.locator(".detail");
     await expect(detail).toBeVisible();
-    await expect(detail.locator("h1")).toBeVisible();
-    await expect(detail.locator(".meta")).toBeVisible();
-    await expect(detail.locator(".main-image")).toBeVisible();
+    await expect(detail.locator(".detail-name")).toBeVisible();
+    await expect(detail.locator(".detail-meta")).toBeVisible();
+    await expect(detail.locator(".detail-hero img")).toBeVisible();
   });
 
   test("back link returns to year page", async ({ page }) => {

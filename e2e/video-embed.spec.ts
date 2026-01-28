@@ -64,14 +64,14 @@ test.describe("projects without videos", () => {
     await page.goto("/2024-2025/students/alice-smith/");
 
     // Should have description content
-    await expect(page.locator(".project-detail")).toBeVisible();
+    await expect(page.locator(".detail")).toBeVisible();
 
     // Should not have any video embeds
     const videoEmbeds = page.locator(".video-embed");
     await expect(videoEmbeds).toHaveCount(0);
 
     // Description text should be present (either as .description or .rich-description)
-    const descriptionText = await page.locator(".project-detail").textContent();
+    const descriptionText = await page.locator(".detail").textContent();
     expect(descriptionText).toContain("A project exploring the intersection of dreams and digital art.");
   });
 });

@@ -3,7 +3,7 @@ import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
 import type { Bindings, Project, ProjectImage } from "./types";
-import { CONTEXTS, getImageUrl } from "./types";
+import { CONTEXTS, getImageUrl, getStudentUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
 import { authApiRoutes, authPageRoutes } from "./routes/auth";
 import { adminPageRoutes } from "./routes/admin";
@@ -21,6 +21,39 @@ app.route("/admin", adminPageRoutes);
 app.get("/", (c) => {
   return c.redirect(`/${CURRENT_YEAR}/`);
 });
+
+// Context filter nav component
+const ContextFilter = ({
+  basePath,
+  activeContext,
+  queryPrefix,
+  showLabel,
+}: {
+  basePath: string;
+  activeContext: string | undefined;
+  queryPrefix?: string;
+  showLabel?: boolean;
+}) => (
+  <div class="filter-row">
+    {showLabel && <span class="filter-label">Context</span>}
+    <nav class="context-nav">
+      <a href={`${basePath}${queryPrefix || ""}`} class={!activeContext ? "active" : ""}>
+        all
+      </a>
+      {CONTEXTS.map((ctx) => {
+        const label = ctx.replace(" Context", "").toLowerCase();
+        const href = queryPrefix
+          ? `${basePath}${queryPrefix}&context=${encodeURIComponent(ctx)}`
+          : `${basePath}?context=${encodeURIComponent(ctx)}`;
+        return (
+          <a href={href} class={activeContext === ctx ? "active" : ""}>
+            {label}
+          </a>
+        );
+      })}
+    </nav>
+  </div>
+);
 
 // Year page - projects for a specific academic year
 app.get("/:year/", async (c) => {
@@ -53,34 +86,16 @@ app.get("/:year/", async (c) => {
   }
 
   const basePath = `/${year}/`;
-  const contextLabel = context ? context.replace(" Context", " context") : null;
 
   return c.html(
-    <Layout
-      title={contextLabel ? `${contextLabel} - ${year}` : year}
-      ogDescription={`${projects.length} master projects from Sint Lucas Antwerpen ${year}${contextLabel ? ` · ${contextLabel}` : ""}`}
-    >
-      <h1 class="page-title">Masters {year}</h1>
-      <p class="page-subtitle">{contextLabel || "All contexts"}</p>
-      <nav class="filter-nav filter-nav--single">
-        <div class="filter-nav-row">
-          <span class="filter-nav-label">Context</span>
-          <a href={basePath} class={!context ? "active" : ""}>
-            All
-          </a>
-          {CONTEXTS.map((ctx) => (
-            <a href={`${basePath}?context=${encodeURIComponent(ctx)}`} class={context === ctx ? "active" : ""}>
-              {ctx.replace(" Context", "")}
-            </a>
-          ))}
-        </div>
-      </nav>
+    <Layout title={year}>
+      <ContextFilter basePath={basePath} activeContext={context} />
       <div class="grid">
         {projects.map((project) => (
           <ProjectCard project={project} />
         ))}
       </div>
-      {projects.length === 0 && <p class="empty-state">No projects found.</p>}
+      {projects.length === 0 && <p class="empty-state">No projects found for this context.</p>}
     </Layout>
   );
 });
@@ -89,22 +104,24 @@ app.get("/:year/", async (c) => {
 app.get("/about", (c) => {
   return c.html(
     <Layout title="About">
-      <h2>Master Expo</h2>
-      <p class="intro">
-        Discover the new generation of artists, designers and photographers of{" "}
-        <a href="https://www.sintlucasantwerpen.be/" target="_blank" rel="noopener noreferrer">
-          Sint Lucas Antwerpen
-        </a>
-        .
-      </p>
-      <h3>Credits</h3>
-      <p>
-        The code for this website is free software, available on{" "}
-        <a href="https://github.com/fdb/sintlucasmasters/" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-        .
-      </p>
+      <div class="about-content">
+        <h2 class="about-heading">Master Expo</h2>
+        <p class="about-text">
+          Discover the new generation of artists, designers and photographers of{" "}
+          <a href="https://www.sintlucasantwerpen.be/" target="_blank" rel="noopener noreferrer">
+            Sint Lucas Antwerpen
+          </a>
+          .
+        </p>
+        <h3>Credits</h3>
+        <p>
+          The code for this website is free software, available on{" "}
+          <a href="https://github.com/fdb/sintlucasmasters/" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          .
+        </p>
+      </div>
     </Layout>
   );
 });
@@ -120,7 +137,7 @@ app.get("/archive", async (c) => {
   ).all<{ academic_year: string }>();
 
   const years = yearResults.map((r) => r.academic_year);
-  const selectedYear = year; // undefined means "all years"
+  const selectedYear = year;
 
   let query = "SELECT * FROM projects";
   const params: string[] = [];
@@ -137,61 +154,41 @@ app.get("/archive", async (c) => {
   }
 
   query += " WHERE " + conditions.join(" AND ");
-
   query += " ORDER BY sort_name";
 
   const { results: projects } = await c.env.DB.prepare(query)
     .bind(...params)
     .all<Project>();
 
-  const archiveDescription = selectedYear
-    ? `${projects.length} master projects from Sint Lucas Antwerpen ${selectedYear}`
-    : `Browse ${projects.length} master projects from Sint Lucas Antwerpen across all years`;
-
-  const contextLabel = context ? context.replace(" Context", "") : null;
-
   return c.html(
-    <Layout title={`Archive${selectedYear ? ` - ${selectedYear}` : ""}`} ogDescription={archiveDescription}>
-      <h1 class="page-title">
-        Archive · {selectedYear || "All years"}
-        {contextLabel ? ` · ${contextLabel}` : ""}
-      </h1>
-      <nav class="filter-nav">
-        <div class="filter-nav-row">
-          <span class="filter-nav-label">Year</span>
-          <a
-            href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ""}`}
-            class={!selectedYear ? "active" : ""}
-          >
-            All
-          </a>
-          {years.map((y) => (
+    <Layout title="Archive">
+      <div class="archive-filters">
+        <div class="filter-row">
+          <span class="filter-label">Year</span>
+          <nav class="year-nav">
             <a
-              href={`/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ""}`}
-              class={selectedYear === y ? "active" : ""}
+              href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ""}`}
+              class={!selectedYear ? "active" : ""}
             >
-              {y}
+              all
             </a>
-          ))}
+            {years.map((y) => (
+              <a
+                href={`/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ""}`}
+                class={selectedYear === y ? "active" : ""}
+              >
+                {y}
+              </a>
+            ))}
+          </nav>
         </div>
-        <div class="filter-nav-row">
-          <span class="filter-nav-label">Context</span>
-          <a
-            href={`/archive${selectedYear ? `?year=${encodeURIComponent(selectedYear)}` : ""}`}
-            class={!context ? "active" : ""}
-          >
-            All
-          </a>
-          {CONTEXTS.map((ctx) => (
-            <a
-              href={`/archive?${selectedYear ? `year=${encodeURIComponent(selectedYear)}&` : ""}context=${encodeURIComponent(ctx)}`}
-              class={context === ctx ? "active" : ""}
-            >
-              {ctx.replace(" Context", "")}
-            </a>
-          ))}
-        </div>
-      </nav>
+        <ContextFilter
+          basePath={`/archive`}
+          activeContext={context}
+          queryPrefix={selectedYear ? `?year=${encodeURIComponent(selectedYear)}&` : "?"}
+          showLabel
+        />
+      </div>
       <div class="grid">
         {projects.map((project) => (
           <ProjectCard project={project} showYear />
@@ -217,7 +214,7 @@ app.get("/:year/students/:slug/", async (c) => {
     return c.html(
       <Layout title="Not Found">
         <p>Student not found.</p>
-        <a href={`/${CURRENT_YEAR}/`}>Back to home</a>
+        <a href={`/${CURRENT_YEAR}/`}>Back to projects</a>
       </Layout>,
       404
     );
@@ -229,78 +226,91 @@ app.get("/:year/students/:slug/", async (c) => {
     .bind(project.id)
     .all<ProjectImage>();
 
-  // Filter out print images - they should not be shown in the public gallery
   const images = allImages.filter((img) => img.type !== "print");
-
   const socialLinks: string[] = project.social_links ? JSON.parse(project.social_links) : [];
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
+  const vtName = `student-${project.slug}`;
 
   return c.html(
     <Layout
-      title={`${project.student_name} - ${project.project_title}`}
+      title={`${project.student_name} — ${project.project_title}`}
       ogImage={getImageUrl(project.main_image_id, "large")}
       ogDescription={`${project.project_title} by ${project.student_name} · ${project.context}`}
     >
-      <a href={`/${year}/`} class="back-link">
-        ← Back to {year}
-      </a>
-      <div class="project-detail">
-        <h1>{project.student_name}</h1>
-        <p class="meta">
-          {project.project_title} · {project.context} · {project.academic_year}
-        </p>
+      <article class="detail">
+        <a href={`/${year}/`} class="back-link">
+          ← Back
+        </a>
+
+        <header class="detail-header">
+          <h1 class="detail-name" style={`view-transition-name: name-${vtName}`}>
+            {project.student_name}
+          </h1>
+          <p class="detail-project-title" style={`view-transition-name: title-${vtName}`}>
+            {project.project_title}
+          </p>
+          <p class="detail-meta">
+            {project.context} · {project.academic_year}
+          </p>
+        </header>
+
         {project.main_image_id && (
-          <img src={getImageUrl(project.main_image_id, "large")} alt={project.project_title} class="main-image" />
+          <figure class="detail-hero">
+            <img src={getImageUrl(project.main_image_id, "large")} alt={project.project_title} />
+          </figure>
         )}
-        {project.bio && (
-          <div>
-            <h3>Bio</h3>
-            <RichDescription text={project.bio} />
-          </div>
-        )}
-        <div>
-          <h3>About the project</h3>
-          <RichDescription text={project.description} />
+
+        <div class="detail-content">
+          {project.bio && (
+            <section class="detail-section">
+              <h2 class="detail-section-title">About</h2>
+              <RichDescription text={project.bio} />
+            </section>
+          )}
+
+          <section class="detail-section">
+            <h2 class="detail-section-title">Project</h2>
+            <RichDescription text={project.description} />
+          </section>
         </div>
+
         {tags.length > 0 && (
-          <div>
-            <h3>Tags</h3>
-            <div class="tags">
-              {tags.map((tag) => (
-                <span class="tag">{tag}</span>
-              ))}
-            </div>
+          <div class="detail-tags">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
           </div>
         )}
+
         {images.length > 0 && (
-          <div>
-            <h3>Gallery</h3>
-            <div class="gallery">
+          <section class="detail-gallery">
+            <div class="masonry">
               {images.map((img) => (
-                <img
-                  src={getImageUrl(img.cloudflare_id, "medium")}
-                  data-lightbox-src={getImageUrl(img.cloudflare_id, "xl")}
-                  alt={img.caption || project.project_title}
-                  loading="lazy"
-                />
+                <figure class="masonry-item">
+                  <img
+                    src={getImageUrl(img.cloudflare_id, "medium")}
+                    data-lightbox-src={getImageUrl(img.cloudflare_id, "xl")}
+                    alt={img.caption || project.project_title}
+                    loading="lazy"
+                  />
+                  {img.caption && <figcaption>{img.caption}</figcaption>}
+                </figure>
               ))}
             </div>
-          </div>
+          </section>
         )}
         {images.length > 0 && <script src="/lightbox.js" defer></script>}
+
         {socialLinks.length > 0 && (
-          <div>
-            <h3>Links</h3>
-            <div class="links">
-              {socialLinks.map((link) => (
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                  {new URL(link).hostname}
-                </a>
-              ))}
-            </div>
-          </div>
+          <section class="detail-links">
+            {socialLinks.map((link) => (
+              <a href={link} target="_blank" rel="noopener noreferrer">
+                {new URL(link).hostname.replace("www.", "")}
+              </a>
+            ))}
+          </section>
         )}
-      </div>
+      </article>
     </Layout>
   );
 });
