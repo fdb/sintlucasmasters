@@ -279,11 +279,8 @@ authPageRoutes.post("/verify", async (c) => {
     maxAge: 7 * 24 * 60 * 60, // 7 days
   });
 
-  // Redirect based on role
-  if (user.role === "admin" || user.role === "editor") {
-    return c.redirect("/admin");
-  }
-  return c.redirect("/student");
+  // All authenticated users go to /admin - the frontend handles role-based views
+  return c.redirect("/admin");
 });
 
 // GET /auth/logout - Logout and redirect

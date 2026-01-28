@@ -40,9 +40,10 @@ CREATE TABLE IF NOT EXISTS projects (
 CREATE TABLE IF NOT EXISTS project_images (
     id TEXT PRIMARY KEY,
     project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
-    cloudflare_id TEXT NOT NULL,
+    cloudflare_id TEXT NOT NULL,  -- Cloudflare Images ID for web, R2 key for print
     sort_order INTEGER NOT NULL DEFAULT 0,
-    caption TEXT
+    caption TEXT,
+    type TEXT NOT NULL DEFAULT 'web' CHECK (type IN ('web', 'print'))
 );
 
 -- Indexes for common queries

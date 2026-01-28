@@ -35,11 +35,31 @@ export type UserDetailResponse = {
   };
 };
 
+export type StudentForImpersonation = {
+  id: string;
+  email: string;
+  name: string | null;
+  academic_year: string;
+  project_id?: string;
+};
+
+export type StudentProject = {
+  id: string;
+  student_name: string;
+  project_title: string;
+  academic_year: string;
+  context: string;
+  status: string;
+};
+
+export type ProjectImageType = "web" | "print";
+
 export type ProjectImage = {
   id: string;
   cloudflare_id: string;
   sort_order: number;
   caption: string | null;
+  type: ProjectImageType;
 };
 
 export type EditDraft = {
@@ -61,6 +81,14 @@ type LoadStatus = "idle" | "loading" | "ready" | "error";
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 type UserCreateStatus = "idle" | "creating" | "success" | "error";
 type UserModalTab = "single" | "bulk";
+type PrintImageStatus = "idle" | "validating" | "uploading" | "error";
+type SubmitStatus = "idle" | "submitting" | "success" | "error";
+
+export type SubmitValidationResult = {
+  valid: boolean;
+  errors: string[];
+  status: string;
+};
 
 type AdminState = {
   user: AuthUser | null;
@@ -95,6 +123,21 @@ type AdminState = {
   userCreateStatus: UserCreateStatus;
   userCreateError: string | null;
   userCreateSuccess: string | null;
+  // Impersonation state
+  impersonatedUser: StudentForImpersonation | null;
+  studentsForImpersonation: StudentForImpersonation[];
+  impersonationDropdownOpen: boolean;
+  // Print image state
+  printImage: ProjectImage | null;
+  printImageStatus: PrintImageStatus;
+  printImageError: string | null;
+  // Submit state
+  submitValidation: SubmitValidationResult | null;
+  submitStatus: SubmitStatus;
+  submitError: string | null;
+  // Student page state
+  studentProjects: StudentProject[];
+  studentProjectsStatus: LoadStatus;
   setDarkMode: (value: boolean) => void;
   toggleDarkMode: () => void;
   setUserMenuOpen: (open: boolean) => void;
@@ -137,6 +180,25 @@ type AdminState = {
   setUserModalTab: (tab: UserModalTab) => void;
   createUser: (email: string, name: string, role: string) => Promise<void>;
   bulkCreateUsers: (csvData: string, program?: string, academicYear?: string) => Promise<void>;
+  // Impersonation actions
+  loadStudentsForImpersonation: () => Promise<void>;
+  setImpersonatedUser: (student: StudentForImpersonation | null) => void;
+  setImpersonationDropdownOpen: (open: boolean) => void;
+  // Print image actions
+  uploadPrintImage: (file: File) => Promise<void>;
+  updatePrintImageCaption: (caption: string) => Promise<void>;
+  deletePrintImage: () => Promise<void>;
+  // Submit actions
+  loadSubmitValidation: () => Promise<void>;
+  submitProject: () => Promise<void>;
+  // Student page actions
+  loadStudentProjects: (userId?: string) => Promise<void>;
+  selectStudentProject: (projectId: string) => Promise<void>;
+  // Computed helpers
+  isStudentMode: () => boolean;
+  canEditProject: () => { allowed: boolean; reason?: string };
+  getWebImages: () => ProjectImage[];
+  getPrintImage: () => ProjectImage | null;
 };
 
 const getInitialDarkMode = () => {
@@ -200,6 +262,7 @@ const normalizeImages = (images: Array<Record<string, unknown>>): ProjectImage[]
     cloudflare_id: String(img.cloudflare_id),
     sort_order: Number(img.sort_order ?? index),
     caption: img.caption ? String(img.caption) : null,
+    type: (img.type as ProjectImageType) || "web",
   }));
 
 const fetchProjectDetail = async (projectId: string): Promise<ProjectDetailResponse> => {
@@ -245,6 +308,20 @@ export const useAdminStore = create<AdminState>()(
       userCreateStatus: "idle",
       userCreateError: null,
       userCreateSuccess: null,
+      impersonatedUser: null,
+      studentsForImpersonation: [],
+      impersonationDropdownOpen: false,
+      // Print image state
+      printImage: null,
+      printImageStatus: "idle",
+      printImageError: null,
+      // Submit state
+      submitValidation: null,
+      submitStatus: "idle",
+      submitError: null,
+      // Student page state
+      studentProjects: [],
+      studentProjectsStatus: "idle",
       setDarkMode: (value) => set({ darkMode: value }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       setUserMenuOpen: (open) => set({ userMenuOpen: open }),
@@ -368,12 +445,19 @@ export const useAdminStore = create<AdminState>()(
         }
 
         if (!detail) return;
+        const allImages = normalizeImages(detail.images);
+        const webImages = allImages.filter((img) => img.type !== "print");
+        const printImg = allImages.find((img) => img.type === "print") || null;
         set({
           editModalOpen: true,
           editDraft: buildEditDraft(detail.project),
-          editImages: normalizeImages(detail.images),
+          editImages: webImages,
+          printImage: printImg,
           saveStatus: "idle",
           newTag: "",
+          submitValidation: null,
+          submitStatus: "idle",
+          submitError: null,
         });
       },
       resetEditSession: () =>
@@ -381,6 +465,12 @@ export const useAdminStore = create<AdminState>()(
           editModalOpen: false,
           editDraft: null,
           editImages: [],
+          printImage: null,
+          printImageStatus: "idle",
+          printImageError: null,
+          submitValidation: null,
+          submitStatus: "idle",
+          submitError: null,
           saveStatus: "idle",
           newTag: "",
         }),
@@ -530,6 +620,7 @@ export const useAdminStore = create<AdminState>()(
                   cloudflare_id: data.image.cloudflare_id,
                   sort_order: data.image.sort_order,
                   caption: data.image.caption,
+                  type: data.image.type || "web",
                 },
               ],
             }));
@@ -890,10 +981,269 @@ export const useAdminStore = create<AdminState>()(
           set({ userCreateStatus: "error", userCreateError: message });
         }
       },
+      // Impersonation actions
+      loadStudentsForImpersonation: async () => {
+        try {
+          const res = await fetch("/api/admin/students-with-projects");
+          if (res.ok) {
+            const data = (await res.json()) as { students: StudentForImpersonation[] };
+            set({ studentsForImpersonation: data.students });
+          }
+        } catch {
+          // Silently fail - impersonation is optional
+        }
+      },
+      setImpersonatedUser: (student) => set({ impersonatedUser: student, impersonationDropdownOpen: false }),
+      setImpersonationDropdownOpen: (open) => {
+        set({ impersonationDropdownOpen: open });
+        // Load students when opening dropdown if not already loaded
+        if (open && get().studentsForImpersonation.length === 0) {
+          get().loadStudentsForImpersonation();
+        }
+      },
+      // Print image actions
+      uploadPrintImage: async (file) => {
+        const { selectedProjectId } = get();
+        if (!selectedProjectId) return;
+
+        set({ printImageStatus: "uploading", printImageError: null });
+
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          const res = await fetch(`/api/admin/projects/${selectedProjectId}/print-image/upload`, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!res.ok) {
+            const error = (await res.json()) as { error?: string };
+            throw new Error(error.error || "Failed to upload print image");
+          }
+
+          const data = (await res.json()) as { image: ProjectImage };
+          set({
+            printImage: {
+              id: data.image.id,
+              cloudflare_id: data.image.cloudflare_id,
+              sort_order: 0,
+              caption: data.image.caption,
+              type: "print",
+            },
+            printImageStatus: "idle",
+          });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Upload failed";
+          set({ printImageStatus: "error", printImageError: message });
+          setTimeout(() => set({ printImageStatus: "idle", printImageError: null }), 3000);
+        }
+      },
+      updatePrintImageCaption: async (caption) => {
+        const { selectedProjectId, printImage } = get();
+        if (!selectedProjectId || !printImage) return;
+
+        try {
+          const res = await fetch(`/api/admin/projects/${selectedProjectId}/print-image/caption`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ caption }),
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to update caption");
+          }
+
+          set({
+            printImage: {
+              ...printImage,
+              caption: caption || null,
+            },
+          });
+        } catch (err) {
+          console.error("Update print image caption error:", err);
+        }
+      },
+      deletePrintImage: async () => {
+        const { selectedProjectId, printImage } = get();
+        if (!selectedProjectId || !printImage) return;
+
+        try {
+          const res = await fetch(`/api/admin/projects/${selectedProjectId}/print-image`, {
+            method: "DELETE",
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to delete print image");
+          }
+
+          set({ printImage: null });
+        } catch (err) {
+          console.error("Delete print image error:", err);
+        }
+      },
+      // Submit actions
+      loadSubmitValidation: async () => {
+        const { selectedProjectId } = get();
+        if (!selectedProjectId) return;
+
+        try {
+          const res = await fetch(`/api/admin/projects/${selectedProjectId}/submit/validate`);
+          if (!res.ok) return;
+
+          const data = (await res.json()) as SubmitValidationResult;
+          set({ submitValidation: data });
+        } catch {
+          // Silently fail
+        }
+      },
+      submitProject: async () => {
+        const { selectedProjectId } = get();
+        if (!selectedProjectId) return;
+
+        set({ submitStatus: "submitting", submitError: null });
+
+        try {
+          const res = await fetch(`/api/admin/projects/${selectedProjectId}/submit`, {
+            method: "POST",
+          });
+
+          if (!res.ok) {
+            const error = (await res.json()) as { error?: string; validationErrors?: string[] };
+            const message = error.validationErrors?.join(", ") || error.error || "Submission failed";
+            throw new Error(message);
+          }
+
+          set({ submitStatus: "success" });
+
+          // Refresh project detail to get updated status
+          try {
+            const refreshed = await fetchProjectDetail(selectedProjectId);
+            set((state) => {
+              const updates = {
+                projectDetail: refreshed,
+                projectStatus: "ready" as const,
+                tableData: state.tableData
+                  ? {
+                      ...state.tableData,
+                      rows: state.tableData.rows.map((row) =>
+                        row.id === selectedProjectId ? { ...row, ...refreshed.project } : row
+                      ),
+                    }
+                  : state.tableData,
+              };
+
+              // Also update editDraft to reflect the new status
+              if (state.editDraft) {
+                return {
+                  ...updates,
+                  editDraft: {
+                    ...state.editDraft,
+                    status: String(refreshed.project.status || "submitted"),
+                  },
+                };
+              }
+
+              return updates;
+            });
+          } catch {
+            // ignore refresh failure
+          }
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Submission failed";
+          set({ submitStatus: "error", submitError: message });
+        }
+      },
+      // Student page actions
+      loadStudentProjects: async (userId?: string) => {
+        const { user, impersonatedUser } = get();
+        const targetUserId = userId ?? impersonatedUser?.id ?? user?.id;
+        if (!targetUserId) return;
+
+        set({ studentProjectsStatus: "loading" });
+        try {
+          const res = await fetch(`/api/admin/table/projects?limit=1000`);
+          if (!res.ok) {
+            set({ studentProjectsStatus: "error" });
+            return;
+          }
+          const data = (await res.json()) as TableResponse;
+
+          // Filter projects to only those belonging to the target user
+          const userProjects = data.rows
+            .filter((row) => row.user_id === targetUserId)
+            .map((row) => ({
+              id: String(row.id),
+              student_name: String(row.student_name || ""),
+              project_title: String(row.project_title || ""),
+              academic_year: String(row.academic_year || ""),
+              context: String(row.context || ""),
+              status: String(row.status || "draft"),
+            }));
+
+          set({
+            studentProjects: userProjects,
+            studentProjectsStatus: "ready",
+          });
+
+          // Auto-select the first project if none selected
+          if (userProjects.length > 0 && !get().selectedProjectId) {
+            await get().selectProject(userProjects[0].id);
+          }
+        } catch {
+          set({ studentProjectsStatus: "error" });
+        }
+      },
+      selectStudentProject: async (projectId: string) => {
+        await get().selectProject(projectId);
+      },
+      // Computed helpers
+      isStudentMode: () => {
+        const { user, impersonatedUser } = get();
+        // If impersonating, we're in student mode
+        if (impersonatedUser) return true;
+        // If actual user is a student, we're in student mode
+        if (user?.role === "student") return true;
+        return false;
+      },
+      canEditProject: () => {
+        const { projectDetail, isStudentMode } = get();
+        if (!projectDetail) return { allowed: false, reason: "No project loaded" };
+
+        const status = projectDetail.project.status as string;
+
+        // Students cannot edit submitted or ready_for_print projects
+        if (isStudentMode()) {
+          if (status === "submitted") {
+            return {
+              allowed: false,
+              reason: "Project is submitted. Click 'Return to Draft' to make changes.",
+            };
+          }
+          if (status === "ready_for_print") {
+            return {
+              allowed: false,
+              reason: "Project is locked for printing. Contact an administrator if changes are needed.",
+            };
+          }
+        }
+
+        return { allowed: true };
+      },
+      getWebImages: () => {
+        const { editImages } = get();
+        return editImages.filter((img) => img.type !== "print");
+      },
+      getPrintImage: () => {
+        return get().printImage;
+      },
     }),
     {
       name: "admin-ui",
-      partialize: (state) => ({ darkMode: state.darkMode }),
+      partialize: (state) => ({
+        darkMode: state.darkMode,
+        impersonatedUser: state.impersonatedUser,
+      }),
     }
   )
 );

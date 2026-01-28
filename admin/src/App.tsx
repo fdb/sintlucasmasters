@@ -1,22 +1,18 @@
 import { useEffect } from "react";
 import { useAdminStore } from "./store/adminStore";
-import { AdminHeader } from "./components/AdminHeader";
-import { AdminTabs } from "./components/AdminTabs";
-import { AdminListView } from "./components/AdminListView";
-import { ProjectDetailPanel } from "./components/ProjectDetailPanel";
-import { UserDetailPanel } from "./components/UserDetailPanel";
-import { EditProjectModal } from "./components/EditProjectModal";
-import { CreateUserModal } from "./components/CreateUserModal";
+import { AdminPage } from "./pages/AdminPage";
+import { StudentPage } from "./pages/StudentPage";
 
 export default function App() {
-  const { status, tables, darkMode, activeTable, loadSession } = useAdminStore((state) => ({
-    status: state.status,
-    tables: state.tables,
+  const { darkMode, user, impersonatedUser, status, loadSession } = useAdminStore((state) => ({
     darkMode: state.darkMode,
-    activeTable: state.activeTable,
+    user: state.user,
+    impersonatedUser: state.impersonatedUser,
+    status: state.status,
     loadSession: state.loadSession,
   }));
 
+  // Load session on mount
   useEffect(() => {
     loadSession();
   }, [loadSession]);
@@ -26,25 +22,28 @@ export default function App() {
     localStorage.setItem("admin-dark-mode", String(darkMode));
   }, [darkMode]);
 
-  return (
-    <div className="admin-shell">
-      <AdminHeader />
+  // Determine which view to show based on role and impersonation
+  const isAdmin = user?.role === "admin" || user?.role === "editor";
+  const isImpersonating = !!impersonatedUser;
+  const isStudent = user?.role === "student";
 
-      {status === "loading" && <p>Loading your session…</p>}
-      {status === "error" && <p className="error-message">Unable to load your session.</p>}
+  // Show student view if:
+  // 1. User is a student (not admin/editor)
+  // 2. Admin is impersonating a student
+  const showStudentView = (isStudent && !isAdmin) || isImpersonating;
 
-      {status === "ready" && tables.length > 0 && (
-        <div className="admin-panel">
-          <AdminTabs />
-          <div className="admin-split">
-            <AdminListView />
-            {activeTable === "users" ? <UserDetailPanel /> : <ProjectDetailPanel />}
-          </div>
-        </div>
-      )}
+  // While loading, we don't know the role yet - show nothing to avoid flicker
+  if (status === "loading") {
+    return (
+      <div className="admin-shell">
+        <p>Loading your session...</p>
+      </div>
+    );
+  }
 
-      <EditProjectModal />
-      <CreateUserModal />
-    </div>
-  );
+  if (showStudentView) {
+    return <StudentPage />;
+  }
+
+  return <AdminPage />;
 }

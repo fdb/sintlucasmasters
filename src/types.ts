@@ -12,6 +12,8 @@ export type Bindings = {
   // Cloudflare Images
   CLOUDFLARE_ACCOUNT_ID: string;
   CLOUDFLARE_API_TOKEN: string;
+  // Cloudflare R2
+  FILES: R2Bucket;
   // E2E testing
   E2E_SKIP_AUTH?: string;
 };
@@ -47,12 +49,15 @@ export interface Project {
   user_id: string | null;
 }
 
+export type ProjectImageType = "web" | "print";
+
 export interface ProjectImage {
   id: string;
   project_id: string;
   cloudflare_id: string;
   sort_order: number;
   caption: string | null;
+  type: ProjectImageType;
 }
 
 export const CONTEXTS = [

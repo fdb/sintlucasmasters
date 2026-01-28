@@ -100,6 +100,10 @@ See `.env.template` for the list of required secret environment variables.
 - **Admin UI style**: Avoid rounded corners. Keep a strict black/white palette with mid‑gray shades for contrast.
 - **Dark mode support**: All design updates must work in both light and dark mode. Check `static/admin.css` for the theme variable patterns.
 
+## Admin UI Components
+
+- **ConfirmDialog**: Use `admin/src/components/ConfirmDialog.tsx` for delete confirmations and other destructive actions. Never use the browser's `confirm()` dialog.
+
 ## Before Completing a Task
 
 **IMPORTANT**: Before handing control back to the user, always run:

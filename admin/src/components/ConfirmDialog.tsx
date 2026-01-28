@@ -39,7 +39,7 @@ export function ConfirmDialog({
             {cancelLabel}
           </button>
           <button type="button" className={confirmClass} onClick={onConfirm} disabled={isLoading}>
-            {isLoading ? "Deleting…" : confirmLabel}
+            {isLoading ? `${confirmLabel}ing…` : confirmLabel}
           </button>
         </div>
         {errorMessage ? (
