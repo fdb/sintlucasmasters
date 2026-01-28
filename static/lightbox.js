@@ -1,5 +1,5 @@
 (() => {
-  const thumbs = Array.from(document.querySelectorAll(".gallery img[data-lightbox-src]"));
+  const thumbs = Array.from(document.querySelectorAll(".detail-gallery img[data-lightbox-src]"));
   if (thumbs.length === 0) return;
 
   const sources = thumbs.map((img) => img.getAttribute("data-lightbox-src") || img.src);

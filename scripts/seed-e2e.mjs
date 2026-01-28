@@ -53,7 +53,7 @@ export const E2E_PROJECTS = [
     academic_year: "2024-2025",
     bio: "Alice is a digital artist exploring virtual realities.",
     description: "A project exploring the intersection of dreams and digital art.",
-    main_image_id: "e2e-image-alice-main",
+    main_image_id: "slam/testing/e2e-test-image",
     status: "published",
     tags: '["digital", "interactive"]',
     user_id: null,
@@ -126,7 +126,7 @@ export const E2E_PROJECT_IMAGES = [
   {
     id: "e2e-pimg-001",
     project_id: "e2e-project-001",
-    cloudflare_id: "e2e-cf-image-001",
+    cloudflare_id: "slam/testing/e2e-test-image",
     sort_order: 0,
     caption: "Main view",
     type: "web",
@@ -134,7 +134,7 @@ export const E2E_PROJECT_IMAGES = [
   {
     id: "e2e-pimg-002",
     project_id: "e2e-project-001",
-    cloudflare_id: "e2e-cf-image-002",
+    cloudflare_id: "slam/testing/e2e-test-image",
     sort_order: 1,
     caption: "Detail shot",
     type: "web",
