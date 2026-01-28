@@ -78,7 +78,7 @@ npm run db:rebuild:remote   # Drop tables, recreate schema, and import (remote)
 
 # Build & Deploy
 npm run build               # Dry-run deploy
-npm run deploy              # Deploy to Cloudflare
+npm run deploy              # Deploy to Cloudflare (manual, not auto-deployed on push)
 
 # Admin
 npm run create-admin <email>         # Create admin user locally
@@ -93,6 +93,14 @@ npm run create-admin:remote <email>  # Create admin user on production
 ## Environment Variables
 
 See `.env.template` for the list of required secret environment variables.
+
+## Deployment
+
+Pushing to `main` does **not** automatically deploy. To deploy changes to production, run:
+
+```bash
+npm run deploy
+```
 
 ## Working with Claude Code
 
