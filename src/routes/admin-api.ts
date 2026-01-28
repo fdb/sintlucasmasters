@@ -195,9 +195,19 @@ adminApiRoutes.get("/projects/:id", async (c) => {
     .bind(id)
     .all<ProjectImage>();
 
+  // Fetch user email if project has a user_id
+  let userEmail: string | null = null;
+  if (project.user_id) {
+    const user = await c.env.DB.prepare("SELECT email FROM users WHERE id = ?")
+      .bind(project.user_id)
+      .first<{ email: string }>();
+    userEmail = user?.email ?? null;
+  }
+
   return c.json({
     project,
     images: images ?? [],
+    userEmail,
   });
 });
 

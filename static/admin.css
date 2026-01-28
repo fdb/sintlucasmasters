@@ -672,6 +672,21 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.student-email-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  transition: color 0.15s ease;
+}
+
+.student-email-link:hover {
+  color: var(--admin-text);
 }
 
 /* Header actions group */

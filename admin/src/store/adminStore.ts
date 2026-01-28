@@ -22,6 +22,7 @@ export type TableResponse = {
 export type ProjectDetailResponse = {
   project: Record<string, unknown>;
   images: Array<Record<string, unknown>>;
+  userEmail?: string | null;
 };
 
 export type UserDetailResponse = {

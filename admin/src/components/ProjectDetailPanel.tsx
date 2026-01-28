@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, XCircle, Send } from "lucide-react";
+import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, XCircle, Send, Mail } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -134,7 +134,18 @@ export function ProjectDetailPanel() {
       {isProjectsTable && projectStatus === "ready" && projectDetail && (
         <div className="admin-detail-content">
           <div className="detail-header-row">
-            <h3>{String(projectDetail.project.student_name || "Untitled")}</h3>
+            <h3>
+              {String(projectDetail.project.student_name || "Untitled")}
+              {projectDetail.userEmail && (
+                <a
+                  href={`mailto:${projectDetail.userEmail}`}
+                  className="student-email-link"
+                  title={`Email ${projectDetail.userEmail}`}
+                >
+                  <Mail size={14} />
+                </a>
+              )}
+            </h3>
             <div className="detail-header-actions">
               <div className={`status-badge status-${projectStatus_.toLowerCase()}`}>
                 {projectStatus_.replace(/_/g, " ")}
