@@ -1219,28 +1219,28 @@ tr.status-draft td:first-child {
 }
 
 /* =====================================================
-   Topical Edit Sections
+   Topical Edit Sections — Typography-driven layout
    ===================================================== */
 
 .edit-sections {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 0;
 }
 
 .edit-section {
-  background: var(--admin-bg-alt);
-  border: 1px solid var(--admin-border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 2rem 0 0.5rem;
+}
+
+.edit-section:first-child {
+  padding-top: 0;
 }
 
 .edit-section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem 1.25rem;
-  border-bottom: 1px solid var(--admin-border);
-  background: var(--admin-bg);
+  align-items: baseline;
+  margin-bottom: 1.5rem;
 }
 
 .edit-section-title {
@@ -1248,19 +1248,19 @@ tr.status-draft td:first-child {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--gray);
+  color: var(--black);
   margin: 0;
 }
 
 .edit-section-content {
-  padding: 1.25rem;
+  /* No padding — content flows naturally */
 }
 
 /* Form layouts within sections */
 .edit-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .edit-row-full {
@@ -1270,11 +1270,11 @@ tr.status-draft td:first-child {
 .edit-field {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.5rem;
 }
 
 .edit-field + .edit-field {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .edit-row .edit-field + .edit-field {
@@ -1282,20 +1282,25 @@ tr.status-draft td:first-child {
 }
 
 .edit-label {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--gray);
+}
+
+.required-marker {
   color: var(--gray);
 }
 
 .edit-input,
 .edit-select,
 .edit-textarea {
-  padding: 0.625rem 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.75rem 0;
+  font-size: 0.9375rem;
   font-family: inherit;
-  background: var(--admin-bg);
+  background: transparent;
   color: var(--black);
-  border: 1px solid var(--admin-border);
+  border: none;
+  border-bottom: 1px solid var(--admin-border);
   outline: none;
   transition: border-color 0.15s ease;
 }
@@ -1306,10 +1311,24 @@ tr.status-draft td:first-child {
   border-color: var(--black);
 }
 
+.edit-input:disabled,
+.edit-select:disabled,
+.edit-textarea:disabled {
+  color: var(--gray);
+  background: transparent;
+}
+
 .edit-textarea {
   min-height: 100px;
   resize: vertical;
-  line-height: 1.5;
+  line-height: 1.6;
+  border: 1px solid var(--admin-border);
+  padding: 0.75rem;
+  background: var(--admin-bg);
+}
+
+.edit-textarea:focus {
+  border-color: var(--black);
 }
 
 .edit-textarea.tall {
@@ -1318,39 +1337,41 @@ tr.status-draft td:first-child {
 
 .edit-select {
   cursor: pointer;
+  background: var(--admin-bg);
 }
 
 /* Status select with color coding */
 .edit-status-row {
   display: flex;
-  gap: 0.5rem;
+  gap: 0;
+  border-bottom: 1px solid var(--admin-border);
 }
 
 .edit-status-option {
   flex: 1;
-  padding: 0.375rem 0.5rem;
-  font-size: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   white-space: nowrap;
-  background: var(--admin-bg);
-  color: var(--black);
-  border: 1px solid var(--admin-border);
+  background: transparent;
+  color: var(--gray);
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .edit-status-option:hover {
-  border-color: var(--black);
-  background: var(--admin-bg-hover);
+  color: var(--black);
 }
 
 .edit-status-option.active {
-  background: var(--black);
-  color: var(--white);
-  border-color: var(--black);
+  color: var(--black);
+  border-bottom-color: var(--black);
 }
 
 /* =====================================================
@@ -1484,8 +1505,8 @@ tr.status-draft td:first-child {
 .edit-images-hint {
   font-size: 0.75rem;
   color: var(--gray);
-  font-style: italic;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  opacity: 0.8;
 }
 
 /* =====================================================
@@ -1782,21 +1803,22 @@ tr.status-draft td:first-child {
 .edit-tags {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem;
-  background: var(--admin-bg);
-  border: 1px solid var(--admin-border);
-  min-height: 44px;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--admin-border);
+  min-height: 36px;
 }
 
 .edit-tag {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   background: var(--admin-bg-alt);
-  border: 1px solid var(--admin-border);
+  border: none;
 }
 
 .edit-tag-remove {
@@ -1811,22 +1833,30 @@ tr.status-draft td:first-child {
   cursor: pointer;
   font-size: 0.875rem;
   line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
 }
 
 .edit-tag-remove:hover {
+  opacity: 1;
   color: var(--black);
 }
 
 .edit-tag-input {
   flex: 1;
   min-width: 100px;
-  padding: 0.25rem;
-  font-size: 0.75rem;
+  padding: 0.375rem 0;
+  font-size: 0.8125rem;
   font-family: inherit;
   background: transparent;
   border: none;
   outline: none;
   color: var(--black);
+}
+
+.edit-tag-input::placeholder {
+  color: var(--gray);
+  opacity: 0.7;
 }
 
 /* =====================================================
@@ -1836,12 +1866,13 @@ tr.status-draft td:first-child {
 .edit-links-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0;
 }
 
 .edit-link-row {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .edit-link-row .edit-input {
@@ -1849,41 +1880,43 @@ tr.status-draft td:first-child {
 }
 
 .edit-link-remove {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   background: transparent;
-  border: 1px solid var(--admin-border);
+  border: none;
   color: var(--gray);
   cursor: pointer;
   font-size: 1rem;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
 }
 
 .edit-link-remove:hover {
+  opacity: 1;
   color: var(--black);
-  border-color: var(--black);
 }
 
 .edit-link-add {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
+  padding: 0.625rem 0;
+  font-size: 0.8125rem;
   font-weight: 500;
   font-family: inherit;
   background: transparent;
   color: var(--gray);
-  border: 1px dashed var(--admin-border);
+  border: none;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .edit-link-add:hover {
   color: var(--black);
-  border-color: var(--black);
 }
 
 /* =====================================================
@@ -2015,52 +2048,46 @@ tr.status-draft td:first-child {
 .student-mode-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.04em;
   color: var(--gray);
-  background: var(--admin-bg-alt);
+  background: transparent;
   border: 1px solid var(--admin-border);
-  margin-left: auto;
-  margin-right: 1rem;
 }
 
 /* Read-only badge for classification section */
 .read-only-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.125rem 0.5rem;
-  font-size: 0.6875rem;
-  font-weight: 500;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.625rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.03em;
   color: var(--gray);
-  background: var(--admin-bg-alt);
-  border: 1px solid var(--admin-border);
+  background: transparent;
+  border: none;
 }
 
 /* Status display for students (read-only) */
 .status-display {
-  padding-top: 0.5rem;
-}
-
-/* Required field marker */
-.required-marker {
-  color: #c00;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--admin-border);
 }
 
 /* Locked project banner */
 .edit-locked-banner {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: var(--admin-bg-alt);
+  gap: 0.625rem;
+  padding: 0.875rem 0;
+  margin-bottom: 1rem;
   border-bottom: 1px solid var(--admin-border);
   color: var(--gray);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 /* Print Image Section */
@@ -2634,21 +2661,20 @@ tr.status-draft td:first-child {
 .edit-form-scrollable {
   flex: 1;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .edit-form-header {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--admin-border);
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .edit-form-header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
@@ -2657,7 +2683,7 @@ tr.status-draft td:first-child {
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 2rem;
   background: var(--admin-bg);
   border-top: 1px solid var(--admin-border);
 }
@@ -2902,11 +2928,29 @@ tr.status-draft td:first-child {
   }
 
   .edit-form-scrollable {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
   .edit-form-footer {
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .edit-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .edit-row .edit-field + .edit-field {
+    margin-top: 1.25rem;
+  }
+
+  .edit-status-row {
+    flex-wrap: wrap;
+  }
+
+  .edit-status-option {
+    flex: 1 1 auto;
+    min-width: 45%;
   }
 
   .student-preview-panel {
