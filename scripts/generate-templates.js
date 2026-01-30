@@ -139,11 +139,20 @@ function generatePNG(width, height, bleed, filename) {
   const compressed = zlib.deflateSync(rawData, { level: 9 });
   const idatChunk = createPNGChunk("IDAT", compressed);
 
+  // pHYs chunk (physical pixel dimensions) - embeds DPI metadata
+  // 300 DPI = 300 / 0.0254 = 11811 pixels per meter
+  const pixelsPerMeter = Math.round(DPI / 0.0254);
+  const phys = Buffer.alloc(9);
+  phys.writeUInt32BE(pixelsPerMeter, 0); // X pixels per unit
+  phys.writeUInt32BE(pixelsPerMeter, 4); // Y pixels per unit
+  phys.writeUInt8(1, 8); // Unit: 1 = meter
+  const physChunk = createPNGChunk("pHYs", phys);
+
   // IEND chunk (end marker)
   const iendChunk = createPNGChunk("IEND", Buffer.alloc(0));
 
   // Combine all parts
-  const png = Buffer.concat([signature, ihdrChunk, idatChunk, iendChunk]);
+  const png = Buffer.concat([signature, ihdrChunk, physChunk, idatChunk, iendChunk]);
 
   fs.writeFileSync(path.join(templatesDir, filename), png);
   console.log(`  Created: ${filename} (${(png.length / 1024).toFixed(1)} KB)`);
