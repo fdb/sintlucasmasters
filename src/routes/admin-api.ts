@@ -33,6 +33,8 @@ const STUDENT_EDITABLE_FIELDS = [
   "project_title",
   "bio",
   "description",
+  "location",
+  "private_email",
   "social_links",
   "tags",
   "main_image_id",
@@ -263,6 +265,14 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   if (body.description !== undefined) {
     updates.push("description = ?");
     values.push(body.description);
+  }
+  if (body.location !== undefined) {
+    updates.push("location = ?");
+    values.push(body.location);
+  }
+  if (body.private_email !== undefined) {
+    updates.push("private_email = ?");
+    values.push(body.private_email);
   }
   if (body.status !== undefined) {
     updates.push("status = ?");

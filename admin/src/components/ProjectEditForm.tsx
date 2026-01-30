@@ -115,6 +115,58 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                   />
                 </div>
               </div>
+              <div className="edit-row" style={{ marginTop: "1rem" }}>
+                <div className="edit-field">
+                  <label className="edit-label">Location</label>
+                  <input
+                    type="text"
+                    className="edit-input"
+                    value={editDraft.location}
+                    onChange={(e) => updateEditField("location", e.target.value)}
+                    placeholder="e.g. Antwerp, Belgium"
+                    disabled={isLocked}
+                  />
+                </div>
+                <div className="edit-field">
+                  <label className="edit-label">Private Email</label>
+                  <input
+                    type="email"
+                    className="edit-input"
+                    value={editDraft.private_email}
+                    onChange={(e) => updateEditField("private_email", e.target.value)}
+                    placeholder="your@email.com"
+                    disabled={isLocked}
+                  />
+                </div>
+              </div>
+              <div className="edit-field" style={{ marginTop: "1rem" }}>
+                <label className="edit-label">Social Links</label>
+                <div className="edit-links-list">
+                  {editDraft.social_links.map((link, idx) => (
+                    <div key={idx} className="edit-link-row">
+                      <input
+                        type="text"
+                        className="edit-input"
+                        value={link}
+                        onChange={(e) => updateSocialLink(idx, e.target.value)}
+                        placeholder="https://..."
+                        disabled={isLocked}
+                      />
+                      {!isLocked && (
+                        <button type="button" className="edit-link-remove" onClick={() => removeSocialLink(idx)}>
+                          <Trash2 size={14} />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  {!isLocked && (
+                    <button type="button" className="edit-link-add" onClick={addSocialLink}>
+                      <Plus size={12} />
+                      Add link
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -258,14 +310,13 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
             </div>
           </div>
 
-          {/* Section 6: Links & Tags */}
+          {/* Section 6: Tags */}
           <div className="edit-section">
             <div className="edit-section-header">
-              <h3 className="edit-section-title">Links & Tags</h3>
+              <h3 className="edit-section-title">Tags</h3>
             </div>
             <div className="edit-section-content">
               <div className="edit-field">
-                <label className="edit-label">Tags</label>
                 <div className="edit-tags">
                   {editDraft.tags.map((tag) => (
                     <span key={tag} className="edit-tag">
@@ -291,34 +342,6 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                       }}
                       placeholder="Add tag..."
                     />
-                  )}
-                </div>
-              </div>
-              <div className="edit-field">
-                <label className="edit-label">Social Links</label>
-                <div className="edit-links-list">
-                  {editDraft.social_links.map((link, idx) => (
-                    <div key={idx} className="edit-link-row">
-                      <input
-                        type="text"
-                        className="edit-input"
-                        value={link}
-                        onChange={(e) => updateSocialLink(idx, e.target.value)}
-                        placeholder="https://..."
-                        disabled={isLocked}
-                      />
-                      {!isLocked && (
-                        <button type="button" className="edit-link-remove" onClick={() => removeSocialLink(idx)}>
-                          <Trash2 size={14} />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  {!isLocked && (
-                    <button type="button" className="edit-link-add" onClick={addSocialLink}>
-                      <Plus size={12} />
-                      Add link
-                    </button>
                   )}
                 </div>
               </div>

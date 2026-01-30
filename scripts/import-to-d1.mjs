@@ -156,8 +156,8 @@ async function parseStudentFile(filePath) {
  * Generate SQL INSERT statement for a project
  */
 function projectToSql(project) {
-    return `INSERT OR REPLACE INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
-VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.sort_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.program)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
+    return `INSERT OR REPLACE INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, location, private_email, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
+VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.sort_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.program)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, NULL, NULL, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
 }
 
 /**

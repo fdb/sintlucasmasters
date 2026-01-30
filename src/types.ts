@@ -39,6 +39,8 @@ export interface Project {
   academic_year: string;
   bio: string | null;
   description: string;
+  location: string | null;
+  private_email: string | null;
   main_image_id: string | null;
   thumb_image_id: string | null;
   tags: string | null;

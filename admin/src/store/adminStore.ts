@@ -71,6 +71,8 @@ export type EditDraft = {
   academic_year: string;
   bio: string;
   description: string;
+  location: string;
+  private_email: string;
   status: string;
   tags: string[];
   social_links: string[];
@@ -252,6 +254,8 @@ const buildEditDraft = (project: Record<string, unknown>): EditDraft => ({
   status: String(project.status || "draft"),
   bio: String(project.bio || ""),
   description: String(project.description || ""),
+  location: String(project.location || ""),
+  private_email: String(project.private_email || ""),
   tags: parseTags(project.tags),
   social_links: parseSocialLinks(project.social_links),
   main_image_id: String(project.main_image_id || ""),
@@ -701,6 +705,8 @@ export const useAdminStore = create<AdminState>()(
               academic_year: editDraft.academic_year,
               bio: editDraft.bio || null,
               description: editDraft.description,
+              location: editDraft.location || null,
+              private_email: editDraft.private_email || null,
               status: editDraft.status,
               tags: editDraft.tags.length > 0 ? JSON.stringify(editDraft.tags) : null,
               social_links:

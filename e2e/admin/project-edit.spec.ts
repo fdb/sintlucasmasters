@@ -29,7 +29,7 @@ test.describe("admin project editing", () => {
     await expect(modal.locator(".edit-section-title", { hasText: "Classification" })).toBeVisible();
     await expect(modal.locator(".edit-section-title", { hasText: "Content" })).toBeVisible();
     await expect(modal.locator(".edit-section-title", { hasText: "Media" })).toBeVisible();
-    await expect(modal.locator(".edit-section-title", { hasText: "Links & Tags" })).toBeVisible();
+    await expect(modal.locator(".edit-section-title", { hasText: "Tags" })).toBeVisible();
   });
 
   test("can edit student name field", async ({ page }) => {
@@ -75,31 +75,31 @@ test.describe("admin project editing", () => {
     const modal = page.locator(".edit-modal-overlay.is-open");
     await expect(modal).toBeVisible();
 
-    // Wait for modal body content to be loaded (Tags section visible)
-    const tagsField = modal.locator('.edit-field:has-text("Tags")');
-    await expect(tagsField).toBeVisible();
+    // Wait for Tags section to be visible (find section by title)
+    const tagsSection = modal.locator('.edit-section:has(.edit-section-title:text("Tags"))');
+    await expect(tagsSection).toBeVisible();
 
     // Wait for existing tags to be rendered (seeded data has tags)
-    const tagInput = tagsField.locator(".edit-tag-input");
+    const tagInput = tagsSection.locator(".edit-tag-input");
     await expect(tagInput).toBeVisible();
 
     // Get initial tag count (wait for at least some tags to be present)
-    await expect(tagsField.locator(".edit-tag")).not.toHaveCount(0);
-    const initialTagCount = await tagsField.locator(".edit-tag").count();
+    await expect(tagsSection.locator(".edit-tag")).not.toHaveCount(0);
+    const initialTagCount = await tagsSection.locator(".edit-tag").count();
 
     // Add a new tag
     await tagInput.fill("newtag");
     await tagInput.press("Enter");
 
     // Should have one more tag
-    await expect(tagsField.locator(".edit-tag")).toHaveCount(initialTagCount + 1);
+    await expect(tagsSection.locator(".edit-tag")).toHaveCount(initialTagCount + 1);
 
     // Remove the new tag
-    const newTag = tagsField.locator(".edit-tag", { hasText: "newtag" });
+    const newTag = tagsSection.locator(".edit-tag", { hasText: "newtag" });
     await newTag.locator(".edit-tag-remove").click();
 
     // Should be back to original count
-    await expect(tagsField.locator(".edit-tag")).toHaveCount(initialTagCount);
+    await expect(tagsSection.locator(".edit-tag")).toHaveCount(initialTagCount);
   });
 
   test("escape key closes modal", async ({ page }) => {
