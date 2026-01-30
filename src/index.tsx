@@ -17,6 +17,98 @@ app.route("/auth", authPageRoutes);
 app.route("/api/admin", adminApiRoutes);
 app.route("/admin", adminPageRoutes);
 
+const SITE_URL = "https://sintlucasmasters.com";
+
+// Base organization schema for all pages
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Sint Lucas Antwerpen",
+  url: SITE_URL,
+};
+
+// robots.txt
+app.get("/robots.txt", (c) => {
+  const robotsTxt = `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+  return c.text(robotsTxt, 200, { "Content-Type": "text/plain" });
+});
+
+// sitemap.xml
+app.get("/sitemap.xml", async (c) => {
+  // Get all published projects with their updated_at timestamps
+  const { results: projects } = await c.env.DB.prepare(
+    "SELECT academic_year, slug, updated_at FROM projects WHERE status = 'published' ORDER BY academic_year DESC, sort_name"
+  ).all<{ academic_year: string; slug: string; updated_at: string | null }>();
+
+  // Get distinct years
+  const years = [...new Set(projects.map((p) => p.academic_year))];
+
+  // Helper to format date for sitemap (YYYY-MM-DD)
+  const formatDate = (dateStr: string | null): string => {
+    if (!dateStr) return new Date().toISOString().split("T")[0];
+    return dateStr.split("T")[0];
+  };
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const urls: string[] = [];
+
+  // Static pages
+  urls.push(`  <url>
+    <loc>${SITE_URL}/</loc>
+    <lastmod>${today}</lastmod>
+    <priority>1.0</priority>
+  </url>`);
+
+  urls.push(`  <url>
+    <loc>${SITE_URL}/about</loc>
+    <lastmod>${today}</lastmod>
+    <priority>0.5</priority>
+  </url>`);
+
+  urls.push(`  <url>
+    <loc>${SITE_URL}/archive</loc>
+    <lastmod>${today}</lastmod>
+    <priority>0.6</priority>
+  </url>`);
+
+  // Year pages
+  for (const year of years) {
+    const yearProjects = projects.filter((p) => p.academic_year === year);
+    const latestUpdate = yearProjects.reduce((latest, p) => {
+      const pDate = p.updated_at || "";
+      return pDate > latest ? pDate : latest;
+    }, "");
+
+    urls.push(`  <url>
+    <loc>${SITE_URL}/${year}/</loc>
+    <lastmod>${formatDate(latestUpdate)}</lastmod>
+    <priority>0.7</priority>
+  </url>`);
+  }
+
+  // Project pages
+  for (const project of projects) {
+    urls.push(`  <url>
+    <loc>${SITE_URL}/${project.academic_year}/students/${project.slug}/</loc>
+    <lastmod>${formatDate(project.updated_at)}</lastmod>
+    <priority>0.8</priority>
+  </url>`);
+  }
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join("\n")}
+</urlset>`;
+
+  return c.text(sitemap, 200, { "Content-Type": "application/xml" });
+});
+
 // Home page - redirect to current year
 app.get("/", (c) => {
   return c.redirect(`/${CURRENT_YEAR}/`);
@@ -86,9 +178,11 @@ app.get("/:year/", async (c) => {
   }
 
   const basePath = `/${year}/`;
+  const canonicalUrl = `${SITE_URL}/${year}/`;
+  const description = `Discover ${projects.length} graduation projects from Sint Lucas Masters ${year}. Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.`;
 
   return c.html(
-    <Layout title={year}>
+    <Layout title={year} canonicalUrl={canonicalUrl} ogDescription={description} jsonLd={organizationSchema}>
       <div class="page-filters">
         <ContextFilter basePath={basePath} activeContext={context} showLabel />
       </div>
@@ -104,8 +198,12 @@ app.get("/:year/", async (c) => {
 
 // About page
 app.get("/about", (c) => {
+  const canonicalUrl = `${SITE_URL}/about`;
+  const description =
+    "Learn about the Sint Lucas Masters Graduation Tour exhibition showcasing master-level art and design projects from Antwerp.";
+
   return c.html(
-    <Layout title="About">
+    <Layout title="About" canonicalUrl={canonicalUrl} ogDescription={description} jsonLd={organizationSchema}>
       <div class="about-content">
         <h2 class="about-heading">Master Expo</h2>
         <p class="about-text">
@@ -180,8 +278,18 @@ app.get("/archive", async (c) => {
     .bind(...params)
     .all<Project>();
 
+  // Get total count for all projects
+  const { results: countResult } = await c.env.DB.prepare(
+    "SELECT COUNT(*) as count FROM projects WHERE status = 'published'"
+  ).all<{ count: number }>();
+  const totalCount = countResult[0]?.count || 0;
+
+  const yearRange = years.length > 1 ? `${years[years.length - 1]}–${years[0]}` : years[0] || "";
+  const canonicalUrl = `${SITE_URL}/archive`;
+  const description = `Browse ${totalCount} master thesis projects from Sint Lucas Antwerpen spanning ${yearRange}.`;
+
   return c.html(
-    <Layout title="Archive">
+    <Layout title="Archive" canonicalUrl={canonicalUrl} ogDescription={description} jsonLd={organizationSchema}>
       <div class="archive-filters">
         <div class="filter-row">
           <span class="filter-label">Year</span>
@@ -251,11 +359,54 @@ app.get("/:year/students/:slug/", async (c) => {
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
   const vtName = `student-${project.slug}`;
 
+  const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
+  const mainImageUrl = project.main_image_id ? getImageUrl(project.main_image_id, "large") : null;
+
+  // JSON-LD structured data for project pages
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.project_title,
+    creator: {
+      "@type": "Person",
+      name: project.student_name,
+    },
+    description: project.description?.substring(0, 300) || "",
+    ...(mainImageUrl && { image: mainImageUrl }),
+    dateCreated: project.academic_year,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: year,
+        item: `${SITE_URL}/${year}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.student_name,
+      },
+    ],
+  };
+
   return c.html(
     <Layout
       title={`${project.student_name} — ${project.project_title}`}
-      ogImage={getImageUrl(project.main_image_id, "large")}
+      ogImage={mainImageUrl}
       ogDescription={`${project.project_title} by ${project.student_name} · ${project.context}`}
+      canonicalUrl={canonicalUrl}
+      jsonLd={[organizationSchema, creativeWorkSchema, breadcrumbSchema]}
     >
       <article class="detail">
         <a href={`/${year}/`} class="back-link">

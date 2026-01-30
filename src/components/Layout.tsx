@@ -6,16 +6,30 @@ type LayoutProps = PropsWithChildren<{
   ogImage?: string | null;
   ogDescription?: string;
   ogUrl?: string;
+  canonicalUrl?: string;
   hideSubheader?: boolean;
+  jsonLd?: object | object[];
 }>;
 
 const SITE_NAME = "Graduation Tour";
 const DEFAULT_DESCRIPTION =
   "Presenting the graduation projects of the Masters in Art and Design at Sint Lucas Antwerpen.";
+const SITE_URL = "https://sintlucasmasters.com";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;
 
-export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, hideSubheader, children }) => {
+export const Layout: FC<LayoutProps> = ({
+  title,
+  ogImage,
+  ogDescription,
+  ogUrl,
+  canonicalUrl,
+  hideSubheader,
+  jsonLd,
+  children,
+}) => {
   const pageTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
   const description = ogDescription || DEFAULT_DESCRIPTION;
+  const finalOgImage = ogImage || DEFAULT_OG_IMAGE;
 
   return (
     <html lang="en">
@@ -26,21 +40,30 @@ export const Layout: FC<LayoutProps> = ({ title, ogImage, ogDescription, ogUrl, 
         <meta name="description" content={description} />
         <meta name="view-transition" content="same-origin" />
 
+        {/* Canonical URL */}
+        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
         {/* OpenGraph */}
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:type" content={ogImage ? "article" : "website"} />
-        {ogUrl && <meta property="og:url" content={ogUrl} />}
-        {ogImage && <meta property="og:image" content={ogImage} />}
-        {ogImage && <meta property="og:image:width" content="1200" />}
-        {ogImage && <meta property="og:image:height" content="630" />}
+        {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+        <meta property="og:image" content={finalOgImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
 
         {/* Twitter Card */}
-        <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={description} />
-        {ogImage && <meta name="twitter:image" content={ogImage} />}
+        <meta name="twitter:image" content={finalOgImage} />
+
+        {/* JSON-LD Structured Data */}
+        {jsonLd &&
+          (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((data, i) => (
+            <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
+          ))}
 
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
