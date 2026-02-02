@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef } from "react";
 import { GripVertical, Plus, Trash2, X, Lock } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
@@ -14,6 +15,7 @@ const CONTEXTS = [
 const PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"];
 
 const STATUSES = ["draft", "submitted", "ready_for_print", "published"];
+const AUTOSAVE_DELAY_MS = 1000;
 
 type ProjectEditFormProps = {
   showHeader?: boolean;
@@ -25,6 +27,7 @@ type ProjectEditFormProps = {
 export function ProjectEditForm({ showHeader = false, showFooter = true, onSave, onCancel }: ProjectEditFormProps) {
   const {
     editDraft,
+    editImages,
     saveStatus,
     newTag,
     updateEditField,
@@ -37,8 +40,10 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
     saveProject,
     isStudentMode,
     canEditProject,
+    selectedProjectId,
   } = useAdminStore((state) => ({
     editDraft: state.editDraft,
+    editImages: state.editImages,
     saveStatus: state.saveStatus,
     newTag: state.newTag,
     updateEditField: state.updateEditField,
@@ -51,14 +56,90 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
     saveProject: state.saveProject,
     isStudentMode: state.isStudentMode,
     canEditProject: state.canEditProject,
+    selectedProjectId: state.selectedProjectId,
   }));
 
   const studentMode = isStudentMode();
   const editCheck = canEditProject();
   const isLocked = !editCheck.allowed;
 
+  const autosaveEnabled = studentMode && !isLocked;
+  const autosaveTimerRef = useRef<number | null>(null);
+  const lastSavedKeyRef = useRef<string | null>(null);
+  const lastProjectIdRef = useRef<string | null>(null);
+  const pendingAutosaveRef = useRef(false);
+
+  const autosaveKey = useMemo(() => {
+    if (!autosaveEnabled || !editDraft) return "";
+    return JSON.stringify({
+      draft: editDraft,
+      images: editImages.map((img) => ({
+        id: img.id,
+        sort_order: img.sort_order,
+        caption: img.caption,
+        type: img.type,
+        cloudflare_id: img.cloudflare_id,
+      })),
+    });
+  }, [autosaveEnabled, editDraft, editImages]);
+
+  useEffect(() => {
+    if (!autosaveEnabled || !editDraft || !selectedProjectId) return;
+
+    if (lastSavedKeyRef.current === null || lastProjectIdRef.current !== selectedProjectId) {
+      lastSavedKeyRef.current = autosaveKey;
+      lastProjectIdRef.current = selectedProjectId;
+      pendingAutosaveRef.current = false;
+      return;
+    }
+
+    if (autosaveKey === lastSavedKeyRef.current) return;
+
+    pendingAutosaveRef.current = true;
+
+    if (autosaveTimerRef.current) {
+      window.clearTimeout(autosaveTimerRef.current);
+    }
+
+    autosaveTimerRef.current = window.setTimeout(async () => {
+      if (!pendingAutosaveRef.current) return;
+      if (saveStatus === "saving") return;
+      const saved = await saveProject({ closeOnSuccess: false });
+      if (saved) {
+        lastSavedKeyRef.current = autosaveKey;
+        pendingAutosaveRef.current = false;
+      }
+    }, AUTOSAVE_DELAY_MS);
+
+    return () => {
+      if (autosaveTimerRef.current) {
+        window.clearTimeout(autosaveTimerRef.current);
+      }
+    };
+  }, [autosaveEnabled, autosaveKey, editDraft, saveProject, saveStatus, selectedProjectId]);
+
+  useEffect(() => {
+    if (autosaveEnabled) return;
+    if (autosaveTimerRef.current) {
+      window.clearTimeout(autosaveTimerRef.current);
+    }
+    pendingAutosaveRef.current = false;
+  }, [autosaveEnabled]);
+
+  useEffect(() => {
+    return () => {
+      if (autosaveTimerRef.current) {
+        window.clearTimeout(autosaveTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleSave = async () => {
-    await saveProject();
+    const saved = await saveProject({ closeOnSuccess: !studentMode });
+    if (saved) {
+      lastSavedKeyRef.current = autosaveKey;
+      pendingAutosaveRef.current = false;
+    }
     onSave?.();
   };
 
