@@ -72,7 +72,12 @@ function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
           {isLocked ? "Close" : "Cancel"}
         </button>
         {!isLocked && (
-          <button type="button" className="btn btn-primary" onClick={saveProject} disabled={saveStatus === "saving"}>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => void saveProject()}
+            disabled={saveStatus === "saving"}
+          >
             Save Changes
           </button>
         )}
