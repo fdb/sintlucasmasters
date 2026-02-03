@@ -8,6 +8,7 @@ npm install
 npx playwright install
 npm run db:rebuild
 npm run setup-secrets
+npm run bulk-create-fake-users
 '''
 
 [[actions]]
