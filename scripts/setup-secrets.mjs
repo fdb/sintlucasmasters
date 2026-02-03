@@ -9,7 +9,7 @@ const envPath = resolve(projectRoot, '.env');
 dotenv.config({ path: envPath });
 
 const requiredKeys = ['RESEND_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION', 'CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_API_TOKEN'];
-const optionalKeysLocal = ['APP_BASE_URL', 'SES_CONFIGURATION_SET'];
+const optionalKeysLocal = ['APP_BASE_URL', 'SES_CONFIGURATION_SET', 'DEV_ADMIN_EMAIL'];
 const optionalKeysRemote = ['SES_CONFIGURATION_SET'];
 
 const missing = requiredKeys.filter((key) => !process.env[key]);

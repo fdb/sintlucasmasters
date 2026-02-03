@@ -16,6 +16,8 @@ export type Bindings = {
   FILES: R2Bucket;
   // E2E testing
   E2E_SKIP_AUTH?: string;
+  // Local development
+  DEV_ADMIN_EMAIL?: string;
 };
 
 export type UserRole = "student" | "editor" | "admin";

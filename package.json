@@ -21,7 +21,7 @@
     "db:import:remote": "node scripts/import-to-d1.mjs --remote",
     "db:rebuild": "node scripts/db-rebuild.mjs --local",
     "db:rebuild:remote": "node scripts/db-rebuild.mjs --remote",
-    "setup-secrets": "op inject -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
+    "setup-secrets": "op inject -f -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
     "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote",
     "create-admin": "node scripts/create-admin.mjs --local",
     "create-admin:remote": "node scripts/create-admin.mjs --remote",
