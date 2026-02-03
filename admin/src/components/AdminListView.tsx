@@ -33,11 +33,13 @@ function extractUniqueValues(rows: TableResponse["rows"], key: string): string[]
   return [...new Set(rows.map((r) => String(r[key] || "")).filter(Boolean))];
 }
 
-const PROJECT_STATUSES = ["draft", "submitted", "ready_for_print", "published"];
-
-function formatStatusLabel(status: string): string {
-  return status.replace(/_/g, " ");
-}
+const STATUS_FILTERS = [
+  { value: "", label: "All" },
+  { value: "draft", label: "Draft" },
+  { value: "submitted", label: "Submitted" },
+  { value: "ready_for_print", label: "Ready for print" },
+  { value: "published", label: "Published" },
+];
 
 function AdminProjectsHeader(): React.ReactNode {
   const tableData = useAdminStore((s) => s.tableData);
@@ -83,14 +85,26 @@ function AdminProjectsHeader(): React.ReactNode {
           </option>
         ))}
       </select>
-      <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)} className="filter-select">
-        <option value="">All statuses</option>
-        {PROJECT_STATUSES.map((status) => (
-          <option key={status} value={status}>
-            {formatStatusLabel(status)}
-          </option>
-        ))}
-      </select>
+      <div className="status-filter" role="group" aria-label="Status filter">
+        {STATUS_FILTERS.map((status) => {
+          const isActive = selectedStatus === status.value;
+          const statusClass = status.value ? status.value : "all";
+          return (
+            <button
+              key={status.value || "all"}
+              type="button"
+              className={`status-filter-dot ${isActive ? "active" : ""}`}
+              onClick={() => setSelectedStatus(status.value)}
+              aria-pressed={isActive}
+              aria-label={status.label}
+              data-tooltip={status.label}
+            >
+              <span className={`status-dot status-${statusClass}`} aria-hidden="true" />
+              <span className="sr-only">{status.label}</span>
+            </button>
+          );
+        })}
+      </div>
       <div className={`search-container ${searchExpanded ? "expanded" : ""}`}>
         {searchExpanded ? (
           <input
@@ -139,7 +153,12 @@ function filterProjects(
   return rows.filter((row) => {
     if (selectedYear && String(row.academic_year) !== selectedYear) return false;
     if (selectedContext && String(row.context) !== selectedContext) return false;
-    if (selectedStatus && String(row.status) !== selectedStatus) return false;
+    if (selectedStatus) {
+      const rowStatus = String(row.status || "draft")
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+      if (rowStatus !== selectedStatus) return false;
+    }
     if (searchQuery) {
       const nameMatch = String(row.student_name || "")
         .toLowerCase()

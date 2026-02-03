@@ -1,7 +1,0 @@
-[build]
-publish = "_site"
-command = "npm run build"
-
-[[redirects]]
-from = "/"
-to = "/2025"

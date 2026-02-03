@@ -391,7 +391,7 @@ app.get("/:year/students/:slug/", async (c) => {
       const handle = pathSegments[0]?.replace(/^@/, "");
       return {
         kind: "instagram",
-        label: handle ? `@${handle}` : "Instagram",
+        label: handle ? handle : "Instagram",
         href: parsedUrl.toString(),
       };
     }
