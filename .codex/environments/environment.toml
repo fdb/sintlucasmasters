@@ -12,5 +12,5 @@ npm run setup-secrets
 
 [[actions]]
 name = "Start Server"
-icon = "tool"
+icon = "run"
 command = "npm run dev"
