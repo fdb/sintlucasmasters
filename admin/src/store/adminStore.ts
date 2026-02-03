@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { normalizeSocialLinks } from "../lib/socialLinks";
+import { normalizeSocialLink, normalizeSocialLinks } from "../lib/socialLinks";
 
 export type UserRole = "student" | "editor" | "admin";
 
@@ -700,6 +700,7 @@ export const useAdminStore = create<AdminState>()(
         if (saveStatus === "saving") return false;
         const closeOnSuccess = options?.closeOnSuccess ?? true;
         const normalizedSocialLinks = normalizeSocialLinks(editDraft.social_links);
+        const normalizedSocialLinksForDraft = editDraft.social_links.map(normalizeSocialLink);
         set({ saveStatus: "saving" });
 
         try {
@@ -748,7 +749,7 @@ export const useAdminStore = create<AdminState>()(
 
           set({
             saveStatus: "saved",
-            editDraft: editDraft ? { ...editDraft, social_links: normalizedSocialLinks } : editDraft,
+            editDraft: editDraft ? { ...editDraft, social_links: normalizedSocialLinksForDraft } : editDraft,
           });
 
           try {

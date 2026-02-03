@@ -92,6 +92,31 @@ test.describe.serial("project submission", () => {
     await expect(submitButton).toBeEnabled();
   });
 
+  test("adding a social link input persists through autosave", async ({ page }) => {
+    await navigateToSubmitStudent(page);
+    await ensureProjectIsDraft(page);
+
+    const linksList = page.locator(".edit-links-list");
+    const addLinkButton = linksList.locator("button", { hasText: "Add link" });
+    await expect(addLinkButton).toBeVisible();
+
+    const linkInputs = linksList.locator("input.edit-input");
+    const initialCount = await linkInputs.count();
+
+    const savePromise = page.waitForResponse(
+      (response) =>
+        response.request().method() === "PUT" && response.url().includes("/api/admin/projects/") && response.ok(),
+      { timeout: 10000 }
+    );
+
+    await addLinkButton.click();
+    await expect(linkInputs).toHaveCount(initialCount + 1);
+
+    await savePromise;
+    await page.waitForTimeout(2000);
+    await expect(linkInputs).toHaveCount(initialCount + 1);
+  });
+
   test("clicking submit opens confirmation dialog", async ({ page }) => {
     await navigateToSubmitStudent(page);
     await ensureProjectIsDraft(page);
