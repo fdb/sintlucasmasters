@@ -359,6 +359,122 @@ app.get("/:year/students/:slug/", async (c) => {
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
   const vtName = `student-${project.slug}`;
 
+  type SocialKind = "instagram" | "youtube" | "website";
+
+  const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } => {
+    const trimmed = rawLink.trim();
+    if (!trimmed) {
+      return { kind: "website", label: "Website", href: rawLink };
+    }
+
+    const parsedUrl = (() => {
+      try {
+        return new URL(trimmed);
+      } catch {
+        try {
+          return new URL(`https://${trimmed}`);
+        } catch {
+          return null;
+        }
+      }
+    })();
+
+    if (!parsedUrl) {
+      return { kind: "website", label: trimmed, href: rawLink };
+    }
+
+    const host = parsedUrl.hostname.replace(/^www\./, "");
+    const lowerHost = host.toLowerCase();
+    const pathSegments = parsedUrl.pathname.split("/").filter(Boolean);
+
+    if (lowerHost.includes("instagram.com") || lowerHost === "instagr.am") {
+      const handle = pathSegments[0]?.replace(/^@/, "");
+      return {
+        kind: "instagram",
+        label: handle ? `@${handle}` : "Instagram",
+        href: parsedUrl.toString(),
+      };
+    }
+
+    if (lowerHost.includes("youtube.com") || lowerHost.includes("youtu.be")) {
+      let label = "YouTube";
+      if (pathSegments[0]?.startsWith("@")) {
+        label = pathSegments[0];
+      } else if (pathSegments[0] === "user" && pathSegments[1]) {
+        label = pathSegments[1];
+      } else if (pathSegments[0] === "channel" && pathSegments[1]) {
+        label = pathSegments[1];
+      } else if (pathSegments[0] === "c" && pathSegments[1]) {
+        label = pathSegments[1];
+      }
+      return { kind: "youtube", label, href: parsedUrl.toString() };
+    }
+
+    return { kind: "website", label: host, href: parsedUrl.toString() };
+  };
+
+  const socialItems = socialLinks.filter(Boolean).map(parseSocialLink);
+
+  const renderSocialIcon = (kind: SocialKind) => {
+    if (kind === "instagram") {
+      return (
+        <svg
+          class="detail-link-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            fill="currentColor"
+            d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm9 1.5h-9A4 4 0 0 0 3.5 7.5v9A4 4 0 0 0 7.5 20.5h9a4 4 0 0 0 4-4v-9a4 4 0 0 0-4-4z"
+          />
+          <path
+            fill="currentColor"
+            d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"
+          />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+        </svg>
+      );
+    }
+
+    if (kind === "youtube") {
+      return (
+        <svg
+          class="detail-link-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            fill="currentColor"
+            d="M23.498 6.186a2.996 2.996 0 0 0-2.108-2.12C19.64 3.5 12 3.5 12 3.5s-7.64 0-9.39.566a2.996 2.996 0 0 0-2.108 2.12A31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .502 5.814 2.996 2.996 0 0 0 2.108 2.12C4.36 20.5 12 20.5 12 20.5s7.64 0 9.39-.566a2.996 2.996 0 0 0 2.108-2.12A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.502-5.814zM9.6 15.5V8.5L15.8 12l-6.2 3.5z"
+          />
+        </svg>
+      );
+    }
+
+    return (
+      <svg
+        class="detail-link-svg"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M2 12h20" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    );
+  };
+
   const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
   const mainImageUrl = project.main_image_id ? getImageUrl(project.main_image_id, "large") : null;
 
@@ -414,15 +530,31 @@ app.get("/:year/students/:slug/", async (c) => {
         </a>
 
         <header class="detail-header">
-          <h1 class="detail-name" style={`view-transition-name: name-${vtName}`}>
-            {project.student_name}
-          </h1>
-          <p class="detail-project-title" style={`view-transition-name: title-${vtName}`}>
-            {project.project_title}
-          </p>
-          <p class="detail-meta">
-            {project.context} · {project.academic_year}
-          </p>
+          <div class="detail-header-left">
+            <h1 class="detail-project-title" style={`view-transition-name: title-${vtName}`}>
+              {project.project_title}
+            </h1>
+            <p class="detail-meta">
+              {project.context} · {project.academic_year}
+            </p>
+          </div>
+          <div class="detail-header-right">
+            <h2 class="detail-name" style={`view-transition-name: name-${vtName}`}>
+              {project.student_name}
+            </h2>
+            {socialItems.length > 0 && (
+              <nav class="detail-links" aria-label="Student links">
+                {socialItems.map((item) => (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer">
+                    <span class="detail-link-icon" aria-hidden="true">
+                      {renderSocialIcon(item.kind)}
+                    </span>
+                    <span>{item.label}</span>
+                  </a>
+                ))}
+              </nav>
+            )}
+          </div>
         </header>
 
         {project.main_image_id && (
@@ -471,16 +603,6 @@ app.get("/:year/students/:slug/", async (c) => {
           </section>
         )}
         {images.length > 0 && <script src="/lightbox.js" defer></script>}
-
-        {socialLinks.length > 0 && (
-          <section class="detail-links">
-            {socialLinks.map((link) => (
-              <a href={link} target="_blank" rel="noopener noreferrer">
-                {new URL(link).hostname.replace("www.", "")}
-              </a>
-            ))}
-          </section>
-        )}
       </article>
     </Layout>
   );

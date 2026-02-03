@@ -373,28 +373,35 @@ main {
 
 /* Detail header — large editorial typography */
 .detail-header {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 3rem;
   margin-bottom: 3rem;
 }
 
-.detail-name {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  color: var(--black);
+.detail-header-right {
+  border-left: 1px solid var(--light-gray);
+  padding-left: 2rem;
 }
 
 .detail-project-title {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  font-weight: 400;
-  color: var(--gray);
-  margin-top: 0.5rem;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--black);
+}
+
+.detail-name {
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .detail-meta {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   font-size: 0.8125rem;
   color: var(--mid-gray);
   text-transform: uppercase;
@@ -499,26 +506,46 @@ main {
 
 .detail-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  margin-bottom: 2rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
 .detail-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 0.875rem;
   color: var(--gray);
   font-weight: 500;
-  padding-bottom: 1px;
-  border-bottom: 1px solid var(--light-gray);
   transition:
     color 0.15s,
     border-color 0.15s;
+  text-decoration: none;
 }
 
 .detail-links a:hover {
   color: var(--black);
-  border-color: var(--black);
   text-decoration: none;
+}
+
+.detail-link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--mid-gray);
+}
+
+.detail-link-svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.detail-links a:hover .detail-link-icon {
+  color: var(--black);
 }
 
 /* ───────────────────────────────────
@@ -871,6 +898,18 @@ body.lightbox-open {
     gap: 2rem;
   }
 
+  .detail-header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .detail-header-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--light-gray);
+    padding-top: 1.25rem;
+  }
+
   .masonry {
     columns: 1;
   }
@@ -909,11 +948,11 @@ body.lightbox-open {
   }
 
   .detail-name {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .detail-project-title {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
   }
 
   .lightbox-close,
