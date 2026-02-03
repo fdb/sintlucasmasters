@@ -16,8 +16,6 @@ social_links:
   - annaurazova.com
   - instagram.com/urazova_ann
 ---
-<!--StartFragment-->
-
 In biology, Regeneration is the ability of organisms to recreate damaged tissues over time. Physical experience is a starting point in my practice. Literally, I translate my psychosomatic process into two-dimensional forms. However, while drawing I perceive the space of the image as 3-dimensional. Mentally, I touch shapes and feel their surface, texture, density, and scale relative to my body. I imagine how the form would react if I touched it. The pencil, inserted into the pencil holder, sharpened to its limit, turns into an extension of my hand. The sketch begins with a stroke or line and I let the picture unfold, to grow as if the entire image had existed in embryonic form in the first line. Embodied emotions are able to trigger psychosomatic processes. So an art object can literally fall under the skin.
 
 My methodology is not only composition and the search for harmony but also bodily experience. I feel the form appearing and help it become visible. I study it carefully: does it want to unfold and occupy all the space or curl up and tie into a knot, how does it move, the temperature of its body, and how fast does it move. Gestural marks add a sense of physicality, so the body is still present even if there are no figures. At the same time, more detailed and realistic elements draw attention and let the image unfold. To work on them, I use an oil-based pencil that provides a deep dark black and leaves thin spider web-like traces. I sharpen the pencil first with a knife, then with sandpaper so that the point becomes like a needle. Drawing with these pencils feels like applying stitches in a surgical way. Internal psychosomatic experiences fixed on a 2D surface become external objects that I can decode, study,  and perceive their meaning and message. 
@@ -27,5 +25,3 @@ As a visual artist, I use references such as organic forms and shapes of a body,
 The image of a human figure can emerge in my drawings, and it almost disappears on canvases. Vertical human-body size canvases (120 by 200 cm) become bodies, entities in themselves. The domination of vertical and abstract forms makes the composition similar to Rorschach's spots. The suggestiveness of the image and human-size format of canvases invites a physical, metaphysical, and spiritual journey of 'Rorschach mirrors'.
 
 **In a broad social context, I'm exploring topics of the awareness of the body, and self-awareness. I believe that art is a powerful catalyst for processing experience and trauma, and I deeply resonate with the vision of David Cycleback, that art gives us intuitive, emotional, psychological, sublime, and subjective insights into things, ourselves, our world, and perhaps reality. It expresses ideas that cannot be expressed in other ways.**
-
-<!--EndFragment-->

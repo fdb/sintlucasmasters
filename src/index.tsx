@@ -8,6 +8,7 @@ import { CURRENT_YEAR } from "./config";
 import { authApiRoutes, authPageRoutes } from "./routes/auth";
 import { adminPageRoutes } from "./routes/admin";
 import { adminApiRoutes } from "./routes/admin-api";
+import { renderToString } from "hono/jsx/dom/server";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -18,6 +19,8 @@ app.route("/api/admin", adminApiRoutes);
 app.route("/admin", adminPageRoutes);
 
 const SITE_URL = "https://sintlucasmasters.com";
+
+const escapeLikeValue = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
 // Base organization schema for all pages
 const organizationSchema = {
@@ -109,6 +112,64 @@ ${urls.join("\n")}
   return c.text(sitemap, 200, { "Content-Type": "application/xml" });
 });
 
+// Search API
+app.get("/api/search", async (c) => {
+  const rawQuery = c.req.query("query")?.trim() ?? "";
+  const accept = c.req.header("accept") ?? "";
+  const wantsHtml = accept.includes("text/html") || c.req.query("format") === "html";
+
+  if (rawQuery.length < 2) {
+    return c.json({ query: rawQuery, results: [] });
+  }
+
+  const like = `%${escapeLikeValue(rawQuery)}%`;
+
+  const conditions = [
+    "status = 'published'",
+    "(student_name LIKE ? ESCAPE '\\' OR project_title LIKE ? ESCAPE '\\' OR tags LIKE ? ESCAPE '\\')",
+  ];
+  const params: string[] = [like, like, like];
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT *
+     FROM projects
+     WHERE ${conditions.join(" AND ")}
+     ORDER BY sort_name
+     LIMIT 60`
+  )
+    .bind(...params)
+    .all<Project>();
+
+  if (wantsHtml) {
+    const cardsHtml = renderToString(
+      <>
+        {results.map((project) => (
+          <ProjectCard project={project} showYear />
+        ))}
+      </>
+    );
+    return c.text(cardsHtml, 200, {
+      "Content-Type": "text/html; charset=utf-8",
+      "X-Results-Count": `${results.length}`,
+    });
+  }
+
+  const resultsWithUrls = results.map((project) => {
+    const imageId = project.thumb_image_id || project.main_image_id;
+    return {
+      slug: project.slug,
+      student_name: project.student_name,
+      project_title: project.project_title,
+      academic_year: project.academic_year,
+      context: project.context,
+      url: `/${project.academic_year}/students/${project.slug}/`,
+      image_url: getImageUrl(imageId, "thumb") || null,
+    };
+  });
+
+  return c.json({ query: rawQuery, results: resultsWithUrls });
+});
+
 // Home page - redirect to current year
 app.get("/", (c) => {
   return c.redirect(`/${CURRENT_YEAR}/`);
@@ -195,7 +256,7 @@ app.get("/:year/", async (c) => {
       <div class="page-filters">
         <ContextFilter basePath={basePath} activeContext={context} showLabel />
       </div>
-      <div class="grid">
+      <div class="grid" data-project-grid data-show-year="false">
         {projects.map((project) => (
           <ProjectCard project={project} />
         ))}
@@ -334,7 +395,7 @@ app.get("/archive", async (c) => {
           showLabel
         />
       </div>
-      <div class="grid">
+      <div class="grid" data-project-grid data-show-year="true">
         {projects.map((project) => (
           <ProjectCard project={project} showYear />
         ))}
@@ -376,7 +437,7 @@ app.get("/:year/students/:slug/", async (c) => {
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
   const vtName = `student-${project.slug}`;
 
-  type SocialKind = "instagram" | "youtube" | "website";
+  type SocialKind = "instagram" | "youtube" | "linkedin" | "website";
 
   const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } => {
     const trimmed = rawLink.trim();
@@ -427,10 +488,18 @@ app.get("/:year/students/:slug/", async (c) => {
       return { kind: "youtube", label, href: parsedUrl.toString() };
     }
 
+    const isLinkedInShort = lowerHost === "lnkd.in";
+    const isLinkedIn = lowerHost.endsWith("linkedin.com");
+    if (isLinkedIn || isLinkedInShort) {
+      return { kind: "linkedin", label: "LinkedIn", href: parsedUrl.toString() };
+    }
+
     return { kind: "website", label: host, href: parsedUrl.toString() };
   };
 
   const socialItems = socialLinks.filter(Boolean).map(parseSocialLink);
+  const locationLabel = project.location?.trim();
+  const privateEmail = project.private_email?.trim();
 
   const renderSocialIcon = (kind: SocialKind) => {
     if (kind === "instagram") {
@@ -472,6 +541,23 @@ app.get("/:year/students/:slug/", async (c) => {
       );
     }
 
+    if (kind === "linkedin") {
+      return (
+        <svg
+          class="detail-link-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            fill="currentColor"
+            d="M22.222 0H1.771C.792 0 0 .774 0 1.727v20.545C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.273V1.727C24 .774 23.2 0 22.222 0h.003zM7.068 20.452H3.557V9h3.511v11.452zM5.312 7.433a2.037 2.037 0 1 1 0-4.074 2.037 2.037 0 0 1 0 4.074zm15.14 13.019h-3.509v-5.569c0-1.328-.027-3.037-1.853-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.446V9h3.369v1.561h.047c.469-.9 1.614-1.85 3.323-1.85 3.555 0 4.207 2.368 4.207 5.455v6.286z"
+          />
+        </svg>
+      );
+    }
+
     return (
       <svg
         class="detail-link-svg"
@@ -491,6 +577,24 @@ app.get("/:year/students/:slug/", async (c) => {
       </svg>
     );
   };
+
+  const renderMailIcon = () => (
+    <svg
+      class="detail-link-svg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 7l9 6 9-6" />
+    </svg>
+  );
 
   const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
   const mainImage = images[0] || null;
@@ -563,7 +667,8 @@ app.get("/:year/students/:slug/", async (c) => {
             <h2 class="detail-name" style={`view-transition-name: name-${vtName}`}>
               {project.student_name}
             </h2>
-            {socialItems.length > 0 && (
+            {locationLabel && <p class="detail-location">{locationLabel}</p>}
+            {(socialItems.length > 0 || privateEmail) && (
               <nav class="detail-links" aria-label="Student links">
                 {socialItems.map((item) => (
                   <a href={item.href} target="_blank" rel="noopener noreferrer">
@@ -573,6 +678,14 @@ app.get("/:year/students/:slug/", async (c) => {
                     <span>{item.label}</span>
                   </a>
                 ))}
+                {privateEmail && (
+                  <a href={`mailto:${privateEmail}`}>
+                    <span class="detail-link-icon" aria-hidden="true">
+                      {renderMailIcon()}
+                    </span>
+                    <span>{privateEmail}</span>
+                  </a>
+                )}
               </nav>
             )}
           </div>

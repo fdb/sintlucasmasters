@@ -1,6 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { E2E_PROJECTS } from "./fixtures";
-
 test.describe("admin projects table", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/admin");
@@ -46,6 +44,21 @@ test.describe("admin projects table", () => {
     // Should show Carol White's project
     await expect(page.locator("tbody")).toContainText("Carol White");
     await expect(page.locator("tbody")).not.toContainText("Alice Smith");
+  });
+
+  test("all years option stays selected", async ({ page }) => {
+    const yearSelect = page.locator(".filter-select").first();
+
+    await expect(yearSelect).toHaveValue("2024-2025");
+    const defaultRowsCount = await page.locator("tbody tr").count();
+
+    await yearSelect.selectOption("");
+    await page.waitForTimeout(200);
+
+    await expect(yearSelect).toHaveValue("");
+    await expect(page.locator("tbody")).toContainText("Carol White");
+    const allRowsCount = await page.locator("tbody tr").count();
+    expect(allRowsCount).toBeGreaterThanOrEqual(defaultRowsCount);
   });
 
   test("context filter works", async ({ page }) => {
