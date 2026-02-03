@@ -78,6 +78,7 @@ export const Layout: FC<LayoutProps> = ({
 
         {/* Styles */}
         <link rel="stylesheet" href="/styles.css" />
+        <script src="/search.js" defer />
       </head>
       <body>
         <div class="top-bar">
@@ -109,10 +110,45 @@ export const Layout: FC<LayoutProps> = ({
             <div class="sub-header-inner">
               <div class="sub-header-left">
                 <a href="/">projects</a>
+                <a href="/archive">archive</a>
                 <a href="/about">about</a>
               </div>
               <div class="sub-header-right">
-                <a href="/archive">archive</a>
+                <div class="site-search" data-site-search data-open="false">
+                  <button
+                    class="search-toggle"
+                    type="button"
+                    aria-label="Search projects"
+                    aria-expanded="false"
+                    data-search-toggle
+                  >
+                    <svg
+                      class="search-toggle-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none" />
+                      <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                  <div class="search-field" data-search-field>
+                    <label class="sr-only" for="site-search-input">
+                      Search projects
+                    </label>
+                    <input
+                      id="site-search-input"
+                      class="search-input"
+                      type="search"
+                      placeholder="Search projects or students"
+                      autocomplete="off"
+                      spellcheck={false}
+                      data-search-input
+                    />
+                  </div>
+                  <div class="sr-only" data-search-status aria-live="polite" />
+                </div>
               </div>
             </div>
           </nav>

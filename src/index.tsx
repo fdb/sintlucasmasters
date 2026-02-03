@@ -9,6 +9,7 @@ import { CURRENT_YEAR } from "./config";
 import { authApiRoutes, authPageRoutes } from "./routes/auth";
 import { adminPageRoutes } from "./routes/admin";
 import { adminApiRoutes } from "./routes/admin-api";
+import { renderToString } from "hono/jsx/dom/server";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -19,6 +20,8 @@ app.route("/api/admin", adminApiRoutes);
 app.route("/admin", adminPageRoutes);
 
 const SITE_URL = "https://sintlucasmasters.com";
+
+const escapeLikeValue = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
 // Base organization schema for all pages
 const organizationSchema = {
@@ -94,7 +97,7 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
       <div class="page-filters">
         <ContextFilter basePath={basePath} activeContext={context} showLabel />
       </div>
-      <div class="grid">
+      <div class="grid" data-project-grid data-show-year="false">
         {projects.map((project) => (
           <ProjectCard project={project} />
         ))}
@@ -185,6 +188,64 @@ ${urls.join("\n")}
 </urlset>`;
 
   return c.text(sitemap, 200, { "Content-Type": "application/xml" });
+});
+
+// Search API
+app.get("/api/search", async (c) => {
+  const rawQuery = c.req.query("query")?.trim() ?? "";
+  const accept = c.req.header("accept") ?? "";
+  const wantsHtml = accept.includes("text/html") || c.req.query("format") === "html";
+
+  if (rawQuery.length < 2) {
+    return c.json({ query: rawQuery, results: [] });
+  }
+
+  const like = `%${escapeLikeValue(rawQuery)}%`;
+
+  const conditions = [
+    "status = 'published'",
+    "(student_name LIKE ? ESCAPE '\\' OR project_title LIKE ? ESCAPE '\\' OR tags LIKE ? ESCAPE '\\')",
+  ];
+  const params: string[] = [like, like, like];
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT *
+     FROM projects
+     WHERE ${conditions.join(" AND ")}
+     ORDER BY sort_name
+     LIMIT 60`
+  )
+    .bind(...params)
+    .all<Project>();
+
+  if (wantsHtml) {
+    const cardsHtml = renderToString(
+      <>
+        {results.map((project) => (
+          <ProjectCard project={project} showYear />
+        ))}
+      </>
+    );
+    return c.text(cardsHtml, 200, {
+      "Content-Type": "text/html; charset=utf-8",
+      "X-Results-Count": `${results.length}`,
+    });
+  }
+
+  const resultsWithUrls = results.map((project) => {
+    const imageId = project.thumb_image_id || project.main_image_id;
+    return {
+      slug: project.slug,
+      student_name: project.student_name,
+      project_title: project.project_title,
+      academic_year: project.academic_year,
+      context: project.context,
+      url: `/${project.academic_year}/students/${project.slug}/`,
+      image_url: getImageUrl(imageId, "thumb") || null,
+    };
+  });
+
+  return c.json({ query: rawQuery, results: resultsWithUrls });
 });
 
 // Home page - render current year
@@ -361,7 +422,7 @@ app.get("/archive", async (c) => {
           showLabel
         />
       </div>
-      <div class="grid">
+      <div class="grid" data-project-grid data-show-year="true">
         {projects.map((project) => (
           <ProjectCard project={project} showYear />
         ))}
