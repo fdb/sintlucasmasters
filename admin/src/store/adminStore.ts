@@ -105,6 +105,7 @@ type AdminState = {
   projectStatus: LoadStatus;
   selectedYear: string;
   selectedContext: string;
+  selectedStatus: string;
   searchQuery: string;
   searchExpanded: boolean;
   darkMode: boolean;
@@ -148,6 +149,7 @@ type AdminState = {
   setSearchQuery: (query: string) => void;
   setSelectedYear: (year: string) => void;
   setSelectedContext: (context: string) => void;
+  setSelectedStatus: (status: string) => void;
   loadSession: () => Promise<void>;
   setActiveTable: (table: string) => Promise<void>;
   loadTable: (table: string) => Promise<void>;
@@ -292,6 +294,7 @@ export const useAdminStore = create<AdminState>()(
       projectStatus: "idle",
       selectedYear: "",
       selectedContext: "",
+      selectedStatus: "",
       searchQuery: "",
       searchExpanded: false,
       darkMode: getInitialDarkMode(),
@@ -334,6 +337,7 @@ export const useAdminStore = create<AdminState>()(
       setSearchQuery: (query) => set({ searchQuery: query }),
       setSelectedYear: (year) => set({ selectedYear: year }),
       setSelectedContext: (context) => set({ selectedContext: context }),
+      setSelectedStatus: (status) => set({ selectedStatus: status }),
       loadSession: async () => {
         set({ status: "loading" });
         try {
@@ -373,6 +377,7 @@ export const useAdminStore = create<AdminState>()(
           activeTable: table,
           selectedYear: "",
           selectedContext: "",
+          selectedStatus: "",
           searchQuery: "",
           searchExpanded: false,
         });

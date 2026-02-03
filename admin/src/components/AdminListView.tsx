@@ -33,14 +33,24 @@ function extractUniqueValues(rows: TableResponse["rows"], key: string): string[]
   return [...new Set(rows.map((r) => String(r[key] || "")).filter(Boolean))];
 }
 
+const STATUS_FILTERS = [
+  { value: "", label: "All" },
+  { value: "draft", label: "Draft" },
+  { value: "submitted", label: "Submitted" },
+  { value: "ready_for_print", label: "Ready for print" },
+  { value: "published", label: "Published" },
+];
+
 function AdminProjectsHeader(): React.ReactNode {
   const tableData = useAdminStore((s) => s.tableData);
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
+  const selectedStatus = useAdminStore((s) => s.selectedStatus);
   const searchQuery = useAdminStore((s) => s.searchQuery);
   const searchExpanded = useAdminStore((s) => s.searchExpanded);
   const setSelectedYear = useAdminStore((s) => s.setSelectedYear);
   const setSelectedContext = useAdminStore((s) => s.setSelectedContext);
+  const setSelectedStatus = useAdminStore((s) => s.setSelectedStatus);
   const setSearchQuery = useAdminStore((s) => s.setSearchQuery);
   const setSearchExpanded = useAdminStore((s) => s.setSearchExpanded);
 
@@ -75,6 +85,26 @@ function AdminProjectsHeader(): React.ReactNode {
           </option>
         ))}
       </select>
+      <div className="status-filter" role="group" aria-label="Status filter">
+        {STATUS_FILTERS.map((status) => {
+          const isActive = selectedStatus === status.value;
+          const statusClass = status.value ? status.value : "all";
+          return (
+            <button
+              key={status.value || "all"}
+              type="button"
+              className={`status-filter-dot ${isActive ? "active" : ""}`}
+              onClick={() => setSelectedStatus(status.value)}
+              aria-pressed={isActive}
+              aria-label={status.label}
+              data-tooltip={status.label}
+            >
+              <span className={`status-dot status-${statusClass}`} aria-hidden="true" />
+              <span className="sr-only">{status.label}</span>
+            </button>
+          );
+        })}
+      </div>
       <div className={`search-container ${searchExpanded ? "expanded" : ""}`}>
         {searchExpanded ? (
           <input
@@ -115,6 +145,7 @@ function filterProjects(
   rows: TableResponse["rows"],
   selectedYear: string,
   selectedContext: string,
+  selectedStatus: string,
   searchQuery: string
 ): TableResponse["rows"] {
   const searchLower = searchQuery.toLowerCase();
@@ -122,6 +153,12 @@ function filterProjects(
   return rows.filter((row) => {
     if (selectedYear && String(row.academic_year) !== selectedYear) return false;
     if (selectedContext && String(row.context) !== selectedContext) return false;
+    if (selectedStatus) {
+      const rowStatus = String(row.status || "draft")
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+      if (rowStatus !== selectedStatus) return false;
+    }
     if (searchQuery) {
       const nameMatch = String(row.student_name || "")
         .toLowerCase()
@@ -154,12 +191,13 @@ function AdminProjectsTable(): React.ReactNode {
   const selectedProjectId = useAdminStore((s) => s.selectedProjectId);
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
+  const selectedStatus = useAdminStore((s) => s.selectedStatus);
   const searchQuery = useAdminStore((s) => s.searchQuery);
   const selectProject = useAdminStore((s) => s.selectProject);
   const openEditForProject = useAdminStore((s) => s.openEditForProject);
 
   const rows = tableData?.table === "projects" ? tableData.rows : [];
-  const filteredRows = filterProjects(rows, selectedYear, selectedContext, searchQuery);
+  const filteredRows = filterProjects(rows, selectedYear, selectedContext, selectedStatus, searchQuery);
 
   const handleRowClick = (row: Record<string, unknown>): void => {
     if (typeof row.id === "string") {
