@@ -1,26 +1,25 @@
 import { Sun, Moon, LogOut, Eye, X, ChevronDown } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { useSession, useStudentProjects } from "../api/queries";
 
 export function StudentHeader() {
-  const {
-    user,
-    darkMode,
-    toggleDarkMode,
-    impersonatedUser,
-    setImpersonatedUser,
-    studentProjects,
-    selectedProjectId,
-    selectStudentProject,
-  } = useAdminStore((state) => ({
-    user: state.user,
-    darkMode: state.darkMode,
-    toggleDarkMode: state.toggleDarkMode,
-    impersonatedUser: state.impersonatedUser,
-    setImpersonatedUser: state.setImpersonatedUser,
-    studentProjects: state.studentProjects,
-    selectedProjectId: state.selectedProjectId,
-    selectStudentProject: state.selectStudentProject,
-  }));
+  const { darkMode, toggleDarkMode, impersonatedUser, setImpersonatedUser, selectedProjectId, setSelectedProjectId } =
+    useAdminStore((state) => ({
+      darkMode: state.darkMode,
+      toggleDarkMode: state.toggleDarkMode,
+      impersonatedUser: state.impersonatedUser,
+      setImpersonatedUser: state.setImpersonatedUser,
+      selectedProjectId: state.selectedProjectId,
+      setSelectedProjectId: state.setSelectedProjectId,
+    }));
+
+  // Use TanStack Query for session (user info)
+  const { data: session } = useSession();
+  const user = session?.user ?? null;
+
+  // Use TanStack Query for student projects (deduplicates with StudentPage)
+  const targetUserId = impersonatedUser?.id ?? user?.id ?? null;
+  const { data: studentProjects = [] } = useStudentProjects(targetUserId);
 
   const displayName = impersonatedUser?.name || impersonatedUser?.email || user?.name || user?.email || "Student";
   const isImpersonating = !!impersonatedUser;
@@ -39,7 +38,7 @@ export function StudentHeader() {
   const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const projectId = e.target.value;
     if (projectId) {
-      selectStudentProject(projectId);
+      setSelectedProjectId(projectId);
     }
   };
 

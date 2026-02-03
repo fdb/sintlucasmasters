@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { CheckCircle, SquareArrowOutUpRight, Undo2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { useProject } from "../api/queries";
+import { useSubmitProject } from "../api/mutations";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
 
@@ -9,33 +11,39 @@ export function StudentPreviewPanel() {
   const [showRevertConfirm, setShowRevertConfirm] = useState(false);
   const [isReverting, setIsReverting] = useState(false);
 
-  const {
-    editDraft,
-    editImages,
-    projectDetail,
-    submitValidation,
-    submitStatus,
-    submitError,
-    submitProject,
-    printImage,
-    updateEditField,
-    saveProject,
-  } = useAdminStore((state) => ({
-    editDraft: state.editDraft,
-    editImages: state.editImages,
-    projectDetail: state.projectDetail,
-    submitValidation: state.submitValidation,
-    submitStatus: state.submitStatus,
-    submitError: state.submitError,
-    submitProject: state.submitProject,
-    printImage: state.printImage,
-    updateEditField: state.updateEditField,
-    saveProject: state.saveProject,
-  }));
+  const { selectedProjectId, editDraft, editImages, printImage, updateEditField, saveProject } = useAdminStore(
+    (state) => ({
+      selectedProjectId: state.selectedProjectId,
+      editDraft: state.editDraft,
+      editImages: state.editImages,
+      printImage: state.printImage,
+      updateEditField: state.updateEditField,
+      saveProject: state.saveProject,
+    })
+  );
+
+  // Use TanStack Query for project detail (fallback for editDraft)
+  const { data: projectDetail } = useProject(selectedProjectId);
+
+  // Use TanStack Query mutation for submit
+  const submitProjectMutation = useSubmitProject(selectedProjectId);
+  const submitStatus = submitProjectMutation.isPending
+    ? "submitting"
+    : submitProjectMutation.isError
+      ? "error"
+      : submitProjectMutation.isSuccess
+        ? "success"
+        : "idle";
+  const submitError = submitProjectMutation.error?.message || null;
 
   const handleSubmit = async () => {
     setShowSubmitConfirm(false);
-    await submitProject();
+    submitProjectMutation.mutate(undefined, {
+      onSuccess: () => {
+        // Update local draft status to reflect the server-side change
+        updateEditField("status", "submitted");
+      },
+    });
   };
 
   const handleRevertToDraft = async () => {

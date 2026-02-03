@@ -1,26 +1,25 @@
 import { useEffect } from "react";
+import { useSession } from "./api/queries";
 import { useAdminStore } from "./store/adminStore";
 import { AdminPage } from "./pages/AdminPage";
 import { StudentPage } from "./pages/StudentPage";
 
 export default function App() {
-  const { darkMode, user, impersonatedUser, status, loadSession } = useAdminStore((state) => ({
+  const { darkMode, impersonatedUser } = useAdminStore((state) => ({
     darkMode: state.darkMode,
-    user: state.user,
     impersonatedUser: state.impersonatedUser,
-    status: state.status,
-    loadSession: state.loadSession,
   }));
 
-  // Load session on mount
-  useEffect(() => {
-    loadSession();
-  }, [loadSession]);
+  // Use TanStack Query for session
+  const { data: session, isLoading } = useSession();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
     localStorage.setItem("admin-dark-mode", String(darkMode));
   }, [darkMode]);
+
+  // Get user from query result
+  const user = session?.user ?? null;
 
   // Determine which view to show based on role and impersonation
   const isAdmin = user?.role === "admin" || user?.role === "editor";
@@ -33,7 +32,7 @@ export default function App() {
   const showStudentView = (isStudent && !isAdmin) || isImpersonating;
 
   // While loading, we don't know the role yet - show nothing to avoid flicker
-  if (status === "loading") {
+  if (isLoading) {
     return (
       <div className="admin-shell">
         <p>Loading your session...</p>

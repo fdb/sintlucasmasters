@@ -203,6 +203,9 @@ type AdminState = {
   canEditProject: () => { allowed: boolean; reason?: string };
   getWebImages: () => ProjectImage[];
   getPrintImage: () => ProjectImage | null;
+  // Selection setters
+  setSelectedProjectId: (id: string | null) => void;
+  setSelectedUserId: (id: string | null) => void;
 };
 
 const getInitialDarkMode = () => {
@@ -1229,6 +1232,9 @@ export const useAdminStore = create<AdminState>()(
       getPrintImage: () => {
         return get().printImage;
       },
+      // Selection setters
+      setSelectedProjectId: (selectedProjectId) => set({ selectedProjectId }),
+      setSelectedUserId: (selectedUserId) => set({ selectedUserId }),
     }),
     {
       name: "admin-ui",

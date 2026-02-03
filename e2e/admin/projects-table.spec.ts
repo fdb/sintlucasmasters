@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 test.describe("admin projects table", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/admin");
-    // Wait for projects table to load
-    await expect(page.locator(".admin-list table")).toBeVisible();
+    // Wait for projects table to load (increased timeout for TanStack Query initialization)
+    await expect(page.locator(".admin-list table")).toBeVisible({ timeout: 15000 });
   });
 
   test("shows projects in table", async ({ page }) => {

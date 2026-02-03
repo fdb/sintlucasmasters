@@ -125,6 +125,49 @@ All checks must pass before informing the user that the task is complete. If tes
 - Fix the issues if they are related to your changes
 - If the failure is unrelated to your changes or requires user input, inform the user about the failing tests and what attention is needed
 
+## Admin State Management
+
+The admin UI uses **TanStack Query** for server state and **Zustand** for local UI state.
+
+### TanStack Query (Server State)
+
+All data fetching uses TanStack Query hooks in `admin/src/api/queries.ts`:
+
+- `useSession()` - Current user and available tables
+- `useTable(tableName)` - Table data (projects, users)
+- `useProject(projectId)` - Project detail with images
+- `useUser(userId)` - User detail
+- `useStudentProjects(userId)` - Projects for a specific student
+
+Mutations are in `admin/src/api/mutations.ts` and automatically invalidate relevant queries.
+
+### Zustand (Local UI State)
+
+Zustand in `admin/src/store/adminStore.ts` handles:
+
+- Selection state (`activeTable`, `selectedProjectId`, `selectedUserId`)
+- Form editing state (`editDraft`, `editImages`, `printImage`)
+- UI toggles (`darkMode`, `userMenuOpen`, `editModalOpen`)
+- Filter state (`selectedYear`, `selectedContext`, `searchQuery`)
+
+### Migration Lessons (Do NOT Repeat These Mistakes)
+
+When refactoring state management:
+
+1. **Trace all consumers before removing state**: When removing sync patterns (e.g., `useEffect` that copies TanStack Query data to Zustand), search for ALL components that read from the old state source. A component reading stale/default values will fail silently until tests catch it.
+
+2. **Check default values**: If a component checks `status === "ready"` and you remove the code that sets status to "ready", the condition will never be true. Verify what happens when state isn't populated.
+
+3. **Local form state vs server state**: When a mutation succeeds (e.g., submit project), the server state updates but local form state (`editDraft`) doesn't automatically update. Add `onSuccess` callbacks to sync local state:
+
+   ```tsx
+   mutation.mutate(undefined, {
+     onSuccess: () => updateEditField("status", "submitted"),
+   });
+   ```
+
+4. **Run tests early and often**: Don't batch multiple refactoring changes. Test after each component migration to catch issues early.
+
 ## Development Phases
 
 1. **Phase 1**: D1 schema + import script (import old data)

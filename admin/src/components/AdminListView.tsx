@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Search, Plus } from "lucide-react";
 import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
+import { useTable } from "../api/queries";
 import { DataTable, formatRole } from "./DataTable";
 import { formatAcademicYear, formatContext } from "../utils";
 
@@ -42,7 +43,9 @@ const STATUS_FILTERS = [
 ];
 
 function AdminProjectsHeader(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
+  // Use TanStack Query directly - cached, no extra request
+  const { data: tableData } = useTable("projects");
+
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
   const selectedStatus = useAdminStore((s) => s.selectedStatus);
@@ -193,8 +196,10 @@ const USERS_COLUMNS = [
 ];
 
 function AdminProjectsTable(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
-  const tableStatus = useAdminStore((s) => s.tableStatus);
+  // Use TanStack Query directly - cached, no extra request
+  const { data: tableData, isLoading, isError } = useTable("projects");
+  const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
+
   const selectedProjectId = useAdminStore((s) => s.selectedProjectId);
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
@@ -236,8 +241,10 @@ function AdminProjectsTable(): React.ReactNode {
 }
 
 function AdminUsersTable(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
-  const tableStatus = useAdminStore((s) => s.tableStatus);
+  // Use TanStack Query directly - cached, no extra request
+  const { data: tableData, isLoading, isError } = useTable("users");
+  const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
+
   const selectedUserId = useAdminStore((s) => s.selectedUserId);
   const selectUser = useAdminStore((s) => s.selectUser);
 
