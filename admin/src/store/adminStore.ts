@@ -1013,7 +1013,12 @@ export const useAdminStore = create<AdminState>()(
           // Silently fail - impersonation is optional
         }
       },
-      setImpersonatedUser: (student) => set({ impersonatedUser: student, impersonationDropdownOpen: false }),
+      setImpersonatedUser: (student) => {
+        set({ impersonatedUser: student, impersonationDropdownOpen: false });
+        if (!student) {
+          get().resetEditSession();
+        }
+      },
       setImpersonationDropdownOpen: (open) => {
         set({ impersonationDropdownOpen: open });
         // Load students when opening dropdown if not already loaded
