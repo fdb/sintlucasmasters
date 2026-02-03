@@ -2,6 +2,7 @@ const instagramHandlePattern = /^@([A-Za-z0-9._]+)$/;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const instagramHosts = new Set(["instagram.com", "www.instagram.com", "instagr.am", "www.instagr.am"]);
+const linkedInShortHosts = new Set(["lnkd.in", "www.lnkd.in"]);
 
 const isLikelyUrl = (value: string) => {
   if (value.includes(" ")) return false;
@@ -39,6 +40,11 @@ const normalizeInstagramUrl = (url: URL): string => {
   return `https://www.instagram.com${path}${search}${hash}`;
 };
 
+const normalizeLinkedInUrl = (url: URL): string => {
+  const path = url.pathname.startsWith("/") ? url.pathname : `/${url.pathname}`;
+  return `https://www.linkedin.com${path}`;
+};
+
 const normalizeYoutubeShortUrl = (url: URL): string => {
   const pathSegments = url.pathname.split("/").filter(Boolean);
   const videoId = pathSegments[0];
@@ -73,6 +79,14 @@ export const normalizeSocialLink = (input: string): string => {
 
   if (instagramHosts.has(host)) {
     return normalizeInstagramUrl(parsed);
+  }
+
+  if (linkedInShortHosts.has(host)) {
+    return parsed.toString();
+  }
+
+  if (host.endsWith("linkedin.com")) {
+    return normalizeLinkedInUrl(parsed);
   }
 
   if (host === "youtu.be") {
