@@ -43,7 +43,6 @@ export interface Project {
   description: string;
   location: string | null;
   private_email: string | null;
-  main_image_id: string | null;
   thumb_image_id: string | null;
   tags: string | null;
   social_links: string | null;
@@ -52,6 +51,10 @@ export interface Project {
   updated_at: string;
   user_id: string | null;
 }
+
+export type ProjectWithMainImage = Project & {
+  main_image_id: string | null;
+};
 
 export type ProjectImageType = "web" | "print";
 

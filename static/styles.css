@@ -550,6 +550,7 @@ main {
 
 .detail-hero img {
   width: 100%;
+  cursor: pointer;
 }
 
 /* Content sections */
@@ -742,16 +743,30 @@ body.lightbox-open {
 }
 
 .lightbox-image {
+  grid-area: 1 / 1;
   max-width: 92vw;
   max-height: 88vh;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-  transform: scale(0.98);
-  transition: transform 0.2s ease;
+  transition: opacity 0.3s ease;
   cursor: pointer;
+  opacity: 0;
 }
 
-.lightbox.is-open .lightbox-image {
-  transform: scale(1);
+.lightbox.is-open .lightbox-image.is-active {
+  opacity: 1;
+}
+
+.lightbox-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox,
+  .lightbox-image {
+    transition: none !important;
+  }
 }
 
 .lightbox-close,

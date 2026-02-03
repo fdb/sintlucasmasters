@@ -145,7 +145,7 @@ function buildSql() {
 
     statements.push(
       `INSERT INTO projects (` +
-        `id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, main_image_id, status, user_id` +
+        `id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, status, user_id` +
         `) SELECT ` +
         `'${sqlEscape(projectId)}', ` +
         `'${sqlEscape(slug)}', ` +
@@ -157,7 +157,6 @@ function buildSql() {
         `'${ACADEMIC_YEAR}', ` +
         `NULL, ` +
         `'', ` +
-        `NULL, ` +
         `'draft', ` +
         `(SELECT id FROM users WHERE email = '${sqlEscape(normalizedEmail)}') ` +
         `WHERE NOT EXISTS (SELECT 1 FROM projects WHERE id = '${sqlEscape(projectId)}') ` +

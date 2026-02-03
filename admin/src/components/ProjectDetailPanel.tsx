@@ -55,6 +55,7 @@ export function ProjectDetailPanel() {
   const canSubmit = projectStatus_ === "draft";
   const isAdminOrEditor = user?.role === "admin" || user?.role === "editor";
   const canImpersonate = isAdminOrEditor && !!projectDetail?.project.user_id;
+  const webImages = projectDetail?.images?.filter((img) => img.type !== "print") ?? [];
 
   // Load validation when project changes and in student mode
   useEffect(() => {
@@ -87,7 +88,6 @@ export function ProjectDetailPanel() {
     const project = projectDetail.project;
     const images = projectDetail.images || [];
     const printImage = images.find((img) => img.type === "print");
-    const webImages = images.filter((img) => img.type !== "print");
 
     return [
       {
@@ -112,7 +112,7 @@ export function ProjectDetailPanel() {
       },
       {
         label: "Main Image",
-        valid: !!String(project.main_image_id || "").trim(),
+        valid: webImages.length > 0,
       },
     ];
   };
@@ -246,31 +246,20 @@ export function ProjectDetailPanel() {
           <div className="detail-section">
             <div className="detail-section-label">Images</div>
             <div className="detail-images">
-              {projectDetail.project.main_image_id ? (
-                <div className="detail-image-thumb detail-image-main">
-                  <img
-                    src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${projectDetail.project.main_image_id}/thumb`}
-                    alt="Main image"
-                    loading="lazy"
-                  />
-                  <span className="image-badge">Main</span>
-                </div>
-              ) : null}
-              {projectDetail.images
-                .filter((img) => img.type !== "print")
-                .map((img, idx) => {
-                  const cloudflareId = String(img.cloudflare_id || "");
-                  if (!cloudflareId) return null;
-                  return (
-                    <div key={idx} className="detail-image-thumb">
-                      <img
-                        src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${cloudflareId}/thumb`}
-                        alt={`Image ${idx + 1}`}
-                        loading="lazy"
-                      />
-                    </div>
-                  );
-                })}
+              {webImages.map((img, idx) => {
+                const cloudflareId = String(img.cloudflare_id || "");
+                if (!cloudflareId) return null;
+                return (
+                  <div key={idx} className={`detail-image-thumb ${idx === 0 ? "detail-image-main" : ""}`}>
+                    <img
+                      src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${cloudflareId}/thumb`}
+                      alt={`Image ${idx + 1}`}
+                      loading="lazy"
+                    />
+                    {idx === 0 && <span className="image-badge">Main</span>}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
