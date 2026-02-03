@@ -4,6 +4,7 @@ import type { Bindings, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN } from "../constants";
 import { emailSlug } from "../lib/names";
+import { normalizeSocialLinksValue } from "../lib/socialLinks";
 
 type TableConfig = {
   select: string;
@@ -284,7 +285,7 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   }
   if (body.social_links !== undefined) {
     updates.push("social_links = ?");
-    values.push(body.social_links);
+    values.push(normalizeSocialLinksValue(body.social_links));
   }
   if (body.main_image_id !== undefined) {
     updates.push("main_image_id = ?");

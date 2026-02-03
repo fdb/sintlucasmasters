@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { normalizeSocialLinks } from "../lib/socialLinks";
 
 export type UserRole = "student" | "editor" | "admin";
 
@@ -698,6 +699,7 @@ export const useAdminStore = create<AdminState>()(
         if (!editDraft || !selectedProjectId) return false;
         if (saveStatus === "saving") return false;
         const closeOnSuccess = options?.closeOnSuccess ?? true;
+        const normalizedSocialLinks = normalizeSocialLinks(editDraft.social_links);
         set({ saveStatus: "saving" });
 
         try {
@@ -716,10 +718,7 @@ export const useAdminStore = create<AdminState>()(
               private_email: editDraft.private_email || null,
               status: editDraft.status,
               tags: editDraft.tags.length > 0 ? JSON.stringify(editDraft.tags) : null,
-              social_links:
-                editDraft.social_links.filter(Boolean).length > 0
-                  ? JSON.stringify(editDraft.social_links.filter(Boolean))
-                  : null,
+              social_links: normalizedSocialLinks.length > 0 ? JSON.stringify(normalizedSocialLinks) : null,
               main_image_id: editDraft.main_image_id,
             }),
           });
@@ -747,7 +746,10 @@ export const useAdminStore = create<AdminState>()(
             }
           }
 
-          set({ saveStatus: "saved" });
+          set({
+            saveStatus: "saved",
+            editDraft: editDraft ? { ...editDraft, social_links: normalizedSocialLinks } : editDraft,
+          });
 
           try {
             const refreshed = await fetchProjectDetail(selectedProjectId);
