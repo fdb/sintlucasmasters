@@ -1,9 +1,9 @@
 import type { FC } from "hono/jsx";
-import type { Project } from "../types";
+import type { ProjectWithMainImage } from "../types";
 import { getImageUrl, getStudentUrl } from "../types";
 
 type ProjectCardProps = {
-  project: Project;
+  project: ProjectWithMainImage;
   showYear?: boolean;
 };
 

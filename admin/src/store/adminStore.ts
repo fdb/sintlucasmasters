@@ -77,7 +77,6 @@ export type EditDraft = {
   status: string;
   tags: string[];
   social_links: string[];
-  main_image_id: string;
 };
 
 type SessionStatus = "loading" | "ready" | "error";
@@ -166,7 +165,6 @@ type AdminState = {
   updateSocialLink: (index: number, value: string) => void;
   removeSocialLink: (index: number) => void;
   moveEditImage: (activeId: string, overId: string) => void;
-  setMainImage: (cloudflareId: string) => void;
   updateImageCaption: (imageId: string, caption: string) => void;
   uploadImages: (files: File[]) => Promise<void>;
   deleteImage: (imageId: string) => Promise<void>;
@@ -261,7 +259,6 @@ const buildEditDraft = (project: Record<string, unknown>): EditDraft => ({
   private_email: String(project.private_email || ""),
   tags: parseTags(project.tags),
   social_links: parseSocialLinks(project.social_links),
-  main_image_id: String(project.main_image_id || ""),
 });
 
 const normalizeImages = (images: Array<Record<string, unknown>>): ProjectImage[] =>
@@ -575,17 +572,6 @@ export const useAdminStore = create<AdminState>()(
           return { editImages: reordered };
         });
       },
-      setMainImage: (cloudflareId) => {
-        set((state) => {
-          if (!state.editDraft) return {};
-          return {
-            editDraft: {
-              ...state.editDraft,
-              main_image_id: cloudflareId,
-            },
-          };
-        });
-      },
       updateImageCaption: (imageId, caption) => {
         set((state) => ({
           editImages: state.editImages.map((img) => (img.id === imageId ? { ...img, caption: caption || null } : img)),
@@ -635,17 +621,6 @@ export const useAdminStore = create<AdminState>()(
                 },
               ],
             }));
-
-            // If this is the first image, set it as main
-            const { editImages, editDraft } = get();
-            if (editImages.length === 1 && editDraft && !editDraft.main_image_id) {
-              set({
-                editDraft: {
-                  ...editDraft,
-                  main_image_id: data.image.cloudflare_id,
-                },
-              });
-            }
           }
 
           set({ uploadStatus: "idle" });
@@ -656,7 +631,7 @@ export const useAdminStore = create<AdminState>()(
         }
       },
       deleteImage: async (imageId) => {
-        const { selectedProjectId, editImages, editDraft } = get();
+        const { selectedProjectId, editImages } = get();
         if (!selectedProjectId) return;
 
         const imageToDelete = editImages.find((img) => img.id === imageId);
@@ -680,15 +655,8 @@ export const useAdminStore = create<AdminState>()(
             sort_order: idx,
           }));
 
-          // If deleted image was main, set first remaining as main
-          let newMainImageId = editDraft?.main_image_id || "";
-          if (editDraft && imageToDelete.cloudflare_id === editDraft.main_image_id) {
-            newMainImageId = reorderedImages[0]?.cloudflare_id || "";
-          }
-
           set({
             editImages: reorderedImages,
-            editDraft: editDraft ? { ...editDraft, main_image_id: newMainImageId } : null,
           });
         } catch (err) {
           console.error("Delete image error:", err);
@@ -720,7 +688,6 @@ export const useAdminStore = create<AdminState>()(
               status: editDraft.status,
               tags: editDraft.tags.length > 0 ? JSON.stringify(editDraft.tags) : null,
               social_links: normalizedSocialLinks.length > 0 ? JSON.stringify(normalizedSocialLinks) : null,
-              main_image_id: editDraft.main_image_id,
             }),
           });
 
@@ -738,7 +705,6 @@ export const useAdminStore = create<AdminState>()(
                   sort_order: img.sort_order,
                   caption: img.caption,
                 })),
-                mainImageId: editDraft.main_image_id,
               }),
             });
 

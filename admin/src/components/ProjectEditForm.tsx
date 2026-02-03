@@ -493,7 +493,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
               {!isLocked && (
                 <p className="edit-images-hint">
                   <GripVertical size={12} style={{ display: "inline", verticalAlign: "middle" }} /> Drag images to
-                  reorder. Click the star to set as main image.
+                  reorder. The first image is used as the main image.
                 </p>
               )}
             </div>

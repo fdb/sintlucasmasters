@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS projects (
     description TEXT NOT NULL,
     location TEXT,
     private_email TEXT,
-    main_image_id TEXT,
     thumb_image_id TEXT,
     tags TEXT, -- JSON array
     social_links TEXT, -- JSON array

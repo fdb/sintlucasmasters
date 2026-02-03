@@ -38,7 +38,6 @@ const STUDENT_EDITABLE_FIELDS = [
   "private_email",
   "social_links",
   "tags",
-  "main_image_id",
 ];
 
 export const adminApiRoutes = new Hono<{ Bindings: Bindings }>();
@@ -287,11 +286,6 @@ adminApiRoutes.put("/projects/:id", async (c) => {
     updates.push("social_links = ?");
     values.push(normalizeSocialLinksValue(body.social_links));
   }
-  if (body.main_image_id !== undefined) {
-    updates.push("main_image_id = ?");
-    values.push(body.main_image_id);
-  }
-
   if (updates.length === 0) {
     return c.json({ error: "No fields to update" }, 400);
   }
@@ -332,7 +326,6 @@ adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
 
   const body = await c.req.json<{
     imageOrder: Array<{ id: string; sort_order: number; caption?: string | null }>;
-    mainImageId?: string;
   }>();
 
   // Update sort orders and captions
@@ -345,15 +338,8 @@ adminApiRoutes.put("/projects/:id/images/reorder", async (c) => {
     )
   );
 
-  // Update main image if provided
-  if (body.mainImageId) {
-    statements.push(
-      c.env.DB.prepare("UPDATE projects SET main_image_id = ?, updated_at = datetime('now') WHERE id = ?").bind(
-        body.mainImageId,
-        projectId
-      )
-    );
-  }
+  // Always update project timestamp when images change
+  statements.push(c.env.DB.prepare("UPDATE projects SET updated_at = datetime('now') WHERE id = ?").bind(projectId));
 
   await c.env.DB.batch(statements);
 
@@ -753,26 +739,6 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
   // Delete from database
   await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(imageId).run();
 
-  // Check if this was the main image
-  const currentProject = await c.env.DB.prepare("SELECT main_image_id FROM projects WHERE id = ?")
-    .bind(projectId)
-    .first<{ main_image_id: string }>();
-
-  if (currentProject?.main_image_id === image.cloudflare_id) {
-    // Set a new main image if there are remaining web images
-    const firstImage = await c.env.DB.prepare(
-      "SELECT cloudflare_id FROM project_images WHERE project_id = ? AND type = 'web' ORDER BY sort_order ASC LIMIT 1"
-    )
-      .bind(projectId)
-      .first<{ cloudflare_id: string }>();
-
-    if (firstImage) {
-      await c.env.DB.prepare("UPDATE projects SET main_image_id = ?, updated_at = datetime('now') WHERE id = ?")
-        .bind(firstImage.cloudflare_id, projectId)
-        .run();
-    }
-  }
-
   // Reorder remaining web images
   const { results: remainingImages } = await c.env.DB.prepare(
     "SELECT id FROM project_images WHERE project_id = ? AND type = 'web' ORDER BY sort_order ASC"
@@ -786,6 +752,8 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
     );
     await c.env.DB.batch(reorderStatements);
   }
+
+  await c.env.DB.prepare("UPDATE projects SET updated_at = datetime('now') WHERE id = ?").bind(projectId).run();
 
   return c.json({ success: true });
 });
@@ -807,7 +775,8 @@ function validateProjectForSubmission(project: Project, images: ProjectImage[]):
   if (!project.description?.trim()) {
     errors.push("Description is required");
   }
-  if (!project.main_image_id?.trim()) {
+  const webImages = images.filter((img) => img.type !== "print");
+  if (webImages.length === 0) {
     errors.push("Main image is required");
   }
 
@@ -1244,8 +1213,8 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
         await c.env.DB.prepare(
           `INSERT INTO projects (
             id, slug, student_name, sort_name, project_title, program, context,
-            academic_year, bio, description, main_image_id, status, user_id
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            academic_year, bio, description, status, user_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
           .bind(
             projectId,
@@ -1258,7 +1227,6 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
             academic_year,
             null, // bio
             "", // Empty description
-            null, // main_image_id is now nullable
             "draft",
             userId
           )

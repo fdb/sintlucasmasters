@@ -1,5 +1,7 @@
 (() => {
-  const thumbs = Array.from(document.querySelectorAll(".detail-gallery img[data-lightbox-src]"));
+  const hero = document.querySelector(".detail-hero img");
+  const galleryThumbs = Array.from(document.querySelectorAll(".detail-gallery img[data-lightbox-src]"));
+  const thumbs = hero ? [hero, ...galleryThumbs] : galleryThumbs;
   if (thumbs.length === 0) return;
 
   const sources = thumbs.map((img) => img.getAttribute("data-lightbox-src") || img.src);
@@ -30,21 +32,49 @@
   nextButton.innerHTML =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
 
-  const image = document.createElement("img");
-  image.className = "lightbox-image";
-  image.alt = "";
+  const media = document.createElement("div");
+  media.className = "lightbox-media";
 
-  lightbox.append(closeButton, prevButton, image, nextButton);
+  const imageA = document.createElement("img");
+  imageA.className = "lightbox-image";
+  imageA.alt = "";
+
+  const imageB = document.createElement("img");
+  imageB.className = "lightbox-image";
+  imageB.alt = "";
+
+  media.append(imageA, imageB);
+  lightbox.append(closeButton, prevButton, media, nextButton);
   document.body.appendChild(lightbox);
 
   let currentIndex = 0;
   let isOpen = false;
+  let activeSlot = 0;
+  const images = [imageA, imageB];
 
+  let transitionToken = 0;
   const setImage = (index) => {
     const total = sources.length;
     currentIndex = (index + total) % total;
-    image.src = sources[currentIndex];
-    image.alt = alts[currentIndex] || "";
+    const nextSrc = sources[currentIndex];
+    const nextAlt = alts[currentIndex] || "";
+    const nextSlot = activeSlot === 0 ? 1 : 0;
+    const nextImg = images[nextSlot];
+    const currentImg = images[activeSlot];
+    const token = (transitionToken += 1);
+
+    nextImg.classList.remove("is-active");
+
+    nextImg.src = nextSrc;
+    nextImg.alt = nextAlt;
+
+    requestAnimationFrame(() => {
+      if (token !== transitionToken) return;
+      nextImg.classList.add("is-active");
+      currentImg.classList.remove("is-active");
+    });
+
+    activeSlot = nextSlot;
   };
 
   const open = (index) => {
@@ -92,8 +122,9 @@
     if (event.target === lightbox) close();
   });
 
-  image.addEventListener("click", (event) => {
-    const rect = image.getBoundingClientRect();
+  media.addEventListener("click", (event) => {
+    const activeImage = images[activeSlot];
+    const rect = activeImage.getBoundingClientRect();
     const clickX = event.clientX - rect.left;
     if (clickX < rect.width / 2) {
       showPrev();

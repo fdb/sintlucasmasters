@@ -8,6 +8,7 @@ test.describe("lightbox", () => {
   const clickGalleryImage = async (page: import("@playwright/test").Page) => {
     const img = page.locator(".detail-gallery img").first();
     await img.waitFor({ state: "attached" });
+    await img.scrollIntoViewIfNeeded();
     await img.click({ force: true });
   };
 
@@ -20,8 +21,16 @@ test.describe("lightbox", () => {
   test("lightbox shows full-size image", async ({ page }) => {
     await page.goto(projectUrl);
     await clickGalleryImage(page);
-    const lightboxImg = page.locator(".lightbox-image");
+    const lightboxImg = page.locator(".lightbox-image.is-active");
     await expect(lightboxImg).toHaveAttribute("src", /slam\/testing\/e2e-test-image\/xl/);
+  });
+
+  test("clicking hero image opens lightbox", async ({ page }) => {
+    await page.goto(projectUrl);
+    const heroImg = page.locator(".detail-hero img").first();
+    await heroImg.waitFor({ state: "attached" });
+    await heroImg.click({ force: true });
+    await expect(page.locator(".lightbox")).toHaveClass(/is-open/);
   });
 
   test("close button closes lightbox", async ({ page }) => {
@@ -51,20 +60,20 @@ test.describe("lightbox", () => {
   test("arrow keys navigate between images", async ({ page }) => {
     await page.goto(projectUrl);
     await clickGalleryImage(page);
-    const lightboxImg = page.locator(".lightbox-image");
+    const lightboxImg = page.locator(".lightbox-image.is-active");
     await page.keyboard.press("ArrowRight");
-    await expect(lightboxImg).toHaveAttribute("alt", "Detail shot");
-    await page.keyboard.press("ArrowLeft");
     await expect(lightboxImg).toHaveAttribute("alt", "Main view");
+    await page.keyboard.press("ArrowLeft");
+    await expect(lightboxImg).toHaveAttribute("alt", "Detail shot");
   });
 
   test("nav buttons navigate between images", async ({ page }) => {
     await page.goto(projectUrl);
     await clickGalleryImage(page);
-    const lightboxImg = page.locator(".lightbox-image");
+    const lightboxImg = page.locator(".lightbox-image.is-active");
     await page.locator(".lightbox-next").click();
-    await expect(lightboxImg).toHaveAttribute("alt", "Detail shot");
-    await page.locator(".lightbox-prev").click();
     await expect(lightboxImg).toHaveAttribute("alt", "Main view");
+    await page.locator(".lightbox-prev").click();
+    await expect(lightboxImg).toHaveAttribute("alt", "Detail shot");
   });
 });
