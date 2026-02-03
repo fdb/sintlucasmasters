@@ -25,6 +25,7 @@
     "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote",
     "create-admin": "node scripts/create-admin.mjs --local",
     "create-admin:remote": "node scripts/create-admin.mjs --remote",
+    "bulk-create-fake-users": "node scripts/bulk-create-fake-users.mjs --local",
     "typecheck": "tsc --noEmit && tsc --noEmit -p admin/tsconfig.json",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,html,css,md}\"",
     "test": "vitest run",
