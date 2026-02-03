@@ -403,7 +403,7 @@ app.get("/:year/students/:slug/", async (c) => {
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
   const vtName = `student-${project.slug}`;
 
-  type SocialKind = "instagram" | "youtube" | "website";
+  type SocialKind = "instagram" | "youtube" | "linkedin" | "website";
 
   const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } => {
     const trimmed = rawLink.trim();
@@ -454,6 +454,12 @@ app.get("/:year/students/:slug/", async (c) => {
       return { kind: "youtube", label, href: parsedUrl.toString() };
     }
 
+    const isLinkedInShort = lowerHost === "lnkd.in";
+    const isLinkedIn = lowerHost.endsWith("linkedin.com");
+    if (isLinkedIn || isLinkedInShort) {
+      return { kind: "linkedin", label: "LinkedIn", href: parsedUrl.toString() };
+    }
+
     return { kind: "website", label: host, href: parsedUrl.toString() };
   };
 
@@ -496,6 +502,23 @@ app.get("/:year/students/:slug/", async (c) => {
           <path
             fill="currentColor"
             d="M23.498 6.186a2.996 2.996 0 0 0-2.108-2.12C19.64 3.5 12 3.5 12 3.5s-7.64 0-9.39.566a2.996 2.996 0 0 0-2.108 2.12A31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .502 5.814 2.996 2.996 0 0 0 2.108 2.12C4.36 20.5 12 20.5 12 20.5s7.64 0 9.39-.566a2.996 2.996 0 0 0 2.108-2.12A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.502-5.814zM9.6 15.5V8.5L15.8 12l-6.2 3.5z"
+          />
+        </svg>
+      );
+    }
+
+    if (kind === "linkedin") {
+      return (
+        <svg
+          class="detail-link-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            fill="currentColor"
+            d="M22.222 0H1.771C.792 0 0 .774 0 1.727v20.545C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.273V1.727C24 .774 23.2 0 22.222 0h.003zM7.068 20.452H3.557V9h3.511v11.452zM5.312 7.433a2.037 2.037 0 1 1 0-4.074 2.037 2.037 0 0 1 0 4.074zm15.14 13.019h-3.509v-5.569c0-1.328-.027-3.037-1.853-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.446V9h3.369v1.561h.047c.469-.9 1.614-1.85 3.323-1.85 3.555 0 4.207 2.368 4.207 5.455v6.286z"
           />
         </svg>
       );

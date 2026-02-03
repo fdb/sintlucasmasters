@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Search, Plus } from "lucide-react";
 import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
@@ -58,9 +58,16 @@ function AdminProjectsHeader(): React.ReactNode {
   const allYears = isProjectsData ? extractUniqueValues(tableData.rows, "academic_year").sort().reverse() : [];
   const allContexts = isProjectsData ? extractUniqueValues(tableData.rows, "context").sort() : [];
   const defaultYear = allYears[0] || "";
+  const didAutoSelectYear = useRef(false);
 
   useEffect(() => {
-    if (isProjectsData && defaultYear && !selectedYear) {
+    if (!isProjectsData) return;
+    if (selectedYear) {
+      didAutoSelectYear.current = true;
+      return;
+    }
+    if (defaultYear && !didAutoSelectYear.current) {
+      didAutoSelectYear.current = true;
       setSelectedYear(defaultYear);
     }
   }, [defaultYear, isProjectsData, selectedYear, setSelectedYear]);
