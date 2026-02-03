@@ -414,6 +414,8 @@ app.get("/:year/students/:slug/", async (c) => {
   };
 
   const socialItems = socialLinks.filter(Boolean).map(parseSocialLink);
+  const locationLabel = project.location?.trim();
+  const privateEmail = project.private_email?.trim();
 
   const renderSocialIcon = (kind: SocialKind) => {
     if (kind === "instagram") {
@@ -474,6 +476,24 @@ app.get("/:year/students/:slug/", async (c) => {
       </svg>
     );
   };
+
+  const renderMailIcon = () => (
+    <svg
+      class="detail-link-svg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 7l9 6 9-6" />
+    </svg>
+  );
 
   const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
   const mainImageUrl = project.main_image_id ? getImageUrl(project.main_image_id, "large") : null;
@@ -542,7 +562,8 @@ app.get("/:year/students/:slug/", async (c) => {
             <h2 class="detail-name" style={`view-transition-name: name-${vtName}`}>
               {project.student_name}
             </h2>
-            {socialItems.length > 0 && (
+            {locationLabel && <p class="detail-location">{locationLabel}</p>}
+            {(socialItems.length > 0 || privateEmail) && (
               <nav class="detail-links" aria-label="Student links">
                 {socialItems.map((item) => (
                   <a href={item.href} target="_blank" rel="noopener noreferrer">
@@ -552,6 +573,14 @@ app.get("/:year/students/:slug/", async (c) => {
                     <span>{item.label}</span>
                   </a>
                 ))}
+                {privateEmail && (
+                  <a href={`mailto:${privateEmail}`}>
+                    <span class="detail-link-icon" aria-hidden="true">
+                      {renderMailIcon()}
+                    </span>
+                    <span>{privateEmail}</span>
+                  </a>
+                )}
               </nav>
             )}
           </div>
