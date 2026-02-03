@@ -36,26 +36,36 @@ async function ensureProjectIsDraft(page: Page) {
   }
 }
 
-// Helper to navigate to student view as Submit Student
-async function navigateToSubmitStudent(page: Page) {
+async function impersonateStudentFromProject(page: Page, studentName: string) {
   await page.goto("/admin");
-  // Wait for admin page to load
-  await expect(page.locator(".admin-header")).toBeVisible();
+  await expect(page.locator(".admin-list table")).toBeVisible();
 
-  // Click the impersonation eye icon to open the dropdown
-  await page.locator(".impersonation-menu .theme-toggle").click();
+  const projectsTab = page.locator(".admin-tabs button", { hasText: "projects" });
+  if (await projectsTab.isVisible()) {
+    await projectsTab.click();
+  }
 
-  // Wait for the dropdown to appear
-  await expect(page.locator(".impersonation-dropdown")).toBeVisible();
+  const targetRow = page.locator("tbody tr", { hasText: studentName });
+  await expect(targetRow).toBeVisible();
+  await targetRow.click();
 
-  // Click on "Submit Student" to impersonate them
-  await page.locator(".impersonation-dropdown-list button", { hasText: "Submit Student" }).click();
+  const detailHeader = page.locator(".detail-header-row h3", { hasText: studentName });
+  await expect(detailHeader).toBeVisible();
+
+  const viewAsButton = page.locator(".detail-action-btn", { hasText: "View as" });
+  await expect(viewAsButton).toBeVisible();
+  await viewAsButton.click();
 
   // Wait for student page to load
   await expect(page.locator(".student-shell")).toBeVisible();
 
   // Wait for projects to load
   await expect(page.locator(".student-split-view")).toBeVisible();
+}
+
+// Helper to navigate to student view as Submit Student
+async function navigateToSubmitStudent(page: Page) {
+  await impersonateStudentFromProject(page, "Submit Student");
 }
 
 // Use serial to avoid parallel tests interfering with shared DB state
@@ -255,15 +265,8 @@ test.describe.serial("project submission", () => {
 
 test.describe("project submission validation", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/admin");
-    await expect(page.locator(".admin-header")).toBeVisible();
-
     // Impersonate "Existing Student" who has Bob Jones project (which is a draft but incomplete)
-    await page.locator(".impersonation-menu .theme-toggle").click();
-    await expect(page.locator(".impersonation-dropdown")).toBeVisible();
-    await page.locator(".impersonation-dropdown-list button", { hasText: "Existing Student" }).click();
-    await expect(page.locator(".student-shell")).toBeVisible();
-    await expect(page.locator(".student-split-view")).toBeVisible();
+    await impersonateStudentFromProject(page, "Bob Jones");
   });
 
   test("submit button is disabled when project is missing print image", async ({ page }) => {

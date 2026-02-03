@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, Mail } from "lucide-react";
+import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, Mail, Eye } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -26,6 +26,7 @@ export function ProjectDetailPanel() {
     loadSubmitValidation,
     submitProject,
     user,
+    setImpersonatedUser,
   } = useAdminStore((state) => ({
     activeTable: state.activeTable,
     selectedProjectId: state.selectedProjectId,
@@ -44,6 +45,7 @@ export function ProjectDetailPanel() {
     loadSubmitValidation: state.loadSubmitValidation,
     submitProject: state.submitProject,
     user: state.user,
+    setImpersonatedUser: state.setImpersonatedUser,
   }));
 
   const studentMode = isStudentMode();
@@ -52,6 +54,7 @@ export function ProjectDetailPanel() {
   const projectStatus_ = String(projectDetail?.project.status || "draft");
   const canSubmit = projectStatus_ === "draft";
   const isAdminOrEditor = user?.role === "admin" || user?.role === "editor";
+  const canImpersonate = isAdminOrEditor && !!projectDetail?.project.user_id;
 
   // Load validation when project changes and in student mode
   useEffect(() => {
@@ -63,6 +66,18 @@ export function ProjectDetailPanel() {
   const handleSubmit = async () => {
     setShowSubmitConfirm(false);
     await submitProject();
+  };
+
+  const handleImpersonate = () => {
+    if (!projectDetail?.project.user_id) return;
+
+    setImpersonatedUser({
+      id: String(projectDetail.project.user_id),
+      email: String(projectDetail.userEmail || ""),
+      name: projectDetail.project.student_name ? String(projectDetail.project.student_name) : null,
+      academic_year: String(projectDetail.project.academic_year || ""),
+      project_id: String(projectDetail.project.id || ""),
+    });
   };
 
   // Validation checklist items
@@ -156,16 +171,15 @@ export function ProjectDetailPanel() {
                   <Pencil size={14} />
                   Edit
                 </button>
-                {/* Only show delete for admins/editors */}
-                {isAdminOrEditor && (
+                {canImpersonate && (
                   <button
                     type="button"
-                    className="detail-action-btn has-label danger"
-                    onClick={openDeleteConfirm}
-                    title="Delete project"
+                    className="detail-action-btn has-label"
+                    onClick={handleImpersonate}
+                    title="View as student"
                   >
-                    <Trash2 size={14} />
-                    Delete
+                    <Eye size={14} />
+                    View as
                   </button>
                 )}
                 {projectDetail.project.status === "published" ? (
@@ -314,6 +328,22 @@ export function ProjectDetailPanel() {
               </div>
             ) : null}
           </div>
+          {/* Only show delete for admins/editors */}
+          {isAdminOrEditor && (
+            <div className="detail-delete-row">
+              <div className="detail-action-group">
+                <button
+                  type="button"
+                  className="detail-action-btn has-label danger"
+                  onClick={openDeleteConfirm}
+                  title="Delete project"
+                >
+                  <Trash2 size={14} />
+                  Delete
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
