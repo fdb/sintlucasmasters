@@ -11,10 +11,11 @@ test.describe("layout", () => {
 });
 
 test.describe("homepage", () => {
-  test("redirects to current year", async ({ page }) => {
+  test("renders current year at homepage", async ({ page }) => {
     await page.goto("/");
-    // Should redirect to a year page (URL pattern: /YYYY-YYYY/)
-    await expect(page).toHaveURL(/\/\d{4}-\d{4}\//);
+    await expect(page).toHaveURL(/\/$/);
+    const firstCard = page.locator(".grid a.card").first();
+    await expect(firstCard).toHaveAttribute("href", /\/\d{4}-\d{4}\/students\//);
   });
 
   test("shows context filters", async ({ page }) => {
@@ -112,9 +113,8 @@ test.describe("project detail page", () => {
 
   test("back link returns to year page", async ({ page }) => {
     await page.goto("/");
-    const yearUrl = page.url();
     await page.locator(".grid a.card").first().click();
     await page.locator(".back-link").click();
-    await expect(page).toHaveURL(yearUrl);
+    await expect(page).toHaveURL(/\/$/);
   });
 });

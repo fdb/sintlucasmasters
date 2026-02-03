@@ -6,12 +6,13 @@ type LayoutProps = PropsWithChildren<{
   ogImage?: string | null;
   ogDescription?: string;
   ogUrl?: string;
+  ogType?: "website" | "article";
   canonicalUrl?: string;
   hideSubheader?: boolean;
   jsonLd?: object | object[];
 }>;
 
-const SITE_NAME = "Graduation Tour";
+const SITE_NAME = "Sint Lucas Masters Graduation Tour";
 const DEFAULT_DESCRIPTION =
   "Presenting the graduation projects of the Masters in Art and Design at Sint Lucas Antwerpen.";
 const SITE_URL = "https://sintlucasmasters.com";
@@ -22,6 +23,7 @@ export const Layout: FC<LayoutProps> = ({
   ogImage,
   ogDescription,
   ogUrl,
+  ogType,
   canonicalUrl,
   hideSubheader,
   jsonLd,
@@ -30,6 +32,7 @@ export const Layout: FC<LayoutProps> = ({
   const pageTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
   const description = ogDescription || DEFAULT_DESCRIPTION;
   const finalOgImage = ogImage || DEFAULT_OG_IMAGE;
+  const finalOgType = ogType ?? (ogImage ? "article" : "website");
 
   return (
     <html lang="en">
@@ -47,7 +50,7 @@ export const Layout: FC<LayoutProps> = ({
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content={SITE_NAME} />
-        <meta property="og:type" content={ogImage ? "article" : "website"} />
+        <meta property="og:type" content={finalOgType} />
         {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
         <meta property="og:image" content={finalOgImage} />
         <meta property="og:image:width" content="1200" />
@@ -92,10 +95,11 @@ export const Layout: FC<LayoutProps> = ({
         </div>
         <header class="site-header site-header--public">
           <div class="header-inner">
-            <a href={`/${CURRENT_YEAR}/`} class="site-title-link">
+            <a href="/" class="site-title-link">
               <h1 class="site-title">Graduation Tour</h1>
               <p class="site-tagline">
-                Presenting the graduation projects of the 2025–2026 Masters in Art and Design at Sint Lucas Antwerpen.
+                Presenting the graduation projects of the {CURRENT_YEAR} Masters in Art and Design at Sint Lucas
+                Antwerpen.
               </p>
             </a>
           </div>
@@ -104,7 +108,7 @@ export const Layout: FC<LayoutProps> = ({
           <nav class="sub-header">
             <div class="sub-header-inner">
               <div class="sub-header-left">
-                <a href={`/${CURRENT_YEAR}/`}>projects</a>
+                <a href="/">projects</a>
                 <a href="/about">about</a>
               </div>
               <div class="sub-header-right">

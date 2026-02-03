@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import type { Context } from "hono";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
@@ -25,6 +26,82 @@ const organizationSchema = {
   "@type": "EducationalOrganization",
   name: "Sint Lucas Antwerpen",
   url: SITE_URL,
+};
+
+type YearPageOptions = {
+  year: string;
+  basePath: string;
+  canonicalUrl: string;
+};
+
+const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearPageOptions) => {
+  const { year, basePath, canonicalUrl } = options;
+  const context = c.req.query("context");
+
+  let query = "SELECT * FROM projects WHERE academic_year = ? AND status = 'published'";
+  const params: string[] = [year];
+
+  if (context && CONTEXTS.includes(context as any)) {
+    query += " AND context = ?";
+    params.push(context);
+  }
+
+  query += " ORDER BY sort_name";
+
+  const { results: projects } = await c.env.DB.prepare(query)
+    .bind(...params)
+    .all<Project>();
+
+  // If no projects found for this year, show 404
+  if (projects.length === 0 && !context) {
+    return c.html(
+      <Layout title="Not Found">
+        <p>No projects found for {year}.</p>
+        <a href={`/${CURRENT_YEAR}/`}>Go to current year</a>
+      </Layout>,
+      404
+    );
+  }
+
+  const description = `Discover ${projects.length} graduation projects from Sint Lucas Masters ${year}. Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.`;
+  const collectionName = context ? `${context} projects — ${year}` : `${year} graduation projects`;
+  const itemList = {
+    "@type": "ItemList",
+    itemListElement: projects.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/${project.academic_year}/students/${project.slug}/`,
+      name: project.project_title,
+    })),
+  };
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": canonicalUrl,
+    url: canonicalUrl,
+    name: collectionName,
+    description,
+    mainEntity: itemList,
+  };
+
+  return c.html(
+    <Layout
+      title={year}
+      canonicalUrl={canonicalUrl}
+      ogDescription={description}
+      jsonLd={[organizationSchema, collectionSchema]}
+    >
+      <div class="page-filters">
+        <ContextFilter basePath={basePath} activeContext={context} showLabel />
+      </div>
+      <div class="grid">
+        {projects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+      {projects.length === 0 && <p class="empty-state">No projects found for this context.</p>}
+    </Layout>
+  );
 };
 
 // robots.txt
@@ -79,6 +156,7 @@ app.get("/sitemap.xml", async (c) => {
 
   // Year pages
   for (const year of years) {
+    if (year === CURRENT_YEAR) continue;
     const yearProjects = projects.filter((p) => p.academic_year === year);
     const latestUpdate = yearProjects.reduce((latest, p) => {
       const pDate = p.updated_at || "";
@@ -109,9 +187,13 @@ ${urls.join("\n")}
   return c.text(sitemap, 200, { "Content-Type": "application/xml" });
 });
 
-// Home page - redirect to current year
-app.get("/", (c) => {
-  return c.redirect(`/${CURRENT_YEAR}/`);
+// Home page - render current year
+app.get("/", async (c) => {
+  return renderYearPage(c, {
+    year: CURRENT_YEAR,
+    basePath: "/",
+    canonicalUrl: `${SITE_URL}/`,
+  });
 });
 
 // Context filter nav component
@@ -150,50 +232,12 @@ const ContextFilter = ({
 // Year page - projects for a specific academic year
 app.get("/:year/", async (c) => {
   const year = c.req.param("year");
-  const context = c.req.query("context");
-
-  let query = "SELECT * FROM projects WHERE academic_year = ? AND status = 'published'";
-  const params: string[] = [year];
-
-  if (context && CONTEXTS.includes(context as any)) {
-    query += " AND context = ?";
-    params.push(context);
-  }
-
-  query += " ORDER BY sort_name";
-
-  const { results: projects } = await c.env.DB.prepare(query)
-    .bind(...params)
-    .all<Project>();
-
-  // If no projects found for this year, show 404
-  if (projects.length === 0 && !context) {
-    return c.html(
-      <Layout title="Not Found">
-        <p>No projects found for {year}.</p>
-        <a href={`/${CURRENT_YEAR}/`}>Go to current year</a>
-      </Layout>,
-      404
-    );
-  }
-
-  const basePath = `/${year}/`;
-  const canonicalUrl = `${SITE_URL}/${year}/`;
-  const description = `Discover ${projects.length} graduation projects from Sint Lucas Masters ${year}. Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.`;
-
-  return c.html(
-    <Layout title={year} canonicalUrl={canonicalUrl} ogDescription={description} jsonLd={organizationSchema}>
-      <div class="page-filters">
-        <ContextFilter basePath={basePath} activeContext={context} showLabel />
-      </div>
-      <div class="grid">
-        {projects.map((project) => (
-          <ProjectCard project={project} />
-        ))}
-      </div>
-      {projects.length === 0 && <p class="empty-state">No projects found for this context.</p>}
-    </Layout>
-  );
+  const canonicalUrl = year === CURRENT_YEAR ? `${SITE_URL}/` : `${SITE_URL}/${year}/`;
+  return renderYearPage(c, {
+    year,
+    basePath: year === CURRENT_YEAR ? "/" : `/${year}/`,
+    canonicalUrl,
+  });
 });
 
 // About page
@@ -496,20 +540,36 @@ app.get("/:year/students/:slug/", async (c) => {
   );
 
   const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
+  const projectUrl = canonicalUrl;
+  const backLinkHref = year === CURRENT_YEAR ? "/" : `/${year}/`;
   const mainImageUrl = project.main_image_id ? getImageUrl(project.main_image_id, "large") : null;
+  const galleryImageUrls = images
+    .map((img) => getImageUrl(img.cloudflare_id, "thumb"))
+    .filter((url): url is string => Boolean(url));
+  const imageUrls = [...(mainImageUrl ? [mainImageUrl] : []), ...galleryImageUrls];
+  const creatorSameAs = socialItems.map((item) => item.href).filter(Boolean);
 
   // JSON-LD structured data for project pages
   const creativeWorkSchema = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
+    "@id": `${projectUrl}#creativework`,
+    url: projectUrl,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": projectUrl,
+    },
     name: project.project_title,
     creator: {
       "@type": "Person",
       name: project.student_name,
+      ...(creatorSameAs.length > 0 && { sameAs: creatorSameAs }),
     },
     description: project.description?.substring(0, 300) || "",
-    ...(mainImageUrl && { image: mainImageUrl }),
-    dateCreated: project.academic_year,
+    ...(imageUrls.length > 0 && { image: imageUrls }),
+    datePublished: project.created_at,
+    dateModified: project.updated_at,
+    ...(tags.length > 0 && { keywords: tags.join(", ") }),
   };
 
   const breadcrumbSchema = {
@@ -541,11 +601,12 @@ app.get("/:year/students/:slug/", async (c) => {
       title={`${project.student_name} — ${project.project_title}`}
       ogImage={mainImageUrl}
       ogDescription={`${project.project_title} by ${project.student_name} · ${project.context}`}
+      ogType="article"
       canonicalUrl={canonicalUrl}
       jsonLd={[organizationSchema, creativeWorkSchema, breadcrumbSchema]}
     >
       <article class="detail">
-        <a href={`/${year}/`} class="back-link">
+        <a href={backLinkHref} class="back-link">
           ← Back
         </a>
 
