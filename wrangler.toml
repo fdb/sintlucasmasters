@@ -36,3 +36,8 @@ bucket_name = "sintlucasmasters"
 # Cron trigger for cleaning up expired auth tokens
 [triggers]
 crons = ["0 0 * * *"]
+
+[observability]
+[observability.logs]
+enabled = false
+invocation_logs = true
