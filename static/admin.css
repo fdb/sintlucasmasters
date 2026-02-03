@@ -2088,6 +2088,22 @@ tr.status-draft td:first-child {
   color: #ef5350;
 }
 
+.edit-form-autosave-fixed {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.edit-form-autosave-fixed .save-indicator {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-bg);
+}
+
 /* Spinner */
 @keyframes spin {
   from {
@@ -2794,6 +2810,7 @@ tr.status-draft td:first-child {
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
 .edit-form-scrollable {
@@ -2824,6 +2841,10 @@ tr.status-draft td:first-child {
   padding: 1.25rem 2rem;
   background: var(--admin-bg);
   border-top: 1px solid var(--admin-border);
+}
+
+.edit-form-footer.actions-only {
+  justify-content: flex-end;
 }
 
 .edit-form-footer-left {
