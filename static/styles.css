@@ -49,10 +49,42 @@ a:hover {
    Header
    ─────────────────────────────────── */
 
+.top-bar {
+  background: var(--black);
+  height: 36px;
+}
+
+.top-bar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.top-bar-logo {
+  display: block;
+}
+
+.top-bar-logo img {
+  display: block;
+  height: 24px;
+  width: auto;
+}
+
 .site-header {
   background: var(--off-white);
   border-bottom: 1px solid var(--light-gray);
   padding: 2.5rem 2rem 2rem;
+}
+
+.site-header--public {
+  padding: 2.5rem 0 2rem;
+}
+
+.site-header--public .header-inner {
+  padding: 0 2rem;
 }
 
 .header-inner {
@@ -856,8 +888,20 @@ body.lightbox-open {
    ─────────────────────────────────── */
 
 @media (max-width: 768px) {
+  .top-bar-inner {
+    padding: 0 1.25rem;
+  }
+
+  .site-header--public .header-inner {
+    padding: 0 1.25rem;
+  }
+
   .site-header {
     padding: 1.75rem 1.25rem 1.5rem;
+  }
+
+  .site-header--public {
+    padding: 1.75rem 0 1.5rem;
   }
 
   .site-header:has(.logo) {
@@ -936,8 +980,20 @@ body.lightbox-open {
 }
 
 @media (max-width: 480px) {
+  .top-bar-inner {
+    padding: 0 1rem;
+  }
+
+  .site-header--public .header-inner {
+    padding: 0 1rem;
+  }
+
   .site-header {
     padding: 1.25rem 1rem 1.25rem;
+  }
+
+  .site-header--public {
+    padding: 1.25rem 0 1.25rem;
   }
 
   .site-title {

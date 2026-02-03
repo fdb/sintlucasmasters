@@ -77,7 +77,20 @@ export const Layout: FC<LayoutProps> = ({
         <link rel="stylesheet" href="/styles.css" />
       </head>
       <body>
-        <header class="site-header">
+        <div class="top-bar">
+          <div class="top-bar-inner">
+            <a
+              href="https://www.sintlucasantwerpen.be/"
+              class="top-bar-logo"
+              aria-label="Sint Lucas Antwerpen Website"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/logo-white.svg" alt="Sint Lucas Antwerpen" />
+            </a>
+          </div>
+        </div>
+        <header class="site-header site-header--public">
           <div class="header-inner">
             <a href={`/${CURRENT_YEAR}/`} class="site-title-link">
               <h1 class="site-title">Graduation Tour</h1>
