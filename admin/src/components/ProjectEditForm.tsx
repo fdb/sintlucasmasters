@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GripVertical, Plus, Trash2, X, Lock } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
@@ -68,6 +68,8 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
   const lastSavedKeyRef = useRef<string | null>(null);
   const lastProjectIdRef = useRef<string | null>(null);
   const pendingAutosaveRef = useRef(false);
+  const socialInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const [pendingSocialFocus, setPendingSocialFocus] = useState<number | null>(null);
 
   const autosaveKey = useMemo(() => {
     if (!autosaveEnabled || !editDraft) return "";
@@ -117,6 +119,21 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
       }
     };
   }, [autosaveEnabled, autosaveKey, editDraft, saveProject, saveStatus, selectedProjectId]);
+
+  useEffect(() => {
+    if (pendingSocialFocus === null) return;
+    const input = socialInputRefs.current[pendingSocialFocus];
+    if (input) {
+      input.focus();
+    }
+    setPendingSocialFocus(null);
+  }, [pendingSocialFocus, editDraft?.social_links.length]);
+
+  const handleAddSocialLink = () => {
+    if (!editDraft) return;
+    setPendingSocialFocus(editDraft.social_links.length);
+    addSocialLink();
+  };
 
   useEffect(() => {
     if (autosaveEnabled) return;
@@ -229,6 +246,9 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                         type="text"
                         className="edit-input"
                         value={link}
+                        ref={(el) => {
+                          socialInputRefs.current[idx] = el;
+                        }}
                         onChange={(e) => updateSocialLink(idx, e.target.value)}
                         placeholder="https://..."
                         disabled={isLocked}
@@ -241,7 +261,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                     </div>
                   ))}
                   {!isLocked && (
-                    <button type="button" className="edit-link-add" onClick={addSocialLink}>
+                    <button type="button" className="edit-link-add" onClick={handleAddSocialLink}>
                       <Plus size={12} />
                       Add link
                     </button>
