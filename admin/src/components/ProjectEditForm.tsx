@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GripVertical, Plus, Trash2, X, Lock } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
@@ -16,6 +16,10 @@ const PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"];
 
 const STATUSES = ["draft", "submitted", "ready_for_print", "published"];
 const AUTOSAVE_DELAY_MS = 1000;
+const AUTOSAVE_BACKOFF_BASE_MS = 2000;
+const AUTOSAVE_BACKOFF_MAX_MS = 30000;
+const AUTOSAVE_RETRY_WHILE_SAVING_MS = 500;
+const AUTOSAVE_NOTICE_MS = 2500;
 
 type ProjectEditFormProps = {
   showHeader?: boolean;
@@ -65,9 +69,15 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
 
   const autosaveEnabled = studentMode && !isLocked;
   const autosaveTimerRef = useRef<number | null>(null);
+  const autosaveRetryTimerRef = useRef<number | null>(null);
+  const autosaveNoticeTimerRef = useRef<number | null>(null);
   const lastSavedKeyRef = useRef<string | null>(null);
   const lastProjectIdRef = useRef<string | null>(null);
   const pendingAutosaveRef = useRef(false);
+  const autosaveBackoffRef = useRef(0);
+  const latestAutosaveKeyRef = useRef<string>("");
+  const saveStatusRef = useRef(saveStatus);
+  const [autosaveNotice, setAutosaveNotice] = useState<"saved" | "error" | null>(null);
 
   const autosaveKey = useMemo(() => {
     if (!autosaveEnabled || !editDraft) return "";
@@ -84,31 +94,71 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
   }, [autosaveEnabled, editDraft, editImages]);
 
   useEffect(() => {
+    latestAutosaveKeyRef.current = autosaveKey;
+  }, [autosaveKey]);
+
+  useEffect(() => {
+    saveStatusRef.current = saveStatus;
+  }, [saveStatus]);
+
+  useEffect(() => {
     if (!autosaveEnabled || !editDraft || !selectedProjectId) return;
 
     if (lastSavedKeyRef.current === null || lastProjectIdRef.current !== selectedProjectId) {
       lastSavedKeyRef.current = autosaveKey;
       lastProjectIdRef.current = selectedProjectId;
       pendingAutosaveRef.current = false;
+      autosaveBackoffRef.current = 0;
+      if (autosaveNoticeTimerRef.current) {
+        window.clearTimeout(autosaveNoticeTimerRef.current);
+      }
+      setAutosaveNotice(null);
       return;
     }
 
     if (autosaveKey === lastSavedKeyRef.current) return;
 
     pendingAutosaveRef.current = true;
-
     if (autosaveTimerRef.current) {
       window.clearTimeout(autosaveTimerRef.current);
     }
+    if (autosaveRetryTimerRef.current) {
+      window.clearTimeout(autosaveRetryTimerRef.current);
+    }
+    autosaveBackoffRef.current = 0;
 
     autosaveTimerRef.current = window.setTimeout(async () => {
+      const attemptAutosave = async () => {
+        if (!pendingAutosaveRef.current || !autosaveEnabled) return;
+        if (saveStatusRef.current === "saving") {
+          autosaveRetryTimerRef.current = window.setTimeout(attemptAutosave, AUTOSAVE_RETRY_WHILE_SAVING_MS);
+          return;
+        }
+        const keyAtSave = latestAutosaveKeyRef.current;
+        const saved = await saveProject({ closeOnSuccess: false });
+        if (saved) {
+          autosaveBackoffRef.current = 0;
+          if (keyAtSave === latestAutosaveKeyRef.current) {
+            lastSavedKeyRef.current = keyAtSave;
+            pendingAutosaveRef.current = false;
+            setAutosaveNotice("saved");
+            if (autosaveNoticeTimerRef.current) {
+              window.clearTimeout(autosaveNoticeTimerRef.current);
+            }
+            autosaveNoticeTimerRef.current = window.setTimeout(() => {
+              setAutosaveNotice(null);
+            }, AUTOSAVE_NOTICE_MS);
+          }
+          return;
+        }
+        setAutosaveNotice("error");
+        const attempt = autosaveBackoffRef.current;
+        const delay = Math.min(AUTOSAVE_BACKOFF_MAX_MS, AUTOSAVE_BACKOFF_BASE_MS * 2 ** attempt);
+        autosaveBackoffRef.current = attempt + 1;
+        autosaveRetryTimerRef.current = window.setTimeout(attemptAutosave, delay);
+      };
       if (!pendingAutosaveRef.current) return;
-      if (saveStatus === "saving") return;
-      const saved = await saveProject({ closeOnSuccess: false });
-      if (saved) {
-        lastSavedKeyRef.current = autosaveKey;
-        pendingAutosaveRef.current = false;
-      }
+      await attemptAutosave();
     }, AUTOSAVE_DELAY_MS);
 
     return () => {
@@ -116,20 +166,41 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
         window.clearTimeout(autosaveTimerRef.current);
       }
     };
-  }, [autosaveEnabled, autosaveKey, editDraft, saveProject, saveStatus, selectedProjectId]);
+  }, [autosaveEnabled, autosaveKey, editDraft, saveProject, selectedProjectId]);
+
+  useEffect(() => {
+    if (!autosaveEnabled) return;
+    if (autosaveNotice === "saved" && autosaveKey !== lastSavedKeyRef.current) {
+      setAutosaveNotice(null);
+    }
+  }, [autosaveEnabled, autosaveKey, autosaveNotice]);
 
   useEffect(() => {
     if (autosaveEnabled) return;
     if (autosaveTimerRef.current) {
       window.clearTimeout(autosaveTimerRef.current);
     }
+    if (autosaveRetryTimerRef.current) {
+      window.clearTimeout(autosaveRetryTimerRef.current);
+    }
+    if (autosaveNoticeTimerRef.current) {
+      window.clearTimeout(autosaveNoticeTimerRef.current);
+    }
     pendingAutosaveRef.current = false;
+    autosaveBackoffRef.current = 0;
+    setAutosaveNotice(null);
   }, [autosaveEnabled]);
 
   useEffect(() => {
     return () => {
       if (autosaveTimerRef.current) {
         window.clearTimeout(autosaveTimerRef.current);
+      }
+      if (autosaveRetryTimerRef.current) {
+        window.clearTimeout(autosaveRetryTimerRef.current);
+      }
+      if (autosaveNoticeTimerRef.current) {
+        window.clearTimeout(autosaveNoticeTimerRef.current);
       }
     };
   }, []);
@@ -147,8 +218,25 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
     return null;
   }
 
+  const showSaveButton = !studentMode && !isLocked;
+  const showCancelButton = Boolean(onCancel);
+  const showFooterActions = showSaveButton || showCancelButton;
+  const autosaveIndicator =
+    autosaveEnabled && autosaveNotice ? (
+      <span className={`save-indicator ${autosaveNotice}`}>
+        {autosaveNotice === "saved" ? "Saved" : "Save failed. Retrying..."}
+      </span>
+    ) : null;
+  const showAutosaveIndicator = autosaveEnabled && Boolean(autosaveIndicator);
+
   return (
     <div className="project-edit-form">
+      {showAutosaveIndicator && (
+        <div className="edit-form-autosave-fixed" aria-live="polite" aria-atomic="true">
+          {autosaveIndicator}
+        </div>
+      )}
+
       <div className="edit-form-scrollable">
         {showHeader && (
           <div className="edit-form-header">
@@ -431,25 +519,15 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
         </div>
       </div>
 
-      {showFooter && (
-        <div className="edit-form-footer">
-          <div className="edit-form-footer-left">
-            {saveStatus === "saving" && (
-              <span className="save-indicator saving">
-                <span className="spinner" />
-                Saving...
-              </span>
-            )}
-            {saveStatus === "saved" && <span className="save-indicator saved">Saved successfully</span>}
-            {saveStatus === "error" && <span className="save-indicator error">Failed to save</span>}
-          </div>
+      {showFooter && showFooterActions && (
+        <div className="edit-form-footer actions-only">
           <div className="edit-form-footer-right">
-            {onCancel && (
+            {showCancelButton && (
               <button type="button" className="btn btn-secondary" onClick={onCancel}>
                 {isLocked ? "Close" : "Cancel"}
               </button>
             )}
-            {!isLocked && (
+            {showSaveButton && (
               <button type="button" className="btn btn-primary" onClick={handleSave} disabled={saveStatus === "saving"}>
                 Save Changes
               </button>
