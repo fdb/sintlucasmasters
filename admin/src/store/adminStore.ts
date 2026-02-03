@@ -169,7 +169,7 @@ type AdminState = {
   deleteImage: (imageId: string) => Promise<void>;
   uploadStatus: "idle" | "uploading" | "error";
   uploadError: string | null;
-  saveProject: () => Promise<void>;
+  saveProject: (options?: { closeOnSuccess?: boolean }) => Promise<boolean>;
   // Project delete actions
   openDeleteConfirm: () => void;
   closeDeleteConfirm: () => void;
@@ -688,9 +688,11 @@ export const useAdminStore = create<AdminState>()(
           console.error("Delete image error:", err);
         }
       },
-      saveProject: async () => {
-        const { editDraft, selectedProjectId, editImages } = get();
-        if (!editDraft || !selectedProjectId) return;
+      saveProject: async (options) => {
+        const { editDraft, selectedProjectId, editImages, saveStatus } = get();
+        if (!editDraft || !selectedProjectId) return false;
+        if (saveStatus === "saving") return false;
+        const closeOnSuccess = options?.closeOnSuccess ?? true;
         set({ saveStatus: "saving" });
 
         try {
@@ -760,12 +762,16 @@ export const useAdminStore = create<AdminState>()(
             // ignore refresh failure
           }
 
-          setTimeout(() => {
-            get().closeEdit();
-          }, 800);
+          if (closeOnSuccess) {
+            setTimeout(() => {
+              get().closeEdit();
+            }, 800);
+          }
+          return true;
         } catch (err) {
           console.error("Save error:", err);
           set({ saveStatus: "error" });
+          return false;
         }
       },
       // Project delete actions
