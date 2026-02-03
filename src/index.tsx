@@ -131,14 +131,23 @@ app.get("/api/search", async (c) => {
   const params: string[] = [like, like, like];
 
   const { results } = await c.env.DB.prepare(
-    `SELECT *
+    `SELECT
+       projects.*,
+       (
+         SELECT id
+         FROM project_images
+         WHERE project_images.project_id = projects.id
+           AND project_images.type = 'web'
+         ORDER BY sort_order ASC
+         LIMIT 1
+       ) AS main_image_id
      FROM projects
      WHERE ${conditions.join(" AND ")}
      ORDER BY sort_name
      LIMIT 60`
   )
     .bind(...params)
-    .all<Project>();
+    .all<ProjectWithMainImage>();
 
   if (wantsHtml) {
     const cardsHtml = renderToString(
