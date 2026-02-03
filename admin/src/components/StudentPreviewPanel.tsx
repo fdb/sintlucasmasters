@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { CheckCircle, XCircle, Send, SquareArrowOutUpRight, Undo2 } from "lucide-react";
+import { CheckCircle, SquareArrowOutUpRight, Undo2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { SubmitChecklistSection } from "./SubmitChecklistSection";
 
 export function StudentPreviewPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -122,37 +123,14 @@ export function StudentPreviewPanel() {
 
       {/* Submit for Review section */}
       {canSubmit && (
-        <div className="detail-submit-section">
-          <div className="submit-section-header">
-            <h4>Submit for Review</h4>
-            <p>Complete all required fields before submitting your project.</p>
-          </div>
-
-          <div className="submit-checklist">
-            {checklist.map((item) => (
-              <div key={item.label} className={`checklist-item ${item.valid ? "valid" : "invalid"}`}>
-                {item.valid ? <CheckCircle size={16} /> : <XCircle size={16} />}
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {submitStatus === "success" && <div className="submit-success-message">Project submitted successfully!</div>}
-
-          {submitError && <div className="submit-error-message">{submitError}</div>}
-
-          <button
-            type="button"
-            className="btn btn-primary submit-project-btn"
-            disabled={!allValid || submitStatus === "submitting"}
-            onClick={() => setShowSubmitConfirm(true)}
-          >
-            <Send size={14} />
-            {submitStatus === "submitting" ? "Submitting..." : "Submit Project"}
-          </button>
-
-          {!allValid && <p className="submit-hint">Complete all checklist items to enable submission.</p>}
-        </div>
+        <SubmitChecklistSection
+          title="Submit for Review"
+          checklist={checklist}
+          allValid={allValid}
+          submitStatus={submitStatus}
+          submitError={submitError}
+          onSubmit={() => setShowSubmitConfirm(true)}
+        />
       )}
 
       {/* Submitted status */}

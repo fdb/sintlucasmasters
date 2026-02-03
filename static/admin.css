@@ -516,6 +516,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .filter-select {
@@ -941,19 +942,19 @@
 
 /* Status border for list view rows */
 tr.status-published td:first-child {
-  box-shadow: inset 2px 0 0 #4caf50;
+  box-shadow: inset 4px 0 0 #4caf50;
 }
 
 tr.status-submitted td:first-child {
-  box-shadow: inset 2px 0 0 #ff9800;
+  box-shadow: inset 4px 0 0 #ff9800;
 }
 
 tr.status-ready_for_print td:first-child {
-  box-shadow: inset 2px 0 0 #2196f3;
+  box-shadow: inset 4px 0 0 #2196f3;
 }
 
 tr.status-draft td:first-child {
-  box-shadow: inset 2px 0 0 #9e9e9e;
+  box-shadow: inset 4px 0 0 #9e9e9e;
 }
 
 /* Role pills */
