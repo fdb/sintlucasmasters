@@ -1068,10 +1068,16 @@ body.lightbox-open {
   }
 
   .detail-header-right {
+    order: 1;
     border-left: none;
     padding-left: 0;
-    border-top: 1px solid var(--light-gray);
-    padding-top: 1.25rem;
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .detail-header-left {
+    order: 2;
+    margin-top: 1.25rem;
   }
 
   .masonry {
