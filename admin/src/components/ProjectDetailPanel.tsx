@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, XCircle, Send, Mail } from "lucide-react";
+import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, Mail } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { SubmitChecklistSection } from "./SubmitChecklistSection";
 
 export function ProjectDetailPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -198,39 +199,19 @@ export function ProjectDetailPanel() {
 
           {/* Submission section for students */}
           {studentMode && canSubmit && (
-            <div className="detail-submit-section">
-              <div className="submit-section-header">
-                <h4>Submit for Review</h4>
-                <p>Complete all required fields before submitting your project.</p>
-              </div>
+            <SubmitChecklistSection
+              title="Submit for Review"
+              checklist={checklist}
+              allValid={allValid}
+              submitStatus={submitStatus}
+              submitError={submitError}
+              onSubmit={() => setShowSubmitConfirm(true)}
+            />
+          )}
 
-              <div className="submit-checklist">
-                {checklist.map((item) => (
-                  <div key={item.label} className={`checklist-item ${item.valid ? "valid" : "invalid"}`}>
-                    {item.valid ? <CheckCircle size={16} /> : <XCircle size={16} />}
-                    <span>{item.label}</span>
-                  </div>
-                ))}
-              </div>
-
-              {submitStatus === "success" && (
-                <div className="submit-success-message">Project submitted successfully!</div>
-              )}
-
-              {submitError && <div className="submit-error-message">{submitError}</div>}
-
-              <button
-                type="button"
-                className="btn btn-primary submit-project-btn"
-                disabled={!allValid || submitStatus === "submitting"}
-                onClick={() => setShowSubmitConfirm(true)}
-              >
-                <Send size={14} />
-                {submitStatus === "submitting" ? "Submitting..." : "Submit Project"}
-              </button>
-
-              {!allValid && <p className="submit-hint">Complete all checklist items to enable submission.</p>}
-            </div>
+          {/* Missing info section for admin/editor */}
+          {!studentMode && isAdminOrEditor && canSubmit && !allValid && (
+            <SubmitChecklistSection title="Missing information" checklist={checklist} allValid={allValid} />
           )}
 
           {/* Submitted badge for students */}
