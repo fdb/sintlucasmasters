@@ -355,6 +355,7 @@ main {
 
 .detail {
   max-width: 1000px;
+  margin: 0 auto;
 }
 
 .back-link {
@@ -469,17 +470,20 @@ main {
    ─────────────────────────────────── */
 
 .detail-gallery {
-  margin-bottom: 3.5rem;
+  width: 100vw;
+  margin: 0 calc(50% - 50vw - 2rem) 3.5rem;
+  padding: 0 4rem;
+  box-sizing: border-box;
 }
 
 .masonry {
   columns: 2;
-  column-gap: 1.25rem;
+  column-gap: 4rem;
 }
 
 .masonry-item {
   break-inside: avoid;
-  margin-bottom: 1.25rem;
+  margin-bottom: 4rem;
 }
 
 .masonry-item img {
@@ -914,6 +918,11 @@ body.lightbox-open {
     columns: 1;
   }
 
+  .detail-gallery {
+    margin: 0 calc(50% - 50vw - 1.25rem) 3.5rem;
+    padding: 0 1.25rem;
+  }
+
   .footer-top {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -937,6 +946,11 @@ body.lightbox-open {
 
   main {
     padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .detail-gallery {
+    margin: 0 calc(50% - 50vw - 1rem) 3.5rem;
+    padding: 0 1rem;
   }
 
   .grid {
