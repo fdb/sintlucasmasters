@@ -433,6 +433,13 @@ main {
   line-height: 1.2;
 }
 
+.detail-location {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--gray);
+  font-weight: 500;
+}
+
 .detail-meta {
   margin-top: 0.75rem;
   font-size: 0.8125rem;
