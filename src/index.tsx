@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
-import type { Bindings, Project, ProjectImage } from "./types";
+import type { Bindings, Project, ProjectImage, ProjectWithMainImage } from "./types";
 import { CONTEXTS, getImageUrl, getStudentUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
 import { authApiRoutes, authPageRoutes } from "./routes/auth";
@@ -152,19 +152,28 @@ app.get("/:year/", async (c) => {
   const year = c.req.param("year");
   const context = c.req.query("context");
 
-  let query = "SELECT * FROM projects WHERE academic_year = ? AND status = 'published'";
+  let query = `SELECT p.*,
+    (
+      SELECT cloudflare_id
+      FROM project_images
+      WHERE project_id = p.id AND type = 'web'
+      ORDER BY sort_order ASC, id ASC
+      LIMIT 1
+    ) AS main_image_id
+    FROM projects p
+    WHERE p.academic_year = ? AND p.status = 'published'`;
   const params: string[] = [year];
 
   if (context && CONTEXTS.includes(context as any)) {
-    query += " AND context = ?";
+    query += " AND p.context = ?";
     params.push(context);
   }
 
-  query += " ORDER BY sort_name";
+  query += " ORDER BY p.sort_name";
 
   const { results: projects } = await c.env.DB.prepare(query)
     .bind(...params)
-    .all<Project>();
+    .all<ProjectWithMainImage>();
 
   // If no projects found for this year, show 404
   if (projects.length === 0 && !context) {
@@ -257,26 +266,34 @@ app.get("/archive", async (c) => {
   const years = yearResults.map((r) => r.academic_year);
   const selectedYear = year;
 
-  let query = "SELECT * FROM projects";
+  let query = `SELECT p.*,
+    (
+      SELECT cloudflare_id
+      FROM project_images
+      WHERE project_id = p.id AND type = 'web'
+      ORDER BY sort_order ASC, id ASC
+      LIMIT 1
+    ) AS main_image_id
+    FROM projects p`;
   const params: string[] = [];
-  const conditions: string[] = ["status = 'published'"];
+  const conditions: string[] = ["p.status = 'published'"];
 
   if (selectedYear) {
-    conditions.push("academic_year = ?");
+    conditions.push("p.academic_year = ?");
     params.push(selectedYear);
   }
 
   if (context && CONTEXTS.includes(context as any)) {
-    conditions.push("context = ?");
+    conditions.push("p.context = ?");
     params.push(context);
   }
 
   query += " WHERE " + conditions.join(" AND ");
-  query += " ORDER BY sort_name";
+  query += " ORDER BY p.sort_name";
 
   const { results: projects } = await c.env.DB.prepare(query)
     .bind(...params)
-    .all<Project>();
+    .all<ProjectWithMainImage>();
 
   // Get total count for all projects
   const { results: countResult } = await c.env.DB.prepare(
@@ -476,7 +493,11 @@ app.get("/:year/students/:slug/", async (c) => {
   };
 
   const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
-  const mainImageUrl = project.main_image_id ? getImageUrl(project.main_image_id, "large") : null;
+  const mainImage = images[0] || null;
+  const mainImageId = mainImage?.cloudflare_id;
+  const mainImageAlt = mainImage?.caption || project.project_title;
+  const mainImageUrl = mainImageId ? getImageUrl(mainImageId, "large") : null;
+  const galleryImages = mainImageId ? images.slice(1) : images;
 
   // JSON-LD structured data for project pages
   const creativeWorkSchema = {
@@ -557,9 +578,13 @@ app.get("/:year/students/:slug/", async (c) => {
           </div>
         </header>
 
-        {project.main_image_id && (
+        {mainImageId && (
           <figure class="detail-hero">
-            <img src={getImageUrl(project.main_image_id, "large")} alt={project.project_title} />
+            <img
+              src={getImageUrl(mainImageId, "large")}
+              data-lightbox-src={getImageUrl(mainImageId, "xl")}
+              alt={mainImageAlt}
+            />
           </figure>
         )}
 
@@ -585,10 +610,10 @@ app.get("/:year/students/:slug/", async (c) => {
           </div>
         )}
 
-        {images.length > 0 && (
+        {galleryImages.length > 0 && (
           <section class="detail-gallery">
             <div class="masonry">
-              {images.map((img) => (
+              {galleryImages.map((img) => (
                 <figure class="masonry-item">
                   <img
                     src={getImageUrl(img.cloudflare_id, "medium")}

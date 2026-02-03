@@ -50,12 +50,12 @@ export function StudentPreviewPanel() {
   const project = editDraft || projectDetail?.project;
   const status = editDraft?.status || String(projectDetail?.project.status || "draft");
   const canSubmit = status === "draft";
+  const webImages = editImages.filter((img) => img.type !== "print");
+  const mainImage = webImages[0] || null;
 
   // Validation checklist using live editDraft values
   const getValidationChecklist = () => {
     if (!editDraft) return [];
-
-    const webImages = editImages.filter((img) => img.type !== "print");
 
     return [
       {
@@ -80,7 +80,7 @@ export function StudentPreviewPanel() {
       },
       {
         label: "Main Image",
-        valid: !!editDraft.main_image_id.trim(),
+        valid: webImages.length > 0,
       },
     ];
   };
@@ -164,10 +164,10 @@ export function StudentPreviewPanel() {
         <div className="preview-year">{editDraft?.academic_year || ""}</div>
 
         {/* Main image preview */}
-        {editDraft?.main_image_id && (
+        {mainImage && (
           <div className="preview-main-image">
             <img
-              src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${editDraft.main_image_id}/public`}
+              src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${mainImage.cloudflare_id}/public`}
               alt="Main project image"
             />
           </div>
@@ -190,24 +190,19 @@ export function StudentPreviewPanel() {
         )}
 
         {/* Image gallery */}
-        {editImages.filter((img) => img.type !== "print").length > 0 && (
+        {webImages.length > 0 && (
           <div className="preview-section">
             <div className="preview-section-label">Images</div>
             <div className="preview-images">
-              {editImages
-                .filter((img) => img.type !== "print")
-                .map((img) => (
-                  <div
-                    key={img.id}
-                    className={`preview-image-thumb ${img.cloudflare_id === editDraft?.main_image_id ? "is-main" : ""}`}
-                  >
-                    <img
-                      src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${img.cloudflare_id}/thumb`}
-                      alt={img.caption || "Project image"}
-                    />
-                    {img.cloudflare_id === editDraft?.main_image_id && <span className="image-badge">Main</span>}
-                  </div>
-                ))}
+              {webImages.map((img, index) => (
+                <div key={img.id} className={`preview-image-thumb ${index === 0 ? "is-main" : ""}`}>
+                  <img
+                    src={`https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/${img.cloudflare_id}/thumb`}
+                    alt={img.caption || "Project image"}
+                  />
+                  {index === 0 && <span className="image-badge">Main</span>}
+                </div>
+              ))}
             </div>
           </div>
         )}

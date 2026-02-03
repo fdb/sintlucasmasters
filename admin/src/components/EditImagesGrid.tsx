@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy, useSortable, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Star, Plus, Trash2, X, AlertCircle, Loader2, Type } from "lucide-react";
+import { Plus, Trash2, X, AlertCircle, Loader2, Type } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import type { ProjectImage } from "../store/adminStore";
 
@@ -28,7 +28,6 @@ export function EditImagesGrid() {
     editImages,
     editDraft,
     moveEditImage,
-    setMainImage,
     updateImageCaption,
     uploadImages,
     deleteImage,
@@ -38,7 +37,6 @@ export function EditImagesGrid() {
     editImages: state.editImages,
     editDraft: state.editDraft,
     moveEditImage: state.moveEditImage,
-    setMainImage: state.setMainImage,
     updateImageCaption: state.updateImageCaption,
     uploadImages: state.uploadImages,
     deleteImage: state.deleteImage,
@@ -109,7 +107,6 @@ export function EditImagesGrid() {
     }
   };
 
-  const mainImageId = editDraft?.main_image_id || "";
   const activeIndex = activeId ? editImages.findIndex((img) => img.id === activeId) : -1;
 
   // Check if required fields are filled for upload
@@ -166,8 +163,6 @@ export function EditImagesGrid() {
                 key={img.id}
                 image={img}
                 index={idx}
-                mainImageId={mainImageId}
-                onSetMain={setMainImage}
                 onEditCaption={() => setCaptionEditId(img.id)}
                 onDeleteClick={() => setConfirmDeleteId(img.id)}
                 isDeleting={deletingId === img.id}
@@ -200,7 +195,6 @@ export function EditImagesGrid() {
                   <ImageTile
                     image={activeImage}
                     index={activeIndex === -1 ? 0 : activeIndex}
-                    mainImageId={mainImageId}
                     className="edit-image-overlay"
                   />
                 ) : null}
@@ -302,22 +296,12 @@ function CaptionEditor({ currentCaption, onSave, onClose }: CaptionEditorProps) 
 type SortableImageItemProps = {
   image: ProjectImage;
   index: number;
-  mainImageId: string;
-  onSetMain: (cloudflareId: string) => void;
   onEditCaption: () => void;
   onDeleteClick: () => void;
   isDeleting: boolean;
 };
 
-function SortableImageItem({
-  image,
-  index,
-  mainImageId,
-  onSetMain,
-  onEditCaption,
-  onDeleteClick,
-  isDeleting,
-}: SortableImageItemProps) {
+function SortableImageItem({ image, index, onEditCaption, onDeleteClick, isDeleting }: SortableImageItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: image.id,
   });
@@ -331,8 +315,6 @@ function SortableImageItem({
     <ImageTile
       image={image}
       index={index}
-      mainImageId={mainImageId}
-      onSetMain={onSetMain}
       onEditCaption={onEditCaption}
       onDeleteClick={onDeleteClick}
       isDeleting={isDeleting}
@@ -347,8 +329,6 @@ function SortableImageItem({
 type ImageTileProps = {
   image: ProjectImage;
   index: number;
-  mainImageId: string;
-  onSetMain?: (cloudflareId: string) => void;
   onEditCaption?: () => void;
   onDeleteClick?: () => void;
   isDeleting?: boolean;
@@ -358,10 +338,10 @@ type ImageTileProps = {
 };
 
 const ImageTile = forwardRef<HTMLDivElement, ImageTileProps>(function ImageTile(
-  { image, index, mainImageId, onSetMain, onEditCaption, onDeleteClick, isDeleting, className, style, dragProps },
+  { image, index, onEditCaption, onDeleteClick, isDeleting, className, style, dragProps },
   ref
 ) {
-  const isMain = mainImageId === image.cloudflare_id;
+  const isMain = index === 0;
 
   return (
     <div
@@ -386,17 +366,8 @@ const ImageTile = forwardRef<HTMLDivElement, ImageTileProps>(function ImageTile(
       )}
 
       {/* Action buttons - hide during deleting */}
-      {!isDeleting && onSetMain && (
+      {!isDeleting && (
         <div className="edit-image-actions">
-          <button
-            type="button"
-            className="edit-image-action"
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={() => onSetMain(image.cloudflare_id)}
-            title="Set as main image"
-          >
-            <Star size={10} />
-          </button>
           <button
             type="button"
             className="edit-image-action"

@@ -53,7 +53,6 @@ export const E2E_PROJECTS = [
     academic_year: "2024-2025",
     bio: "Alice is a digital artist exploring virtual realities.",
     description: "A project exploring the intersection of dreams and digital art.",
-    main_image_id: "slam/testing/e2e-test-image",
     status: "published",
     tags: '["digital", "interactive"]',
     user_id: null,
@@ -68,7 +67,6 @@ export const E2E_PROJECTS = [
     academic_year: "2024-2025",
     bio: "Bob creates sculptures that move on their own.",
     description: "Self-moving sculptures that respond to their environment.",
-    main_image_id: "e2e-image-bob-main",
     status: "draft",
     tags: '["sculpture", "kinetic"]',
     user_id: "e2e-student-001",
@@ -83,7 +81,6 @@ export const E2E_PROJECTS = [
     academic_year: "2023-2024",
     bio: "Carol specializes in systematic design approaches.",
     description: "A comprehensive design system for urban environments.",
-    main_image_id: "e2e-image-carol-main",
     status: "published",
     tags: '["design", "systems"]',
     user_id: null,
@@ -99,7 +96,6 @@ export const E2E_PROJECTS = [
     bio: "Video Student explores multimedia storytelling.",
     description:
       "This project explores video documentation.\n\nWatch the YouTube video: https://www.youtube.com/watch?v=dQw4w9WgXcQ\n\nAnd here is a Vimeo video: https://vimeo.com/123456789\n\nThank you for watching!",
-    main_image_id: "e2e-image-video-main",
     status: "published",
     tags: '["video", "documentation"]',
     user_id: null,
@@ -115,7 +111,6 @@ export const E2E_PROJECTS = [
     academic_year: "2024-2025",
     bio: "Test student for submission testing.",
     description: "A project with all fields complete for submission testing.",
-    main_image_id: "e2e-cf-submit-main",
     status: "draft",
     tags: '["test"]',
     user_id: "e2e-student-submit",
@@ -235,7 +230,7 @@ async function main() {
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
     await runWrangler(
-      `INSERT INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, main_image_id, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(project.bio)}, ${escapeSql(project.description)}, ${escapeSql(project.main_image_id)}, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
+      `INSERT INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(project.bio)}, ${escapeSql(project.description)}, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
     );
   }
 

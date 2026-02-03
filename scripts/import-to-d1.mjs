@@ -121,6 +121,7 @@ async function parseStudentFile(filePath) {
 
     const academicYear = normalizeYear(frontmatter.year);
     const projectId = generateProjectId(frontmatter.student_name, academicYear);
+    const mainImageId = extractCloudflareId(frontmatter.main_image);
 
     const project = {
         id: projectId,
@@ -133,18 +134,30 @@ async function parseStudentFile(filePath) {
         academic_year: academicYear,
         bio: frontmatter.bio || null,
         description: description.trim(),
-        main_image_id: extractCloudflareId(frontmatter.main_image),
         thumb_image_id: extractCloudflareId(frontmatter.thumb_image) || null,
         tags: frontmatter.tags ? JSON.stringify(frontmatter.tags) : null,
         social_links: frontmatter.social_links ? JSON.stringify(frontmatter.social_links.map(normalizeUrl)) : null,
         status: 'published'
     };
 
-    // Parse gallery images
-    const images = (frontmatter.images || []).map((img, index) => ({
-        id: generateImageId(projectId, extractCloudflareId(img), index),
+    const imageIds = [];
+    const seenImages = new Set();
+    const addImage = (imageId) => {
+        if (!imageId || seenImages.has(imageId)) return;
+        seenImages.add(imageId);
+        imageIds.push(imageId);
+    };
+
+    addImage(mainImageId);
+    for (const img of frontmatter.images || []) {
+        addImage(extractCloudflareId(img));
+    }
+
+    // Parse gallery images (main image is first)
+    const images = imageIds.map((cloudflareId, index) => ({
+        id: generateImageId(projectId, cloudflareId, index),
         project_id: projectId,
-        cloudflare_id: extractCloudflareId(img),
+        cloudflare_id: cloudflareId,
         sort_order: index,
         caption: null
     }));
@@ -156,8 +169,8 @@ async function parseStudentFile(filePath) {
  * Generate SQL INSERT statement for a project
  */
 function projectToSql(project) {
-    return `INSERT OR REPLACE INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, location, private_email, main_image_id, thumb_image_id, tags, social_links, status, created_at, updated_at)
-VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.sort_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.program)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, NULL, NULL, ${sqlEscape(project.main_image_id)}, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
+    return `INSERT OR REPLACE INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, location, private_email, thumb_image_id, tags, social_links, status, created_at, updated_at)
+VALUES (${sqlEscape(project.id)}, ${sqlEscape(project.slug)}, ${sqlEscape(project.student_name)}, ${sqlEscape(project.sort_name)}, ${sqlEscape(project.project_title)}, ${sqlEscape(project.program)}, ${sqlEscape(project.context)}, ${sqlEscape(project.academic_year)}, ${sqlEscape(project.bio)}, ${sqlEscape(project.description)}, NULL, NULL, ${sqlEscape(project.thumb_image_id)}, ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)}, datetime('now'), datetime('now'));`;
 }
 
 /**
@@ -246,8 +259,8 @@ async function importData() {
                     errors.push(`${filePath}: Missing context (required for ${project.program})`);
                     continue;
                 }
-                if (!project.main_image_id) {
-                    errors.push(`${filePath}: Missing main_image`);
+                if (images.length === 0) {
+                    errors.push(`${filePath}: Missing images`);
                     continue;
                 }
 
