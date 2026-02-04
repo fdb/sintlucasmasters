@@ -13,11 +13,9 @@ export function StudentHeader() {
       setSelectedProjectId: state.setSelectedProjectId,
     }));
 
-  // Use TanStack Query for session (user info)
   const { data: session } = useSession();
   const user = session?.user ?? null;
 
-  // Use TanStack Query for student projects (deduplicates with StudentPage)
   const targetUserId = impersonatedUser?.id ?? user?.id ?? null;
   const { data: studentProjects = [] } = useStudentProjects(targetUserId);
 

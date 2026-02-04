@@ -1,5 +1,3 @@
-// TanStack Query mutation hooks
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "./queryKeys";
 import {

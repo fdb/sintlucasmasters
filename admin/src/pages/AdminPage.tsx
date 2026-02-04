@@ -15,7 +15,6 @@ export function AdminPage() {
     setActiveTable: state.setActiveTable,
   }));
 
-  // Use TanStack Query for session
   const { data: session, isLoading, isError } = useSession();
   const tables = session?.tables ?? [];
 

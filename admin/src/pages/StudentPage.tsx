@@ -16,17 +16,12 @@ export function StudentPage() {
     })
   );
 
-  // Use TanStack Query for session (user info)
   const { data: session } = useSession();
   const user = session?.user ?? null;
 
-  // Determine target user ID
   const targetUserId = impersonatedUser?.id ?? user?.id ?? null;
 
-  // Use TanStack Query for student projects
   const { data: studentProjects, isLoading, isError } = useStudentProjects(targetUserId);
-
-  // Determine status for UI
   const studentProjectsStatus = isLoading ? "loading" : isError ? "error" : studentProjects ? "ready" : "idle";
 
   // Auto-select first project when projects load

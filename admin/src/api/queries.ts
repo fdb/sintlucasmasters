@@ -1,5 +1,3 @@
-// TanStack Query hooks for data fetching
-
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "./queryKeys";
 import {

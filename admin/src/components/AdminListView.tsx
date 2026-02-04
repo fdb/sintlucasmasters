@@ -43,7 +43,6 @@ const STATUS_FILTERS = [
 ];
 
 function AdminProjectsHeader(): React.ReactNode {
-  // Use TanStack Query directly - cached, no extra request
   const { data: tableData } = useTable("projects");
 
   const selectedYear = useAdminStore((s) => s.selectedYear);
@@ -196,7 +195,6 @@ const USERS_COLUMNS = [
 ];
 
 function AdminProjectsTable(): React.ReactNode {
-  // Use TanStack Query directly - cached, no extra request
   const { data: tableData, isLoading, isError } = useTable("projects");
   const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
 
@@ -241,7 +239,6 @@ function AdminProjectsTable(): React.ReactNode {
 }
 
 function AdminUsersTable(): React.ReactNode {
-  // Use TanStack Query directly - cached, no extra request
   const { data: tableData, isLoading, isError } = useTable("users");
   const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
 

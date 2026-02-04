@@ -17,13 +17,9 @@ export function UserDetailPanel() {
   const closeDeleteConfirm = useAdminStore((s) => s.closeDeleteConfirm);
   const setSelectedUserId = useAdminStore((s) => s.setSelectedUserId);
 
-  // Use TanStack Query for user detail
   const { data: userDetail, isLoading, isError } = useUser(selectedUserId);
-
-  // Determine status for UI
   const userDetailStatus = isLoading ? "loading" : isError ? "error" : userDetail ? "ready" : "idle";
 
-  // Use TanStack Query mutation
   const deleteUserMutation = useDeleteUser();
   const deleteStatus = deleteUserMutation.isPending ? "loading" : deleteUserMutation.isError ? "error" : "idle";
 

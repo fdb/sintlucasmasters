@@ -32,17 +32,12 @@ export function ProjectDetailPanel() {
     setSelectedProjectId: state.setSelectedProjectId,
   }));
 
-  // Use TanStack Query for session (user info)
   const { data: session } = useSession();
   const user = session?.user ?? null;
 
-  // Use TanStack Query for project detail
   const { data: projectDetail, isLoading: projectLoading, isError: projectError } = useProject(selectedProjectId);
-
-  // Determine project status for UI
   const projectStatus = projectLoading ? "loading" : projectError ? "error" : projectDetail ? "ready" : "idle";
 
-  // Use TanStack Query mutations
   const deleteProjectMutation = useDeleteProject();
   const submitProjectMutation = useSubmitProject(selectedProjectId);
 

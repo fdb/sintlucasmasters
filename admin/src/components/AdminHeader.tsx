@@ -15,7 +15,6 @@ export function AdminHeader() {
     }));
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Use TanStack Query for session (user info)
   const { data: session } = useSession();
   const user = session?.user ?? null;
 
