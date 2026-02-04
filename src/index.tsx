@@ -221,7 +221,7 @@ app.get("/api/search", async (c) => {
     `SELECT
        projects.*,
        (
-         SELECT id
+         SELECT cloudflare_id
          FROM project_images
          WHERE project_images.project_id = projects.id
            AND project_images.type = 'web'
