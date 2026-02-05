@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAdminStore } from "../store/adminStore";
 import { ProjectEditForm } from "./ProjectEditForm";
+import { queryKeys } from "../api/queryKeys";
 
 export function EditProjectModal() {
   const { editModalOpen, closeEdit, isStudentMode } = useAdminStore((state) => ({
@@ -46,6 +48,7 @@ export function EditProjectModal() {
 }
 
 function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
+  const queryClient = useQueryClient();
   const { saveStatus, saveProject, canEditProject } = useAdminStore((state) => ({
     saveStatus: state.saveStatus,
     saveProject: state.saveProject,
@@ -54,6 +57,14 @@ function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
 
   const editCheck = canEditProject();
   const isLocked = !editCheck.allowed;
+
+  const handleSave = () => {
+    void saveProject({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+      },
+    });
+  };
 
   return (
     <>
@@ -72,12 +83,7 @@ function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
           {isLocked ? "Close" : "Cancel"}
         </button>
         {!isLocked && (
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => void saveProject()}
-            disabled={saveStatus === "saving"}
-          >
+          <button type="button" className="btn btn-primary" onClick={handleSave} disabled={saveStatus === "saving"}>
             Save Changes
           </button>
         )}

@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { CheckCircle, SquareArrowOutUpRight, Undo2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAdminStore } from "../store/adminStore";
 import { useProject } from "../api/queries";
 import { useSubmitProject } from "../api/mutations";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
+import { queryKeys } from "../api/queryKeys";
 
 export function StudentPreviewPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [showRevertConfirm, setShowRevertConfirm] = useState(false);
   const [isReverting, setIsReverting] = useState(false);
+  const queryClient = useQueryClient();
 
   const { selectedProjectId, editDraft, editImages, printImage, updateEditField, saveProject } = useAdminStore(
     (state) => ({
@@ -49,7 +52,11 @@ export function StudentPreviewPanel() {
   const handleRevertToDraft = async () => {
     setIsReverting(true);
     updateEditField("status", "draft");
-    await saveProject();
+    await saveProject({
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+      },
+    });
     setIsReverting(false);
     setShowRevertConfirm(false);
   };

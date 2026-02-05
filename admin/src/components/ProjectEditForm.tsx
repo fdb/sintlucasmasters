@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GripVertical, Plus, Trash2, X, Lock } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
 import { PrintImageSection } from "./PrintImageSection";
+import { queryKeys } from "../api/queryKeys";
 
 const CONTEXTS = [
   "Autonomous Context",
@@ -63,9 +65,24 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
     selectedProjectId: state.selectedProjectId,
   }));
 
+  const queryClient = useQueryClient();
+
   const studentMode = isStudentMode();
   const editCheck = canEditProject();
   const isLocked = !editCheck.allowed;
+
+  // Wrap saveProject to automatically invalidate TanStack Query cache on success
+  const saveProjectWithInvalidation = useCallback(
+    async (options?: { closeOnSuccess?: boolean }) => {
+      return saveProject({
+        ...options,
+        onSuccess: () => {
+          void queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+        },
+      });
+    },
+    [saveProject, queryClient]
+  );
 
   const autosaveEnabled = studentMode && !isLocked;
   const autosaveTimerRef = useRef<number | null>(null);
@@ -137,7 +154,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
           return;
         }
         const keyAtSave = latestAutosaveKeyRef.current;
-        const saved = await saveProject({ closeOnSuccess: false });
+        const saved = await saveProjectWithInvalidation({ closeOnSuccess: false });
         if (saved) {
           autosaveBackoffRef.current = 0;
           if (keyAtSave === latestAutosaveKeyRef.current) {
@@ -168,7 +185,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
         window.clearTimeout(autosaveTimerRef.current);
       }
     };
-  }, [autosaveEnabled, autosaveKey, editDraft, saveProject, selectedProjectId]);
+  }, [autosaveEnabled, autosaveKey, editDraft, saveProjectWithInvalidation, selectedProjectId]);
 
   useEffect(() => {
     if (!autosaveEnabled) return;
@@ -223,7 +240,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
   }, []);
 
   const handleSave = async () => {
-    const saved = await saveProject({ closeOnSuccess: !studentMode });
+    const saved = await saveProjectWithInvalidation({ closeOnSuccess: !studentMode });
     if (saved) {
       lastSavedKeyRef.current = autosaveKey;
       pendingAutosaveRef.current = false;

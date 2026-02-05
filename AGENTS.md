@@ -168,6 +168,16 @@ When refactoring state management:
 
 4. **Run tests early and often**: Don't batch multiple refactoring changes. Test after each component migration to catch issues early.
 
+### E2E Testing Best Practices
+
+1. **Create dedicated test data for tests that modify data**: Don't use existing seed data (like "Bob Jones" or "Submit Student") for tests that edit/save. Parallel tests share the same database, so modifying shared data causes race conditions. Add a dedicated project to `scripts/seed-e2e.mjs` for such tests.
+
+2. **Check database constraints before writing save tests**: The database has CHECK constraints (e.g., `program` must be one of 'BA_FO', 'BA_BK', 'MA_BK', 'PREMA_BK'). Seed data may have NULL for optional fields, but saving sends empty strings which fail constraints. Ensure test projects have valid values for all constrained fields.
+
+3. **Understand test parallelism**: Tests run in parallel by default. Serial test blocks (`test.describe.serial`) run sequentially within the block but can still race with tests outside the block. If your test modifies data used by serial tests, create isolated test data.
+
+4. **Check existing test usage**: Before using a project in a new test, grep for its name in `e2e/` to see what other tests depend on it.
+
 ## Development Phases
 
 1. **Phase 1**: D1 schema + import script (import old data)

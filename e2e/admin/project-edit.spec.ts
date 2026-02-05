@@ -148,4 +148,46 @@ test.describe("admin project editing", () => {
     await contextSelect.selectOption("Applied Context");
     await expect(contextSelect).toHaveValue("Applied Context");
   });
+
+  test("editing student name updates table after save", async ({ page }) => {
+    // Use "Editable Student" project - a dedicated project for this test
+    // with a valid program value (required for save) and not used by other tests
+    const originalName = "Editable Student";
+    const targetRow = page.locator("tbody tr", { hasText: originalName });
+
+    // Double-click to open edit modal
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    // Find student name input and change it
+    const studentNameInput = modal.locator('.edit-field:has-text("Student Name") input');
+    await studentNameInput.clear();
+    const newName = `Test Edit ${Date.now()}`;
+    await studentNameInput.fill(newName);
+
+    // Click Save Changes button
+    await modal.locator('button:has-text("Save Changes")').click();
+
+    // Wait for "Saved successfully" indicator to appear
+    await expect(modal.locator(".save-indicator.saved")).toBeVisible({ timeout: 10000 });
+
+    // Wait for modal to close (save shows "Saved successfully" then closes after 800ms)
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
+
+    // Verify the table now shows the updated name
+    await expect(page.locator("tbody tr", { hasText: newName })).toBeVisible({ timeout: 5000 });
+
+    // Restore original name to avoid test pollution
+    await page.locator("tbody tr", { hasText: newName }).dblclick();
+    const restoreModal = page.locator(".edit-modal-overlay.is-open");
+    await expect(restoreModal).toBeVisible();
+    const restoreInput = restoreModal.locator('.edit-field:has-text("Student Name") input');
+    await restoreInput.clear();
+    await restoreInput.fill(originalName);
+    await restoreModal.locator('button:has-text("Save Changes")').click();
+    await expect(restoreModal.locator(".save-indicator.saved")).toBeVisible({ timeout: 10000 });
+    await expect(restoreModal).not.toBeVisible({ timeout: 5000 });
+  });
 });
