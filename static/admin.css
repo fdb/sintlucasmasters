@@ -289,6 +289,67 @@
 }
 
 /* Impersonation UI */
+/* Connection status banner */
+.connection-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 2rem;
+  font-size: 0.75rem;
+}
+
+.connection-banner.retrying {
+  background: #fef3cd;
+  color: #856404;
+}
+
+:root[data-theme="dark"] .connection-banner.retrying {
+  background: #3d3226;
+  color: #ffc107;
+}
+
+.connection-banner.failed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+:root[data-theme="dark"] .connection-banner.failed {
+  background: #2d1f1f;
+  color: #f5c6cb;
+}
+
+.connection-retry-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-family: inherit;
+  background: rgba(0, 0, 0, 0.1);
+  color: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.connection-retry-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme="dark"] .connection-retry-btn {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .connection-retry-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .impersonation-banner {
   display: flex;
   align-items: center;

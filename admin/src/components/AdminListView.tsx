@@ -18,9 +18,7 @@ function TableStatusMessages({ status, hasRows, hasFilteredRows }: TableStatusMe
   if (status === "loading") {
     return <p className="admin-list-message">Loading data…</p>;
   }
-  if (status === "error") {
-    return <p className="admin-list-message error-message">Failed to load data.</p>;
-  }
+  // Error state is handled by ConnectionStatusBanner - don't show inline error
   if (status === "ready" && !hasRows) {
     return <p className="admin-list-message">No rows found.</p>;
   }

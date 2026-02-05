@@ -148,11 +148,7 @@ export function ProjectDetailPanel() {
         </div>
       )}
 
-      {isProjectsTable && projectStatus === "error" && (
-        <div className="admin-detail-empty">
-          <p className="error-message">Failed to load project.</p>
-        </div>
-      )}
+      {/* Error state is handled by ConnectionStatusBanner */}
 
       {isProjectsTable && projectStatus === "ready" && projectDetail && (
         <div className="admin-detail-content">

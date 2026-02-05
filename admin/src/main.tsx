@@ -11,7 +11,8 @@ const queryClient = new QueryClient({
       staleTime: 30_000, // 30 seconds
       refetchInterval: 60_000, // Poll every minute for multi-editor sync
       refetchOnWindowFocus: true,
-      retry: 2,
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     },
   },
 });

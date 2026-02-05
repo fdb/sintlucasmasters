@@ -8,6 +8,7 @@ import { ProjectDetailPanel } from "../components/ProjectDetailPanel";
 import { UserDetailPanel } from "../components/UserDetailPanel";
 import { EditProjectModal } from "../components/EditProjectModal";
 import { CreateUserModal } from "../components/CreateUserModal";
+import { ConnectionStatusBanner } from "../components/ConnectionStatusBanner";
 
 export function AdminPage() {
   const { activeTable, setActiveTable } = useAdminStore((state) => ({
@@ -25,14 +26,17 @@ export function AdminPage() {
     }
   }, [isLoading, isError, tables, activeTable, setActiveTable]);
 
+  // Show panel if we have cached data OR if initial load succeeded
+  const showPanel = tables.length > 0 || (!isLoading && !isError);
+
   return (
     <div className="admin-shell">
+      <ConnectionStatusBanner />
       <AdminHeader />
 
-      {isLoading && <p>Loading your session...</p>}
-      {isError && <p className="error-message">Unable to load your session.</p>}
+      {isLoading && !tables.length && <p>Loading your session...</p>}
 
-      {!isLoading && !isError && tables.length > 0 && (
+      {showPanel && tables.length > 0 && (
         <div className="admin-panel">
           <AdminTabs />
           <div className="admin-split">
