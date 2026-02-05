@@ -170,7 +170,7 @@ type AdminState = {
   deleteImage: (imageId: string) => Promise<void>;
   uploadStatus: "idle" | "uploading" | "error";
   uploadError: string | null;
-  saveProject: (options?: { closeOnSuccess?: boolean }) => Promise<boolean>;
+  saveProject: (options?: { closeOnSuccess?: boolean; onSuccess?: () => void }) => Promise<boolean>;
   // Project delete actions
   openDeleteConfirm: () => void;
   closeDeleteConfirm: () => void;
@@ -203,6 +203,9 @@ type AdminState = {
   canEditProject: () => { allowed: boolean; reason?: string };
   getWebImages: () => ProjectImage[];
   getPrintImage: () => ProjectImage | null;
+  // Selection setters
+  setSelectedProjectId: (id: string | null) => void;
+  setSelectedUserId: (id: string | null) => void;
 };
 
 const getInitialDarkMode = () => {
@@ -667,6 +670,7 @@ export const useAdminStore = create<AdminState>()(
         if (!editDraft || !selectedProjectId) return false;
         if (saveStatus === "saving") return false;
         const closeOnSuccess = options?.closeOnSuccess ?? true;
+        const onSuccess = options?.onSuccess;
         const normalizedSocialLinks = normalizeSocialLinks(editDraft.social_links);
         const normalizedSocialLinksForDraft = editDraft.social_links.map(normalizeSocialLink);
         set({ saveStatus: "saving" });
@@ -734,6 +738,11 @@ export const useAdminStore = create<AdminState>()(
             }));
           } catch {
             // ignore refresh failure
+          }
+
+          // Call onSuccess callback to allow TanStack Query cache invalidation
+          if (onSuccess) {
+            onSuccess();
           }
 
           if (closeOnSuccess) {
@@ -1229,6 +1238,9 @@ export const useAdminStore = create<AdminState>()(
       getPrintImage: () => {
         return get().printImage;
       },
+      // Selection setters
+      setSelectedProjectId: (selectedProjectId) => set({ selectedProjectId }),
+      setSelectedUserId: (selectedUserId) => set({ selectedUserId }),
     }),
     {
       name: "admin-ui",

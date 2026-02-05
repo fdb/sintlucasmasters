@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, Mail, Eye } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { useProject, useSession } from "../api/queries";
+import { useDeleteProject, useSubmitProject } from "../api/mutations";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
@@ -11,42 +13,44 @@ export function ProjectDetailPanel() {
   const {
     activeTable,
     selectedProjectId,
-    projectDetail,
-    projectStatus,
     openEditForProject,
     deleteConfirmOpen,
-    deleteStatus,
     openDeleteConfirm,
     closeDeleteConfirm,
-    deleteProject,
     isStudentMode,
-    submitValidation,
-    submitStatus,
-    submitError,
-    loadSubmitValidation,
-    submitProject,
-    user,
     setImpersonatedUser,
+    setSelectedProjectId,
   } = useAdminStore((state) => ({
     activeTable: state.activeTable,
     selectedProjectId: state.selectedProjectId,
-    projectDetail: state.projectDetail,
-    projectStatus: state.projectStatus,
     openEditForProject: state.openEditForProject,
     deleteConfirmOpen: state.deleteConfirmOpen,
-    deleteStatus: state.deleteStatus,
     openDeleteConfirm: state.openDeleteConfirm,
     closeDeleteConfirm: state.closeDeleteConfirm,
-    deleteProject: state.deleteProject,
     isStudentMode: state.isStudentMode,
-    submitValidation: state.submitValidation,
-    submitStatus: state.submitStatus,
-    submitError: state.submitError,
-    loadSubmitValidation: state.loadSubmitValidation,
-    submitProject: state.submitProject,
-    user: state.user,
     setImpersonatedUser: state.setImpersonatedUser,
+    setSelectedProjectId: state.setSelectedProjectId,
   }));
+
+  const { data: session } = useSession();
+  const user = session?.user ?? null;
+
+  const { data: projectDetail, isLoading: projectLoading, isError: projectError } = useProject(selectedProjectId);
+  const projectStatus = projectLoading ? "loading" : projectError ? "error" : projectDetail ? "ready" : "idle";
+
+  const deleteProjectMutation = useDeleteProject();
+  const submitProjectMutation = useSubmitProject(selectedProjectId);
+
+  // Map mutation states to old store-compatible values
+  const deleteStatus = deleteProjectMutation.isPending ? "loading" : deleteProjectMutation.isError ? "error" : "idle";
+  const submitStatus = submitProjectMutation.isPending
+    ? "submitting"
+    : submitProjectMutation.isError
+      ? "error"
+      : submitProjectMutation.isSuccess
+        ? "success"
+        : "idle";
+  const submitError = submitProjectMutation.error?.message || null;
 
   const studentMode = isStudentMode();
   // Show project content if we're on the projects table OR in student mode (viewing StudentPage)
@@ -57,16 +61,19 @@ export function ProjectDetailPanel() {
   const canImpersonate = isAdminOrEditor && !!projectDetail?.project.user_id;
   const webImages = projectDetail?.images?.filter((img) => img.type !== "print") ?? [];
 
-  // Load validation when project changes and in student mode
-  useEffect(() => {
-    if (studentMode && selectedProjectId && projectStatus === "ready" && canSubmit) {
-      loadSubmitValidation();
-    }
-  }, [studentMode, selectedProjectId, projectStatus, canSubmit, loadSubmitValidation]);
-
   const handleSubmit = async () => {
     setShowSubmitConfirm(false);
-    await submitProject();
+    submitProjectMutation.mutate();
+  };
+
+  const handleDeleteProject = async () => {
+    if (!selectedProjectId) return;
+    deleteProjectMutation.mutate(selectedProjectId, {
+      onSuccess: () => {
+        closeDeleteConfirm();
+        setSelectedProjectId(null);
+      },
+    });
   };
 
   const handleImpersonate = () => {
@@ -141,11 +148,7 @@ export function ProjectDetailPanel() {
         </div>
       )}
 
-      {isProjectsTable && projectStatus === "error" && (
-        <div className="admin-detail-empty">
-          <p className="error-message">Failed to load project.</p>
-        </div>
-      )}
+      {/* Error state is handled by ConnectionStatusBanner */}
 
       {isProjectsTable && projectStatus === "ready" && projectDetail && (
         <div className="admin-detail-content">
@@ -350,7 +353,7 @@ export function ProjectDetailPanel() {
           </>
         }
         onCancel={closeDeleteConfirm}
-        onConfirm={deleteProject}
+        onConfirm={handleDeleteProject}
         isLoading={deleteStatus === "loading"}
         errorMessage={deleteStatus === "error" ? "Failed to delete project. Please try again." : null}
       />

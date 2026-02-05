@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Search, Plus } from "lucide-react";
 import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
+import { useTable } from "../api/queries";
 import { DataTable, formatRole } from "./DataTable";
 import { formatAcademicYear, formatContext } from "../utils";
 
@@ -17,9 +18,7 @@ function TableStatusMessages({ status, hasRows, hasFilteredRows }: TableStatusMe
   if (status === "loading") {
     return <p className="admin-list-message">Loading data…</p>;
   }
-  if (status === "error") {
-    return <p className="admin-list-message error-message">Failed to load data.</p>;
-  }
+  // Error state is handled by ConnectionStatusBanner - don't show inline error
   if (status === "ready" && !hasRows) {
     return <p className="admin-list-message">No rows found.</p>;
   }
@@ -42,7 +41,8 @@ const STATUS_FILTERS = [
 ];
 
 function AdminProjectsHeader(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
+  const { data: tableData } = useTable("projects");
+
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
   const selectedStatus = useAdminStore((s) => s.selectedStatus);
@@ -193,8 +193,9 @@ const USERS_COLUMNS = [
 ];
 
 function AdminProjectsTable(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
-  const tableStatus = useAdminStore((s) => s.tableStatus);
+  const { data: tableData, isLoading, isError } = useTable("projects");
+  const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
+
   const selectedProjectId = useAdminStore((s) => s.selectedProjectId);
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
@@ -236,8 +237,9 @@ function AdminProjectsTable(): React.ReactNode {
 }
 
 function AdminUsersTable(): React.ReactNode {
-  const tableData = useAdminStore((s) => s.tableData);
-  const tableStatus = useAdminStore((s) => s.tableStatus);
+  const { data: tableData, isLoading, isError } = useTable("users");
+  const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
+
   const selectedUserId = useAdminStore((s) => s.selectedUserId);
   const selectUser = useAdminStore((s) => s.selectUser);
 

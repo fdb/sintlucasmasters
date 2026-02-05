@@ -1,5 +1,7 @@
 import { Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { useUser } from "../api/queries";
+import { useDeleteUser } from "../api/mutations";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 
@@ -10,13 +12,26 @@ function formatRole(role: string): string {
 export function UserDetailPanel() {
   const activeTable = useAdminStore((s) => s.activeTable);
   const selectedUserId = useAdminStore((s) => s.selectedUserId);
-  const userDetail = useAdminStore((s) => s.userDetail);
-  const userDetailStatus = useAdminStore((s) => s.userDetailStatus);
   const deleteConfirmOpen = useAdminStore((s) => s.deleteConfirmOpen);
-  const deleteStatus = useAdminStore((s) => s.deleteStatus);
   const openDeleteConfirm = useAdminStore((s) => s.openDeleteConfirm);
   const closeDeleteConfirm = useAdminStore((s) => s.closeDeleteConfirm);
-  const deleteUser = useAdminStore((s) => s.deleteUser);
+  const setSelectedUserId = useAdminStore((s) => s.setSelectedUserId);
+
+  const { data: userDetail, isLoading, isError } = useUser(selectedUserId);
+  const userDetailStatus = isLoading ? "loading" : isError ? "error" : userDetail ? "ready" : "idle";
+
+  const deleteUserMutation = useDeleteUser();
+  const deleteStatus = deleteUserMutation.isPending ? "loading" : deleteUserMutation.isError ? "error" : "idle";
+
+  const handleDeleteUser = () => {
+    if (!selectedUserId) return;
+    deleteUserMutation.mutate(selectedUserId, {
+      onSuccess: () => {
+        closeDeleteConfirm();
+        setSelectedUserId(null);
+      },
+    });
+  };
 
   const isUsersTable = activeTable === "users";
 
@@ -109,7 +124,7 @@ export function UserDetailPanel() {
           </>
         }
         onCancel={closeDeleteConfirm}
-        onConfirm={deleteUser}
+        onConfirm={handleDeleteUser}
         isLoading={deleteStatus === "loading"}
         errorMessage={deleteStatus === "error" ? "Failed to delete user. Please try again." : null}
       />

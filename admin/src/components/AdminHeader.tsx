@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import { Sun, Moon, LogOut, Eye, X } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
+import { useSession } from "../api/queries";
 
 export function AdminHeader() {
-  const { user, darkMode, userMenuOpen, toggleDarkMode, setUserMenuOpen, impersonatedUser, setImpersonatedUser } =
+  const { darkMode, userMenuOpen, toggleDarkMode, setUserMenuOpen, impersonatedUser, setImpersonatedUser } =
     useAdminStore((state) => ({
-      user: state.user,
       darkMode: state.darkMode,
       userMenuOpen: state.userMenuOpen,
       toggleDarkMode: state.toggleDarkMode,
@@ -14,6 +14,9 @@ export function AdminHeader() {
       setImpersonatedUser: state.setImpersonatedUser,
     }));
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const { data: session } = useSession();
+  const user = session?.user ?? null;
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

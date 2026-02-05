@@ -115,6 +115,21 @@ export const E2E_PROJECTS = [
     tags: '["test"]',
     user_id: "e2e-student-submit",
   },
+  {
+    id: "e2e-project-editable",
+    slug: "editable-student",
+    student_name: "Editable Student",
+    sort_name: "Student, Editable",
+    project_title: "Editable Project",
+    program: "BA_FO",
+    context: "Applied Context",
+    academic_year: "2024-2025",
+    bio: "Test student for edit save testing.",
+    description: "A project used exclusively for testing edit and save functionality.",
+    status: "draft",
+    tags: '["edit-test"]',
+    user_id: null,
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [

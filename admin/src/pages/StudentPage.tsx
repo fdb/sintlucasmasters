@@ -1,39 +1,35 @@
 import { useEffect } from "react";
 import { useAdminStore } from "../store/adminStore";
+import { useSession, useStudentProjects } from "../api/queries";
 import { StudentHeader } from "../components/StudentHeader";
 import { ProjectEditForm } from "../components/ProjectEditForm";
 import { StudentPreviewPanel } from "../components/StudentPreviewPanel";
 
 export function StudentPage() {
-  const {
-    status,
-    studentProjectsStatus,
-    loadStudentProjects,
-    impersonatedUser,
-    user,
-    selectedProjectId,
-    openEditForProject,
-    editDraft,
-  } = useAdminStore((state) => ({
-    status: state.status,
-    studentProjectsStatus: state.studentProjectsStatus,
-    loadStudentProjects: state.loadStudentProjects,
-    impersonatedUser: state.impersonatedUser,
-    user: state.user,
-    selectedProjectId: state.selectedProjectId,
-    openEditForProject: state.openEditForProject,
-    editDraft: state.editDraft,
-  }));
+  const { impersonatedUser, selectedProjectId, openEditForProject, editDraft, setSelectedProjectId } = useAdminStore(
+    (state) => ({
+      impersonatedUser: state.impersonatedUser,
+      selectedProjectId: state.selectedProjectId,
+      openEditForProject: state.openEditForProject,
+      editDraft: state.editDraft,
+      setSelectedProjectId: state.setSelectedProjectId,
+    })
+  );
 
-  // Load student projects when session is ready or impersonated user changes
+  const { data: session } = useSession();
+  const user = session?.user ?? null;
+
+  const targetUserId = impersonatedUser?.id ?? user?.id ?? null;
+
+  const { data: studentProjects, isLoading, isError } = useStudentProjects(targetUserId);
+  const studentProjectsStatus = isLoading ? "loading" : isError ? "error" : studentProjects ? "ready" : "idle";
+
+  // Auto-select first project when projects load
   useEffect(() => {
-    if (status === "ready") {
-      const targetUserId = impersonatedUser?.id ?? user?.id;
-      if (targetUserId) {
-        loadStudentProjects(targetUserId);
-      }
+    if (studentProjects && studentProjects.length > 0 && !selectedProjectId) {
+      setSelectedProjectId(studentProjects[0].id);
     }
-  }, [status, impersonatedUser?.id, user?.id, loadStudentProjects]);
+  }, [studentProjects, selectedProjectId, setSelectedProjectId]);
 
   // Auto-open editing when a project is selected
   useEffect(() => {
