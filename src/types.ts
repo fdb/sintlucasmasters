@@ -18,6 +18,11 @@ export type Bindings = {
   E2E_SKIP_AUTH?: string;
   // Local development
   DEV_ADMIN_EMAIL?: string;
+  // Sentry
+  SENTRY_DSN: string;
+  SENTRY_HOST: string;
+  SENTRY_PROJECT_ID: string;
+  CF_VERSION_METADATA?: { id: string };
 };
 
 export type UserRole = "student" | "editor" | "admin";
