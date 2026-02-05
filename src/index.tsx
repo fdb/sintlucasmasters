@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
+import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
@@ -12,6 +13,27 @@ import { adminApiRoutes } from "./routes/admin-api";
 import { renderToString } from "hono/jsx/dom/server";
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+// Sentry tunnel endpoint (before auth routes to avoid auth middleware)
+app.post("/api/sentry-tunnel", async (c) => {
+  const { SENTRY_HOST, SENTRY_PROJECT_ID } = c.env;
+  const body = await c.req.text();
+  const [headerLine] = body.split("\n");
+  const header = JSON.parse(headerLine);
+  const dsn = new URL(header.dsn);
+  const projectId = dsn.pathname.replace("/", "");
+
+  if (dsn.host !== SENTRY_HOST || projectId !== SENTRY_PROJECT_ID) {
+    return c.json({ error: "Invalid DSN" }, 403);
+  }
+
+  const response = await fetch(`https://${SENTRY_HOST}/api/${projectId}/envelope/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-sentry-envelope" },
+    body,
+  });
+  return new Response(response.body, { status: response.status });
+});
 
 // Auth routes
 app.route("/api/auth", authApiRoutes);
@@ -827,7 +849,12 @@ const scheduled: ExportedHandlerScheduledHandler<Bindings> = async (event, env, 
   );
 };
 
-export default {
-  fetch: app.fetch,
-  scheduled,
-};
+export default Sentry.withSentry(
+  (env: Bindings) => ({
+    dsn: env.SENTRY_DSN,
+    release: env.CF_VERSION_METADATA?.id,
+    sendDefaultPii: true,
+    tracesSampleRate: 1.0,
+  }),
+  { fetch: app.fetch, scheduled }
+);
