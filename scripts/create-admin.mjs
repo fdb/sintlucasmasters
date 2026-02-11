@@ -81,12 +81,12 @@ async function main() {
 	console.log(`  User ID: ${userId}`);
 	console.log('');
 
-	// Use INSERT OR REPLACE to make it idempotent
-	const sql = `INSERT OR REPLACE INTO users (id, email, role, created_at) VALUES ('${userId}', '${normalizedEmail}', 'admin', datetime('now'));`;
+	// Insert new user or upgrade existing user to admin (preserves created_at, name, last_login_at)
+	const sql = `INSERT INTO users (id, email, role, created_at) VALUES ('${userId}', '${normalizedEmail}', 'admin', datetime('now')) ON CONFLICT(email) DO UPDATE SET role = 'admin';`;
 
 	try {
 		await runWrangler(sql, isRemote);
-		console.log('\nAdmin user created successfully!');
+		console.log('\nAdmin user created (or already exists).');
 		console.log(`\nTo sign in, visit /auth/login and enter: ${normalizedEmail}`);
 	} catch (err) {
 		console.error('\nFailed to create admin user:', err.message);
