@@ -1,6 +1,3 @@
-// Centralized query keys for TanStack Query
-// Using factory pattern for type-safe, consistent keys
-
 export const queryKeys = {
   // Session/auth
   session: ["session"] as const,

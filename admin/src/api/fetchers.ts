@@ -1,6 +1,3 @@
-// Raw fetch functions for API calls
-// Used by TanStack Query hooks
-
 import type {
   AuthUser,
   AuthResponse,

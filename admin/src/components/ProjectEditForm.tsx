@@ -71,7 +71,6 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
   const editCheck = canEditProject();
   const isLocked = !editCheck.allowed;
 
-  // Wrap saveProject to automatically invalidate TanStack Query cache on success
   const saveProjectWithInvalidation = useCallback(
     async (options?: { closeOnSuccess?: boolean }) => {
       return saveProject({

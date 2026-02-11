@@ -25,10 +25,7 @@ export function StudentPreviewPanel() {
     })
   );
 
-  // Use TanStack Query for project detail (fallback for editDraft)
   const { data: projectDetail } = useProject(selectedProjectId);
-
-  // Use TanStack Query mutation for submit
   const submitProjectMutation = useSubmitProject(selectedProjectId);
   const submitStatus = submitProjectMutation.isPending
     ? "submitting"
