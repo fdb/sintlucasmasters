@@ -1,6 +1,6 @@
 ---
 student_name: Louise Mrázková
-project_title: 'The Selfie, portrayed.'
+project_title: 'De Selfie, geportretteerd. '
 context: Autonomous Context
 year: 2023-2024
 main_image: louise-mrazkova/1tIXrHcaGWuF91d9dSCedas4Eqr6eLLA9.jpg

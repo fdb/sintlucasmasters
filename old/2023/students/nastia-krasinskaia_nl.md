@@ -1,6 +1,6 @@
 ---
 student_name: Nastia Krasinskaia
-project_title: Speelgoed waar we als kinderen mee speelden
+project_title: Toys we played with as kids
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

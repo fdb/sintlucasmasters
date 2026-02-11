@@ -1,6 +1,6 @@
 ---
 student_name: Shirley Cnop
-project_title: 'Vouw de vouwen uit, omdat ze de ziel niet vasthouden'
+project_title: 'Unfold the folds, since they don’t hold the soul'
 context: Socio-Political Context
 year: 2022-2023
 main_image: >-

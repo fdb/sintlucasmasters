@@ -1,6 +1,6 @@
 ---
 student_name: Klaartje Lambrechts
-project_title: My Home is Your Home
+project_title: My Home is your Home
 context: Socio-Political Context
 year: 2021-2022
 main_image: >-

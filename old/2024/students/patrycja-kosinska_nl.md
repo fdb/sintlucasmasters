@@ -1,6 +1,6 @@
 ---
 student_name: Patrycja Kosinska
-project_title: Vissejongen
+project_title: Fishboy
 context: Applied Context
 year: 2023-2024
 main_image: patrycja-kosinska/1xYBBZDFNLO9fm0cKeGn1FqGqECKEOLW3.jpg

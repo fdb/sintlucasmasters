@@ -1,6 +1,6 @@
 ---
 student_name: Jill de Graaf
-project_title: Niet-Consensuele Genezing
+project_title: 'Non Consensual Healing '
 context: Socio-Political Context
 year: 2020—2021
 main_image: >-

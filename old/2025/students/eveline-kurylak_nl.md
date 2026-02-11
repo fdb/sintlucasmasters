@@ -1,6 +1,6 @@
 ---
 student_name: Eveline Kurylak
-project_title: Verschuivende Landschappen
+project_title: Shifting Landscapes
 context: Socio-Political Context
 year: 2024-2025
 main_image: eveline-kurylak/1smpoBIGESgtXanFVSJ4OZJCEbrhQZGuX.jpg

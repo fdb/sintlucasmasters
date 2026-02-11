@@ -1,6 +1,6 @@
 ---
 student_name: Patrick De Meyer
-project_title: 'Een wandelaar droomt, het landschap beweegt'
+project_title: 'A walker dreams, the landscape moves'
 context: Autonomous Context
 year: 2024-2025
 main_image: patrick-de-meyer/1RDAxIVCilC30VJEfdoCyNRWplA_ihX2A.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Manou Raeves
-project_title: Tuin van Haar
+project_title: Garden of Her's
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

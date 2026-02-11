@@ -1,6 +1,6 @@
 ---
 student_name: Lies Jacobs
-project_title: You Must Do Things
+project_title: Tu Dois Faire Des Choses
 context: Socio-Political Context
 year: 2021—2022
 tags:

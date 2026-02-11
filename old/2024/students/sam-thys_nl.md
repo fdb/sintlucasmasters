@@ -1,6 +1,6 @@
 ---
 student_name: Sam Thys
-project_title: Het Verkennen van Algen in Hedendaagse Beeldende Kunst
+project_title: Exploring Algae in Contemporary Visual Arts
 context: Autonomous Context
 year: 2023-2024
 main_image: sam-thys/1YmfEgzn6dWzSvNVKvQ03W7fHajj-JfqT.jpg

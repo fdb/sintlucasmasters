@@ -1,6 +1,6 @@
 ---
 student_name: Jonathan Vervoort
-project_title: Eenzame Menigten
+project_title: Lonely Crowds
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

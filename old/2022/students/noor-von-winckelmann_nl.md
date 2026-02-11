@@ -1,6 +1,6 @@
 ---
 student_name: 'Noor von Winckelmann '
-project_title: Meng
+project_title: Blanda
 context: Autonomous Context
 year: 2021—2022
 tags:

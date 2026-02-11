@@ -1,6 +1,6 @@
 ---
 student_name: Lucas de la Rubia
-project_title: Paden en Houders
+project_title: Paths and Holders
 context: Autonomous Context
 year: 2024-2025
 main_image: lucas-de-la-rubia/1W3mCjKRxMX0VZpA8iJGDEaFhspxiOgmp.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Lies Verhaegen
-project_title: De Kerk Van Het Klimaat
+project_title: The Church Of Climate
 context: Applied Context
 year: 2022-2023
 main_image: >-

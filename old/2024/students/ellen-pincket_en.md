@@ -1,6 +1,6 @@
 ---
 student_name: Ellen Pincket
-project_title: Botanical Figures
+project_title: Figurae Botanica
 context: Applied Context
 year: 2023-2024
 main_image: ellen-pincket/1GghO4cJemd-co7e1q3AuTGADiXpH5aXN.jpg

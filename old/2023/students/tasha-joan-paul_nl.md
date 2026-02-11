@@ -1,6 +1,6 @@
 ---
 student_name: Tasha Joan Paul
-project_title: DE BETEKENIS VAN WU
+project_title: THE MEANING OF WU
 context: Autonomous Context
 year: 2022—2023
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Cato Speltincx
-project_title: 'Lezen, Bladeren, Ordelijk Rommel'
+project_title: 'Reading, Browsing, Orderly Messing'
 context: Digital Context
 year: 2020—2021
 main_image: >-

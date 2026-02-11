@@ -1,6 +1,6 @@
 ---
 student_name: Christine Ivanov
-project_title: (on)ontwerp
+project_title: (un)design
 context: Socio-Political Context
 year: 2020—2021
 main_image: >-

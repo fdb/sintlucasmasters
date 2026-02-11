@@ -1,6 +1,6 @@
 ---
 student_name: Emma Rosa Verguts
-project_title: Rotten Bananas
+project_title: Rotte Bananen
 context: Applied Context
 year: 2023-2024
 main_image: emma-rosa-verguts/1EabAFZFHna4DYAn4Psk5AnTPcFNtwckl.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Johan Minnebo
-project_title: Kunst is Raketwetenschap
+project_title: Art is Rocket Science
 context: Socio-Political Context
 year: 2021—2022
 tags:

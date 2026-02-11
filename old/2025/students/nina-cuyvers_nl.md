@@ -1,6 +1,6 @@
 ---
 student_name: Nina Cuyvers
-project_title: HOE JE JE KASTEEL BOUWT
+project_title: HOW TO BUILD YOUR CASTLE
 context: Autonomous Context
 year: 2024-2025
 main_image: nina-cuyvers/1yoOhCSm0CHzf4kUVMK0sAWcMfxFCmTtR.jpg

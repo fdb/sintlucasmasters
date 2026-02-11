@@ -1,6 +1,6 @@
 ---
 student_name: Lies Appels
-project_title: GEGEVENSVASE - de vertaling van een data-base
+project_title: DATA VASE - the translation of a data-base
 context: Applied Context
 year: 2022-2023
 main_image: >-

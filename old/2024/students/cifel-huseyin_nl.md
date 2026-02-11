@@ -1,6 +1,6 @@
 ---
 student_name: Çifel Hüseyin
-project_title: novellandschap
+project_title: novelscape
 context: Socio-Political Context
 year: 2023-2024
 main_image: cifel-huseyin/1CwQdg7Vo9a9vrm3Td38aTm10FqnIiqqC.png

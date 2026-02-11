@@ -1,6 +1,6 @@
 ---
 student_name: Lies Jacobs
-project_title: Onder het Mos
+project_title: From Beneath the Moss
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

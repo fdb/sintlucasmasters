@@ -1,6 +1,6 @@
 ---
 student_name: Lies Appels
-project_title: Esthetische Complexiteit
+project_title: Aesthetic Complexity
 context: Digital Context
 year: 2023-2024
 main_image: lies-appels/1WnA1zne-MB3RXnV6yNnx_7je10a9kavf.jpg

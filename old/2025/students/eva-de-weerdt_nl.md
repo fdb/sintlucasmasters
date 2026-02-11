@@ -1,6 +1,6 @@
 ---
 student_name: Eva De Weerdt
-project_title: Wanneer De Stad Stroomt
+project_title: When The City Flows
 context: Socio-Political Context
 year: 2024-2025
 main_image: eva-de-weerdt/1MUkRLC6C-bgVUOqsrW2-Ra2DmAl36K6t.jpg

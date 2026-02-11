@@ -1,6 +1,6 @@
 ---
 student_name: Silke Debandt
-project_title: Mijn cliënt kon zich gewoon niet inhouden
+project_title: 'My client simply couldn''t contain himself '
 context: Autonomous Context
 year: 2021—2022
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Eros
-project_title: De zaak tussen ons
+project_title: The matter between us
 context: Autonomous Context
 year: 2024-2025
 main_image: eros/1WccU8Oj27w30Vpb7In-nr1C0hUaYZGjj.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Pedro Pedroso
-project_title: tarotkaarten
+project_title: tarrochi
 context: Applied Context
 year: 2020—2021
 main_image: >-

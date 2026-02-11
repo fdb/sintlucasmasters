@@ -1,6 +1,6 @@
 ---
 student_name: Louis Saeys
-project_title: Achterliggende gedachten
+project_title: Hintergedanken
 context: Applied Context
 year: 2022-2023
 main_image: >-

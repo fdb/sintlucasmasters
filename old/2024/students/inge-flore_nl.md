@@ -1,6 +1,6 @@
 ---
 student_name: Inge Floré
-project_title: EEN RUIMTE VOOR/VAN TEDERHEID
+project_title: A SPACE FOR/OF TENDERNESS
 context: Socio-Political Context
 year: 2023-2024
 main_image: inge-flore/1uPWs7vvdO_ZfQRwhEjO1eIibAQvMJU_d.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Anneli Vermeulen
-project_title: 'Silent Skies: The Story of the Soviet Night Witches'
+project_title: 'Silent Skies: Het verhaal van de Soviet Night witches'
 context: Applied Context
 year: 2023-2024
 main_image: anneli-vermeulen/1AsYiQtvl15H3FrYpERA8sSIrjg0MtrXT.jpg

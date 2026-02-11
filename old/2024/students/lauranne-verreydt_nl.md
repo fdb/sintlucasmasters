@@ -1,6 +1,6 @@
 ---
 student_name: Lauranne Verreydt
-project_title: Een cultus van rituelen
+project_title: A cult of rituals
 context: Autonomous Context
 year: 2023-2024
 main_image: lauranne-verreydt/1P8RB8-BR3EWT4bA8hpnR92FKCv7dwbf1.jpeg

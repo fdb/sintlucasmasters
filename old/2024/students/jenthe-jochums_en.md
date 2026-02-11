@@ -1,6 +1,6 @@
 ---
 student_name: Jenthe Jochums
-project_title: Keepers of Memories
+project_title: Bewaarders van Herinneringen
 context: Autonomous Context
 year: 2023-2024
 main_image: jenthe-jochums/1nPXr7MC4RZTDnqnngKEas7RAeN48k9sd.jpg

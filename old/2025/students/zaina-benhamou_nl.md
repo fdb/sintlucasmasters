@@ -1,6 +1,6 @@
 ---
 student_name: Zaina Benhamou
-project_title: De spanning van een vorm
+project_title: The tension of a form
 context: Jewelry Context
 year: 2024-2025
 main_image: zaina-benhamou/1fVv_lruRqhyexSz20_R17lU2b9EmHuxB.jpg

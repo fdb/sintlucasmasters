@@ -1,6 +1,6 @@
 ---
 student_name: Femke Goyvaerts
-project_title: Laughing is allowed
+project_title: Lachen mag
 context: Autonomous Context
 year: 2024-2025
 main_image: femke-goyvaerts/1FuwxPEubgyg7b3PWbZ3Z9aEo4K5VHZVE.jpg

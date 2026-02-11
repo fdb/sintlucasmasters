@@ -1,6 +1,6 @@
 ---
 student_name: Gloriya Avgust
-project_title: Losse eindjes verscholen in de keukenlades
+project_title: Loose ends hiding in the kitchen drawers
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

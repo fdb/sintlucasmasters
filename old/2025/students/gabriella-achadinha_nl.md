@@ -1,6 +1,6 @@
 ---
 student_name: Gabriella Achadinha
-project_title: Laat Passeren (het begunstigt het huis)
+project_title: Deixem Passar (it favors the house)
 context: Socio-Political Context
 year: 2024-2025
 main_image: gabriella-achadinha/1oEpq6Jq3Dv2wi4RHnzbPGWgkvRw504vK.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Kaouter Zair
-project_title: 'De geschiedenis van waarom: Een liefdesbrief aan de ongelukkige opaal'
+project_title: 'The History of Why: A love letter to the unlucky opal'
 context: Jewelry Context
 year: 2021-2022
 tags:

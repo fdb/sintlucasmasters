@@ -1,6 +1,6 @@
 ---
 student_name: Lika Avruzki
-project_title: Draagbaar Vaderland
+project_title: Portable Motherland
 context: Autonomous Context
 year: 2024-2025
 main_image: lika-avruzki/1DS6_MLvB4xrV7pnwO5eZ59OHaLt2zd98.jpg

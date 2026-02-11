@@ -1,6 +1,6 @@
 ---
 student_name: Inge Floré
-project_title: HET LANDSCHAP VAN MIJN LEVEN IN HET LANDSCHAP VAN DE WERELD
+project_title: THE LANDSCAPE OF MY LIFE IN THE LANDSCAPE OF THE WORLD
 context: Autonomous Context
 year: 2024-2025
 main_image: inge-flore/1doyzhVx0nDlKo9U4pjmsc5LhBLNQSPfD.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Stammen Judith
-project_title: Shift 121.50
+project_title: 'Shift 121,50'
 context: Autonomous Context
 year: 2023-2024
 main_image: stammen-judith/1tk-0OOXS4wlY3SRc3z2IR9YMGNiISJgA.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Rabten Tenzin
-project_title: Voorbijgaande ervaringen in stilte
+project_title: Fleeting experiences in stillness
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

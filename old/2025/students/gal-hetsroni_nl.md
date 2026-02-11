@@ -1,6 +1,6 @@
 ---
 student_name: Gal Hetsroni
-project_title: Vastgebonden resten
+project_title: Tethered remnants
 context: Autonomous Context
 year: 2024-2025
 main_image: gal-hetsroni/1s8ACSMAqumL9B2bwr6ybSayhRZJbdi_d.jpg

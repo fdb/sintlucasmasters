@@ -1,6 +1,6 @@
 ---
 student_name: Spike Hanze
-project_title: I
+project_title: IK
 context: Applied Context
 year: 2023-2024
 main_image: spike-hanze/1lCZf6Hyf-Kp4OCd5fjIPflD15t6Ui3-x.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Merel
-project_title: Dek Me
+project_title: Cover Me
 context: Autonomous Context
 year: 2024-2025
 main_image: merel/1DN54cRRPlfMgVjIgGJ1puvwvmrplCoOW.jpg

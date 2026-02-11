@@ -1,6 +1,6 @@
 ---
 student_name: Billie Q (Jill Bertels)
-project_title: Losgemaakt
+project_title: Untied
 context: Autonomous Context
 year: 2021—2022
 tags:

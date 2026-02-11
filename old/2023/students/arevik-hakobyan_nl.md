@@ -1,6 +1,6 @@
 ---
 student_name: Arevik Hakobyan
-project_title: '"Plastisch Fantastisch"'
+project_title: '"Plastic Fantastic"'
 context: Applied Context
 year: 2022—2023
 tags:

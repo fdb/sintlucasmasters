@@ -1,6 +1,6 @@
 ---
 student_name: Hsiao Hsi Chen
-project_title: 'Zelfportret: Eeuwig Ik'
+project_title: 'Self-portrait: Eternal I'
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

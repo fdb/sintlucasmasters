@@ -3,22 +3,6 @@ student_name: Vural Saglam
 project_title: >-
   .. .----. -- / -... . -.-. --- -- .. -. --. / - .... . / -- .- -. / .. / -.. .
   ... .--. .. ... . / - .... . / -- --- ... -
-
-
-  This text is in Morse code, not English. When decoded, it reads: "I'M BECOMING
-  THE MAN I DESPISE THE MOST"
-
-
-  In Dutch, this would be:
-
-  "IK BEN DE MAN AAN HET WORDEN DIE IK HET MEEST VERACHT"
-
-
-  In Morse code:
-
-  .. -.- / -... . -. / -.. . / -- .- -. / .- .- -. / .... . - / .-- --- --- .-.
-  -.. . -. / -.. .. . / .. -.- / .... . - / -- . . ... - / ...- . .-. .- -.-.
-  ....
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

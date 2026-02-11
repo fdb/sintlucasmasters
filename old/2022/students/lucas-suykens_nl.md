@@ -1,6 +1,6 @@
 ---
 student_name: Lucas Suykens
-project_title: The Tiger That Doesn't Like Meat
+project_title: De tijger die geen vlees lust
 context: Applied Context
 year: 2021-2022
 main_image: >-

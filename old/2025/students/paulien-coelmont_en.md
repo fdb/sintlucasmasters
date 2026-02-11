@@ -1,6 +1,6 @@
 ---
 student_name: Paulien Coelmont
-project_title: Letter Setter
+project_title: Letterzetter
 context: Applied Context
 year: 2024-2025
 main_image: paulien-coelmont/1SnWjanfOHBbRmVucmnIEJPpI_AxwDVFN.jpg

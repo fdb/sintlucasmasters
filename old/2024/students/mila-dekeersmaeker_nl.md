@@ -1,6 +1,6 @@
 ---
 student_name: Mila Dekeersmaeker
-project_title: Aanmoediging voor Herbegroeïing
+project_title: Rooting for Regrowth
 context: Applied Context
 year: 2023-2024
 main_image: mila-dekeersmaeker/1snMCfHjNT78mxTfUwj_3ymT-HkMRiZvj.jpg

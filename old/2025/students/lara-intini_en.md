@@ -1,6 +1,6 @@
 ---
 student_name: Lara Intini
-project_title: I built a mess / I messed up
+project_title: Ich habe Mist gebaut
 context: Autonomous Context
 year: 2024-2025
 main_image: lara-intini/1vi9BcJC8t6JiptzKFs2oPWmQnvmCTxjN.jpg

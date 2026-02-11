@@ -1,6 +1,6 @@
 ---
 student_name: Lene Thys
-project_title: The Big Little People
+project_title: De grote kleine mensen
 context: Applied Context
 year: 2024-2025
 main_image: lene-thys/16N6jcwtzpTFIoQPVdtkRlkRNFmVTu9vd.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Luiza-Anamaria Pop
-project_title: Virtueel hergebruik van verloren kunst
+project_title: Virtual repurpose of lost art
 context: Digital Context
 year: 2023-2024
 main_image: luiza-anamaria-pop/1z-mCC2coKnWfSVZbjW1ZnFXaW5xfHu6K.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Lana Van Goethem
-project_title: Kwaliteit van Bewustzijn / Kwaliteit van Bewustzijn
+project_title: 'Quality of Consciousness / Kwaliteit van Bewustzijn '
 context: Applied Context
 year: 2020—2021
 main_image: >-

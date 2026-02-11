@@ -1,6 +1,6 @@
 ---
 student_name: Yasmine (Amira) M'Rabet
-project_title: Catharsis to move emotionally
+project_title: Catharsis de emovere
 context: Autonomous Context
 year: 2023-2024
 main_image: yasmine-(amira)-m'rabet/1MUKsLaSMchTh89bORZuAc4jsVqHwuHOM.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Emelie Marchoul
-project_title: Overgedragen
+project_title: Transferred
 context: Applied Context
 year: 2024-2025
 main_image: emelie-marchoul/1X5bQfcKyX4Rx4qv0VMq-WnNDSHk_SH2l.jpg

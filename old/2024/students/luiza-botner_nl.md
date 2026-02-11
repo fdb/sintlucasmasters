@@ -1,8 +1,8 @@
 ---
 student_name: Luiza Botner
 project_title: >-
-  (Dis)geassembleerde Lichamen: Het verkennen van effecten van digitale
-  technologieën op onze waarnemingen.
+  (Dis)assembled Bodies: Exploring impacts from digital technologies in our
+  perceptions. 
 context: Socio-Political Context
 year: 2023-2024
 main_image: luiza-botner/1kBSIAdSfKu7B6jX2Bxn1RlstzUDKzC5L.png

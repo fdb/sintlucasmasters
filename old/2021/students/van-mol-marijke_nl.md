@@ -1,6 +1,6 @@
 ---
 student_name: Van Mol Marijke
-project_title: Ratrace
+project_title: Rat Race
 context: Digital Context
 year: 2020—2021
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Audrey Delogne
-project_title: The Revelation of My Ruins
+project_title: La révélation de mes ruïnes
 context: Autonomous Context
 year: 2023-2024
 main_image: audrey-delogne/1M-EJj_gd0-qeAER_c2rb9RFf0wkrCpdn.jpg

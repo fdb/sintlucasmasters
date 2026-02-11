@@ -1,6 +1,6 @@
 ---
 student_name: Eleni Fourgny
-project_title: 'Mode, Plezier en Identiteit'
+project_title: 'Fashion, Fun and Identity'
 context: Applied Context
 year: 2023-2024
 main_image: eleni-fourgny/1QMPcEZTtSpzMIbO3S9gQXQCBST2YNUF1.jpg

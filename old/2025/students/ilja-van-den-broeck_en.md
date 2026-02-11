@@ -1,6 +1,6 @@
 ---
 student_name: Ilja Van den Broeck
-project_title: No smile so soft
+project_title: Geen glimlach zo zacht
 context: Applied Context
 year: 2024-2025
 main_image: ilja-van-den-broeck/1ws3Jj4ApCygn0ie9Ubp2zjaSVrVIZjGB.jpg

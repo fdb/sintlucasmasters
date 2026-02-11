@@ -1,6 +1,6 @@
 ---
 student_name: Jeanne de Preter
-project_title: 'Een toren in aanbouw, een toren in aanbouw, een toren in aanbouw'
+project_title: 'A tower under construction, een toren in aanbouw, une tour en construction'
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

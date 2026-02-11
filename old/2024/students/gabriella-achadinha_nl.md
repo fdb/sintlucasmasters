@@ -1,6 +1,6 @@
 ---
 student_name: Gabriella Achadinha
-project_title: Litteken van Teer
+project_title: Scar Made of Tar
 context: Socio-Political Context
 year: 2023-2024
 main_image: gabriella-achadinha/1CC_ySGvSXW-3gNjUPs8ho2FEtHgXd4k5.jpg

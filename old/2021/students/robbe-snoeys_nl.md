@@ -1,6 +1,6 @@
 ---
 student_name: Robbe Snoeys
-project_title: Mama's Jongen
+project_title: Mama's Boy
 context: Autonomous Context
 year: 2020-2021
 main_image: >-

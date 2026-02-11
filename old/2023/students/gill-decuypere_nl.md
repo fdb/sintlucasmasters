@@ -1,6 +1,6 @@
 ---
 student_name: Gill Decuypere
-project_title: Synergie in Synthese
+project_title: Synergy in Synthesis
 context: Digital Context
 year: 2022-2023
 main_image: >-

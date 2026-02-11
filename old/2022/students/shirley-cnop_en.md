@@ -1,12 +1,6 @@
 ---
 student_name: Shirley Cnop
-project_title: >-
-  I appreciate your message, but the text you've provided appears to be in
-  English, not Dutch. 
-
-
-  If you meant to provide Dutch text for translation, please share that and I'll
-  translate it for you.
+project_title: 'See the forest for the trees, I promise you''ll make it'
 context: Autonomous Context
 year: 2021—2022
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Stefan Kolgen
-project_title: common space
+project_title: gemene ruimte
 context: Socio-Political Context
 year: 2021—2022
 tags:

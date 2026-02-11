@@ -1,6 +1,6 @@
 ---
 student_name: Petar Pirizović
-project_title: Socialistische Estetiek — Dualiteit van een Affiche in Tito's Joegoslavië
+project_title: Socialist Aestheticism — Duality of a Poster in Tito’s Yugoslavia
 context: Applied Context
 year: 2021-2022
 tags:

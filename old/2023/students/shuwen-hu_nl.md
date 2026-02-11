@@ -1,6 +1,6 @@
 ---
 student_name: Shuwen Hu
-project_title: Glimlach! Je wordt in de gaten gehouden.
+project_title: Smile! You're being watched.
 context: Digital Context
 year: 2022-2023
 tags:

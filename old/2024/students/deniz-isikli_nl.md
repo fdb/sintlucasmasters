@@ -1,6 +1,6 @@
 ---
 student_name: Deniz Isikli
-project_title: Niets duurt voor altijd
+project_title: Nothing Lasts Forever
 context: Applied Context
 year: 2023-2024
 main_image: deniz-isikli/1rhjw7LJWuS8TxgklOyTVaV_OEUGFcf7O.jpg

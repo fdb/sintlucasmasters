@@ -1,6 +1,6 @@
 ---
 student_name: Vladimir Babinchuk
-project_title: Zones van Weigering
+project_title: Zones of Refusal
 context: Socio-Political Context
 year: 2024-2025
 main_image: vladimir-babinchuk/13H7Up0dmZyVLZ7jFyqwfYYa4VXHWqNFx.jpg

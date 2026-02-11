@@ -1,6 +1,6 @@
 ---
 student_name: Winke Seels
-project_title: café moments
+project_title: cafémomenten
 context: Autonomous Context
 year: 2023-2024
 main_image: winke-seels/1FNmEEaSmK-6J5A8zhecQnlXC48IHbBjF.jpg

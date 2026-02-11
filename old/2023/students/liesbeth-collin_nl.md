@@ -1,6 +1,6 @@
 ---
 student_name: Liesbeth Collin
-project_title: In Bloei
+project_title: In Bloom
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

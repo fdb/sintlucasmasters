@@ -1,6 +1,6 @@
 ---
 student_name: Frauke van Lierop
-project_title: The (in)significant shadow of what was
+project_title: De (in)significante schaduw van wat was
 context: Autonomous Context
 year: 2024-2025
 main_image: frauke-van-lierop/1t08Io35S_k-qLyaLhDDj1lefl52dd_hD.jpg

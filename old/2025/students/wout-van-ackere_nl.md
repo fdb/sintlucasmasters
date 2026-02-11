@@ -1,6 +1,6 @@
 ---
 student_name: Wout Van Ackere
-project_title: 'Maar Wout, jij bent (GEEN) rockster'
+project_title: 'But Wout, You''re (NOT) a rockstar'
 context: Autonomous Context
 year: 2024-2025
 main_image: wout-van-ackere/1J83vRRNPnPbPuPotKq14_LaZri60o1G3.jpg

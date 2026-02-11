@@ -1,6 +1,6 @@
 ---
 student_name: Sarah-Dona Manev
-project_title: Uitgenodigd door het touw
+project_title: Invited by the rope
 context: Autonomous Context
 year: 2021—2022
 tags:

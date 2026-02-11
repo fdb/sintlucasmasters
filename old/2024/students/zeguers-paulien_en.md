@@ -1,8 +1,9 @@
 ---
 student_name: Zeguers Paulien
 project_title: >-
-  In what way can photography and graphic design together contribute to a strong
-  brand identity and enhance the visual appeal of interior design firms?
+  Op welke manier kunnen fotografie en grafisch ontwerp samen bijdragen aan een
+  sterke merkidentiteit en de visuele aantrekkingskracht van
+  interieurontwerpbedrijven vergroten?
 context: Applied Context
 year: 2023-2024
 main_image: zeguers-paulien/1lUy67Vz0CD2C9OnIRxP6a-JCHYF0rDsU.jpg

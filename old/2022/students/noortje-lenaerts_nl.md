@@ -1,6 +1,6 @@
 ---
 student_name: Noortje Lenaerts
-project_title: Je plafond is iemands anders vloer
+project_title: Your ceiling is someone else’s floor
 context: Applied Context
 year: 2021—2022
 tags:

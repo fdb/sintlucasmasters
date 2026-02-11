@@ -1,13 +1,6 @@
 ---
 student_name: Britt Lise van Putten
-project_title: >-
-  I appreciate your request, but I notice you've asked me to translate "The
-  Witch Hunt" from Dutch to English. However, the text you've provided is
-  already in English.
-
-
-  If you meant to provide Dutch text for translation, please share that text and
-  I'll be happy to translate it for you.
+project_title: The Witch Hunt
 context: Applied Context
 year: 2020-2021
 main_image: >-

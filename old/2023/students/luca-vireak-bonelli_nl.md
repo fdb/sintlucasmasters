@@ -1,6 +1,6 @@
 ---
 student_name: Luca Vireak Bonelli
-project_title: Bescherming
+project_title: Protection
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

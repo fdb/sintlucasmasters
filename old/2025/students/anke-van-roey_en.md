@@ -1,6 +1,6 @@
 ---
 student_name: Anke Van Roey
-project_title: Convenience
+project_title: Gerief
 context: Applied Context
 year: 2024-2025
 main_image: anke-van-roey/1cmcsxjmxvo-XJ-wXXrZwWDvqNLXinbAW.jpg

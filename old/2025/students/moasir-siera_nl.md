@@ -1,6 +1,6 @@
 ---
 student_name: Moasir Siera
-project_title: De Kunst van Zelfloosheid
+project_title: The Art of Unselfing
 context: Autonomous Context
 year: 2024-2025
 main_image: moasir-siera/1eEMFZKmlTzV025laUjbHra0PUNm3kPYh.jpg

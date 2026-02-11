@@ -1,6 +1,6 @@
 ---
 student_name: Kelly Weiszenberg
-project_title: Plantenvriendinnen
+project_title: 'Planten vrienden '
 context: Applied Context
 year: 2020—2021
 main_image: >-
