@@ -10,7 +10,6 @@ export default function App() {
     impersonatedUser: state.impersonatedUser,
   }));
 
-  // Use TanStack Query for session
   const { data: session, isLoading } = useSession();
 
   useEffect(() => {

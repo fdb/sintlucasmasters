@@ -740,7 +740,6 @@ export const useAdminStore = create<AdminState>()(
             // ignore refresh failure
           }
 
-          // Call onSuccess callback to allow TanStack Query cache invalidation
           if (onSuccess) {
             onSuccess();
           }
