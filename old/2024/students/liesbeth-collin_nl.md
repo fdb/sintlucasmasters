@@ -1,6 +1,6 @@
 ---
 student_name: Liesbeth Collin
-project_title: Blijf nog even langer
+project_title: Stay a Little Longer
 context: Autonomous Context
 year: 2023-2024
 main_image: liesbeth-collin/1K-TR4nFwmWJxacy8AmwJlnWAacFlUa1p.jpg

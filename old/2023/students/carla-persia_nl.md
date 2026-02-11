@@ -1,6 +1,6 @@
 ---
 student_name: Carla Persia
-project_title: Greenwashing - De Lelijke Waarheid van de Modeindustrie
+project_title: Greenwashing - The Ugly Truth of Fashion Industry
 context: Applied Context
 year: 2022-2023
 main_image: >-

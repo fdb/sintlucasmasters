@@ -1,6 +1,6 @@
 ---
 student_name: Zahra Parto
-project_title: Resonante Motieven
+project_title: Resonant Motifs
 context: Applied Context
 year: 2024-2025
 main_image: zahra-parto/1pZM2RoAICo6NwoYFKqoVfnkAYrGwhP1l.jpg

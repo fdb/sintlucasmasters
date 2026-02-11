@@ -1,6 +1,6 @@
 ---
 student_name: Susanna Ingignoli
-project_title: Hoeveel ruimte heb je nodig?
+project_title: How much space do you need?
 context: Digital Context
 year: 2022-2023
 main_image: >-

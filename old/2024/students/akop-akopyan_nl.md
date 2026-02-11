@@ -1,6 +1,6 @@
 ---
 student_name: Akop Akopyan
-project_title: Volksverhalen
+project_title: Folktales
 context: Applied Context
 year: 2023-2024
 main_image: akop-akopyan/1PPNxeCVp30j57y0FanmgWU9bPgV6myEx.jpg

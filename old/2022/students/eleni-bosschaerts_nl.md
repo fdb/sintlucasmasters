@@ -1,6 +1,6 @@
 ---
 student_name: Eleni Bosschaerts
-project_title: van — — · · ·   — — · · · naar · · — — —   · · — — —
+project_title: "from — — · · ·   — — · · · to · · — — —   · · — — —   \t"
 context: Autonomous Context
 year: 2021—2022
 tags:

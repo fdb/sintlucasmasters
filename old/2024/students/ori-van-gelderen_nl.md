@@ -1,6 +1,6 @@
 ---
 student_name: Ori van Gelderen
-project_title: Breng me terug naar Eden
+project_title: Take me Back to Eden
 context: Autonomous Context
 year: 2023-2024
 main_image: ori-van-gelderen/1GOO26OxUTy8c9pEriYtKc9j90BoRp1So.jpg

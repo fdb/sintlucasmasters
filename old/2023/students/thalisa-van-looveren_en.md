@@ -1,6 +1,6 @@
 ---
 student_name: Thalisa Van Looveren
-project_title: Ceramic or plastic?
+project_title: Keramiek of plastic?
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Annelies Jacobs
-project_title: Alsof de aarde je had opgeslokt
+project_title: As if the earth had swallowed you
 context: Applied Context
 year: 2022—2023
 tags:

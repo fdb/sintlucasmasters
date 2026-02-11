@@ -1,6 +1,6 @@
 ---
 student_name: Victor Borgions
-project_title: 'Een vlezig lichaam, gemeen en verrot'
+project_title: 'A fleshy body, vile and corrupted'
 context: Applied Context
 year: 2022-2023
 main_image: >-

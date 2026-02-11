@@ -1,6 +1,6 @@
 ---
 student_name: Emma Leyers
-project_title: De Waarde van Verzamelen
+project_title: The Value of Collecting
 context: Jewelry Context
 year: 2024-2025
 main_image: emma-leyers/1A6Yusu7n1EJ3cxREd5a2ETCwwZoosCCw.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Margo Van Onderbergen
-project_title: BRU - Herpositionering van het Brussels-Hoofdstedelijk Gewest
+project_title: BRU - Rebranding of the Brussels-Capital Region
 context: Applied Context
 year: 2021—2022
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Basile Crabeels
-project_title: Wanneer Licht Zoemt en Geluid Gloeit
+project_title: When Light Hums and Sound Glows
 context: Autonomous Context
 year: 2024-2025
 main_image: basile-crabeels/1_sV_VAxN6hufMma-Uh_jdE3oQsQbDmG9.jpg

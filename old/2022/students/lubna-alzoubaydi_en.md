@@ -1,6 +1,6 @@
 ---
 student_name: Lubna Alzoubaydi
-project_title: Something from memory
+project_title: شيء من الذاكره  ( iets uit het geheugen )
 context: Autonomous Context
 year: 2021—2022
 tags:

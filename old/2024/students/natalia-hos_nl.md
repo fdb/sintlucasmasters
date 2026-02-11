@@ -1,6 +1,6 @@
 ---
 student_name: Natalia Hos
-project_title: MIJN MOEDER IS EEN MENS
+project_title: MY MOTHER IS A HUMAN
 context: Applied Context
 year: 2023-2024
 main_image: natalia-hos/1kiAW73JU9XE8rMXELl-lPnnw9fbboPN6.jpg

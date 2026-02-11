@@ -1,6 +1,6 @@
 ---
 student_name: Manou Raeves
-project_title: The Feminine Archive through the eyes of Manou Raeves
+project_title: Het Feminine Archief door de ogen van Manou Raeves
 context: Applied Context
 year: 2023-2024
 main_image: manou-raeves/18AATMLibfBGmSzUfQtgUjtew7zoe2RTO.png

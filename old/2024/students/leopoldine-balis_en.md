@@ -1,6 +1,6 @@
 ---
 student_name: 'Léopoldine Balis '
-project_title: Soft Fascination
+project_title: 'Soft Fascination '
 context: Autonomous Context
 year: 2023-2024
 main_image: leopoldine-balis/1n-ChfAPmhYv1b3Uw1g6mAYWIs8bzK2wX.jpg

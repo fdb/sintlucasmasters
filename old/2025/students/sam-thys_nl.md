@@ -1,6 +1,6 @@
 ---
 student_name: Sam Thys
-project_title: Ik beweeg omdat zij dat doen.'
+project_title: 'I move because, They do.'''
 context: Autonomous Context
 year: 2024-2025
 main_image: sam-thys/1y55iO50p4m8S3AxgrfTdunox_wgLyZp3.jpg

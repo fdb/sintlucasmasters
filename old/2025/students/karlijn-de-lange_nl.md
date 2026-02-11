@@ -1,6 +1,6 @@
 ---
 student_name: Karlijn de Lange
-project_title: Vaders Vluchtlustwandeling
+project_title: Dad’s Flight Loop Trail
 context: Autonomous Context
 year: 2024-2025
 main_image: karlijn-de-lange/1F2aZvWF5H7MxaDF-c6rOwc_0FGDBdoCW.jpg

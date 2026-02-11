@@ -1,6 +1,6 @@
 ---
 student_name: Vladimir Carpaij
-project_title: Wa Maak?
+project_title: Wa Make?
 context: Applied Context
 year: 2024-2025
 main_image: vladimir-carpaij/1Hpfh_08ZDmcoAnx7TRRWMR_wsrFyWcAO.jpg

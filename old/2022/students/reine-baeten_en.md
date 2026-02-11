@@ -1,6 +1,6 @@
 ---
 student_name: Reine Baeten
-project_title: A Personal Mythology
+project_title: Een persoonlijke mythologie
 context: Applied Context
 year: 2021—2022
 tags:

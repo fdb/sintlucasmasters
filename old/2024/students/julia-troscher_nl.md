@@ -1,6 +1,6 @@
 ---
 student_name: Julia Tröscher
-project_title: 'Er was een Nooit, er was een Ja'
+project_title: 'There was a Never, there was a Yes'
 context: Autonomous Context
 year: 2023-2024
 main_image: julia-troscher/1LGeXuks8tggylQzmOFcB_tu2gixdfkrx.jpg

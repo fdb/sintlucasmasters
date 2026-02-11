@@ -1,6 +1,6 @@
 ---
 student_name: Aimé Fierens
-project_title: The Fetishism of the Artist
+project_title: Der Fetischismus des Künstlers
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

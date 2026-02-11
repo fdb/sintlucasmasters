@@ -1,6 +1,6 @@
 ---
 student_name: Claudia Seeldrayers
-project_title: A Glimpse into van Eyck's Arnolfini Perspective
+project_title: Een inkijk in van Eycks Arnolfini-perspectief
 context: Digital Context
 year: 2022—2023
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Morar Oana
-project_title: Hereniging
+project_title: Reunion
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

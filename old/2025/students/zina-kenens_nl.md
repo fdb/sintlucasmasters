@@ -1,6 +1,6 @@
 ---
 student_name: Zina Kenens
-project_title: Post Liefde
+project_title: Post Love
 context: Autonomous Context
 year: 2024-2025
 main_image: zina-kenens/1xWlZ6mZA1Z2L6RwLGdlvdc51nMXOyjuE.jpg

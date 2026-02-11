@@ -1,6 +1,6 @@
 ---
 student_name: Susanna Ingignoli
-project_title: Spelen en reflecteren
+project_title: Play and reflect
 context: Socio-Political Context
 year: 2021-2022
 main_image: >-

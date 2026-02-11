@@ -1,6 +1,6 @@
 ---
 student_name: Jolien Diels
-project_title: I have migraines? Everyone has migraines!
+project_title: Ik migraine? Iedereen migraine!
 context: Applied Context
 year: 2021-2022
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Hanne Goessens
-project_title: Obsidiaan
+project_title: Obsidian
 context: Applied Context
 year: 2022-2023
 main_image: >-

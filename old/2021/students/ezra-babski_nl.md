@@ -1,6 +1,6 @@
 ---
 student_name: Ezra Babski
-project_title: Sonus Novus
+project_title: 'Sonus Novus '
 context: Digital Context
 year: 2020-2021
 main_image: >-

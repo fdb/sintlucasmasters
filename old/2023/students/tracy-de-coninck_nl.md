@@ -1,6 +1,6 @@
 ---
 student_name: Tracy De Coninck
-project_title: IEDER LICHAAM
+project_title: ANY BODY
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Job Guillaume
-project_title: Avonturen in chronische fictie
+project_title: Adventures in chronic fiction
 context: Autonomous Context
 year: 2023-2024
 main_image: job-guillaume/1QFtYdMcRzpZjAwGpV-VP-1W5MbW-CZRA.jpg

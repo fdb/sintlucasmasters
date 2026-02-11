@@ -1,6 +1,6 @@
 ---
 student_name: Fien Dierckx
-project_title: Het Bedrieglijke Palet
+project_title: The Deceptive Palette
 context: Applied Context
 year: 2022-2023
 main_image: >-

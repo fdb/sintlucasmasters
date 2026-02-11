@@ -1,6 +1,6 @@
 ---
 student_name: Elisa Nieze
-project_title: Forgotten Flowers
+project_title: 'Forgotten Flowers '
 context: Applied Context
 year: 2022-2023
 main_image: >-

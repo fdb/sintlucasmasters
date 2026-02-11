@@ -1,6 +1,6 @@
 ---
 student_name: Richard Klapwijk
-project_title: 'VERBIND, BEWEEG, DANS (zoals we stoffelijk werden)'
+project_title: 'CONNECT, MOVE, DANCE (as we became material)'
 context: Autonomous Context
 year: 2024-2025
 main_image: richard-klapwijk/1ESrSvjTrxPPEWhPYBVkbFKiwDWGTdDXi.jpg

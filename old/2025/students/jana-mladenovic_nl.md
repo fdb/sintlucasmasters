@@ -1,6 +1,6 @@
 ---
 student_name: Jana Mladenović
-project_title: In Gesprek met Revolutie
+project_title: In Dialogue with Revolution
 context: Socio-Political Context
 year: 2024-2025
 main_image: jana-mladenovic/1zbg2MhSzpCoxVcsdrgpDOTbFkHXm5qmX.jpg

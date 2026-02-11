@@ -1,6 +1,6 @@
 ---
 student_name: Lisa Gunst
-project_title: Lof aan Oscar
+project_title: Ode to Oscar
 context: Applied Context
 year: 2022-2023
 main_image: >-

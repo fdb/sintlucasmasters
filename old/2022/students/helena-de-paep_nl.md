@@ -1,6 +1,6 @@
 ---
 student_name: Helena De Paep
-project_title: KOE
+project_title: COW
 context: Autonomous Context
 year: 2021—2022
 tags:

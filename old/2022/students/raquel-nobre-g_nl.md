@@ -1,6 +1,6 @@
 ---
 student_name: Raquel Nobre G
-project_title: Prothesen
+project_title: Prosthetics
 context: Autonomous Context
 year: 2021—2022
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Guinness Frateur
-project_title: Lichtverwerking - Betonblootstelling
+project_title: Light Processing - Concrete Exposure
 context: Autonomous Context
 year: 2021—2022
 tags:

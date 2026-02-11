@@ -1,6 +1,6 @@
 ---
 student_name: Zina Kenens
-project_title: lang zijn (of) lang
+project_title: to (be) long
 context: Autonomous Context
 year: 2023-2024
 main_image: zina-kenens/1870n4EcO2EEocU-6K0ws_DqiMgHF8DP3.jpg

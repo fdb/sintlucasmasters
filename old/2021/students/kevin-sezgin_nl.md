@@ -1,6 +1,6 @@
 ---
 student_name: Kevin Sezgin
-project_title: Wanneer Het Stof Neerdaalt
+project_title: When The Dust Settles
 context: Applied Context
 year: 2020—2021
 main_image: >-

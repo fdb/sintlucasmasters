@@ -1,6 +1,6 @@
 ---
 student_name: Juan Colombo
-project_title: 'Sommige onkruiden groeiden tussen de bestanden, moet ik ze water geven?'
+project_title: 'some weeds grew between files, should i water them?'
 context: Applied Context
 year: 2024-2025
 main_image: juan-colombo/1PY7IvXoaOyP33B8Ru9dM_5DLWmeP-O62.jpg

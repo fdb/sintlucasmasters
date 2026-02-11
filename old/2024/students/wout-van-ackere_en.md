@@ -1,6 +1,6 @@
 ---
 student_name: Wout Van Ackere
-project_title: Stand still by the tree.
+project_title: Stilstaan bij de boom.
 context: Autonomous Context
 year: 2023-2024
 main_image: wout-van-ackere/1NgvP1QQU0R7tHNTM_JnZkOc5MPkULllR.jpg

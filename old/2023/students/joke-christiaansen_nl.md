@@ -1,6 +1,6 @@
 ---
 student_name: Joke Christiaansen
-project_title: Laatste herinnering
+project_title: Final recollection
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Brent Verstraelen
-project_title: Tempel van het Nutteloze
+project_title: Temple of The Non-Useful
 context: Autonomous Context
 year: 2024-2025
 main_image: brent-verstraelen/1fXJmMA92g9Qkzb8vreoPnLSlDANcj7xs.jpg

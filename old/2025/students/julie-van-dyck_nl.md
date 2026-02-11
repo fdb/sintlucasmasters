@@ -1,6 +1,6 @@
 ---
 student_name: Julie Van Dyck
-project_title: Standaard Handleiding
+project_title: Standard Manual
 context: Applied Context
 year: 2024-2025
 main_image: julie-van-dyck/19ZTS4l-vYiFU29MHnHzYouJ-vBiMr0WJ.jpg

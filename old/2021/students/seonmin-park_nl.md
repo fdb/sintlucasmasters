@@ -1,6 +1,6 @@
 ---
 student_name: Seonmin Park
-project_title: Ongeordend/verkeerd geordend
+project_title: Unordered/misordred
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

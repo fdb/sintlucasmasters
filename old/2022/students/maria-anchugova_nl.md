@@ -1,6 +1,6 @@
 ---
 student_name: Maria Anchugova
-project_title: Hyphen
+project_title: Hyphae
 context: Applied Context
 year: 2021—2022
 tags:

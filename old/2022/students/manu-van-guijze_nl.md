@@ -1,6 +1,6 @@
 ---
 student_name: Manu Van Guijze
-project_title: (On)beheerste Kleuren
+project_title: (Un)controlled Colors
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

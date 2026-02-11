@@ -1,6 +1,6 @@
 ---
 student_name: Mertens Martijn
-project_title: Tumtu-markt
+project_title: Tumtu Market
 context: Applied Context
 year: 2020-2021
 main_image: >-

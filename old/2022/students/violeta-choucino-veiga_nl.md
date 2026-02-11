@@ -1,6 +1,6 @@
 ---
 student_name: Violeta Chouciño Veiga
-project_title: 'Antwerpen, Antwerpen, Antwerpen'
+project_title: 'Anterpen, Anwers, Antwetpen'
 context: Socio-Political Context
 year: 2021-2022
 main_image: >-

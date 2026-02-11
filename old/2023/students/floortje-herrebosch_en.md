@@ -1,6 +1,6 @@
 ---
 student_name: Floortje Herrebosch
-project_title: The leaflet of the contraceptive pill
+project_title: The leaflet of the birth control pill
 context: Applied Context
 year: 2022-2023
 main_image: >-

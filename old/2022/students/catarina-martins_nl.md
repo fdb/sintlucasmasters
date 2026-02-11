@@ -1,6 +1,6 @@
 ---
 student_name: Catarina Martins
-project_title: Een veilige plek voor slecht lettertype
+project_title: A Safe Space for Bad Type
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

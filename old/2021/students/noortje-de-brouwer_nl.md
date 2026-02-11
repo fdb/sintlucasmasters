@@ -1,6 +1,6 @@
 ---
 student_name: Noortje de Brouwer
-project_title: Een verzameling van levende verhalen
+project_title: '     A curation of living stories'
 context: Autonomous Context
 year: 2020-2021
 main_image: >-

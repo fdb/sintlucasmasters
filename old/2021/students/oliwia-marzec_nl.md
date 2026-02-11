@@ -1,6 +1,6 @@
 ---
 student_name: Oliwia Marzec
-project_title: De Geogrids
+project_title: The Geogrids
 context: Applied Context
 year: 2020-2021
 main_image: >-

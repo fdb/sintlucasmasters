@@ -1,6 +1,6 @@
 ---
 student_name: Anna Beirinckx
-project_title: / ə ʊ m / ━ Een Verhaal Over Licht en Geluid
+project_title: ' / ə ʊ m /  ━ A Story About Light and Sound '
 context: Digital Context
 year: 2020—2021
 main_image: >-

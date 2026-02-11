@@ -1,6 +1,6 @@
 ---
 student_name: Shelcy Carpentier
-project_title: Experimenten binnen grenzen en beperkingen
+project_title: Experiments within limits and constraints
 context: Applied Context
 year: 2021—2022
 tags:

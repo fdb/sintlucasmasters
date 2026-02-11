@@ -1,6 +1,6 @@
 ---
 student_name: Bob Harterink
-project_title: Through the Eye of the Maker
+project_title: Door het oog van de maker
 context: Digital Context
 year: 2023-2024
 main_image: bob-harterink/1rX0hkM8S2Rr_msSg1-ip2qcvQXzJLIHx.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Mladen Hadžić
-project_title: 'HAJDUK: Tegen de MiddernachtSultaan'
+project_title: 'HAJDUK: Against the Midnight Sultan'
 context: Autonomous Context
 year: 2023-2024
 main_image: mladen-hadzic/14WPs9140Y2vo2LA6B5mnrLcuN8olOBPx.jpg

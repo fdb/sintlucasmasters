@@ -1,6 +1,6 @@
 ---
 student_name: Rubeyda Yilmaz
-project_title: FROM BLANK TO BOOK
+project_title: VAN BLANCO NAAR BOEK
 context: Applied Context
 year: 2022—2023
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Victor Borgions
-project_title: Bezoedelde Vlees
+project_title: Haunted Flesh
 context: Digital Context
 year: 2023-2024
 main_image: victor-borgions/1EW81xd7BV7aZ7QTsg-GCKrdTBcVvtLFC.jpg

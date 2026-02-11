@@ -1,6 +1,6 @@
 ---
 student_name: 'Axelle Pels '
-project_title: (N)ever home again
+project_title: '(N)ooit weer thuis '
 context: Applied Context
 year: 2023-2024
 main_image: axelle-pels/17f-bPayZQiWKmUhvOx1f8lVjLyV55IRj.jpg

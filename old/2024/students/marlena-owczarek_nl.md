@@ -1,6 +1,6 @@
 ---
 student_name: Marlena Owczarek
-project_title: Insignia van Leeftijd en Verval
+project_title: Insignia of Age and Decay
 context: Autonomous Context
 year: 2023-2024
 main_image: marlena-owczarek/1Syfd7xu4yj8GggeDpjzNTwXc_fNvuhvW.jpg

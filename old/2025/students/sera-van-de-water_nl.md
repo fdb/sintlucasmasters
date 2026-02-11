@@ -1,6 +1,6 @@
 ---
 student_name: Sera van de Water
-project_title: Wat doen we hier?
+project_title: What Are We Doing Here?
 context: Socio-Political Context
 year: 2024-2025
 main_image: sera-van-de-water/1TDoPzza7Oodbo9jriNuFQ2_wmW1B-Y7C.jpg

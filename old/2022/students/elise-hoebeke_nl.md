@@ -1,6 +1,6 @@
 ---
 student_name: Elise Hoebeke
-project_title: Transmutatie van een baksteen
+project_title: Transmutation d'une brique
 context: Jewelry Context
 year: 2021—2022
 tags:

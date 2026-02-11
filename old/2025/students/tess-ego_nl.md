@@ -1,6 +1,6 @@
 ---
 student_name: Tess Ego
-project_title: De Truc van Houding
+project_title: The Trick of Pose
 context: Applied Context
 year: 2024-2025
 main_image: tess-ego/1Q81FvWU62N-_x7-MOLZ0gC5OdD80Yq9K.jpg

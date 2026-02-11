@@ -1,6 +1,6 @@
 ---
 student_name: Nour Lahyani
-project_title: Gebouwd uit letters | مَبْنِيَّةٌ مِنْ حُرُوفٍ
+project_title: Built from letters | مَبْنِيَّةٌ مِنْ حُرُوفٍ
 context: Digital Context
 year: 2024-2025
 main_image: nour-lahyani/1Y3PCO0QIHzrQjLUL0BYWUJdQtgWruili.jpg

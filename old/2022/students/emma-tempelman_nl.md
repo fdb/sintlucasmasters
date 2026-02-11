@@ -1,6 +1,6 @@
 ---
 student_name: Emma Tempelman
-project_title: Het koninkrijk dat aan onze voeten ligt.
+project_title: The kingdom that lies at out feet.
 context: Jewelry Context
 year: 2021—2022
 tags:

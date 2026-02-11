@@ -1,6 +1,6 @@
 ---
 student_name: Hannelore Verbruggen
-project_title: Evil Wolf
+project_title: Malus Lupus
 context: Applied Context
 year: 2021-2022
 main_image: >-

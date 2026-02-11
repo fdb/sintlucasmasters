@@ -1,6 +1,6 @@
 ---
 student_name: Geraldo Dos Santos
-project_title: Het Einde van de Hoogtepunten
+project_title: 'The End of Highlights '
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

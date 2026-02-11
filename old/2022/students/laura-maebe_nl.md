@@ -1,6 +1,6 @@
 ---
 student_name: Laura Maebe
-project_title: Jij door Laura Maebe
+project_title: You by Laura Maebe
 context: Digital Context
 year: 2021—2022
 tags:

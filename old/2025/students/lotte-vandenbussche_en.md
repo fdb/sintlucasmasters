@@ -1,6 +1,6 @@
 ---
 student_name: Lotte Vandenbussche
-project_title: Portraits without a face
+project_title: portretten zonder gezicht
 context: Autonomous Context
 year: 2024-2025
 main_image: lotte-vandenbussche/1-d0QZ0ge8QsUPLG96xH5FH1L5JCqM1Y0.jpg

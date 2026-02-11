@@ -1,6 +1,6 @@
 ---
 student_name: Alexandra Fraser
-project_title: Maureen en ik
+project_title: Maureen and I
 context: Socio-Political Context
 year: 2021-2022
 main_image: >-

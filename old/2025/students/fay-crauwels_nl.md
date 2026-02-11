@@ -1,6 +1,6 @@
 ---
 student_name: Fay Crauwels
-project_title: Orchidee
+project_title: Orchid
 context: Applied Context
 year: 2024-2025
 main_image: fay-crauwels/136yjnzlxNozITry42EKVjk-E4x6UCMAc.jpg

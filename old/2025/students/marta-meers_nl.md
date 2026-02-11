@@ -1,6 +1,6 @@
 ---
 student_name: Marta Meers
-project_title: Projectie Voor Een Bedorven Bodem (p.v.e.b.)
+project_title: Projection For A Spoiled Soil (p.f.a.s.)
 context: Socio-Political Context
 year: 2024-2025
 main_image: marta-meers/1Nw6hCWrWs1uksixReA0_ztIUQAy3kG8V.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Larissa Merzthal
-project_title: Het Mestiza-geheugen
+project_title: The Mestiza Memory
 context: Socio-Political Context
 year: 2020-2021
 main_image: >-

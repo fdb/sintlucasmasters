@@ -1,6 +1,6 @@
 ---
 student_name: Robbe Oyen
-project_title: Een MetaFont-gereedschap
+project_title: A MetaFont tool
 context: Digital Context
 year: 2024-2025
 main_image: robbe-oyen/1o6a-ICHv94BSISgHzG_nF6XUGvecqmoq.jpg

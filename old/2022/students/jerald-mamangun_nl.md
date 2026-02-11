@@ -1,6 +1,6 @@
 ---
 student_name: Jerald Mamangun
-project_title: Aangenaam kennis te maken (Ik ben blij je te ontmoeten).
+project_title: はじめまして (I am glad to meet you).
 context: Applied Context
 year: 2021-2022
 main_image: >-

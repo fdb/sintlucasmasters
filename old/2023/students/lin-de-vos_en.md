@@ -1,6 +1,6 @@
 ---
 student_name: Lin De Vos
-project_title: love for letters
+project_title: 'love for letters '
 context: Applied Context
 year: 2022—2023
 tags:

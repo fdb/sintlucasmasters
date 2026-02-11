@@ -1,6 +1,6 @@
 ---
 student_name: Josué Salazaku
-project_title: gelaagde muren
+project_title: layered walls
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

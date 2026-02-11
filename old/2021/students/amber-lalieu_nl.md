@@ -1,6 +1,6 @@
 ---
 student_name: Amber Lalieu
-project_title: Vrienden
+project_title: Friends
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

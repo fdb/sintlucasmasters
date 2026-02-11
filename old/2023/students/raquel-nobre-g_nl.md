@@ -1,6 +1,6 @@
 ---
 student_name: Raquel Nobre G
-project_title: Dissectiezaal
+project_title: Dissection Room
 context: Autonomous Context
 year: 2022—2023
 tags:

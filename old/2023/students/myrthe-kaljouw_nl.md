@@ -1,6 +1,6 @@
 ---
 student_name: Myrthe Kaljouw
-project_title: Een droom verdwijnt niet
+project_title: A dream doesn't go away
 context: Applied Context
 year: 2022-2023
 main_image: >-

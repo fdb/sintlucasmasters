@@ -1,6 +1,6 @@
 ---
 student_name: Kinda Ghannoum
-project_title: Kaaf Drukkerij
+project_title: Kaaf Print
 context: Applied Context
 year: 2020-2021
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Enrika Verbruggen
-project_title: Roots in Wonder
+project_title: Wortels in Verwondering
 context: Autonomous Context
 year: 2024-2025
 main_image: enrika/1QUMPOACpGVA47Aa3zE5d8Bn2bOJHEacq.jpg

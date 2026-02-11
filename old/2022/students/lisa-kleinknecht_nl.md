@@ -1,6 +1,6 @@
 ---
 student_name: Lisa Kleinknecht
-project_title: Landschap van Brieven
+project_title: Landscape of Letters
 context: Applied Context
 year: 2021-2022
 main_image: >-
