@@ -239,7 +239,7 @@ async function importData() {
             continue;
         }
 
-        const mdFiles = files.filter(f => f.endsWith('.md') && f !== 'students.json');
+        const mdFiles = files.filter(f => f.endsWith('_en.md'));
 
         for (const file of mdFiles) {
             try {
