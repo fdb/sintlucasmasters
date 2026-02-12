@@ -396,9 +396,11 @@ a:hover {
 }
 
 .filter-row {
-  display: flex;
-  align-items: center;
-  gap: 0;
+  --filter-cell-width: 8ch;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.75rem;
 }
 
 .filter-label {
@@ -411,15 +413,51 @@ a:hover {
   flex-shrink: 0;
 }
 
-.year-nav,
+.filter-row .year-nav,
 .filter-row .context-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(var(--filter-cell-width), max-content));
+  gap: 0.35rem 0.5rem;
   margin-bottom: 0;
   padding-bottom: 0;
   border-bottom: none;
+  width: max-content;
+}
+
+.filter-row .year-nav a,
+.filter-row .context-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  min-width: var(--filter-cell-width);
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (min-width: 980px) {
+  .filter-row .year-nav,
+  .filter-row .context-nav {
+    grid-template-columns: repeat(6, minmax(var(--filter-cell-width), max-content));
+  }
+}
+
+@media (max-width: 760px) {
+  .filter-row {
+    grid-template-columns: 1fr;
+    row-gap: 0.4rem;
+  }
+
+  .filter-label {
+    width: auto;
+  }
+
+  .filter-row .year-nav,
+  .filter-row .context-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
 }
 
 .year-nav a {
@@ -1246,6 +1284,17 @@ body.lightbox-open {
 
   .context-nav {
     gap: 0;
+  }
+
+  .filter-row .year-nav,
+  .filter-row .context-nav {
+    gap: 0.25rem 0.4rem;
+  }
+
+  .filter-row .year-nav a,
+  .filter-row .context-nav a {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.35rem;
   }
 
   .detail-name {
