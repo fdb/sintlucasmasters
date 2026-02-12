@@ -143,6 +143,14 @@ export const Layout: FC<LayoutProps> = ({
             >
               <img src="/logo-white.svg" alt="Sint Lucas Antwerpen" />
             </a>
+            <div class="locale-switch locale-switch--top" aria-label={copy.localeLabel}>
+              <a href={enPath} class={locale === "en" ? "active" : ""}>
+                EN
+              </a>
+              <a href={nlPath} class={locale === "nl" ? "active" : ""}>
+                NL
+              </a>
+            </div>
           </div>
         </div>
         <header class="site-header site-header--public">
@@ -162,14 +170,6 @@ export const Layout: FC<LayoutProps> = ({
                 <a href={`/${locale}/about`}>{copy.navAbout}</a>
               </div>
               <div class="sub-header-right">
-                <div class="locale-switch" aria-label={copy.localeLabel}>
-                  <a href={enPath} class={locale === "en" ? "active" : ""}>
-                    EN
-                  </a>
-                  <a href={nlPath} class={locale === "nl" ? "active" : ""}>
-                    NL
-                  </a>
-                </div>
                 <div
                   class="site-search"
                   data-site-search

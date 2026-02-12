@@ -14,6 +14,7 @@ const createSearchController = () => {
   const field = container.querySelector("[data-search-field]");
   const input = container.querySelector("[data-search-input]");
   const status = container.querySelector("[data-search-status]");
+  const subHeader = container.closest(".sub-header");
 
   if (!toggle || !field || !input || !status) return null;
 
@@ -47,6 +48,7 @@ const createSearchController = () => {
     toggle.setAttribute("aria-expanded", String(isOpen));
     container.dataset.open = isOpen ? "true" : "false";
     field.setAttribute("aria-hidden", String(!isOpen));
+    if (subHeader) subHeader.classList.toggle("sub-header--search-open", isOpen);
     input.tabIndex = isOpen ? 0 : -1;
     if (!isOpen) {
       if (input.value.trim()) {

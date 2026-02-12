@@ -9,6 +9,30 @@ test.describe("layout", () => {
     await expect(page.locator("nav.sub-header")).toBeVisible();
     await expect(page.locator('.sub-header a[href="/nl/archive"]')).toBeVisible();
   });
+
+  test("language switch is shown in the black top bar", async ({ page }) => {
+    await page.goto("/nl/");
+    await expect(page.locator(".top-bar .locale-switch")).toBeVisible();
+    await expect(page.locator(".top-bar .locale-switch a.active")).toHaveText("NL");
+  });
+
+  test("mobile search takes over the sub-header row", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/nl/");
+
+    const subHeader = page.locator("nav.sub-header");
+    const searchToggle = page.locator(".site-search [data-search-toggle]");
+    const searchInput = page.locator("[data-search-input]");
+    await expect(searchToggle).toBeVisible();
+    await expect(subHeader).not.toHaveClass(/sub-header--search-open/);
+
+    await searchToggle.click();
+    await expect(subHeader).toHaveClass(/sub-header--search-open/);
+    await expect(searchInput).toBeFocused();
+
+    await page.keyboard.press("Escape");
+    await expect(subHeader).not.toHaveClass(/sub-header--search-open/);
+  });
 });
 
 test.describe("locale routing", () => {
