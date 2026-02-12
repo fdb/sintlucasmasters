@@ -1,6 +1,6 @@
 ---
 student_name: Orphea Aerts
-project_title: Groeten uit het digitale universum
+project_title: Greetings from the digital universe
 context: Autonomous Context
 year: 2021—2022
 tags:

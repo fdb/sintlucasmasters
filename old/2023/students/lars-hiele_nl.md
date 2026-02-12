@@ -1,6 +1,6 @@
 ---
 student_name: Lars Hiele
-project_title: R.A.V.E
+project_title: 'R.A.V.E '
 context: Applied Context
 year: 2022-2023
 main_image: >-

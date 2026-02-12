@@ -1,6 +1,6 @@
 ---
 student_name: Roel Segers
-project_title: Plinth
+project_title: 'Sokkel '
 context: Autonomous Context
 year: 2023-2024
 main_image: roel-segers/1pqOBpHZzYb9fbO7WGQU1vlK0YSz2Hhv7.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Kaat Wouters
-project_title: De wormgat naar mijn hart
+project_title: The Wormhole to my heart
 context: Autonomous Context
 year: 2021—2022
 tags:

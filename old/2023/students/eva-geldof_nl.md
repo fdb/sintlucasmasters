@@ -1,6 +1,6 @@
 ---
 student_name: Eva Geldof
-project_title: POLS
+project_title: PULSE
 context: Jewelry Context
 year: 2022—2023
 main_image: >-

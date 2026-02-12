@@ -1,6 +1,6 @@
 ---
 student_name: Arthur Saint-Remy
-project_title: Achterzijde Hete Zone
+project_title: Posterior Hot Zone
 context: Digital Context
 year: 2023-2024
 main_image: arthur-saint-remy/1sV4AfFx5b2HIdxlZH8ke4R2AFGXhsfzA.jpg

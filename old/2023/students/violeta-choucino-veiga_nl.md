@@ -1,6 +1,6 @@
 ---
 student_name: Violeta Chouciño Veiga
-project_title: WE PRATEN NIET OVER POLITIEK AAN TAFEL
+project_title: WE DON'T TALK ABOUT POLITICS AT THE TABLE
 context: Autonomous Context
 year: 2022-2023
 tags:

@@ -1,6 +1,6 @@
 ---
 student_name: Léopoldine Balis
-project_title: Wanneer De Stad Stroomt
+project_title: When The City Flows
 context: Socio-Political Context
 year: 2024-2025
 main_image: leopoldine-balis/1BiZ2xhsTi9MZm9jL4ode7L3s2eezfubS.jpg

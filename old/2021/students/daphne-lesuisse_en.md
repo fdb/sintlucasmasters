@@ -1,6 +1,6 @@
 ---
 student_name: Daphné Lesuisse
-project_title: Flowering Period
+project_title: Blooming Era
 context: Applied Context
 year: 2020—2021
 main_image: >-

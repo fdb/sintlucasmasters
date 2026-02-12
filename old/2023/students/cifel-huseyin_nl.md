@@ -1,6 +1,6 @@
 ---
 student_name: Çifel Hüseyin
-project_title: Zichtbaar Onzichtbaar of mentale-gezondheid embodiments
+project_title: Visible Invisible or mental-health embodiments
 context: Applied Context
 year: 2022-2023
 main_image: >-

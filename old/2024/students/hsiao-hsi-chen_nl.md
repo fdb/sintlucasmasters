@@ -1,6 +1,6 @@
 ---
 student_name: HSIAO HSI CHEN 陳曉熙
-project_title: 'Zelfportret: Droom van een Enkele Cel'
+project_title: 'Self-portrait: Single Cell Dream'
 context: Autonomous Context
 year: 2023-2024
 main_image: hsiao-hsi-chen/1UVv_wgrmmJKXn-8SWduoFlK9Tnyq4Xjp.jpg

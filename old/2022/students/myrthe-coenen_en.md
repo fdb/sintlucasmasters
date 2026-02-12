@@ -1,6 +1,6 @@
 ---
 student_name: Myrthe Coenen
-project_title: Materiality
+project_title: Materialiteit
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

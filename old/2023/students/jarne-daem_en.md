@@ -1,6 +1,6 @@
 ---
 student_name: Jarne Daem
-project_title: At the Tavern - Tales from the Inn
+project_title: In Taberna - Verhalen uit de taverne
 context: Applied Context
 year: 2022-2023
 main_image: >-

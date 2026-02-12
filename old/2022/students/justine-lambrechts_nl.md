@@ -1,6 +1,6 @@
 ---
 student_name: Justine Lambrechts
-project_title: Toestand van materie
+project_title: State of Matter
 context: Autonomous Context
 year: 2021—2022
 tags:

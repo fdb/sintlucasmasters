@@ -1,6 +1,6 @@
 ---
 student_name: Silke Boumans
-project_title: Piece(s) City
+project_title: Stukke(n) Stad
 context: Autonomous Context
 year: 2024-2025
 main_image: silke-boumans/1WZvxWr95VTc5AgX8g9rj57yUbIDMRIZG.jpg

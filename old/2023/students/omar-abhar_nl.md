@@ -1,6 +1,6 @@
 ---
 student_name: Anonymous
-project_title: Aan mijn enige l*** / الى ح** الوحيد
+project_title: To my only l*** / الى ح** الوحيد
 context: Socio-Political Context
 year: 2022-2023
 main_image: >-

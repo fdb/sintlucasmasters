@@ -1,6 +1,6 @@
 ---
 student_name: Karlijn de Lange
-project_title: Een Uitgebreide Verzameling van Opgebouwde Verhalen
+project_title: A Vast Set of Accumulated Narratives
 context: Autonomous Context
 year: 2023-2024
 main_image: karlijn-de-lange/1Jny9PEiNKuUrjYcH3u_6FyHqbp_5F1gQ.jpg

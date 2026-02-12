@@ -1,6 +1,6 @@
 ---
 student_name: Yana Van Ginneken
-project_title: shifting from one foot to another
+project_title: 'shifting from one foot to another '
 context: Applied Context
 year: 2023-2024
 main_image: yana-van-ginneken/1MVmRwISnP0tthcdzpadVgV02dQJMWI7U.jpg

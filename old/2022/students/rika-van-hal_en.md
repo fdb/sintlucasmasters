@@ -1,6 +1,6 @@
 ---
 student_name: Rika Van Hal
-project_title: Menphoutism
+project_title: Menfoutisme
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

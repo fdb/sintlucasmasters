@@ -8,17 +8,22 @@
  * frontmatter fields, splits bilingual files, and creates translated variants.
  *
  * Usage:
- *   node scripts/add-language-meta.mjs --detect     # Dry-run: show detected languages
- *   node scripts/add-language-meta.mjs --apply       # Rename, split, add metadata
- *   node scripts/add-language-meta.mjs --translate    # Generate translated variants
+ *   node scripts/add-language-meta.mjs --detect      # Dry-run: show detected languages
+ *   node scripts/add-language-meta.mjs --apply        # Rename, split, add metadata
+ *   node scripts/add-language-meta.mjs --translate     # Generate translated variants
+ *   node scripts/add-language-meta.mjs --fix-titles    # Restore original titles in translated files
  */
 
 import { readdir, readFile, writeFile, rename, unlink } from "fs/promises";
 import { join, dirname, basename } from "path";
 import { fileURLToPath } from "url";
 import matter from "gray-matter";
-import Anthropic from "@anthropic-ai/sdk";
-import "dotenv/config";
+// Lazy-load Anthropic SDK and dotenv only when needed (for --detect, --apply, --translate)
+async function createAnthropicClient() {
+  await import("dotenv/config");
+  const { default: Anthropic } = await import("@anthropic-ai/sdk");
+  return new Anthropic();
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
@@ -210,7 +215,7 @@ async function processBatches(items, fn) {
  * --detect: Dry-run language detection report.
  */
 async function commandDetect() {
-  const client = new Anthropic();
+  const client = await createAnthropicClient();
   const files = await readAllStudentFiles();
   console.log(`Found ${files.length} student files.\n`);
 
@@ -266,7 +271,7 @@ async function commandDetect() {
  * --apply: Rename files, split bilingual files, add metadata.
  */
 async function commandApply() {
-  const client = new Anthropic();
+  const client = await createAnthropicClient();
   const files = await readAllStudentFiles();
 
   // Check that files haven't already been processed
@@ -361,7 +366,7 @@ async function commandApply() {
  * --translate: Generate translated variants for files missing a counterpart.
  */
 async function commandTranslate() {
-  const client = new Anthropic();
+  const client = await createAnthropicClient();
 
   // Read all files (should now all have _en or _nl suffix)
   const allFiles = [];
@@ -430,16 +435,8 @@ async function commandTranslate() {
       translatedBio = await translateText(client, frontmatter.bio, item.sourceLang, item.targetLang);
     }
 
-    // Translate project_title
-    let translatedTitle = frontmatter.project_title;
-    if (frontmatter.project_title) {
-      translatedTitle = await translateText(
-        client,
-        frontmatter.project_title,
-        item.sourceLang,
-        item.targetLang,
-      );
-    }
+    // Keep project_title as-is (artistic choice, should not be translated)
+    const translatedTitle = frontmatter.project_title;
 
     // Build new frontmatter
     const newFrontmatter = {
@@ -464,6 +461,94 @@ async function commandTranslate() {
   console.log(`Translated: ${toTranslate.length} files`);
 }
 
+/**
+ * --fix-titles: Restore original project titles in translated files.
+ *
+ * For each student pair (_en + _nl), copies the project_title from the
+ * original file (translated: false) to the translated file (translated: true).
+ * This is a local-only operation — no API calls needed.
+ */
+async function commandFixTitles() {
+  // Read all files grouped by base name
+  const allFiles = [];
+  for (const year of YEARS) {
+    const studentsDir = join(PROJECT_ROOT, "old", year, "students");
+    let entries;
+    try {
+      entries = await readdir(studentsDir);
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      if (!entry.endsWith(".md") || entry === "students.json") continue;
+      allFiles.push({ year, filename: entry, dir: studentsDir });
+    }
+  }
+
+  // Group by base name
+  const groups = new Map();
+  for (const f of allFiles) {
+    let baseName;
+    if (f.filename.endsWith("_en.md")) {
+      baseName = f.filename.replace("_en.md", "");
+    } else if (f.filename.endsWith("_nl.md")) {
+      baseName = f.filename.replace("_nl.md", "");
+    } else {
+      continue;
+    }
+    const key = `${f.year}/${baseName}`;
+    if (!groups.has(key)) groups.set(key, { year: f.year, baseName, dir: f.dir, files: {} });
+    const lang = f.filename.endsWith("_en.md") ? "en" : "nl";
+    groups.get(key).files[lang] = f.filename;
+  }
+
+  let fixedCount = 0;
+
+  for (const [key, group] of groups) {
+    // Need both files
+    if (!group.files.en || !group.files.nl) continue;
+
+    const enPath = join(group.dir, group.files.en);
+    const nlPath = join(group.dir, group.files.nl);
+
+    const enContent = await readFile(enPath, "utf-8");
+    const nlContent = await readFile(nlPath, "utf-8");
+
+    const enParsed = matter(enContent);
+    const nlParsed = matter(nlContent);
+
+    // Find which file is the original (translated: false) and which is translated
+    let originalParsed, translatedParsed, translatedPath;
+    if (enParsed.data.translated === true && nlParsed.data.translated === false) {
+      originalParsed = nlParsed;
+      translatedParsed = enParsed;
+      translatedPath = enPath;
+    } else if (nlParsed.data.translated === true && enParsed.data.translated === false) {
+      originalParsed = enParsed;
+      translatedParsed = nlParsed;
+      translatedPath = nlPath;
+    } else {
+      // Both are originals or both are translated — skip
+      continue;
+    }
+
+    const originalTitle = originalParsed.data.project_title;
+    const translatedTitle = translatedParsed.data.project_title;
+
+    if (originalTitle === translatedTitle) continue; // Already matches
+
+    // Copy the original title to the translated file
+    const updatedFrontmatter = { ...translatedParsed.data, project_title: originalTitle };
+    await writeFile(translatedPath, serializeMarkdown(updatedFrontmatter, translatedParsed.content), "utf-8");
+    fixedCount++;
+    console.log(`  Fixed: ${key} — "${translatedTitle}" → "${originalTitle}"`);
+  }
+
+  console.log(`\n=== Fix Titles Summary ===`);
+  console.log(`Total pairs checked: ${groups.size}`);
+  console.log(`Titles fixed: ${fixedCount}`);
+}
+
 // ─── Main ───────────────────────────────────────────────────────────────
 
 async function main() {
@@ -475,12 +560,15 @@ async function main() {
     await commandApply();
   } else if (args.includes("--translate")) {
     await commandTranslate();
+  } else if (args.includes("--fix-titles")) {
+    await commandFixTitles();
   } else {
-    console.log("Usage: node scripts/add-language-meta.mjs --detect|--apply|--translate");
+    console.log("Usage: node scripts/add-language-meta.mjs --detect|--apply|--translate|--fix-titles");
     console.log("");
-    console.log("  --detect     Dry-run: detect languages and show report");
-    console.log("  --apply      Rename files, split bilingual, add lang metadata");
-    console.log("  --translate  Generate translated variants for missing counterparts");
+    console.log("  --detect      Dry-run: detect languages and show report");
+    console.log("  --apply       Rename files, split bilingual, add lang metadata");
+    console.log("  --translate   Generate translated variants for missing counterparts");
+    console.log("  --fix-titles  Restore original project titles in translated files");
     process.exit(1);
   }
 }

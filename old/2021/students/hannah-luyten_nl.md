@@ -1,6 +1,6 @@
 ---
 student_name: Hannah Luyten
-project_title: HET VERB Magazine
+project_title: THE VERB Magazine
 context: Applied Context
 year: 2020—2021
 main_image: >-

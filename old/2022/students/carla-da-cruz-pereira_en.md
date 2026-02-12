@@ -1,6 +1,6 @@
 ---
 student_name: Carla Da Cruz Pereira
-project_title: Saudade
+project_title: 'Saudade '
 context: Applied Context
 year: 2021-2022
 main_image: >-

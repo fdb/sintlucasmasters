@@ -1,6 +1,6 @@
 ---
 student_name: Jian Xin Wang
-project_title: Ik ben een nerveuze grafisch ontwerper
+project_title: I Am an Anxious Graphic Designer
 context: Applied Context
 year: 2024-2025
 main_image: jian-xin-wang/1DgkIVNs-fBH-2G08suZaLClimJGne7vJ.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Anka Cogen
-project_title: De dood terugeisen
+project_title: Reclaiming death
 context: Socio-Political Context
 year: 2022-2023
 main_image: >-

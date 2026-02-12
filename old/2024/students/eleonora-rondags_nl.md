@@ -1,6 +1,6 @@
 ---
 student_name: Eleonora Rondags
-project_title: Odyssee
+project_title: 'Odyssey '
 context: Autonomous Context
 year: 2023-2024
 main_image: eleonora-rondags/10fyQub6yM5hJ7Ih7daiG4a9jwTHbRrh3.jpg

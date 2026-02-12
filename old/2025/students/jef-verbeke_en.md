@@ -1,6 +1,6 @@
 ---
 student_name: Jef Verbeke
-project_title: On Your Own
+project_title: Op Eigen Houtje
 context: Applied Context
 year: 2024-2025
 main_image: jef-verbeke/1e2rCtGP-ikaiwdzT4mO1KjBZEubI3Eya.jpg

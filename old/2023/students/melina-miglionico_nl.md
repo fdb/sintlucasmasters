@@ -1,6 +1,6 @@
 ---
 student_name: 'Melina Miglionico '
-project_title: VERLOOP VAN EEN HERINNERING
+project_title: COuRsE of a MEMORY
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

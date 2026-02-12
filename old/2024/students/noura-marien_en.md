@@ -1,6 +1,6 @@
 ---
 student_name: Noura Marien
-project_title: no man's land
+project_title: niemandsland
 context: Applied Context
 year: 2023-2024
 main_image: noura-marien/198VTl__tTxo9_5C6dDlMC4ZyrRsmiUl8.jpg

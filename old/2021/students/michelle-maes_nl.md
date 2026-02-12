@@ -1,6 +1,6 @@
 ---
 student_name: Michelle Maes
-project_title: Moment van dutje
+project_title: Moment of snooze
 context: Digital Context
 year: 2020—2021
 main_image: >-

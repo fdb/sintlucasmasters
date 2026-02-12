@@ -1,6 +1,6 @@
 ---
 student_name: Joppe Venema
-project_title: 'Behouden, Bedwingen, Onthouding'
+project_title: 'Retain, Restrain, Refrain'
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

@@ -1,6 +1,6 @@
 ---
 student_name: Kato De Gendt
-project_title: 'Zwip, the Circus Chicken'
+project_title: 'Zwip, de circuskip'
 context: Applied Context
 year: 2023-2024
 main_image: kato-de-gendt/1kjvyAFfXw6blt-_ccZyNrZ23mWIa4Dnq.jpg

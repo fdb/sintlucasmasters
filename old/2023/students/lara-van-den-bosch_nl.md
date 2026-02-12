@@ -1,6 +1,6 @@
 ---
 student_name: Lara Van den Bosch
-project_title: De Alledaagse Filosoof
+project_title: The Everyday Philosopher
 context: Applied Context
 year: 2022-2023
 main_image: >-

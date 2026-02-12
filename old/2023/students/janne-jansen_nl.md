@@ -1,6 +1,6 @@
 ---
 student_name: Janne Jansen
-project_title: Vormgeving is Belangrijk
+project_title: Molding Matters
 context: Applied Context
 year: 2022-2023
 main_image: >-

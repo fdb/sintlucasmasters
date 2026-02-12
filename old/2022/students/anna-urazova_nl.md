@@ -1,6 +1,6 @@
 ---
 student_name: Anna Urazova
-project_title: Regeneratie
+project_title: Regeneration
 context: Autonomous Context
 year: 2021—2022
 tags:

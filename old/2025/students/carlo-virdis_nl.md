@@ -1,6 +1,6 @@
 ---
 student_name: Carlo Virdis
-project_title: De Digitale Metgezel "Chubbo"
+project_title: The Digital Companion "Chubbo"
 context: Digital Context
 year: 2024-2025
 main_image: carlo-virdis/1pzqrOrjumQvCON70ephHn0QOyR1y47ad.jpg

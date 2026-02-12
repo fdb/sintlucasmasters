@@ -1,6 +1,6 @@
 ---
 student_name: Lise-Marie Goossens
-project_title: Visual Structures
+project_title: 'Visuele Structuren '
 context: Applied Context
 year: 2023-2024
 main_image: lise-marie-goossens/1dHYCcaceiVv7iofhPew5ThZkDiuZ2yfD.jpg

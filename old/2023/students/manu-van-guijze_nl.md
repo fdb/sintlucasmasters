@@ -1,6 +1,6 @@
 ---
 student_name: Manu Van Guijze
-project_title: Chou Chou (Rood)
+project_title: Chou Chou (Rouge)
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

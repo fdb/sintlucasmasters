@@ -1,6 +1,6 @@
 ---
 student_name: Bob Van den Audenaerde
-project_title: ETHERISCHE MATERIE
+project_title: ETHEREAL MATTER
 context: Digital Context
 year: 2021-2022
 tags:

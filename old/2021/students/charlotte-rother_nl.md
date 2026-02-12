@@ -1,6 +1,6 @@
 ---
 student_name: Charlotte Rother
-project_title: Waar gaan we heen?
+project_title: Where are we going?
 context: Socio-Political Context
 year: 2020—2021
 main_image: >-

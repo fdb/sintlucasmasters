@@ -1,6 +1,6 @@
 ---
 student_name: Jax Buytaert
-project_title: Will-o'-the-wisp
+project_title: Dwaallicht
 context: Autonomous Context
 year: 2023-2024
 main_image: jax-buytaert/1fF0S9Ppt_M5h5KEcwAE8wq9YXBdFFBxN.jpg

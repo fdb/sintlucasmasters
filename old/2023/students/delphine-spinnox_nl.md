@@ -1,6 +1,6 @@
 ---
 student_name: Delphine Spinnox
-project_title: De kleine onbekende wereld door mijn ogen
+project_title: Le petit monde inconnue a travers mes yeux
 context: Applied Context
 year: 2022-2023
 main_image: >-

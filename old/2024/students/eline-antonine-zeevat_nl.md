@@ -1,6 +1,6 @@
 ---
 student_name: 'Eline Antonine Zeevat '
-project_title: Don't you break your pretty little head about it.
+project_title: Breek jij je mooie hoofdje daar maar niet over'
 context: Socio-Political Context
 year: 2023-2024
 main_image: eline-antonine-zeevat/1Mqj5p2e59RCEBkdbnQ3mvYfCyKSgEbgL.jpg

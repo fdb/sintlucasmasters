@@ -1,6 +1,6 @@
 ---
 student_name: Nastia Krasinskaia
-project_title: Vogels zingen van verlossing
+project_title: Birds are singing of salvation
 context: Autonomous Context
 year: 2023-2024
 main_image: nastia-krasinskaia/1m7jS34SWy2idHl-UDhN6c5TuBDpnlf9n.jpg

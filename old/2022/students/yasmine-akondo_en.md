@@ -1,6 +1,6 @@
 ---
 student_name: Yasmine Akondo
-project_title: 'Chronicle: 0'
+project_title: 'Kroniek: 0'
 context: Autonomous Context
 year: 2021-2022
 tags:

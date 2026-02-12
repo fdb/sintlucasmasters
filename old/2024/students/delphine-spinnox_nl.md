@@ -1,6 +1,6 @@
 ---
 student_name: Delphine Spinnox
-project_title: Ik ben een Aardappel
+project_title: Moi une Patate
 context: Autonomous Context
 year: 2023-2024
 main_image: delphine-spinnox/1d_lxywgkNPMxE7m_Zu2MDAX_aGEZBNYQ.jpg

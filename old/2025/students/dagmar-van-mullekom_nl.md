@@ -1,6 +1,6 @@
 ---
 student_name: Dagmar van Mullekom
-project_title: '"ZWART"'
+project_title: '"BLACK"'
 context: Autonomous Context
 year: 2024-2025
 main_image: dagmar-van-mullekom/1bHn3meJpaTj5g1rrBVBIt-y71PUV7_hm.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Luka Josephi
-project_title: Portrait Cabinet
+project_title: Portretkabinet
 context: Applied Context
 year: 2024-2025
 main_image: luka-josephi/1mGMbhdZQJlg-SfVUMbk6x24U5F9YIW0N.jpg

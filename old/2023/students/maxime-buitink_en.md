@@ -1,6 +1,6 @@
 ---
 student_name: Maxime Buitink
-project_title: BRIDGE 12
+project_title: BRUG 12
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

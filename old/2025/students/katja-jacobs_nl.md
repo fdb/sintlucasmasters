@@ -1,6 +1,6 @@
 ---
 student_name: Katja Jacobs
-project_title: 'Een Sentimenteel Archief: Over sieraden, herinnering en ritueel'
+project_title: 'A Sentimental Archive : On jewellery, memory and ritual'
 context: Jewelry Context
 year: 2024-2025
 main_image: katja-jacobs/1teZRxrM5A_NMf6_0idGPsBQMXIpnfCwZ.jpg

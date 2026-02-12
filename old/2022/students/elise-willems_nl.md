@@ -1,6 +1,6 @@
 ---
 student_name: Elise Willems
-project_title: Het betreden van het oppervlak
+project_title: Entering the surface
 context: Autonomous Context
 year: 2021-2022
 main_image: >-

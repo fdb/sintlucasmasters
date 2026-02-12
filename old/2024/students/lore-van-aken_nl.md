@@ -1,6 +1,6 @@
 ---
 student_name: Lore Van Aken
-project_title: 'INPAKKEN, KNOPEN, VASTBINDEN: TERE RANKEN ROND ZACHTE HUID'
+project_title: 'WRAPPING, KNOTTING, TYING: TENDER TENDRILS AROUND SOFT SKIN'
 context: Applied Context
 year: 2023-2024
 main_image: lore-van-aken/1zeRg001O42R9kvOo7pB4VvDS2WllL86N.jpg

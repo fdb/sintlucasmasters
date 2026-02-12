@@ -1,6 +1,6 @@
 ---
 student_name: Madina Mahomedova
-project_title: Replica van een Replica die ik Wil Worden
+project_title: Replica of a Replica I Aspire to Become
 context: Digital Context
 year: 2024-2025
 main_image: madina-mahomedova/1zAptWw3llptdmi4V3OWVgw2_Bbj555yR.jpg

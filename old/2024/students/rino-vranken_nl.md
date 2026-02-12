@@ -1,6 +1,6 @@
 ---
 student_name: Rino Vranken
-project_title: Leger van Mij
+project_title: Army of Me
 context: Digital Context
 year: 2023-2024
 main_image: rino-vranken/1eE33Ho1BG4v1iImaNcq3R5V4tUWn6HEZ.jpg

@@ -1,6 +1,6 @@
 ---
 student_name: Bo Martens
-project_title: Onberispelijk
+project_title: Flawless
 context: Applied Context
 year: 2024-2025
 main_image: bo-martens/1Z5IvjoQK_0iosGe-K31pAmdOKLk7x_7U.jpg

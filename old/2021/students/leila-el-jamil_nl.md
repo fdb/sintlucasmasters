@@ -1,6 +1,6 @@
 ---
 student_name: Leïla El Jamil
-project_title: Korte Routes
+project_title: Short Cuts
 context: Autonomous Context
 year: 2020—2021
 main_image: >-

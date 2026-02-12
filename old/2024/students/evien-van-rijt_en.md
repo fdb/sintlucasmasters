@@ -1,6 +1,6 @@
 ---
 student_name: Evien van Rijt
-project_title: little dinner with yourself
+project_title: etentje met jezelf
 context: Autonomous Context
 year: 2023-2024
 main_image: evien-van-rijt/1nQ6yMsolL629QudtQ6BONhVtlvBrlrJW.jpg

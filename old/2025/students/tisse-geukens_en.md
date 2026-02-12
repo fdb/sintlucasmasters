@@ -1,6 +1,6 @@
 ---
 student_name: Tisse Geukens
-project_title: Freshwater Safari
+project_title: Zoetwater Safari
 context: Applied Context
 year: 2024-2025
 main_image: tisse-geukens/1pqVYHD_YFQrrw2AmKHuQewSZUdkI3sSY.jpg

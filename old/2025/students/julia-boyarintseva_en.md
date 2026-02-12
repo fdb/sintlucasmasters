@@ -1,6 +1,6 @@
 ---
 student_name: Julia Boyarintseva
-project_title: 'Tapir and Mombin: a picture book'
+project_title: 'Tapir en Mombin: een prentenboek'
 context: Applied Context
 year: 2024-2025
 main_image: julia-boyarintseva/1ctSEaRfCo8JjCN1WoiLQ-mAKojqs1PFU.jpg

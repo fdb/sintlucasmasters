@@ -1,6 +1,6 @@
 ---
 student_name: Melissa Van Havere
-project_title: 'Ze kunnen praten, we hoeven alleen maar te luisteren'
+project_title: 'They can talk, we just have to listen'
 context: Autonomous Context
 year: 2024-2025
 main_image: melissa-van-havere/19H294pmFtYsneqypi9ouTgFTq7c9QnAT.jpg

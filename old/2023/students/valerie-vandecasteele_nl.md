@@ -1,6 +1,6 @@
 ---
 student_name: Valerie Vandecasteele
-project_title: Mijn moeder is een kunstenaar
+project_title: My mum is an Artist
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

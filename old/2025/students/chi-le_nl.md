@@ -1,6 +1,6 @@
 ---
 student_name: Chi Le
-project_title: Loop & Sprong (Tĩnh & Động)
+project_title: Loop & Leap (Tĩnh & Động)
 context: Applied Context
 year: 2024-2025
 main_image: chi-le/1noRNq9Z4qURF3PJMVFn0UJE3POiDzIvl.jpg

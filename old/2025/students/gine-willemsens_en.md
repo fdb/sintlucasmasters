@@ -1,6 +1,6 @@
 ---
 student_name: Gine Willemsens
-project_title: Myofragnments
+project_title: Myofragmenta
 context: Autonomous Context
 year: 2024-2025
 main_image: gine-willemsens/1heyhQPocU0fZdwCO9V1gBNPVT4u2Mwnb.jpg

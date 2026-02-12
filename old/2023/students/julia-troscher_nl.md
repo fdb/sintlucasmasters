@@ -1,6 +1,6 @@
 ---
 student_name: Julia Tröscher
-project_title: Venusovergang (heraut) WIP zweep smak
+project_title: 'Venus transit (herald)  WIP whip smack '
 context: Autonomous Context
 year: 2022-2023
 main_image: >-

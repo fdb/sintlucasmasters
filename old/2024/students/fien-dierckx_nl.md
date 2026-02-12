@@ -1,6 +1,6 @@
 ---
 student_name: Fien Dierckx
-project_title: Weerklingende Herinneringen
+project_title: Resonating Memories
 context: Digital Context
 year: 2023-2024
 main_image: fien-dierckx/1LX6nFAiFY3SX_i1DSScsGO-eqgzde4At.png

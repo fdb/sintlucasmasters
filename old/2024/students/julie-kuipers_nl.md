@@ -1,6 +1,6 @@
 ---
 student_name: Julie Kuipers
-project_title: IK VOEL ME...
+project_title: I FEEL...
 context: Applied Context
 year: 2023-2024
 main_image: julie-kuipers/1bfqFxZDI1S_L5YI_cMdyX-HZDLvh0TV2.jpg

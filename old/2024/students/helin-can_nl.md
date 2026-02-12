@@ -1,6 +1,6 @@
 ---
 student_name: Helin Çan
-project_title: 'Verloren & Gevonden, Roemenië: Bedreigd erfgoed'
+project_title: 'Lost & Found, Romania: Endangered heritage'
 context: Applied Context
 year: 2023-2024
 main_image: helin-can/11ocdVZHYH3yLo7qWLPfeeOANXdIBCF65.jpg

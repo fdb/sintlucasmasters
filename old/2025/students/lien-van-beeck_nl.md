@@ -1,6 +1,6 @@
 ---
 student_name: Lien Van Beeck
-project_title: Alles keert terug naar het lichaam
+project_title: Everything Returns to the Body
 context: Autonomous Context
 year: 2024-2025
 main_image: lien-van-beeck/1vKVzgET-VZBa1Bnx6RhZv-Hytw5d49iL.jpg

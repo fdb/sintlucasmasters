@@ -1,6 +1,6 @@
 ---
 student_name: Thérèse Rafter
-project_title: Trilling
+project_title: Tremor
 context: Autonomous Context
 year: 2023-2024
 main_image: therese-rafter/1fmifkd41-8MQ1m1U9FjjA5OMf2jFZCI3.jpg

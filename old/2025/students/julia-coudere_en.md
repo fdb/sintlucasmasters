@@ -1,6 +1,6 @@
 ---
 student_name: Julia Couderé
-project_title: Exorcist
+project_title: Exormist
 context: Applied Context
 year: 2024-2025
 main_image: julia-coudere/1xBtPdhhc1FVgyRpnHRv5oQSNjZdUWIvu.jpg
