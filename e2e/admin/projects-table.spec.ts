@@ -64,8 +64,8 @@ test.describe("admin projects table", () => {
     // First, select "All years" to see all projects
     await page.locator(".filter-select").first().selectOption("");
 
-    // Select Digital Context (should have 1 project: Alice Smith)
-    await page.locator(".filter-select").nth(1).selectOption("Digital Context");
+    // Select Digital context (canonical key; should have 1 project: Alice Smith)
+    await page.locator(".filter-select").nth(1).selectOption("digital");
 
     // Wait for filter to apply
     await page.waitForTimeout(100);

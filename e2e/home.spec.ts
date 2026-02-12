@@ -3,19 +3,42 @@ import { test, expect } from "@playwright/test";
 test.describe("layout", () => {
   test("header and navigation are present on all pages", async ({ page }) => {
     await page.goto("/");
+    await expect(page).toHaveURL(/\/nl\/$/);
     await expect(page.locator("header.site-header")).toBeVisible();
     await expect(page.locator(".site-title")).toBeVisible();
     await expect(page.locator("nav.sub-header")).toBeVisible();
-    await expect(page.locator('.sub-header a[href="/archive"]')).toBeVisible();
+    await expect(page.locator('.sub-header a[href="/nl/archive"]')).toBeVisible();
+  });
+});
+
+test.describe("locale routing", () => {
+  test("english locale pages render under /en", async ({ page }) => {
+    await page.goto("/en/");
+    await expect(page).toHaveURL(/\/en\/$/);
+    await expect(page.locator('.sub-header a[href="/en/archive"]')).toBeVisible();
+  });
+
+  test("language switch preserves path and query", async ({ page }) => {
+    await page.goto("/nl/archive?year=2024-2025&context=digital");
+    await page.locator(".locale-switch a", { hasText: "EN" }).click();
+    await expect(page).toHaveURL("/en/archive?year=2024-2025&context=digital");
+  });
+
+  test("legacy public routes redirect to /nl", async ({ page }) => {
+    await page.goto("/about");
+    await expect(page).toHaveURL("/nl/about");
+
+    await page.goto("/2024-2025/students/alice-smith/");
+    await expect(page).toHaveURL("/nl/2024-2025/students/alice-smith/");
   });
 });
 
 test.describe("homepage", () => {
   test("renders current year at homepage", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/\/nl\/$/);
     const firstCard = page.locator(".grid a.card").first();
-    await expect(firstCard).toHaveAttribute("href", /\/\d{4}-\d{4}\/students\//);
+    await expect(firstCard).toHaveAttribute("href", /\/nl\/\d{4}-\d{4}\/students\//);
   });
 
   test("shows context filters", async ({ page }) => {
@@ -55,24 +78,24 @@ test.describe("homepage", () => {
 
 test.describe("archive page", () => {
   test("shows archive heading", async ({ page }) => {
-    await page.goto("/archive");
-    await expect(page).toHaveTitle(/Archive/);
+    await page.goto("/nl/archive");
+    await expect(page).toHaveTitle(/archief/i);
   });
 
   test("shows year and context filters", async ({ page }) => {
-    await page.goto("/archive");
+    await page.goto("/nl/archive");
     // Should have year nav and context nav
     await expect(page.locator(".year-nav")).toBeVisible();
     await expect(page.locator(".context-nav")).toBeVisible();
   });
 
   test("shows project grid", async ({ page }) => {
-    await page.goto("/archive");
+    await page.goto("/nl/archive");
     await expect(page.locator(".grid")).toBeVisible();
   });
 
   test("year filter navigation works", async ({ page }) => {
-    await page.goto("/archive");
+    await page.goto("/nl/archive");
     // Click on a year filter (not "All")
     const yearFilter = page.locator(".year-nav a").nth(1);
     await yearFilter.click();
@@ -81,8 +104,8 @@ test.describe("archive page", () => {
 
   test("navigating from nav link works", async ({ page }) => {
     await page.goto("/");
-    await page.locator('.sub-header a[href="/archive"]').click();
-    await expect(page).toHaveURL("/archive");
+    await page.locator('.sub-header a[href="/nl/archive"]').click();
+    await expect(page).toHaveURL("/nl/archive");
   });
 });
 
@@ -91,8 +114,8 @@ test.describe("project detail page", () => {
     await page.goto("/");
     // Click on the first project card (the card itself is an <a>)
     await page.locator(".grid a.card").first().click();
-    // Should be on a detail page (URL pattern: /YYYY-YYYY/students/slug/)
-    await expect(page).toHaveURL(/\/\d{4}-\d{4}\/students\/[^/]+\//);
+    // Should be on a detail page (URL pattern: /nl/YYYY-YYYY/students/slug/)
+    await expect(page).toHaveURL(/\/nl\/\d{4}-\d{4}\/students\/[^/]+\//);
   });
 
   test("shows back link", async ({ page }) => {
@@ -115,6 +138,6 @@ test.describe("project detail page", () => {
     await page.goto("/");
     await page.locator(".grid a.card").first().click();
     await page.locator(".back-link").click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/\/nl\/$/);
   });
 });

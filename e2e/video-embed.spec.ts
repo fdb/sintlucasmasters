@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("video embeds", () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the video student's project page
-    await page.goto("/2024-2025/students/video-student/");
+    await page.goto("/nl/2024-2025/students/video-student/");
   });
 
   test("YouTube iframe is rendered with correct src", async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe("video embeds", () => {
 test.describe("projects without videos", () => {
   test("render normally without video embeds", async ({ page }) => {
     // Navigate to Alice's project which has no videos
-    await page.goto("/2024-2025/students/alice-smith/");
+    await page.goto("/nl/2024-2025/students/alice-smith/");
 
     // Should have description content
     await expect(page.locator(".detail")).toBeVisible();

@@ -54,18 +54,18 @@ function sqlEscape(value) {
 function normalizeContext(input) {
   const normalized = input.trim().toLowerCase();
   const contextMap = {
-    autonomous: 'Autonomous Context',
-    'autonomous context': 'Autonomous Context',
-    applied: 'Applied Context',
-    'applied context': 'Applied Context',
-    digital: 'Digital Context',
-    'digital context': 'Digital Context',
-    'socio-political': 'Socio-Political Context',
-    'socio-political context': 'Socio-Political Context',
-    sociopolitical: 'Socio-Political Context',
-    'sociopolitical context': 'Socio-Political Context',
-    jewelry: 'Jewelry Context',
-    'jewelry context': 'Jewelry Context',
+    autonomous: 'autonomous',
+    'autonomous context': 'autonomous',
+    applied: 'applied',
+    'applied context': 'applied',
+    digital: 'digital',
+    'digital context': 'digital',
+    'socio-political': 'sociopolitical',
+    'socio-political context': 'sociopolitical',
+    sociopolitical: 'sociopolitical',
+    'sociopolitical context': 'sociopolitical',
+    jewelry: 'jewelry',
+    'jewelry context': 'jewelry',
   };
 
   return contextMap[normalized] || null;
@@ -145,18 +145,23 @@ function buildSql() {
 
     statements.push(
       `INSERT INTO projects (` +
-        `id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, status, user_id` +
+        `id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, status, user_id` +
         `) SELECT ` +
         `'${sqlEscape(projectId)}', ` +
         `'${sqlEscape(slug)}', ` +
         `'${sqlEscape(name)}', ` +
         `'${sqlEscape(sortName)}', ` +
         `'', ` +
+        `'', ` +
         `'${PROGRAM}', ` +
         `'${sqlEscape(context)}', ` +
         `'${ACADEMIC_YEAR}', ` +
         `NULL, ` +
+        `NULL, ` +
         `'', ` +
+        `'', ` +
+        `NULL, ` +
+        `NULL, ` +
         `'draft', ` +
         `(SELECT id FROM users WHERE email = '${sqlEscape(normalizedEmail)}') ` +
         `WHERE NOT EXISTS (SELECT 1 FROM projects WHERE id = '${sqlEscape(projectId)}') ` +

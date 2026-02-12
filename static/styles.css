@@ -213,6 +213,30 @@ a:hover {
   text-decoration: none;
 }
 
+.locale-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid var(--light-gray);
+}
+
+.locale-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  padding: 0.1rem 0.4rem;
+  color: var(--mid-gray);
+  border-bottom: 1px solid transparent;
+}
+
+.locale-switch a.active {
+  color: var(--black);
+  border-bottom-color: var(--black);
+}
+
 .site-search {
   position: relative;
   display: flex;

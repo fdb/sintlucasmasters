@@ -4,14 +4,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
 import { PrintImageSection } from "./PrintImageSection";
+import { LanguageTabs } from "./LanguageTabs";
 import { queryKeys } from "../api/queryKeys";
 
 const CONTEXTS = [
-  "Autonomous Context",
-  "Applied Context",
-  "Digital Context",
-  "Socio-Political Context",
-  "Jewelry Context",
+  { value: "autonomous", label: "Autonomous" },
+  { value: "applied", label: "Applied" },
+  { value: "digital", label: "Digital" },
+  { value: "sociopolitical", label: "Socio-Political" },
+  { value: "jewelry", label: "Jewelry" },
 ];
 
 const PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"];
@@ -28,9 +29,16 @@ type ProjectEditFormProps = {
   showFooter?: boolean;
   onSave?: () => void;
   onCancel?: () => void;
+  onAutosaveNoticeChange?: (notice: "saved" | "error" | null) => void;
 };
 
-export function ProjectEditForm({ showHeader = false, showFooter = true, onSave, onCancel }: ProjectEditFormProps) {
+export function ProjectEditForm({
+  showHeader = false,
+  showFooter = true,
+  onSave,
+  onCancel,
+  onAutosaveNoticeChange,
+}: ProjectEditFormProps) {
   const {
     editDraft,
     editImages,
@@ -47,6 +55,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
     isStudentMode,
     canEditProject,
     selectedProjectId,
+    editLanguage,
   } = useAdminStore((state) => ({
     editDraft: state.editDraft,
     editImages: state.editImages,
@@ -63,6 +72,7 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
     isStudentMode: state.isStudentMode,
     canEditProject: state.canEditProject,
     selectedProjectId: state.selectedProjectId,
+    editLanguage: state.editLanguage,
   }));
 
   const queryClient = useQueryClient();
@@ -194,6 +204,16 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
   }, [autosaveEnabled, autosaveKey, autosaveNotice]);
 
   useEffect(() => {
+    onAutosaveNoticeChange?.(autosaveEnabled ? autosaveNotice : null);
+  }, [autosaveEnabled, autosaveNotice, onAutosaveNoticeChange]);
+
+  useEffect(() => {
+    return () => {
+      onAutosaveNoticeChange?.(null);
+    };
+  }, [onAutosaveNoticeChange]);
+
+  useEffect(() => {
     if (pendingSocialFocus === null) return;
     const input = socialInputRefs.current[pendingSocialFocus];
     if (input) {
@@ -254,9 +274,14 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
   const showSaveButton = !studentMode && !isLocked;
   const showCancelButton = Boolean(onCancel);
   const showFooterActions = showSaveButton || showCancelButton;
+  const titleField = editLanguage === "nl" ? "project_title_nl" : "project_title_en";
+  const bioField = editLanguage === "nl" ? "bio_nl" : "bio_en";
+  const descriptionField = editLanguage === "nl" ? "description_nl" : "description_en";
+  const locationField = editLanguage === "nl" ? "location_nl" : "location_en";
   const autosaveIndicator =
     autosaveEnabled && autosaveNotice ? (
-      <span className={`save-indicator ${autosaveNotice}`}>
+      <span className={`save-indicator ${autosaveNotice} header-save-indicator`} aria-live="polite" aria-atomic="true">
+        <span className="save-indicator-dot" aria-hidden="true" />
         {autosaveNotice === "saved" ? "Saved" : "Save failed. Retrying..."}
       </span>
     ) : null;
@@ -264,17 +289,19 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
 
   return (
     <div className="project-edit-form">
-      {showAutosaveIndicator && (
-        <div className="edit-form-autosave-fixed" aria-live="polite" aria-atomic="true">
-          {autosaveIndicator}
-        </div>
-      )}
-
       <div className="edit-form-scrollable">
         {showHeader && (
           <div className="edit-form-header">
-            <h2>Edit Project</h2>
-            {studentMode && <span className="student-mode-badge">Student View</span>}
+            <div className="edit-form-header-left">
+              <h2>Edit Project</h2>
+              {studentMode && <span className="student-mode-badge">Student View</span>}
+            </div>
+            <div className="edit-form-header-right">
+              <div className="language-tabs-stack">
+                {showAutosaveIndicator && autosaveIndicator}
+                <LanguageTabs className="language-tabs-top" />
+              </div>
+            </div>
           </div>
         )}
 
@@ -306,25 +333,27 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                 </div>
                 <div className="edit-field">
                   <label className="edit-label">
-                    Project Title <span className="required-marker">*</span>
+                    Project Title ({editLanguage.toUpperCase()}) <span className="required-marker">*</span>
                   </label>
                   <input
                     type="text"
                     className="edit-input"
-                    value={editDraft.project_title}
-                    onChange={(e) => updateEditField("project_title", e.target.value)}
+                    value={String(editDraft[titleField])}
+                    onChange={(e) => updateEditField(titleField, e.target.value)}
                     disabled={isLocked}
                   />
                 </div>
               </div>
               <div className="edit-row" style={{ marginTop: "1rem" }}>
                 <div className="edit-field">
-                  <label className="edit-label">Location</label>
+                  <label className="edit-label">
+                    Location ({editLanguage.toUpperCase()}) <span className="required-marker">*</span>
+                  </label>
                   <input
                     type="text"
                     className="edit-input"
-                    value={editDraft.location}
-                    onChange={(e) => updateEditField("location", e.target.value)}
+                    value={String(editDraft[locationField])}
+                    onChange={(e) => updateEditField(locationField, e.target.value)}
                     placeholder="e.g. Antwerp, Belgium"
                     disabled={isLocked}
                   />
@@ -393,8 +422,8 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
                   >
                     <option value="">Select context...</option>
                     {CONTEXTS.map((ctx) => (
-                      <option key={ctx} value={ctx}>
-                        {ctx}
+                      <option key={ctx.value} value={ctx.value}>
+                        {ctx.label}
                       </option>
                     ))}
                   </select>
@@ -474,24 +503,24 @@ export function ProjectEditForm({ showHeader = false, showFooter = true, onSave,
             <div className="edit-section-content">
               <div className="edit-field">
                 <label className="edit-label">
-                  Bio <span className="required-marker">*</span>
+                  Bio ({editLanguage.toUpperCase()}) <span className="required-marker">*</span>
                 </label>
                 <textarea
                   className="edit-textarea"
-                  value={editDraft.bio}
-                  onChange={(e) => updateEditField("bio", e.target.value)}
+                  value={String(editDraft[bioField])}
+                  onChange={(e) => updateEditField(bioField, e.target.value)}
                   placeholder="A brief introduction about yourself and your practice..."
                   disabled={isLocked}
                 />
               </div>
               <div className="edit-field">
                 <label className="edit-label">
-                  Project Description <span className="required-marker">*</span>
+                  Project Description ({editLanguage.toUpperCase()}) <span className="required-marker">*</span>
                 </label>
                 <textarea
                   className="edit-textarea tall"
-                  value={editDraft.description}
-                  onChange={(e) => updateEditField("description", e.target.value)}
+                  value={String(editDraft[descriptionField])}
+                  onChange={(e) => updateEditField(descriptionField, e.target.value)}
                   placeholder="Describe the project..."
                   disabled={isLocked}
                 />

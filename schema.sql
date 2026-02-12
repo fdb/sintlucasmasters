@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS projects (
     slug TEXT NOT NULL,
     student_name TEXT NOT NULL,
     sort_name TEXT NOT NULL,
-    project_title TEXT NOT NULL,
+    project_title_en TEXT NOT NULL,
+    project_title_nl TEXT NOT NULL,
     program TEXT CHECK (program IN (
         'BA_FO',
         'BA_BK',
@@ -13,16 +14,19 @@ CREATE TABLE IF NOT EXISTS projects (
         'PREMA_BK'
     )),
     context TEXT CHECK (context IN (
-        'Autonomous Context',
-        'Applied Context',
-        'Digital Context',
-        'Socio-Political Context',
-        'Jewelry Context'
+        'autonomous',
+        'applied',
+        'digital',
+        'sociopolitical',
+        'jewelry'
     )),
     academic_year TEXT NOT NULL,
-    bio TEXT,
-    description TEXT NOT NULL,
-    location TEXT,
+    bio_en TEXT,
+    bio_nl TEXT,
+    description_en TEXT NOT NULL,
+    description_nl TEXT NOT NULL,
+    location_en TEXT,
+    location_nl TEXT,
     private_email TEXT,
     thumb_image_id TEXT,
     tags TEXT, -- JSON array

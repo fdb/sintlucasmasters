@@ -1,6 +1,14 @@
 export function formatContext(value: unknown): string {
   if (value === null || value === undefined) return "—";
-  return String(value).replace(/ Context$/, "");
+  const context = String(value).toLowerCase();
+  const map: Record<string, string> = {
+    autonomous: "Autonomous",
+    applied: "Applied",
+    digital: "Digital",
+    sociopolitical: "Socio-Political",
+    jewelry: "Jewelry",
+  };
+  return map[context] || String(value);
 }
 
 export function formatAcademicYear(value: unknown): string {

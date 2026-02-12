@@ -66,18 +66,24 @@ export type ProjectImage = {
 
 export type EditDraft = {
   student_name: string;
-  project_title: string;
+  project_title_en: string;
+  project_title_nl: string;
   context: string;
   program: string;
   academic_year: string;
-  bio: string;
-  description: string;
-  location: string;
+  bio_en: string;
+  bio_nl: string;
+  description_en: string;
+  description_nl: string;
+  location_en: string;
+  location_nl: string;
   private_email: string;
   status: string;
   tags: string[];
   social_links: string[];
 };
+
+export type EditLanguage = "en" | "nl";
 
 type SessionStatus = "loading" | "ready" | "error";
 type LoadStatus = "idle" | "loading" | "ready" | "error";
@@ -86,6 +92,10 @@ type UserCreateStatus = "idle" | "creating" | "success" | "error";
 type UserModalTab = "single" | "bulk";
 type PrintImageStatus = "idle" | "validating" | "uploading" | "error";
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
+type MirroredLocalizedBase = "project_title" | "location";
+type MirroredLocalizedField = `${MirroredLocalizedBase}_${EditLanguage}`;
+type LocalizedEditTouched = { en: boolean; nl: boolean };
+type MirroredLocalizedTouched = Record<MirroredLocalizedBase, LocalizedEditTouched>;
 
 export type SubmitValidationResult = {
   valid: boolean;
@@ -112,6 +122,8 @@ type AdminState = {
   userMenuOpen: boolean;
   editModalOpen: boolean;
   editDraft: EditDraft | null;
+  editLanguage: EditLanguage;
+  mirroredLocalizedTouched: MirroredLocalizedTouched;
   editImages: ProjectImage[];
   saveStatus: SaveStatus;
   newTag: string;
@@ -158,6 +170,7 @@ type AdminState = {
   closeEdit: () => void;
   resetEditSession: () => void;
   updateEditField: (field: keyof EditDraft, value: EditDraft[keyof EditDraft]) => void;
+  setEditLanguage: (language: EditLanguage) => void;
   setNewTag: (value: string) => void;
   addTag: () => void;
   removeTag: (tag: string) => void;
@@ -251,18 +264,47 @@ const parseTags = (value: unknown): string[] => {
 
 const buildEditDraft = (project: Record<string, unknown>): EditDraft => ({
   student_name: String(project.student_name || ""),
-  project_title: String(project.project_title || ""),
+  project_title_en: String(project.project_title_en || ""),
+  project_title_nl: String(project.project_title_nl || ""),
   context: String(project.context || ""),
   program: String(project.program || ""),
   academic_year: String(project.academic_year || ""),
   status: String(project.status || "draft"),
-  bio: String(project.bio || ""),
-  description: String(project.description || ""),
-  location: String(project.location || ""),
+  bio_en: String(project.bio_en || ""),
+  bio_nl: String(project.bio_nl || ""),
+  description_en: String(project.description_en || ""),
+  description_nl: String(project.description_nl || ""),
+  location_en: String(project.location_en || project.location_nl || ""),
+  location_nl: String(project.location_nl || project.location_en || ""),
   private_email: String(project.private_email || ""),
   tags: parseTags(project.tags),
   social_links: parseSocialLinks(project.social_links),
 });
+
+const createInitialMirroredLocalizedTouched = (): MirroredLocalizedTouched => ({
+  project_title: { en: false, nl: false },
+  location: { en: false, nl: false },
+});
+
+const parseMirroredLocalizedField = (
+  field: keyof EditDraft
+): {
+  base: MirroredLocalizedBase;
+  lang: EditLanguage;
+  key: MirroredLocalizedField;
+} | null => {
+  const match = String(field).match(/^(project_title|location)_(en|nl)$/);
+  if (!match) return null;
+
+  return {
+    base: match[1] as MirroredLocalizedBase,
+    lang: match[2] as EditLanguage,
+    key: `${match[1]}_${match[2]}` as MirroredLocalizedField,
+  };
+};
+
+const localizedFieldKey = (base: MirroredLocalizedBase, lang: EditLanguage): MirroredLocalizedField =>
+  `${base}_${lang}` as MirroredLocalizedField;
 
 const normalizeImages = (images: Array<Record<string, unknown>>): ProjectImage[] =>
   images.map((img, index) => ({
@@ -302,6 +344,8 @@ export const useAdminStore = create<AdminState>()(
       userMenuOpen: false,
       editModalOpen: false,
       editDraft: null,
+      editLanguage: "nl",
+      mirroredLocalizedTouched: createInitialMirroredLocalizedTouched(),
       editImages: [],
       saveStatus: "idle",
       uploadStatus: "idle",
@@ -339,6 +383,7 @@ export const useAdminStore = create<AdminState>()(
       setSelectedYear: (year) => set({ selectedYear: year }),
       setSelectedContext: (context) => set({ selectedContext: context }),
       setSelectedStatus: (status) => set({ selectedStatus: status }),
+      setEditLanguage: (editLanguage) => set({ editLanguage }),
       loadSession: async () => {
         set({ status: "loading" });
         try {
@@ -462,6 +507,8 @@ export const useAdminStore = create<AdminState>()(
         set({
           editModalOpen: true,
           editDraft: buildEditDraft(detail.project),
+          editLanguage: "nl",
+          mirroredLocalizedTouched: createInitialMirroredLocalizedTouched(),
           editImages: webImages,
           printImage: printImg,
           saveStatus: "idle",
@@ -475,6 +522,8 @@ export const useAdminStore = create<AdminState>()(
         set({
           editModalOpen: false,
           editDraft: null,
+          editLanguage: "nl",
+          mirroredLocalizedTouched: createInitialMirroredLocalizedTouched(),
           editImages: [],
           printImage: null,
           printImageStatus: "idle",
@@ -489,6 +538,42 @@ export const useAdminStore = create<AdminState>()(
       updateEditField: (field, value) => {
         set((state) => {
           if (!state.editDraft) return {};
+
+          const mirroredField = parseMirroredLocalizedField(field);
+          if (mirroredField) {
+            const sourceField = mirroredField.key;
+            const sourceLang = mirroredField.lang;
+            const targetLang: EditLanguage = sourceLang === "en" ? "nl" : "en";
+            const targetField = localizedFieldKey(mirroredField.base, targetLang);
+            const previousSource = String(state.editDraft[sourceField] || "");
+            const previousTarget = String(state.editDraft[targetField] || "");
+            const nextSourceValue = String(value ?? "");
+            const previousTouched = state.mirroredLocalizedTouched[mirroredField.base];
+
+            const nextTouched: LocalizedEditTouched = {
+              ...previousTouched,
+              [sourceLang]: previousTouched[sourceLang] || nextSourceValue.trim().length > 0,
+            };
+
+            const nextDraft: EditDraft = {
+              ...state.editDraft,
+              [sourceField]: nextSourceValue,
+            };
+
+            // Keep mirroring while the opposite localized field has not been manually edited.
+            if (!nextTouched[targetLang] && (!previousTarget.trim() || previousTarget === previousSource)) {
+              nextDraft[targetField] = nextSourceValue;
+            }
+
+            return {
+              editDraft: nextDraft,
+              mirroredLocalizedTouched: {
+                ...state.mirroredLocalizedTouched,
+                [mirroredField.base]: nextTouched,
+              },
+            };
+          }
+
           return {
             editDraft: {
               ...state.editDraft,
@@ -681,13 +766,17 @@ export const useAdminStore = create<AdminState>()(
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               student_name: editDraft.student_name,
-              project_title: editDraft.project_title,
+              project_title_en: editDraft.project_title_en,
+              project_title_nl: editDraft.project_title_nl,
               context: editDraft.context,
               program: editDraft.program,
               academic_year: editDraft.academic_year,
-              bio: editDraft.bio || null,
-              description: editDraft.description,
-              location: editDraft.location || null,
+              bio_en: editDraft.bio_en || null,
+              bio_nl: editDraft.bio_nl || null,
+              description_en: editDraft.description_en,
+              description_nl: editDraft.description_nl,
+              location_en: editDraft.location_en || null,
+              location_nl: editDraft.location_nl || null,
               private_email: editDraft.private_email || null,
               status: editDraft.status,
               tags: editDraft.tags.length > 0 ? JSON.stringify(editDraft.tags) : null,

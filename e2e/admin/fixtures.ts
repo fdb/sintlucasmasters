@@ -20,7 +20,7 @@ export const E2E_PROJECTS = [
     slug: "alice-smith",
     student_name: "Alice Smith",
     project_title: "Digital Dreams",
-    context: "Digital Context",
+    context: "digital",
     academic_year: "2024-2025",
     status: "published",
   },
@@ -29,7 +29,7 @@ export const E2E_PROJECTS = [
     slug: "bob-jones",
     student_name: "Bob Jones",
     project_title: "Autonomous Sculptures",
-    context: "Autonomous Context",
+    context: "autonomous",
     academic_year: "2024-2025",
     status: "draft",
   },
@@ -38,19 +38,12 @@ export const E2E_PROJECTS = [
     slug: "carol-white",
     student_name: "Carol White",
     project_title: "Applied Design Systems",
-    context: "Applied Context",
+    context: "applied",
     academic_year: "2023-2024",
     status: "published",
   },
 ];
 
-export const CONTEXTS = [
-  "All",
-  "Autonomous Context",
-  "Applied Context",
-  "Digital Context",
-  "Socio-Political Context",
-  "Jewelry Context",
-];
+export const CONTEXTS = ["All", "autonomous", "applied", "digital", "sociopolitical", "jewelry"];
 
 export const YEARS = ["All", "2024-2025", "2023-2024"];

@@ -68,3 +68,19 @@ old/                   # Legacy Eleventy site (data source for import)
 
 schema.sql             # D1 database schema
 ```
+
+## Public Locales
+
+- Public pages are locale-prefixed: `/nl/...` and `/en/...` (mapped to `nl_BE` and `en_BE`).
+- Legacy unprefixed public routes redirect permanently (`301`) to `/nl/...`.
+
+## Bilingual Project Content
+
+Project content is stored in both Dutch and English:
+
+- `project_title_en`, `project_title_nl`
+- `bio_en`, `bio_nl`
+- `description_en`, `description_nl`
+- `location_en`, `location_nl`
+
+The `context` field uses canonical keys in the database: `autonomous`, `applied`, `digital`, `sociopolitical`, `jewelry`.

@@ -48,6 +48,110 @@ test.describe("admin project editing", () => {
     await expect(studentNameInput).toHaveValue("Test Student Name");
   });
 
+  test("project title prefills opposite language while typing and allows divergence", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Editable Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    const enTab = modal.getByRole("tab", { name: "EN" });
+    const nlTab = modal.getByRole("tab", { name: "NL" });
+    const titleInput = modal.locator('.edit-field:has-text("Project Title") input');
+
+    await enTab.click();
+    await titleInput.clear();
+
+    const nlTitle = `NL Prefill ${Date.now()}`;
+    await nlTab.click();
+    await titleInput.clear();
+    await titleInput.type(nlTitle);
+
+    await enTab.click();
+    await expect(titleInput).toHaveValue(nlTitle);
+
+    // Once both languages are manually edited, syncing should stop to allow custom translations.
+    const enCustomTitle = `EN Custom ${Date.now()}`;
+    await titleInput.clear();
+    await titleInput.type(enCustomTitle);
+    await nlTab.click();
+    await expect(titleInput).toHaveValue(nlTitle);
+
+    // Re-open the modal to reset field touch state and verify EN -> NL mirroring.
+    await modal.locator(".edit-modal-footer .btn-secondary").click();
+    await expect(page.locator(".edit-modal-overlay").first()).not.toHaveClass(/is-open/);
+    await targetRow.dblclick();
+
+    const reopenedModal = page.locator(".edit-modal-overlay.is-open");
+    await expect(reopenedModal).toBeVisible();
+    const enTabReopened = reopenedModal.getByRole("tab", { name: "EN" });
+    const nlTabReopened = reopenedModal.getByRole("tab", { name: "NL" });
+    const reopenedTitleInput = reopenedModal.locator('.edit-field:has-text("Project Title") input');
+
+    await nlTabReopened.click();
+    await reopenedTitleInput.clear();
+
+    const enTitle = `EN Prefill ${Date.now()}`;
+    await enTabReopened.click();
+    await reopenedTitleInput.clear();
+    await reopenedTitleInput.type(enTitle);
+
+    await nlTabReopened.click();
+    await expect(reopenedTitleInput).toHaveValue(enTitle);
+  });
+
+  test("location prefills opposite language while typing and allows divergence", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Editable Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    const enTab = modal.getByRole("tab", { name: "EN" });
+    const nlTab = modal.getByRole("tab", { name: "NL" });
+    const locationInput = modal.locator('.edit-field:has-text("Location") input');
+
+    await enTab.click();
+    await locationInput.clear();
+
+    const nlLocation = `NL Loc ${Date.now()}`;
+    await nlTab.click();
+    await locationInput.clear();
+    await locationInput.type(nlLocation);
+
+    await enTab.click();
+    await expect(locationInput).toHaveValue(nlLocation);
+
+    // Once both languages are manually edited, syncing should stop to allow custom translations.
+    const enCustomLocation = `EN Loc ${Date.now()}`;
+    await locationInput.clear();
+    await locationInput.type(enCustomLocation);
+    await nlTab.click();
+    await expect(locationInput).toHaveValue(nlLocation);
+
+    // Re-open the modal to reset field touch state and verify EN -> NL mirroring.
+    await modal.locator(".edit-modal-footer .btn-secondary").click();
+    await expect(page.locator(".edit-modal-overlay").first()).not.toHaveClass(/is-open/);
+    await targetRow.dblclick();
+
+    const reopenedModal = page.locator(".edit-modal-overlay.is-open");
+    await expect(reopenedModal).toBeVisible();
+    const enTabReopened = reopenedModal.getByRole("tab", { name: "EN" });
+    const nlTabReopened = reopenedModal.getByRole("tab", { name: "NL" });
+    const reopenedLocationInput = reopenedModal.locator('.edit-field:has-text("Location") input');
+
+    await nlTabReopened.click();
+    await reopenedLocationInput.clear();
+
+    const enLocation = `EN Loc ${Date.now()}`;
+    await enTabReopened.click();
+    await reopenedLocationInput.clear();
+    await reopenedLocationInput.type(enLocation);
+
+    await nlTabReopened.click();
+    await expect(reopenedLocationInput).toHaveValue(enLocation);
+  });
+
   test("status buttons toggle correctly", async ({ page }) => {
     // Double-click first row
     await page.locator("tbody tr").first().dblclick();
@@ -144,9 +248,9 @@ test.describe("admin project editing", () => {
     const contextSelect = modal.locator('.edit-field:has-text("Context") select');
     await expect(contextSelect).toBeVisible();
 
-    // Select a different context
-    await contextSelect.selectOption("Applied Context");
-    await expect(contextSelect).toHaveValue("Applied Context");
+    // Select a different context (canonical context key)
+    await contextSelect.selectOption("applied");
+    await expect(contextSelect).toHaveValue("applied");
   });
 
   test("editing student name updates table after save", async ({ page }) => {

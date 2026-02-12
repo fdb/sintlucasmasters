@@ -80,7 +80,7 @@ test.describe.serial("project submission", () => {
 
     // All checklist items should be valid (have green checkmarks)
     const validItems = checklist.locator(".checklist-item.valid");
-    await expect(validItems).toHaveCount(6); // project title, bio, description, print image, print caption, main image
+    await expect(validItems).toHaveCount(11); // title EN/NL, bio EN/NL, description EN/NL, location EN/NL, print image, print caption, main image
   });
 
   test("submit button is enabled when all fields are complete", async ({ page }) => {

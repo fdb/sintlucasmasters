@@ -1,10 +1,11 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
-import type { Bindings, Project, ProjectImage, UserRole } from "../types";
+import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN } from "../constants";
 import { emailSlug } from "../lib/names";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
+import { normalizeContextKey } from "../lib/i18n";
 
 type TableConfig = {
   select: string;
@@ -13,7 +14,8 @@ type TableConfig = {
 
 const TABLES: Record<string, TableConfig> = {
   projects: {
-    select: "id, slug, student_name, sort_name, project_title, context, academic_year, status, updated_at, user_id",
+    select:
+      "id, slug, student_name, sort_name, COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title, context, academic_year, status, updated_at, user_id",
     orderBy: "updated_at DESC",
   },
   project_images: {
@@ -31,10 +33,14 @@ const MAX_LIMIT = 1000;
 // Fields that students are allowed to edit
 const STUDENT_EDITABLE_FIELDS = [
   "student_name",
-  "project_title",
-  "bio",
-  "description",
-  "location",
+  "project_title_en",
+  "project_title_nl",
+  "bio_en",
+  "bio_nl",
+  "description_en",
+  "description_nl",
+  "location_en",
+  "location_nl",
   "private_email",
   "social_links",
   "tags",
@@ -172,7 +178,9 @@ adminApiRoutes.get("/projects/mine", async (c) => {
   const userId = isAdminOrEditor(user) && forUserId ? forUserId : user.userId;
 
   const { results } = await c.env.DB.prepare(
-    `SELECT id, slug, student_name, sort_name, project_title, context, academic_year, status, updated_at, user_id
+    `SELECT id, slug, student_name, sort_name,
+            COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title,
+            context, academic_year, status, updated_at, user_id
      FROM projects
      WHERE user_id = ?
      ORDER BY updated_at DESC`
@@ -242,13 +250,21 @@ adminApiRoutes.put("/projects/:id", async (c) => {
     updates.push("student_name = ?");
     values.push(body.student_name);
   }
-  if (body.project_title !== undefined) {
-    updates.push("project_title = ?");
-    values.push(body.project_title);
+  if (body.project_title_en !== undefined) {
+    updates.push("project_title_en = ?");
+    values.push(body.project_title_en);
+  }
+  if (body.project_title_nl !== undefined) {
+    updates.push("project_title_nl = ?");
+    values.push(body.project_title_nl);
   }
   if (body.context !== undefined) {
+    const normalizedContext = normalizeContext(body.context);
+    if (!normalizedContext) {
+      return c.json({ error: "Invalid context" }, 400);
+    }
     updates.push("context = ?");
-    values.push(body.context);
+    values.push(normalizedContext);
   }
   if (body.program !== undefined) {
     updates.push("program = ?");
@@ -258,17 +274,29 @@ adminApiRoutes.put("/projects/:id", async (c) => {
     updates.push("academic_year = ?");
     values.push(body.academic_year);
   }
-  if (body.bio !== undefined) {
-    updates.push("bio = ?");
-    values.push(body.bio);
+  if (body.bio_en !== undefined) {
+    updates.push("bio_en = ?");
+    values.push(body.bio_en);
   }
-  if (body.description !== undefined) {
-    updates.push("description = ?");
-    values.push(body.description);
+  if (body.bio_nl !== undefined) {
+    updates.push("bio_nl = ?");
+    values.push(body.bio_nl);
   }
-  if (body.location !== undefined) {
-    updates.push("location = ?");
-    values.push(body.location);
+  if (body.description_en !== undefined) {
+    updates.push("description_en = ?");
+    values.push(body.description_en);
+  }
+  if (body.description_nl !== undefined) {
+    updates.push("description_nl = ?");
+    values.push(body.description_nl);
+  }
+  if (body.location_en !== undefined) {
+    updates.push("location_en = ?");
+    values.push(body.location_en);
+  }
+  if (body.location_nl !== undefined) {
+    updates.push("location_nl = ?");
+    values.push(body.location_nl);
   }
   if (body.private_email !== undefined) {
     updates.push("private_email = ?");
@@ -766,14 +794,29 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
 function validateProjectForSubmission(project: Project, images: ProjectImage[]): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
-  if (!project.project_title?.trim()) {
-    errors.push("Project title is required");
+  if (!project.project_title_en?.trim()) {
+    errors.push("English project title is required");
   }
-  if (!project.bio?.trim()) {
-    errors.push("Bio is required");
+  if (!project.project_title_nl?.trim()) {
+    errors.push("Dutch project title is required");
   }
-  if (!project.description?.trim()) {
-    errors.push("Description is required");
+  if (!project.bio_en?.trim()) {
+    errors.push("English bio is required");
+  }
+  if (!project.bio_nl?.trim()) {
+    errors.push("Dutch bio is required");
+  }
+  if (!project.description_en?.trim()) {
+    errors.push("English description is required");
+  }
+  if (!project.description_nl?.trim()) {
+    errors.push("Dutch description is required");
+  }
+  if (!project.location_en?.trim()) {
+    errors.push("English location is required");
+  }
+  if (!project.location_nl?.trim()) {
+    errors.push("Dutch location is required");
   }
   const webImages = images.filter((img) => img.type !== "print");
   if (webImages.length === 0) {
@@ -861,7 +904,9 @@ adminApiRoutes.delete("/projects/:id", async (c) => {
   }
 
   const id = c.req.param("id");
-  const project = await c.env.DB.prepare("SELECT id, student_name, project_title FROM projects WHERE id = ?")
+  const project = await c.env.DB.prepare(
+    "SELECT id, student_name, COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title FROM projects WHERE id = ?"
+  )
     .bind(id)
     .first<{ id: string; student_name: string; project_title: string }>();
 
@@ -898,35 +943,12 @@ const VALID_PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"] as const;
 type Program = (typeof VALID_PROGRAMS)[number];
 
 // Valid contexts
-const VALID_CONTEXTS = [
-  "Autonomous Context",
-  "Applied Context",
-  "Digital Context",
-  "Socio-Political Context",
-  "Jewelry Context",
-] as const;
+const VALID_CONTEXTS = ["autonomous", "applied", "digital", "sociopolitical", "jewelry"] as const;
 
 // Normalize context value to canonical form (case-insensitive, with or without "Context" suffix)
-function normalizeContext(input: string): string | null {
-  const normalized = input.trim().toLowerCase();
-
-  // Map short names to full context names
-  const contextMap: Record<string, string> = {
-    autonomous: "Autonomous Context",
-    "autonomous context": "Autonomous Context",
-    applied: "Applied Context",
-    "applied context": "Applied Context",
-    digital: "Digital Context",
-    "digital context": "Digital Context",
-    "socio-political": "Socio-Political Context",
-    "socio-political context": "Socio-Political Context",
-    sociopolitical: "Socio-Political Context",
-    "sociopolitical context": "Socio-Political Context",
-    jewelry: "Jewelry Context",
-    "jewelry context": "Jewelry Context",
-  };
-
-  return contextMap[normalized] || null;
+function normalizeContext(input: unknown): ContextKey | null {
+  if (typeof input !== "string") return null;
+  return normalizeContextKey(input);
 }
 
 // =====================================================
@@ -1212,21 +1234,31 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
 
         await c.env.DB.prepare(
           `INSERT INTO projects (
-            id, slug, student_name, sort_name, project_title, program, context,
-            academic_year, bio, description, status, user_id
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            id, slug, student_name, sort_name,
+            project_title_en, project_title_nl,
+            program, context, academic_year,
+            bio_en, bio_nl,
+            description_en, description_nl,
+            location_en, location_nl,
+            status, user_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
           .bind(
             projectId,
             slug,
             name,
             sortName,
-            "", // Empty project title
+            "", // Empty English project title
+            "", // Empty Dutch project title
             program,
             context,
             academic_year,
-            null, // bio
-            "", // Empty description
+            null, // English bio
+            null, // Dutch bio
+            "", // Empty English description
+            "", // Empty Dutch description
+            null, // English location
+            null, // Dutch location
             "draft",
             userId
           )

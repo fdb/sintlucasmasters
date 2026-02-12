@@ -20,6 +20,7 @@ export function ProjectDetailPanel() {
     isStudentMode,
     setImpersonatedUser,
     setSelectedProjectId,
+    editLanguage,
   } = useAdminStore((state) => ({
     activeTable: state.activeTable,
     selectedProjectId: state.selectedProjectId,
@@ -30,6 +31,7 @@ export function ProjectDetailPanel() {
     isStudentMode: state.isStudentMode,
     setImpersonatedUser: state.setImpersonatedUser,
     setSelectedProjectId: state.setSelectedProjectId,
+    editLanguage: state.editLanguage,
   }));
 
   const { data: session } = useSession();
@@ -60,6 +62,20 @@ export function ProjectDetailPanel() {
   const isAdminOrEditor = user?.role === "admin" || user?.role === "editor";
   const canImpersonate = isAdminOrEditor && !!projectDetail?.project.user_id;
   const webImages = projectDetail?.images?.filter((img) => img.type !== "print") ?? [];
+  const projectTitleEn = String(projectDetail?.project.project_title_en || "");
+  const projectTitleNl = String(projectDetail?.project.project_title_nl || "");
+  const descriptionEn = String(projectDetail?.project.description_en || "");
+  const descriptionNl = String(projectDetail?.project.description_nl || "");
+  const projectProgram = String(projectDetail?.project.program || "");
+  const projectContext = String(projectDetail?.project.context || "");
+  const contextLabels: Record<string, string> = {
+    autonomous: "Autonomous",
+    applied: "Applied",
+    digital: "Digital",
+    sociopolitical: "Socio-Political",
+    jewelry: "Jewelry",
+  };
+  const contextLabel = contextLabels[projectContext] || projectContext;
 
   const handleSubmit = async () => {
     setShowSubmitConfirm(false);
@@ -98,16 +114,36 @@ export function ProjectDetailPanel() {
 
     return [
       {
-        label: "Project Title",
-        valid: !!String(project.project_title || "").trim(),
+        label: "Project Title (EN)",
+        valid: !!String(project.project_title_en || "").trim(),
       },
       {
-        label: "Bio",
-        valid: !!String(project.bio || "").trim(),
+        label: "Project Title (NL)",
+        valid: !!String(project.project_title_nl || "").trim(),
       },
       {
-        label: "Description",
-        valid: !!String(project.description || "").trim(),
+        label: "Bio (EN)",
+        valid: !!String(project.bio_en || "").trim(),
+      },
+      {
+        label: "Bio (NL)",
+        valid: !!String(project.bio_nl || "").trim(),
+      },
+      {
+        label: "Description (EN)",
+        valid: !!String(project.description_en || "").trim(),
+      },
+      {
+        label: "Description (NL)",
+        valid: !!String(project.description_nl || "").trim(),
+      },
+      {
+        label: "Location (EN)",
+        valid: !!String(project.location_en || "").trim(),
+      },
+      {
+        label: "Location (NL)",
+        valid: !!String(project.location_nl || "").trim(),
       },
       {
         label: "Print Image",
@@ -187,7 +223,7 @@ export function ProjectDetailPanel() {
                 )}
                 {projectDetail.project.status === "published" ? (
                   <a
-                    href={`/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
+                    href={`/nl/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="detail-action-btn"
@@ -204,12 +240,14 @@ export function ProjectDetailPanel() {
             </div>
           </div>
 
-          <div className="detail-title">{String(projectDetail.project.project_title || "")}</div>
+          <div className="detail-title">
+            {editLanguage === "nl" ? projectTitleNl || projectTitleEn : projectTitleEn || projectTitleNl}
+          </div>
 
           <div className="detail-program-context">
-            <span className="detail-program">{String(projectDetail.project.program || "")}</span>
+            <span className="detail-program">{projectProgram}</span>
             {projectDetail.project.program && projectDetail.project.context ? " · " : null}
-            <span className="detail-context">{String(projectDetail.project.context || "")}</span>
+            <span className="detail-context">{contextLabel}</span>
           </div>
 
           <div className="detail-year">{String(projectDetail.project.academic_year || "")}</div>
@@ -266,10 +304,12 @@ export function ProjectDetailPanel() {
             </div>
           </div>
 
-          {projectDetail.project.description ? (
+          {(editLanguage === "nl" ? descriptionNl || descriptionEn : descriptionEn || descriptionNl) ? (
             <div className="detail-section">
               <div className="detail-section-label">Description</div>
-              <div className="detail-text">{String(projectDetail.project.description)}</div>
+              <div className="detail-text">
+                {editLanguage === "nl" ? descriptionNl || descriptionEn : descriptionEn || descriptionNl}
+              </div>
             </div>
           ) : null}
 
@@ -347,7 +387,7 @@ export function ProjectDetailPanel() {
             Are you sure you want to delete{" "}
             <strong>
               {String(projectDetail?.project.student_name || "")}'s project "
-              {String(projectDetail?.project.project_title || "")}"
+              {editLanguage === "nl" ? projectTitleNl || projectTitleEn : projectTitleEn || projectTitleNl}"
             </strong>
             ? This action cannot be undone.
           </>

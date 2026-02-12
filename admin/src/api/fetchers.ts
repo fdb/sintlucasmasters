@@ -75,13 +75,17 @@ export async function fetchProject(projectId: string): Promise<ProjectDetailResp
 
 export type SaveProjectData = {
   student_name: string;
-  project_title: string;
+  project_title_en: string;
+  project_title_nl: string;
   context: string;
   program: string;
   academic_year: string;
-  bio: string | null;
-  description: string;
-  location: string | null;
+  bio_en: string | null;
+  bio_nl: string | null;
+  description_en: string;
+  description_nl: string;
+  location_en: string | null;
+  location_nl: string | null;
   private_email: string | null;
   status: string;
   tags: string | null;

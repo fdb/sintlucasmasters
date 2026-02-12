@@ -14,16 +14,16 @@ export function StudentPreviewPanel() {
   const [isReverting, setIsReverting] = useState(false);
   const queryClient = useQueryClient();
 
-  const { selectedProjectId, editDraft, editImages, printImage, updateEditField, saveProject } = useAdminStore(
-    (state) => ({
+  const { selectedProjectId, editDraft, editImages, printImage, updateEditField, saveProject, editLanguage } =
+    useAdminStore((state) => ({
       selectedProjectId: state.selectedProjectId,
       editDraft: state.editDraft,
       editImages: state.editImages,
       printImage: state.printImage,
       updateEditField: state.updateEditField,
       saveProject: state.saveProject,
-    })
-  );
+      editLanguage: state.editLanguage,
+    }));
 
   const { data: projectDetail } = useProject(selectedProjectId);
   const submitProjectMutation = useSubmitProject(selectedProjectId);
@@ -64,6 +64,13 @@ export function StudentPreviewPanel() {
   const canSubmit = status === "draft";
   const webImages = editImages.filter((img) => img.type !== "print");
   const mainImage = webImages[0] || null;
+  const contextLabels: Record<string, string> = {
+    autonomous: "Autonomous",
+    applied: "Applied",
+    digital: "Digital",
+    sociopolitical: "Socio-Political",
+    jewelry: "Jewelry",
+  };
 
   // Validation checklist using live editDraft values
   const getValidationChecklist = () => {
@@ -71,16 +78,36 @@ export function StudentPreviewPanel() {
 
     return [
       {
-        label: "Project Title",
-        valid: !!editDraft.project_title.trim(),
+        label: "Project Title (EN)",
+        valid: !!editDraft.project_title_en.trim(),
       },
       {
-        label: "Bio",
-        valid: !!editDraft.bio.trim(),
+        label: "Project Title (NL)",
+        valid: !!editDraft.project_title_nl.trim(),
       },
       {
-        label: "Description",
-        valid: !!editDraft.description.trim(),
+        label: "Bio (EN)",
+        valid: !!editDraft.bio_en.trim(),
+      },
+      {
+        label: "Bio (NL)",
+        valid: !!editDraft.bio_nl.trim(),
+      },
+      {
+        label: "Description (EN)",
+        valid: !!editDraft.description_en.trim(),
+      },
+      {
+        label: "Description (NL)",
+        valid: !!editDraft.description_nl.trim(),
+      },
+      {
+        label: "Location (EN)",
+        valid: !!editDraft.location_en.trim(),
+      },
+      {
+        label: "Location (NL)",
+        valid: !!editDraft.location_nl.trim(),
       },
       {
         label: "Print Image",
@@ -116,7 +143,7 @@ export function StudentPreviewPanel() {
         <h3>Preview</h3>
         {status === "published" ? (
           <a
-            href={`/${projectDetail?.project.academic_year || ""}/students/${projectDetail?.project.slug || ""}/`}
+            href={`/nl/${projectDetail?.project.academic_year || ""}/students/${projectDetail?.project.slug || ""}/`}
             target="_blank"
             rel="noopener noreferrer"
             className="preview-external-link"
@@ -169,9 +196,14 @@ export function StudentPreviewPanel() {
       {/* Live preview content */}
       <div className="preview-content">
         <div className="preview-name">{editDraft?.student_name || "Student Name"}</div>
-        <div className="preview-title">{editDraft?.project_title || "Project Title"}</div>
+        <div className="preview-title">
+          {editLanguage === "nl"
+            ? editDraft?.project_title_nl || editDraft?.project_title_en || "Project Title"
+            : editDraft?.project_title_en || editDraft?.project_title_nl || "Project Title"}
+        </div>
         <div className="preview-context">
-          {editDraft?.program || ""} {editDraft?.program && editDraft?.context ? "·" : ""} {editDraft?.context || ""}
+          {editDraft?.program || ""} {editDraft?.program && editDraft?.context ? "·" : ""}{" "}
+          {(editDraft?.context && contextLabels[editDraft.context]) || editDraft?.context || ""}
         </div>
         <div className="preview-year">{editDraft?.academic_year || ""}</div>
 
@@ -186,18 +218,26 @@ export function StudentPreviewPanel() {
         )}
 
         {/* Bio */}
-        {editDraft?.bio && (
+        {(editLanguage === "nl" ? editDraft?.bio_nl || editDraft?.bio_en : editDraft?.bio_en || editDraft?.bio_nl) && (
           <div className="preview-section">
             <div className="preview-section-label">Bio</div>
-            <div className="preview-text">{editDraft.bio}</div>
+            <div className="preview-text">
+              {editLanguage === "nl" ? editDraft?.bio_nl || editDraft?.bio_en : editDraft?.bio_en || editDraft?.bio_nl}
+            </div>
           </div>
         )}
 
         {/* Description */}
-        {editDraft?.description && (
+        {(editLanguage === "nl"
+          ? editDraft?.description_nl || editDraft?.description_en
+          : editDraft?.description_en || editDraft?.description_nl) && (
           <div className="preview-section">
             <div className="preview-section-label">Description</div>
-            <div className="preview-text">{editDraft.description}</div>
+            <div className="preview-text">
+              {editLanguage === "nl"
+                ? editDraft?.description_nl || editDraft?.description_en
+                : editDraft?.description_en || editDraft?.description_nl}
+            </div>
           </div>
         )}
 

@@ -49,7 +49,7 @@ export const E2E_PROJECTS = [
     student_name: "Alice Smith",
     sort_name: "Smith, Alice",
     project_title: "Digital Dreams",
-    context: "Digital Context",
+    context: "digital",
     academic_year: "2024-2025",
     bio: "Alice is a digital artist exploring virtual realities.",
     description: "A project exploring the intersection of dreams and digital art.",
@@ -63,7 +63,7 @@ export const E2E_PROJECTS = [
     student_name: "Bob Jones",
     sort_name: "Jones, Bob",
     project_title: "Autonomous Sculptures",
-    context: "Autonomous Context",
+    context: "autonomous",
     academic_year: "2024-2025",
     bio: "Bob creates sculptures that move on their own.",
     description: "Self-moving sculptures that respond to their environment.",
@@ -77,7 +77,7 @@ export const E2E_PROJECTS = [
     student_name: "Carol White",
     sort_name: "White, Carol",
     project_title: "Applied Design Systems",
-    context: "Applied Context",
+    context: "applied",
     academic_year: "2023-2024",
     bio: "Carol specializes in systematic design approaches.",
     description: "A comprehensive design system for urban environments.",
@@ -91,7 +91,7 @@ export const E2E_PROJECTS = [
     student_name: "Video Student",
     sort_name: "Student, Video",
     project_title: "Video Documentation Project",
-    context: "Digital Context",
+    context: "digital",
     academic_year: "2024-2025",
     bio: "Video Student explores multimedia storytelling.",
     description:
@@ -107,7 +107,7 @@ export const E2E_PROJECTS = [
     sort_name: "Student, Submit",
     project_title: "Submittable Project",
     program: "MA_BK",
-    context: "Digital Context",
+    context: "digital",
     academic_year: "2024-2025",
     bio: "Test student for submission testing.",
     description: "A project with all fields complete for submission testing.",
@@ -122,7 +122,7 @@ export const E2E_PROJECTS = [
     sort_name: "Student, Editable",
     project_title: "Editable Project",
     program: "BA_FO",
-    context: "Applied Context",
+    context: "applied",
     academic_year: "2024-2025",
     bio: "Test student for edit save testing.",
     description: "A project used exclusively for testing edit and save functionality.",
@@ -245,7 +245,7 @@ async function main() {
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
     await runWrangler(
-      `INSERT INTO projects (id, slug, student_name, sort_name, project_title, program, context, academic_year, bio, description, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(project.bio)}, ${escapeSql(project.description)}, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
+      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${escapeSql(project.project_title)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(project.bio)}, ${escapeSql(project.bio)}, ${escapeSql(project.description)}, ${escapeSql(project.description)}, 'Antwerp, Belgium', 'Antwerpen, België', ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
     );
   }
 

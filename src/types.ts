@@ -41,12 +41,20 @@ export interface Project {
   slug: string;
   student_name: string;
   sort_name: string;
-  project_title: string;
-  context: string;
+  project_title_en: string;
+  project_title_nl: string;
+  project_title?: string;
+  context: ContextKey;
   academic_year: string;
-  bio: string | null;
-  description: string;
-  location: string | null;
+  bio_en: string | null;
+  bio_nl: string | null;
+  bio?: string | null;
+  description_en: string;
+  description_nl: string;
+  description?: string;
+  location_en: string | null;
+  location_nl: string | null;
+  location?: string | null;
   private_email: string | null;
   thumb_image_id: string | null;
   tags: string | null;
@@ -72,15 +80,8 @@ export interface ProjectImage {
   type: ProjectImageType;
 }
 
-export const CONTEXTS = [
-  "Autonomous Context",
-  "Applied Context",
-  "Digital Context",
-  "Socio-Political Context",
-  "Jewelry Context",
-] as const;
-
-export type Context = (typeof CONTEXTS)[number];
+export const CONTEXT_KEYS = ["autonomous", "applied", "digital", "sociopolitical", "jewelry"] as const;
+export type ContextKey = (typeof CONTEXT_KEYS)[number];
 
 // Cloudflare Images URL helper
 const CF_ACCOUNT_HASH = "7-GLn6-56OyK7JwwGe0hfg";
@@ -99,6 +100,9 @@ export function getImageUrl(imageId: string | null | undefined, variant: ImageVa
 }
 
 // Generate student URL from project
-export function getStudentUrl(project: Project): string {
+export function getStudentUrl(project: Project, localePrefix?: string): string {
+  if (localePrefix) {
+    return `/${localePrefix}/${project.academic_year}/students/${project.slug}/`;
+  }
   return `/${project.academic_year}/students/${project.slug}/`;
 }

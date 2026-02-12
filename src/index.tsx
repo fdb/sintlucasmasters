@@ -1,20 +1,116 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
+import { setCookie } from "hono/cookie";
 import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
-import type { Bindings, Project, ProjectImage, ProjectWithMainImage } from "./types";
-import { CONTEXTS, getImageUrl, getStudentUrl } from "./types";
+import type { Bindings, ContextKey, Project, ProjectImage, ProjectWithMainImage } from "./types";
+import { CONTEXT_KEYS, getImageUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
 import { authApiRoutes, authPageRoutes } from "./routes/auth";
 import { adminPageRoutes } from "./routes/admin";
 import { adminApiRoutes } from "./routes/admin-api";
 import { renderToString } from "hono/jsx/dom/server";
+import {
+  DEFAULT_PUBLIC_LOCALE,
+  PUBLIC_LOCALE_COOKIE,
+  getContextFullLabel,
+  getContextShortLabel,
+  getLocalizedProjectBio,
+  getLocalizedProjectDescription,
+  getLocalizedProjectLocation,
+  getLocalizedProjectTitle,
+  isPublicLocale,
+} from "./lib/i18n";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// Sentry tunnel endpoint (before auth routes to avoid auth middleware)
+type PublicLocale = "nl" | "en";
+
+type LocalizedProject = ProjectWithMainImage & {
+  project_title: string;
+  bio: string | null;
+  description: string;
+  location: string | null;
+};
+
+const SITE_URL = "https://sintlucasmasters.com";
+
+const TEXT = {
+  en: {
+    projects: "projects",
+    projecten: "projects",
+    archive: "archive",
+    about: "about",
+    context: "Context",
+    year: "Year",
+    all: "all",
+    notFound: "Not Found",
+    noProjectsForYear: "No projects found for this year.",
+    goToCurrentYear: "Go to current year",
+    noProjectsForContext: "No projects found for this context.",
+    noProjects: "No projects found.",
+    home: "Home",
+    back: "Back",
+    studentNotFound: "Student not found.",
+    studentLinks: "Student links",
+    detailAbout: "About",
+    detailProject: "Project",
+    aboutTitle: "About",
+    aboutHeading: "Master Expo",
+    aboutText: "Discover the new generation of artists, designers and photographers of Sint Lucas Antwerpen.",
+    credits: "Credits",
+    headMaster: "Head of the Master",
+    communication: "Communication",
+    development: "Development",
+    design: "Design",
+    codeIsFree: "The code for this website is free software, available on GitHub.",
+    yearDescriptionPrefix: "Discover",
+    yearDescriptionMiddle: "graduation projects from Sint Lucas Masters",
+    yearDescriptionSuffix: "Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.",
+    archiveDescriptionPrefix: "Browse",
+    archiveDescriptionMiddle: "master thesis projects from Sint Lucas Antwerpen spanning",
+    localeCode: "en",
+  },
+  nl: {
+    projects: "projecten",
+    projecten: "projecten",
+    archive: "archief",
+    about: "over",
+    context: "Context",
+    year: "Jaar",
+    all: "alle",
+    notFound: "Niet gevonden",
+    noProjectsForYear: "Geen projecten gevonden voor dit jaar.",
+    goToCurrentYear: "Ga naar huidig jaar",
+    noProjectsForContext: "Geen projecten gevonden voor deze context.",
+    noProjects: "Geen projecten gevonden.",
+    home: "Home",
+    back: "Terug",
+    studentNotFound: "Student niet gevonden.",
+    studentLinks: "Studentlinks",
+    detailAbout: "Over",
+    detailProject: "Project",
+    aboutTitle: "Over",
+    aboutHeading: "Master Expo",
+    aboutText: "Ontdek de nieuwe generatie kunstenaars, ontwerpers en fotografen van Sint Lucas Antwerpen.",
+    credits: "Credits",
+    headMaster: "Hoofd van de master",
+    communication: "Communicatie",
+    development: "Ontwikkeling",
+    design: "Vormgeving",
+    codeIsFree: "De code van deze website is vrije software en beschikbaar op GitHub.",
+    yearDescriptionPrefix: "Ontdek",
+    yearDescriptionMiddle: "afstudeerprojecten van Sint Lucas Masters",
+    yearDescriptionSuffix: "Verken werk binnen autonome, toegepaste, digitale, socio-politieke en juwelencontexten.",
+    archiveDescriptionPrefix: "Bekijk",
+    archiveDescriptionMiddle: "masterprojecten van Sint Lucas Antwerpen van",
+    localeCode: "nl",
+  },
+} as const;
+
+// Sentry tunnel endpoint
 app.post("/api/sentry-tunnel", async (c) => {
   const { SENTRY_HOST, SENTRY_PROJECT_ID } = c.env;
   const body = await c.req.text();
@@ -35,17 +131,13 @@ app.post("/api/sentry-tunnel", async (c) => {
   return new Response(response.body, { status: response.status });
 });
 
-// Auth routes
 app.route("/api/auth", authApiRoutes);
 app.route("/auth", authPageRoutes);
 app.route("/api/admin", adminApiRoutes);
 app.route("/admin", adminPageRoutes);
 
-const SITE_URL = "https://sintlucasmasters.com";
-
 const escapeLikeValue = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
-// Base organization schema for all pages
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
@@ -53,15 +145,53 @@ const organizationSchema = {
   url: SITE_URL,
 };
 
+function setLocalePreference(c: Context<{ Bindings: Bindings }>, locale: PublicLocale) {
+  const isSecure = new URL(c.req.url).protocol === "https:";
+  setCookie(c, PUBLIC_LOCALE_COOKIE, locale, {
+    path: "/",
+    sameSite: "Lax",
+    secure: isSecure,
+    maxAge: 60 * 60 * 24 * 365,
+  });
+}
+
+function requestPathWithQuery(c: Context<{ Bindings: Bindings }>): string {
+  const url = new URL(c.req.url);
+  return `${url.pathname}${url.search}`;
+}
+
+function contextFromQuery(context: string | undefined): ContextKey | null {
+  if (!context) return null;
+  const normalized = context.trim().toLowerCase();
+  return CONTEXT_KEYS.includes(normalized as ContextKey) ? (normalized as ContextKey) : null;
+}
+
+function isAcademicYearSegment(value: string): boolean {
+  return /^\d{4}-\d{4}$/.test(value);
+}
+
+function localizeProject(project: ProjectWithMainImage, locale: PublicLocale): LocalizedProject {
+  return {
+    ...project,
+    project_title: getLocalizedProjectTitle(project, locale),
+    bio: getLocalizedProjectBio(project, locale),
+    description: getLocalizedProjectDescription(project, locale),
+    location: getLocalizedProjectLocation(project, locale) || null,
+  };
+}
+
 type YearPageOptions = {
+  locale: PublicLocale;
   year: string;
   basePath: string;
   canonicalUrl: string;
 };
 
 const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearPageOptions) => {
-  const { year, basePath, canonicalUrl } = options;
-  const context = c.req.query("context");
+  const { locale, year, basePath, canonicalUrl } = options;
+  const text = TEXT[locale];
+  setLocalePreference(c, locale);
+  const context = contextFromQuery(c.req.query("context"));
 
   let query = `SELECT p.*,
     (
@@ -75,7 +205,7 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
     WHERE p.academic_year = ? AND p.status = 'published'`;
   const params: string[] = [year];
 
-  if (context && CONTEXTS.includes(context as any)) {
+  if (context) {
     query += " AND p.context = ?";
     params.push(context);
   }
@@ -86,25 +216,26 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
     .bind(...params)
     .all<ProjectWithMainImage>();
 
-  // If no projects found for this year, show 404
-  if (projects.length === 0 && !context) {
+  const localizedProjects = projects.map((project) => localizeProject(project, locale));
+
+  if (localizedProjects.length === 0 && !context) {
     return c.html(
-      <Layout title="Not Found">
-        <p>No projects found for {year}.</p>
-        <a href={`/${CURRENT_YEAR}/`}>Go to current year</a>
+      <Layout locale={locale} currentPath={requestPathWithQuery(c)} title={text.notFound}>
+        <p>{text.noProjectsForYear}</p>
+        <a href={`/${locale}/${CURRENT_YEAR}/`}>{text.goToCurrentYear}</a>
       </Layout>,
       404
     );
   }
 
-  const description = `Discover ${projects.length} graduation projects from Sint Lucas Masters ${year}. Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.`;
-  const collectionName = context ? `${context} projects — ${year}` : `${year} graduation projects`;
+  const description = `${text.yearDescriptionPrefix} ${localizedProjects.length} ${text.yearDescriptionMiddle} ${year}. ${text.yearDescriptionSuffix}`;
+  const collectionName = context ? `${getContextFullLabel(context, locale)} - ${year}` : `${year} ${text.projects}`;
   const itemList = {
     "@type": "ItemList",
-    itemListElement: projects.map((project, index) => ({
+    itemListElement: localizedProjects.map((project, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE_URL}/${project.academic_year}/students/${project.slug}/`,
+      url: `${SITE_URL}/${locale}/${project.academic_year}/students/${project.slug}/`,
       name: project.project_title,
     })),
   };
@@ -120,25 +251,26 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
 
   return c.html(
     <Layout
+      locale={locale}
+      currentPath={requestPathWithQuery(c)}
       title={year}
       canonicalUrl={canonicalUrl}
       ogDescription={description}
       jsonLd={[organizationSchema, collectionSchema]}
     >
       <div class="page-filters">
-        <ContextFilter basePath={basePath} activeContext={context} showLabel />
+        <ContextFilter locale={locale} basePath={basePath} activeContext={context} showLabel />
       </div>
       <div class="grid" data-project-grid data-show-year="false">
-        {projects.map((project) => (
-          <ProjectCard project={project} />
+        {localizedProjects.map((project) => (
+          <ProjectCard project={project} localePrefix={locale} />
         ))}
       </div>
-      {projects.length === 0 && <p class="empty-state">No projects found for this context.</p>}
+      {localizedProjects.length === 0 && <p class="empty-state">{text.noProjectsForContext}</p>}
     </Layout>
   );
 };
 
-// robots.txt
 app.get("/robots.txt", (c) => {
   const robotsTxt = `User-agent: *
 Allow: /
@@ -149,68 +281,59 @@ Sitemap: ${SITE_URL}/sitemap.xml
   return c.text(robotsTxt, 200, { "Content-Type": "text/plain" });
 });
 
-// sitemap.xml
 app.get("/sitemap.xml", async (c) => {
-  // Get all published projects with their updated_at timestamps
   const { results: projects } = await c.env.DB.prepare(
     "SELECT academic_year, slug, updated_at FROM projects WHERE status = 'published' ORDER BY academic_year DESC, sort_name"
   ).all<{ academic_year: string; slug: string; updated_at: string | null }>();
 
-  // Get distinct years
   const years = [...new Set(projects.map((p) => p.academic_year))];
 
-  // Helper to format date for sitemap (YYYY-MM-DD)
   const formatDate = (dateStr: string | null): string => {
     if (!dateStr) return new Date().toISOString().split("T")[0];
     return dateStr.split("T")[0];
   };
 
   const today = new Date().toISOString().split("T")[0];
-
   const urls: string[] = [];
 
-  // Static pages
-  urls.push(`  <url>
-    <loc>${SITE_URL}/</loc>
+  for (const locale of ["nl", "en"] as const) {
+    urls.push(`  <url>
+    <loc>${SITE_URL}/${locale}/</loc>
     <lastmod>${today}</lastmod>
     <priority>1.0</priority>
   </url>`);
-
-  urls.push(`  <url>
-    <loc>${SITE_URL}/about</loc>
+    urls.push(`  <url>
+    <loc>${SITE_URL}/${locale}/about</loc>
     <lastmod>${today}</lastmod>
     <priority>0.5</priority>
   </url>`);
-
-  urls.push(`  <url>
-    <loc>${SITE_URL}/archive</loc>
+    urls.push(`  <url>
+    <loc>${SITE_URL}/${locale}/archive</loc>
     <lastmod>${today}</lastmod>
     <priority>0.6</priority>
   </url>`);
 
-  // Year pages
-  for (const year of years) {
-    if (year === CURRENT_YEAR) continue;
-    const yearProjects = projects.filter((p) => p.academic_year === year);
-    const latestUpdate = yearProjects.reduce((latest, p) => {
-      const pDate = p.updated_at || "";
-      return pDate > latest ? pDate : latest;
-    }, "");
+    for (const year of years) {
+      const yearProjects = projects.filter((p) => p.academic_year === year);
+      const latestUpdate = yearProjects.reduce((latest, p) => {
+        const pDate = p.updated_at || "";
+        return pDate > latest ? pDate : latest;
+      }, "");
 
-    urls.push(`  <url>
-    <loc>${SITE_URL}/${year}/</loc>
-    <lastmod>${formatDate(latestUpdate)}</lastmod>
-    <priority>0.7</priority>
-  </url>`);
-  }
+      urls.push(`  <url>
+      <loc>${SITE_URL}/${locale}/${year}/</loc>
+      <lastmod>${formatDate(latestUpdate)}</lastmod>
+      <priority>0.7</priority>
+    </url>`);
+    }
 
-  // Project pages
-  for (const project of projects) {
-    urls.push(`  <url>
-    <loc>${SITE_URL}/${project.academic_year}/students/${project.slug}/</loc>
-    <lastmod>${formatDate(project.updated_at)}</lastmod>
-    <priority>0.8</priority>
-  </url>`);
+    for (const project of projects) {
+      urls.push(`  <url>
+      <loc>${SITE_URL}/${locale}/${project.academic_year}/students/${project.slug}/</loc>
+      <lastmod>${formatDate(project.updated_at)}</lastmod>
+      <priority>0.8</priority>
+    </url>`);
+    }
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -221,9 +344,10 @@ ${urls.join("\n")}
   return c.text(sitemap, 200, { "Content-Type": "application/xml" });
 });
 
-// Search API
 app.get("/api/search", async (c) => {
   const rawQuery = c.req.query("query")?.trim() ?? "";
+  const localeParam = c.req.query("locale");
+  const locale: PublicLocale = isPublicLocale(localeParam) ? localeParam : DEFAULT_PUBLIC_LOCALE;
   const accept = c.req.header("accept") ?? "";
   const wantsHtml = accept.includes("text/html") || c.req.query("format") === "html";
 
@@ -235,9 +359,9 @@ app.get("/api/search", async (c) => {
 
   const conditions = [
     "status = 'published'",
-    "(student_name LIKE ? ESCAPE '\\' OR project_title LIKE ? ESCAPE '\\' OR tags LIKE ? ESCAPE '\\')",
+    "(student_name LIKE ? ESCAPE '\\\\' OR project_title_en LIKE ? ESCAPE '\\\\' OR project_title_nl LIKE ? ESCAPE '\\\\' OR description_en LIKE ? ESCAPE '\\\\' OR description_nl LIKE ? ESCAPE '\\\\' OR tags LIKE ? ESCAPE '\\\\')",
   ];
-  const params: string[] = [like, like, like];
+  const params: string[] = [like, like, like, like, like, like];
 
   const { results } = await c.env.DB.prepare(
     `SELECT
@@ -258,21 +382,23 @@ app.get("/api/search", async (c) => {
     .bind(...params)
     .all<ProjectWithMainImage>();
 
+  const localizedResults = results.map((project) => localizeProject(project, locale));
+
   if (wantsHtml) {
     const cardsHtml = renderToString(
       <>
-        {results.map((project) => (
-          <ProjectCard project={project} showYear />
+        {localizedResults.map((project) => (
+          <ProjectCard project={project} localePrefix={locale} showYear />
         ))}
       </>
     );
     return c.text(cardsHtml, 200, {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Results-Count": `${results.length}`,
+      "X-Results-Count": `${localizedResults.length}`,
     });
   }
 
-  const resultsWithUrls = results.map((project) => {
+  const resultsWithUrls = localizedResults.map((project) => {
     const imageId = project.thumb_image_id || project.main_image_id;
     return {
       slug: project.slug,
@@ -280,7 +406,7 @@ app.get("/api/search", async (c) => {
       project_title: project.project_title,
       academic_year: project.academic_year,
       context: project.context,
-      url: `/${project.academic_year}/students/${project.slug}/`,
+      url: `/${locale}/${project.academic_year}/students/${project.slug}/`,
       image_url: getImageUrl(imageId, "thumb") || null,
     };
   });
@@ -288,97 +414,137 @@ app.get("/api/search", async (c) => {
   return c.json({ query: rawQuery, results: resultsWithUrls });
 });
 
-// Home page - render current year
-app.get("/", async (c) => {
-  return renderYearPage(c, {
-    year: CURRENT_YEAR,
-    basePath: "/",
-    canonicalUrl: `${SITE_URL}/`,
-  });
-});
-
-// Context filter nav component
 const ContextFilter = ({
+  locale,
   basePath,
   activeContext,
   queryPrefix,
   showLabel,
 }: {
+  locale: PublicLocale;
   basePath: string;
-  activeContext: string | undefined;
+  activeContext: ContextKey | null;
   queryPrefix?: string;
   showLabel?: boolean;
-}) => (
-  <div class="filter-row">
-    {showLabel && <span class="filter-label">Context</span>}
-    <nav class="context-nav">
-      <a href={`${basePath}${queryPrefix || ""}`} class={!activeContext ? "active" : ""}>
-        all
-      </a>
-      {CONTEXTS.map((ctx) => {
-        const label = ctx.replace(" Context", "").toLowerCase();
-        const href = queryPrefix
-          ? `${basePath}${queryPrefix}&context=${encodeURIComponent(ctx)}`
-          : `${basePath}?context=${encodeURIComponent(ctx)}`;
-        return (
-          <a href={href} class={activeContext === ctx ? "active" : ""}>
-            {label}
-          </a>
-        );
-      })}
-    </nav>
-  </div>
-);
+}) => {
+  const text = TEXT[locale];
 
-// Year page - projects for a specific academic year
-app.get("/:year/", async (c) => {
-  const year = c.req.param("year");
-  const canonicalUrl = year === CURRENT_YEAR ? `${SITE_URL}/` : `${SITE_URL}/${year}/`;
+  return (
+    <div class="filter-row">
+      {showLabel && <span class="filter-label">{text.context}</span>}
+      <nav class="context-nav">
+        <a href={`${basePath}${queryPrefix || ""}`} class={!activeContext ? "active" : ""}>
+          {text.all}
+        </a>
+        {CONTEXT_KEYS.map((ctx) => {
+          const label = getContextShortLabel(ctx, locale).toLowerCase();
+          const href = queryPrefix
+            ? `${basePath}${queryPrefix}&context=${encodeURIComponent(ctx)}`
+            : `${basePath}?context=${encodeURIComponent(ctx)}`;
+          return (
+            <a href={href} class={activeContext === ctx ? "active" : ""}>
+              {label}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+  );
+};
+
+app.get("/:locale/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) {
+    if (locale === "about") return c.redirect("/nl/about", 301);
+    if (locale === "archive") return c.redirect("/nl/archive", 301);
+    if (isAcademicYearSegment(locale)) return c.redirect(`/nl/${locale}/`, 301);
+    return c.notFound();
+  }
+
   return renderYearPage(c, {
-    year,
-    basePath: year === CURRENT_YEAR ? "/" : `/${year}/`,
-    canonicalUrl,
+    locale,
+    year: CURRENT_YEAR,
+    basePath: `/${locale}/`,
+    canonicalUrl: `${SITE_URL}/${locale}/`,
   });
 });
 
-// About page
-app.get("/about", (c) => {
-  const canonicalUrl = `${SITE_URL}/about`;
+app.get("/:locale", (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) {
+    if (locale === "about") return c.redirect("/nl/about", 301);
+    if (locale === "archive") return c.redirect("/nl/archive", 301);
+    if (isAcademicYearSegment(locale)) return c.redirect(`/nl/${locale}/`, 301);
+    return c.notFound();
+  }
+  return c.redirect(`/${locale}/`, 301);
+});
+
+app.get("/:locale/:year/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) return c.notFound();
+
+  const year = c.req.param("year");
+  const canonicalUrl = `${SITE_URL}/${locale}/${year}/`;
+  return renderYearPage(c, {
+    locale,
+    year,
+    basePath: year === CURRENT_YEAR ? `/${locale}/` : `/${locale}/${year}/`,
+    canonicalUrl: year === CURRENT_YEAR ? `${SITE_URL}/${locale}/` : canonicalUrl,
+  });
+});
+
+app.get("/:locale/about", (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) return c.notFound();
+
+  setLocalePreference(c, locale);
+  const text = TEXT[locale];
+  const canonicalUrl = `${SITE_URL}/${locale}/about`;
   const description =
-    "Learn about the Sint Lucas Masters Graduation Tour exhibition showcasing master-level art and design projects from Antwerp.";
+    locale === "nl"
+      ? "Lees meer over de Sint Lucas Masters afstudeerexpo met masterprojecten uit Antwerpen."
+      : "Learn about the Sint Lucas Masters Graduation Tour exhibition showcasing master-level art and design projects from Antwerp.";
 
   return c.html(
-    <Layout title="About" canonicalUrl={canonicalUrl} ogDescription={description} jsonLd={organizationSchema}>
+    <Layout
+      locale={locale}
+      currentPath={requestPathWithQuery(c)}
+      title={text.aboutTitle}
+      canonicalUrl={canonicalUrl}
+      ogDescription={description}
+      jsonLd={organizationSchema}
+    >
       <div class="about-content">
-        <h2 class="about-heading">Master Expo</h2>
+        <h2 class="about-heading">{text.aboutHeading}</h2>
         <p class="about-text">
-          Discover the new generation of artists, designers and photographers of{" "}
+          {text.aboutText.split("Sint Lucas Antwerpen")[0]}
           <a href="https://www.sintlucasantwerpen.be/" target="_blank" rel="noopener noreferrer">
             Sint Lucas Antwerpen
           </a>
           .
         </p>
-        <h3>Credits</h3>
+        <h3>{text.credits}</h3>
         <dl class="credits-list">
           <div class="credits-entry">
-            <dt>Head of the Master</dt>
+            <dt>{text.headMaster}</dt>
             <dd>Reg Herygers</dd>
           </div>
           <div class="credits-entry">
-            <dt>Communication</dt>
+            <dt>{text.communication}</dt>
             <dd>Nicolas Van Herck</dd>
           </div>
           <div class="credits-entry">
-            <dt>Development</dt>
+            <dt>{text.development}</dt>
             <dd>Frederik De Bleser</dd>
           </div>
           <div class="credits-entry">
-            <dt>Design</dt>
+            <dt>{text.design}</dt>
             <dd>Chloé D'Hauwe</dd>
           </div>
         </dl>
         <p class="credits-source">
-          The code for this website is free software, available on{" "}
+          {text.codeIsFree.split("GitHub")[0]}
           <a href="https://github.com/fdb/sintlucasmasters/" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
@@ -389,18 +555,20 @@ app.get("/about", (c) => {
   );
 });
 
-// Archive page - all years
-app.get("/archive", async (c) => {
-  const year = c.req.query("year");
-  const context = c.req.query("context");
+app.get("/:locale/archive", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) return c.notFound();
 
-  // Get available years (only years with published projects)
+  setLocalePreference(c, locale);
+  const text = TEXT[locale];
+  const year = c.req.query("year");
+  const context = contextFromQuery(c.req.query("context"));
+
   const { results: yearResults } = await c.env.DB.prepare(
     "SELECT DISTINCT academic_year FROM projects WHERE status = 'published' ORDER BY academic_year DESC"
   ).all<{ academic_year: string }>();
 
   const years = yearResults.map((r) => r.academic_year);
-  const selectedYear = year;
 
   let query = `SELECT p.*,
     (
@@ -414,12 +582,12 @@ app.get("/archive", async (c) => {
   const params: string[] = [];
   const conditions: string[] = ["p.status = 'published'"];
 
-  if (selectedYear) {
+  if (year) {
     conditions.push("p.academic_year = ?");
-    params.push(selectedYear);
+    params.push(year);
   }
 
-  if (context && CONTEXTS.includes(context as any)) {
+  if (context) {
     conditions.push("p.context = ?");
     params.push(context);
   }
@@ -431,32 +599,40 @@ app.get("/archive", async (c) => {
     .bind(...params)
     .all<ProjectWithMainImage>();
 
-  // Get total count for all projects
+  const localizedProjects = projects.map((project) => localizeProject(project, locale));
+
   const { results: countResult } = await c.env.DB.prepare(
     "SELECT COUNT(*) as count FROM projects WHERE status = 'published'"
   ).all<{ count: number }>();
   const totalCount = countResult[0]?.count || 0;
 
-  const yearRange = years.length > 1 ? `${years[years.length - 1]}–${years[0]}` : years[0] || "";
-  const canonicalUrl = `${SITE_URL}/archive`;
-  const description = `Browse ${totalCount} master thesis projects from Sint Lucas Antwerpen spanning ${yearRange}.`;
+  const yearRange = years.length > 1 ? `${years[years.length - 1]}-${years[0]}` : years[0] || "";
+  const canonicalUrl = `${SITE_URL}/${locale}/archive`;
+  const description = `${text.archiveDescriptionPrefix} ${totalCount} ${text.archiveDescriptionMiddle} ${yearRange}.`;
 
   return c.html(
-    <Layout title="Archive" canonicalUrl={canonicalUrl} ogDescription={description} jsonLd={organizationSchema}>
+    <Layout
+      locale={locale}
+      currentPath={requestPathWithQuery(c)}
+      title={text.archive}
+      canonicalUrl={canonicalUrl}
+      ogDescription={description}
+      jsonLd={organizationSchema}
+    >
       <div class="archive-filters">
         <div class="filter-row">
-          <span class="filter-label">Year</span>
+          <span class="filter-label">{text.year}</span>
           <nav class="year-nav">
             <a
-              href={`/archive${context ? `?context=${encodeURIComponent(context)}` : ""}`}
-              class={!selectedYear ? "active" : ""}
+              href={`/${locale}/archive${context ? `?context=${encodeURIComponent(context)}` : ""}`}
+              class={!year ? "active" : ""}
             >
-              all
+              {text.all}
             </a>
             {years.map((y) => (
               <a
-                href={`/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ""}`}
-                class={selectedYear === y ? "active" : ""}
+                href={`/${locale}/archive?year=${encodeURIComponent(y)}${context ? `&context=${encodeURIComponent(context)}` : ""}`}
+                class={year === y ? "active" : ""}
               >
                 {y}
               </a>
@@ -464,24 +640,36 @@ app.get("/archive", async (c) => {
           </nav>
         </div>
         <ContextFilter
-          basePath={`/archive`}
+          locale={locale}
+          basePath={`/${locale}/archive`}
           activeContext={context}
-          queryPrefix={selectedYear ? `?year=${encodeURIComponent(selectedYear)}&` : "?"}
+          queryPrefix={year ? `?year=${encodeURIComponent(year)}&` : "?"}
           showLabel
         />
       </div>
       <div class="grid" data-project-grid data-show-year="true">
-        {projects.map((project) => (
-          <ProjectCard project={project} showYear />
+        {localizedProjects.map((project) => (
+          <ProjectCard project={project} localePrefix={locale} showYear />
         ))}
       </div>
-      {projects.length === 0 && <p class="empty-state">No projects found.</p>}
+      {localizedProjects.length === 0 && <p class="empty-state">{text.noProjects}</p>}
     </Layout>
   );
 });
 
-// Student detail page
-app.get("/:year/students/:slug/", async (c) => {
+app.get("/:locale/:year/students/:slug/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) {
+    const year = c.req.param("year");
+    const slug = c.req.param("slug");
+    if (year === "students" && isAcademicYearSegment(locale)) {
+      return c.redirect(`/nl/${locale}/students/${slug}/`, 301);
+    }
+    return c.notFound();
+  }
+
+  setLocalePreference(c, locale);
+  const text = TEXT[locale];
   const year = c.req.param("year");
   const slug = c.req.param("slug");
 
@@ -493,13 +681,21 @@ app.get("/:year/students/:slug/", async (c) => {
 
   if (!project) {
     return c.html(
-      <Layout title="Not Found">
-        <p>Student not found.</p>
-        <a href={`/${CURRENT_YEAR}/`}>Back to projects</a>
+      <Layout locale={locale} currentPath={requestPathWithQuery(c)} title={text.notFound}>
+        <p>{text.studentNotFound}</p>
+        <a href={`/${locale}/${CURRENT_YEAR}/`}>{text.back}</a>
       </Layout>,
       404
     );
   }
+
+  const localizedProject = {
+    ...project,
+    project_title: getLocalizedProjectTitle(project, locale),
+    bio: getLocalizedProjectBio(project, locale),
+    description: getLocalizedProjectDescription(project, locale),
+    location: getLocalizedProjectLocation(project, locale) || null,
+  };
 
   const { results: allImages } = await c.env.DB.prepare(
     "SELECT * FROM project_images WHERE project_id = ? ORDER BY sort_order"
@@ -516,9 +712,7 @@ app.get("/:year/students/:slug/", async (c) => {
 
   const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } => {
     const trimmed = rawLink.trim();
-    if (!trimmed) {
-      return { kind: "website", label: "Website", href: rawLink };
-    }
+    if (!trimmed) return { kind: "website", label: "Website", href: rawLink };
 
     const parsedUrl = (() => {
       try {
@@ -542,24 +736,15 @@ app.get("/:year/students/:slug/", async (c) => {
 
     if (lowerHost.includes("instagram.com") || lowerHost === "instagr.am") {
       const handle = pathSegments[0]?.replace(/^@/, "");
-      return {
-        kind: "instagram",
-        label: handle ? handle : "Instagram",
-        href: parsedUrl.toString(),
-      };
+      return { kind: "instagram", label: handle ? handle : "Instagram", href: parsedUrl.toString() };
     }
 
     if (lowerHost.includes("youtube.com") || lowerHost.includes("youtu.be")) {
       let label = "YouTube";
-      if (pathSegments[0]?.startsWith("@")) {
-        label = pathSegments[0];
-      } else if (pathSegments[0] === "user" && pathSegments[1]) {
-        label = pathSegments[1];
-      } else if (pathSegments[0] === "channel" && pathSegments[1]) {
-        label = pathSegments[1];
-      } else if (pathSegments[0] === "c" && pathSegments[1]) {
-        label = pathSegments[1];
-      }
+      if (pathSegments[0]?.startsWith("@")) label = pathSegments[0];
+      else if (pathSegments[0] === "user" && pathSegments[1]) label = pathSegments[1];
+      else if (pathSegments[0] === "channel" && pathSegments[1]) label = pathSegments[1];
+      else if (pathSegments[0] === "c" && pathSegments[1]) label = pathSegments[1];
       return { kind: "youtube", label, href: parsedUrl.toString() };
     }
 
@@ -573,7 +758,7 @@ app.get("/:year/students/:slug/", async (c) => {
   };
 
   const socialItems = socialLinks.filter(Boolean).map(parseSocialLink);
-  const locationLabel = project.location?.trim();
+  const locationLabel = localizedProject.location?.trim();
   const privateEmail = project.private_email?.trim();
 
   const renderSocialIcon = (kind: SocialKind) => {
@@ -671,12 +856,12 @@ app.get("/:year/students/:slug/", async (c) => {
     </svg>
   );
 
-  const canonicalUrl = `${SITE_URL}/${year}/students/${slug}/`;
+  const canonicalUrl = `${SITE_URL}/${locale}/${year}/students/${slug}/`;
   const projectUrl = canonicalUrl;
-  const backLinkHref = year === CURRENT_YEAR ? "/" : `/${year}/`;
+  const backLinkHref = year === CURRENT_YEAR ? `/${locale}/` : `/${locale}/${year}/`;
   const mainImage = images[0] || null;
   const mainImageId = mainImage?.cloudflare_id;
-  const mainImageAlt = mainImage?.caption || project.project_title;
+  const mainImageAlt = mainImage?.caption || localizedProject.project_title;
   const mainImageUrl = mainImageId ? getImageUrl(mainImageId, "large") : null;
   const galleryImages = mainImageId ? images.slice(1) : images;
   const galleryImageUrls = images
@@ -684,8 +869,8 @@ app.get("/:year/students/:slug/", async (c) => {
     .filter((url): url is string => Boolean(url));
   const imageUrls = [...(mainImageUrl ? [mainImageUrl] : []), ...galleryImageUrls];
   const creatorSameAs = socialItems.map((item) => item.href).filter(Boolean);
+  const contextLabel = getContextFullLabel(project.context, locale);
 
-  // JSON-LD structured data for project pages
   const creativeWorkSchema = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -695,13 +880,13 @@ app.get("/:year/students/:slug/", async (c) => {
       "@type": "WebPage",
       "@id": projectUrl,
     },
-    name: project.project_title,
+    name: localizedProject.project_title,
     creator: {
       "@type": "Person",
       name: project.student_name,
       ...(creatorSameAs.length > 0 && { sameAs: creatorSameAs }),
     },
-    description: project.description?.substring(0, 300) || "",
+    description: localizedProject.description?.substring(0, 300) || "",
     ...(imageUrls.length > 0 && { image: imageUrls }),
     datePublished: project.created_at,
     dateModified: project.updated_at,
@@ -715,14 +900,14 @@ app.get("/:year/students/:slug/", async (c) => {
       {
         "@type": "ListItem",
         position: 1,
-        name: "Home",
-        item: SITE_URL,
+        name: text.home,
+        item: `${SITE_URL}/${locale}/`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: year,
-        item: `${SITE_URL}/${year}/`,
+        item: `${SITE_URL}/${locale}/${year}/`,
       },
       {
         "@type": "ListItem",
@@ -734,25 +919,27 @@ app.get("/:year/students/:slug/", async (c) => {
 
   return c.html(
     <Layout
-      title={`${project.student_name} — ${project.project_title}`}
+      locale={locale}
+      currentPath={requestPathWithQuery(c)}
+      title={`${project.student_name} - ${localizedProject.project_title}`}
       ogImage={mainImageUrl}
-      ogDescription={`${project.project_title} by ${project.student_name} · ${project.context}`}
+      ogDescription={`${localizedProject.project_title} by ${project.student_name} · ${contextLabel}`}
       ogType="article"
       canonicalUrl={canonicalUrl}
       jsonLd={[organizationSchema, creativeWorkSchema, breadcrumbSchema]}
     >
       <article class="detail">
         <a href={backLinkHref} class="back-link">
-          ← Back
+          ← {text.back}
         </a>
 
         <header class="detail-header">
           <div class="detail-header-left">
             <h1 class="detail-project-title" style={`view-transition-name: title-${vtName}`}>
-              {project.project_title}
+              {localizedProject.project_title}
             </h1>
             <p class="detail-meta">
-              {project.context} · {project.academic_year}
+              {contextLabel} · {project.academic_year}
             </p>
           </div>
           <div class="detail-header-right">
@@ -761,7 +948,7 @@ app.get("/:year/students/:slug/", async (c) => {
             </h2>
             {locationLabel && <p class="detail-location">{locationLabel}</p>}
             {(socialItems.length > 0 || privateEmail) && (
-              <nav class="detail-links" aria-label="Student links">
+              <nav class="detail-links" aria-label={text.studentLinks}>
                 {socialItems.map((item) => (
                   <a href={item.href} target="_blank" rel="noopener noreferrer">
                     <span class="detail-link-icon" aria-hidden="true">
@@ -794,16 +981,16 @@ app.get("/:year/students/:slug/", async (c) => {
         )}
 
         <div class="detail-content">
-          {project.bio && (
+          {localizedProject.bio && (
             <section class="detail-section">
-              <h2 class="detail-section-title">About</h2>
-              <RichDescription text={project.bio} />
+              <h2 class="detail-section-title">{text.detailAbout}</h2>
+              <RichDescription text={localizedProject.bio} />
             </section>
           )}
 
           <section class="detail-section">
-            <h2 class="detail-section-title">Project</h2>
-            <RichDescription text={project.description} />
+            <h2 class="detail-section-title">{text.detailProject}</h2>
+            <RichDescription text={localizedProject.description} />
           </section>
         </div>
 
@@ -823,7 +1010,7 @@ app.get("/:year/students/:slug/", async (c) => {
                   <img
                     src={getImageUrl(img.cloudflare_id, "medium")}
                     data-lightbox-src={getImageUrl(img.cloudflare_id, "xl")}
-                    alt={img.caption || project.project_title}
+                    alt={img.caption || localizedProject.project_title}
                     loading="lazy"
                   />
                   {img.caption && <figcaption>{img.caption}</figcaption>}
@@ -838,8 +1025,16 @@ app.get("/:year/students/:slug/", async (c) => {
   );
 });
 
-// Scheduled handler for cron jobs (token cleanup)
-const scheduled: ExportedHandlerScheduledHandler<Bindings> = async (event, env, ctx) => {
+// Legacy redirects to default locale
+app.get("/", (c) => c.redirect("/nl/", 301));
+app.get("/about", (c) => c.redirect("/nl/about", 301));
+app.get("/archive", (c) => c.redirect("/nl/archive", 301));
+app.get("/:year/", (c) => c.redirect(`/nl/${c.req.param("year")}/`, 301));
+app.get("/:year/students/:slug/", (c) =>
+  c.redirect(`/nl/${c.req.param("year")}/students/${c.req.param("slug")}/`, 301)
+);
+
+const scheduled: ExportedHandlerScheduledHandler<Bindings> = async (_event, env, ctx) => {
   ctx.waitUntil(
     env.DB.prepare(
       `DELETE FROM auth_tokens

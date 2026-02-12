@@ -18,6 +18,13 @@ const createSearchController = () => {
   if (!toggle || !field || !input || !status) return null;
 
   const main = document.querySelector("main");
+  const locale = container.dataset.searchLocale || "nl";
+  const msgMin = container.dataset.searchMinMessage || `Type at least ${SEARCH_MIN_LENGTH} characters.`;
+  const msgLoading = container.dataset.searchLoadingMessage || "Searching...";
+  const msgUnavailable = container.dataset.searchUnavailableMessage || "Search unavailable. Try again.";
+  const msgEmpty = container.dataset.searchEmptyMessage || "No results found.";
+  const resultsSingular = container.dataset.searchResultsSingular || "result";
+  const resultsPlural = container.dataset.searchResultsPlural || "results";
   const grid = document.querySelector("[data-project-grid]");
   const initialGridHtml = grid ? grid.innerHTML : "";
   const initialMainHtml = main ? main.innerHTML : "";
@@ -46,7 +53,7 @@ const createSearchController = () => {
         input.value = "";
         resetGrid();
         updateSearchParam("");
-        setStatus(status, `Type at least ${SEARCH_MIN_LENGTH} characters.`);
+        setStatus(status, msgMin);
       } else if (dynamicGrid) {
         resetGrid();
       }
@@ -133,7 +140,7 @@ const createSearchController = () => {
 
     const cardCount = gridEl.querySelectorAll(".card").length;
     if (!cardCount) {
-      showEmptyState("No results found.");
+      showEmptyState(msgEmpty);
       return 0;
     }
 
@@ -160,10 +167,10 @@ const createSearchController = () => {
     }
     activeController = new AbortController();
 
-    setStatus(status, "Searching...", "loading");
+    setStatus(status, msgLoading, "loading");
 
     try {
-      const params = new URLSearchParams({ query });
+      const params = new URLSearchParams({ query, locale });
       const response = await fetch(`/api/search?${params.toString()}`, {
         headers: {
           Accept: "text/html",
@@ -181,11 +188,12 @@ const createSearchController = () => {
       const countHeader = response.headers.get("x-results-count");
       const count = countHeader ? Number.parseInt(countHeader, 10) : countFromGrid;
       const displayCount = Number.isFinite(count) ? count : countFromGrid;
-      setStatus(status, `${displayCount} result${displayCount === 1 ? "" : "s"}`);
+      const label = displayCount === 1 ? resultsSingular : resultsPlural;
+      setStatus(status, `${displayCount} ${label}`);
       updateSearchParam(query);
     } catch (error) {
       if (error.name === "AbortError") return;
-      setStatus(status, "Search unavailable. Try again.", "error");
+      setStatus(status, msgUnavailable, "error");
     }
   };
 
@@ -193,7 +201,7 @@ const createSearchController = () => {
     const query = input.value.trim();
     if (query.length < SEARCH_MIN_LENGTH) {
       if (activeController) activeController.abort();
-      setStatus(status, `Type at least ${SEARCH_MIN_LENGTH} characters.`);
+      setStatus(status, msgMin);
       resetGrid();
       updateSearchParam("");
       return;
@@ -214,7 +222,7 @@ const createSearchController = () => {
         input.value = "";
         resetGrid();
         updateSearchParam("");
-        setStatus(status, `Type at least ${SEARCH_MIN_LENGTH} characters.`);
+        setStatus(status, msgMin);
         return;
       }
       setOpen(false);
@@ -231,7 +239,7 @@ const createSearchController = () => {
   document.addEventListener("keydown", handleKeydown);
 
   setOpen(false);
-  setStatus(status, `Type at least ${SEARCH_MIN_LENGTH} characters.`);
+  setStatus(status, msgMin);
   if (initialSearch.length >= SEARCH_MIN_LENGTH) {
     input.value = initialSearch;
     setOpen(true);

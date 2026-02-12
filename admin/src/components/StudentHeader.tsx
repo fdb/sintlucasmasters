@@ -1,6 +1,7 @@
 import { Sun, Moon, LogOut, Eye, X, ChevronDown } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { useSession, useStudentProjects } from "../api/queries";
+import { formatContext } from "../utils";
 
 export function StudentHeader() {
   const { darkMode, toggleDarkMode, impersonatedUser, setImpersonatedUser, selectedProjectId, setSelectedProjectId } =
@@ -72,7 +73,7 @@ export function StudentHeader() {
           )}
           {!hasMultipleProjects && selectedProject && (
             <p className="student-header-subtitle">
-              {selectedProject.academic_year} - {selectedProject.context}
+              {selectedProject.academic_year} - {formatContext(selectedProject.context)}
             </p>
           )}
         </div>
