@@ -24,7 +24,7 @@ import {
   isPublicLocale,
 } from "./lib/i18n";
 
-const app = new Hono<{ Bindings: Bindings }>();
+export const app = new Hono<{ Bindings: Bindings }>();
 
 type PublicLocale = "nl" | "en";
 
@@ -359,7 +359,7 @@ app.get("/api/search", async (c) => {
 
   const conditions = [
     "status = 'published'",
-    "(student_name LIKE ? ESCAPE '\\\\' OR project_title_en LIKE ? ESCAPE '\\\\' OR project_title_nl LIKE ? ESCAPE '\\\\' OR description_en LIKE ? ESCAPE '\\\\' OR description_nl LIKE ? ESCAPE '\\\\' OR tags LIKE ? ESCAPE '\\\\')",
+    "(student_name LIKE ? ESCAPE '\\' OR project_title_en LIKE ? ESCAPE '\\' OR project_title_nl LIKE ? ESCAPE '\\' OR description_en LIKE ? ESCAPE '\\' OR description_nl LIKE ? ESCAPE '\\' OR tags LIKE ? ESCAPE '\\')",
   ];
   const params: string[] = [like, like, like, like, like, like];
 
