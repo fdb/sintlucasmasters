@@ -2190,6 +2190,68 @@ tr.status-draft td:first-child {
 }
 
 /* =====================================================
+   Alumni Consent Checkbox
+   ===================================================== */
+
+.edit-consent-field {
+  margin-top: 0.75rem;
+}
+
+.edit-consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.edit-consent-label:has(.edit-consent-checkbox:disabled) {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.edit-consent-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  border: 1.5px solid var(--admin-border);
+  background: var(--admin-bg);
+  cursor: pointer;
+  position: relative;
+  margin-top: 1px;
+}
+
+.edit-consent-checkbox:checked {
+  background: var(--black);
+  border-color: var(--black);
+}
+
+.edit-consent-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.edit-consent-checkbox:disabled {
+  cursor: default;
+}
+
+.edit-consent-text {
+  flex: 1;
+}
+
+/* =====================================================
    Save indicator
    ===================================================== */
 

@@ -370,6 +370,22 @@ export function ProjectEditForm({
                   />
                 </div>
               </div>
+              <div className="edit-consent-field">
+                <label className="edit-consent-label">
+                  <input
+                    type="checkbox"
+                    className="edit-consent-checkbox"
+                    checked={editDraft.alumni_consent}
+                    onChange={(e) => updateEditField("alumni_consent", e.target.checked)}
+                    disabled={isLocked || !editDraft.private_email.trim()}
+                  />
+                  <span className="edit-consent-text">
+                    {editLanguage === "nl"
+                      ? "Ik ga ermee akkoord dat Sint Lucas Antwerpen mijn e-mailadres mag gebruiken om mij als alumnus te contacteren voor schoolgerelateerde activiteiten."
+                      : "I agree that Sint Lucas Antwerpen may use my email address to contact me as an alumni for school-related activities."}
+                  </span>
+                </label>
+              </div>
               <div className="edit-field" style={{ marginTop: "1rem" }}>
                 <label className="edit-label">Social Links</label>
                 <div className="edit-links-list">
