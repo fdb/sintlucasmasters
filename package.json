@@ -53,13 +53,13 @@
     "@sentry/vite-plugin": "^4.9.1",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^5.1.4",
     "concurrently": "^9.2.1",
     "dotenv": "^17.3.1",
     "gray-matter": "^4.0.3",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
-    "vite": "^6.1.1",
+    "vite": "^7.3.1",
     "vitest": "^4.0.18",
     "wrangler": "^4.65.0"
   }
