@@ -238,6 +238,99 @@ test.describe("admin project editing", () => {
     await expect(page.locator(".edit-modal-overlay").first()).not.toHaveClass(/is-open/);
   });
 
+  test("alumni consent checkbox is disabled when email is empty", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Editable Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    // Clear email field
+    const emailInput = modal.locator('.edit-field:has-text("Private Email") input');
+    await emailInput.clear();
+
+    // Consent checkbox should be disabled
+    const consentCheckbox = modal.locator(".edit-consent-checkbox");
+    await expect(consentCheckbox).toBeDisabled();
+  });
+
+  test("alumni consent checkbox enables when email is entered", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Editable Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    // Clear email then type one
+    const emailInput = modal.locator('.edit-field:has-text("Private Email") input');
+    await emailInput.clear();
+    await expect(modal.locator(".edit-consent-checkbox")).toBeDisabled();
+
+    await emailInput.fill("test@example.com");
+    await expect(modal.locator(".edit-consent-checkbox")).toBeEnabled();
+  });
+
+  test("alumni consent persists after save and reopen", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Editable Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    // Enter an email and check consent
+    const emailInput = modal.locator('.edit-field:has-text("Private Email") input');
+    await emailInput.clear();
+    await emailInput.fill("alumni@example.com");
+
+    const consentCheckbox = modal.locator(".edit-consent-checkbox");
+    await expect(consentCheckbox).toBeEnabled();
+    await consentCheckbox.check();
+    await expect(consentCheckbox).toBeChecked();
+
+    // Save
+    await modal.locator('button:has-text("Save Changes")').click();
+    await expect(modal.locator(".save-indicator.saved")).toBeVisible({ timeout: 10000 });
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
+
+    // Reopen
+    await page.locator("tbody tr", { hasText: "Editable Student" }).dblclick();
+    const reopenedModal = page.locator(".edit-modal-overlay.is-open");
+    await expect(reopenedModal).toBeVisible();
+
+    // Consent should still be checked
+    await expect(reopenedModal.locator(".edit-consent-checkbox")).toBeChecked();
+
+    // Clean up: uncheck consent and clear email
+    await reopenedModal.locator(".edit-consent-checkbox").uncheck();
+    const restoreEmail = reopenedModal.locator('.edit-field:has-text("Private Email") input');
+    await restoreEmail.clear();
+    await reopenedModal.locator('button:has-text("Save Changes")').click();
+    await expect(reopenedModal.locator(".save-indicator.saved")).toBeVisible({ timeout: 10000 });
+    await expect(reopenedModal).not.toBeVisible({ timeout: 5000 });
+  });
+
+  test("clearing email auto-resets alumni consent", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Editable Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    // Enter email and check consent
+    const emailInput = modal.locator('.edit-field:has-text("Private Email") input');
+    await emailInput.clear();
+    await emailInput.fill("temp@example.com");
+
+    const consentCheckbox = modal.locator(".edit-consent-checkbox");
+    await consentCheckbox.check();
+    await expect(consentCheckbox).toBeChecked();
+
+    // Clear email — consent should reset
+    await emailInput.clear();
+    await expect(consentCheckbox).not.toBeChecked();
+    await expect(consentCheckbox).toBeDisabled();
+  });
+
   test("can select context from dropdown", async ({ page }) => {
     // Double-click first row
     await page.locator("tbody tr").first().dblclick();

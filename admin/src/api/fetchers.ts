@@ -87,6 +87,7 @@ export type SaveProjectData = {
   location_en: string | null;
   location_nl: string | null;
   private_email: string | null;
+  alumni_consent: number;
   status: string;
   tags: string | null;
   social_links: string | null;
