@@ -61,24 +61,18 @@ social_links: []
 ## Commands
 
 ```bash
+# Local dev setup (destructive — drops & rebuilds DB, imports data, sets up secrets)
+npm run init                # Safe to run repeatedly; always gives a clean state
+
 # Development
 npm run dev                 # Start local dev server on http://localhost:8787
-npm run dev:admin:serve     # Optional: Vite dev server with HMR on http://localhost:5173
 
 # Tests
 npm run test:e2e            # Builds admin, starts wrangler on 5174, runs Playwright
 
-# Database
-npm run db:init             # Create schema locally
-npm run db:init:remote      # Create schema on production D1
-npm run import              # Import old data to local D1
-npm run import:remote       # Import old data to production D1
-npm run db:rebuild          # Drop tables, recreate schema, and import (local)
-npm run db:rebuild:remote   # Drop tables, recreate schema, and import (remote)
-
-# Build & Deploy
-npm run build               # Dry-run deploy
-npm run deploy              # Deploy to Cloudflare (manual, not auto-deployed on push)
+# Production (non-destructive — only applies unapplied migrations)
+npm run init:remote         # Apply pending migrations to production D1
+npm run deploy              # Deploy to Cloudflare (not auto-deployed on push)
 
 # Admin
 npm run create-admin <email>         # Create admin user locally
@@ -88,6 +82,27 @@ npm run create-admin:remote <email>  # Create admin user on production
 
 - Run `npm run typecheck` every time a change is made.
 - `npm run dev` serves admin from `static/admin`; changes are picked up by the Vite build watcher and require a refresh.
+```
+
+## Database Migrations
+
+Schema changes use [Wrangler D1 migrations](https://developers.cloudflare.com/d1/reference/migrations/). Migration files live in `migrations/` and are tracked by a `d1_migrations` table.
+
+- **Source of truth**: `migrations/*.sql` (not `schema.sql`, which is kept for reference only)
+- **Migrations are append-only**: Never edit a migration after it has been applied to production
+- **SQLite limitations**: `ALTER TABLE` only supports `ADD COLUMN` and `RENAME COLUMN`. Dropping columns requires the create-copy-drop-rename pattern.
+
+### Creating a new migration
+
+```bash
+npm run db:migration:create -- add_video_url   # Creates migrations/0001_add_video_url.sql
+# Edit the file with your ALTER TABLE / CREATE TABLE statements
+npm run init                                    # Apply locally (rebuilds from scratch)
+npm run test:e2e                                # Verify
+# Commit the migration file with your code changes
+# After merge:
+npm run init:remote                             # Apply to production
+npm run deploy
 ```
 
 ## Environment Variables
