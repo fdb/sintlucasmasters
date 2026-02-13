@@ -1,8 +1,4 @@
 -- Sint Lucas Masters D1 Schema
---
--- NOTE: This file is kept for quick reference only.
--- The source of truth is migrations/*.sql — nothing executes this file directly.
--- To create a new migration: npm run db:migration:create -- <name>
 
 CREATE TABLE IF NOT EXISTS projects (
     id TEXT PRIMARY KEY,

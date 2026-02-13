@@ -46,18 +46,17 @@ function runCommand(command, args) {
 async function main() {
     console.log(`\n🔄 Rebuilding ${targetLabel} database...\n`);
 
-    // Step 1: Drop tables
+    // Step 1: Drop tables (including migration tracking table so migrations re-run from scratch)
     console.log('📦 Step 1: Dropping existing tables...');
     await runCommand('npx', [
         'wrangler', 'd1', 'execute', 'sintlucasmasters', target,
-        '--command', '"DROP TABLE IF EXISTS project_images; DROP TABLE IF EXISTS projects; DROP TABLE IF EXISTS auth_tokens; DROP TABLE IF EXISTS users;"'
+        '--command', '"DROP TABLE IF EXISTS project_images; DROP TABLE IF EXISTS projects; DROP TABLE IF EXISTS auth_tokens; DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS d1_migrations;"'
     ]);
 
-    // Step 2: Create schema
-    console.log('\n📦 Step 2: Creating schema...');
+    // Step 2: Apply migrations
+    console.log('\n📦 Step 2: Applying migrations...');
     await runCommand('npx', [
-        'wrangler', 'd1', 'execute', 'sintlucasmasters', target,
-        '--file', './schema.sql'
+        'wrangler', 'd1', 'migrations', 'apply', 'sintlucasmasters', target
     ]);
 
     // Step 3: Import data

@@ -6,9 +6,7 @@ name = "sintlucasmasters"
 script = '''
 npm install
 npx playwright install
-npm run db:rebuild
-npm run setup-secrets
-npm run bulk-create-fake-users
+npm run init
 '''
 
 [[actions]]

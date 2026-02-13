@@ -9,64 +9,74 @@ Student exhibition website for Sint Lucas Antwerpen Masters program.
 - **Database**: Cloudflare D1 (SQLite)
 - **Media Storage**: Cloudflare Images
 
-## Development
+## Local Development Setup
+
+```bash
+npm install
+npm run init        # Drops & rebuilds DB, imports data, sets up secrets, creates fake users
+npm run dev         # Start dev server on http://localhost:8787
+```
+
+`npm run init` is **destructive** — it drops and recreates the local database from scratch every time. Safe to run repeatedly; it always gives you a clean state.
 
 `npm run dev` runs `wrangler dev` and a Vite build watcher that outputs admin assets to `static/admin`. Refresh `/admin` to see changes.
 
 ```bash
-# Install dependencies
-npm install
-
-# Setup secrets (requires 1Password CLI)
-npm run setup-secrets
-
-# Create local D1 database schema
-npm run db:init
-
-# Import student data from old markdown files
-npm run import
-
-# Start development server (port 8787)
-# Visit http://localhost:8787
-npm run dev
-
-# (Optional) run the admin Vite dev server with HMR
-# Visit http://localhost:5173
-npm run dev:admin:serve
-
-# Run end-to-end tests (builds admin first, then starts wrangler on 5174)
-npm run test:e2e
+# Other local commands
+npm run test:e2e    # Build admin, start wrangler on 5174, run Playwright tests
+npm run typecheck   # Type-check both worker and admin code
 ```
 
-## Deploying to Cloudflare
+## Production
 
 ```bash
-# First time setup only:
-npm run db:init:remote       # Create schema on production D1
-npm run import:remote        # Import data to production D1
-npm run setup-secrets:remote # Upload secrets to Cloudflare
+# Apply pending database migrations (non-destructive, safe to run repeatedly)
+npm run init:remote
 
-# Every time you deploy:
+# Deploy the application
 npm run deploy
 ```
+
+`npm run init:remote` only applies **unapplied** migrations. It never drops tables or deletes data. Run it before every deploy that includes a new migration.
+
+```bash
+# One-time production setup (first deploy only)
+npm run init:remote                          # Apply migrations
+node scripts/import-to-d1.mjs --remote      # Import data
+npm run setup-secrets:remote                 # Upload secrets to Cloudflare
+npm run create-admin:remote <email>          # Create first admin user
+npm run deploy
+```
+
+## Database Migrations
+
+Schema changes use Wrangler D1 migrations. Source of truth is `migrations/*.sql`.
+
+```bash
+# Create a new migration
+npm run db:migration:create -- add_video_url
+
+# Edit migrations/0001_add_video_url.sql with your SQL
+# Apply locally and test
+npm run init
+npm run test:e2e
+
+# After merge, apply to production
+npm run init:remote
+npm run deploy
+```
+
+Migrations are **append-only** — never edit a migration after it has been applied to production.
 
 ## Project Structure
 
 ```text
-src/
-├── index.tsx          # Hono app entry point
-├── components/        # JSX components (Layout, ProjectCard)
-└── types.ts           # TypeScript types
-
-scripts/
-├── import-to-d1.mjs   # Import old markdown data to D1
-└── setup-secrets.mjs  # Setup local/remote secrets
-
+src/                   # Hono app (SSR with JSX)
+admin/                 # React admin SPA (Vite)
+migrations/            # D1 migration SQL files (source of truth for schema)
+scripts/               # Import, seed, and setup scripts
 old/                   # Legacy Eleventy site (data source for import)
-├── 2021-2025/         # Student markdown files by year
-└── ...
-
-schema.sql             # D1 database schema
+schema.sql             # Reference copy of current schema (not executed)
 ```
 
 ## Public Locales

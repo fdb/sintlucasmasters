@@ -15,6 +15,8 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "sintlucasmasters"
 database_id = "4227d715-382f-416a-aa9c-c5da32847400"
+migrations_dir = "migrations"
+migrations_table = "d1_migrations"
 
 # Environment variables (secrets set via `wrangler secret put`)
 # JWT_SECRET - Secret for signing JWT tokens
