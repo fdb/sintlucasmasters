@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
+import Anthropic from "@anthropic-ai/sdk";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN } from "../constants";
@@ -895,6 +896,98 @@ adminApiRoutes.post("/projects/:id/submit", async (c) => {
   const updatedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(projectId).first<Project>();
 
   return c.json({ project: updatedProject });
+});
+
+// =====================================================
+// AI Translation
+// =====================================================
+
+const TRANSLATE_FIELDS = ["bio", "description"] as const;
+type TranslateField = (typeof TRANSLATE_FIELDS)[number];
+type TranslateDirection = "nl-to-en" | "en-to-nl";
+
+const NL_TO_EN_SYSTEM = `You are a professional translator for an art school exhibition website.
+Translate Dutch text to English. Preserve the student's voice, tone, and artistic intent.
+Keep proper nouns, artwork titles, and technical art terms as-is when appropriate.
+Output ONLY the translation inside <translation> tags. If you cannot translate, output <translation status="failed" reason="..."></translation>.`;
+
+const EN_TO_NL_SYSTEM = `You are a professional translator for an art school exhibition website.
+Translate English text to Dutch. Preserve the student's voice, tone, and artistic intent.
+Keep proper nouns, artwork titles, and technical art terms as-is when appropriate.
+Output ONLY the translation inside <translation> tags. If you cannot translate, output <translation status="failed" reason="..."></translation>.`;
+
+adminApiRoutes.post("/projects/:id/translate", async (c) => {
+  const projectId = c.req.param("id");
+  const project = await checkProjectAccess(c, projectId);
+
+  if (!project) {
+    return c.json({ error: "Project not found or access denied" }, 404);
+  }
+
+  const body = await c.req.json<{ field: string; text: string; direction: string }>();
+  const { field, text, direction } = body;
+
+  if (!TRANSLATE_FIELDS.includes(field as TranslateField)) {
+    return c.json({ error: "Invalid field" }, 400);
+  }
+  if (direction !== "nl-to-en" && direction !== "en-to-nl") {
+    return c.json({ error: "Invalid direction" }, 400);
+  }
+  if (!text || !text.trim()) {
+    return c.json({ error: "No text to translate" }, 400);
+  }
+
+  const systemPrompt = direction === "nl-to-en" ? NL_TO_EN_SYSTEM : EN_TO_NL_SYSTEM;
+  const sourceLang = direction === "nl-to-en" ? "Dutch" : "English";
+
+  try {
+    const client = new Anthropic({ apiKey: c.env.ANTHROPIC_API_KEY });
+
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: [
+        {
+          role: "user",
+          content: `Translate the following ${sourceLang} text (field: ${field}):\n\n${text}`,
+        },
+        {
+          role: "assistant",
+          content: "<translation>",
+        },
+      ],
+    });
+
+    const responseText = message.content[0].type === "text" ? "<translation>" + message.content[0].text : "";
+
+    // Parse translation from XML tags
+    const translationMatch = responseText.match(/<translation(?:\s[^>]*)?>([^]*?)<\/translation>/);
+    const failedMatch = responseText.match(/<translation\s+status="failed"\s+reason="([^"]*)"[^>]*>/);
+
+    if (failedMatch) {
+      return c.json({ translation: "", status: "failed", reason: failedMatch[1] });
+    }
+
+    if (translationMatch) {
+      return c.json({ translation: translationMatch[1].trim(), status: "ok" });
+    }
+
+    // Fallback: use the raw response text if no XML tags found
+    const rawText = message.content[0].type === "text" ? message.content[0].text.trim() : "";
+    if (rawText) {
+      // The response starts after our "<translation>" prefix, so strip the closing tag if present
+      const cleaned = rawText.replace(/<\/translation>\s*$/, "").trim();
+      if (cleaned) {
+        return c.json({ translation: cleaned, status: "ok" });
+      }
+    }
+
+    return c.json({ translation: "", status: "failed", reason: "Could not parse translation" });
+  } catch (err) {
+    console.error("Translation error:", err);
+    return c.json({ translation: "", status: "failed", reason: "Translation service error" }, 500);
+  }
 });
 
 // =====================================================

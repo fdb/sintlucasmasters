@@ -44,6 +44,11 @@ export const E2E_PROJECTS = [
   },
 ];
 
+export const E2E_TRANSLATE_PROJECT = {
+  id: "e2e-project-translate",
+  studentName: "Translate Student",
+};
+
 export const CONTEXTS = ["All", "autonomous", "applied", "digital", "sociopolitical", "jewelry"];
 
 export const YEARS = ["All", "2024-2025", "2023-2024"];

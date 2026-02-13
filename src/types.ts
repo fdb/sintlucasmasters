@@ -18,6 +18,8 @@ export type Bindings = {
   E2E_SKIP_AUTH?: string;
   // Local development
   DEV_ADMIN_EMAIL?: string;
+  // AI Translation
+  ANTHROPIC_API_KEY: string;
   // Sentry
   SENTRY_DSN: string;
   SENTRY_HOST: string;
