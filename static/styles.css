@@ -693,7 +693,7 @@ main {
 
 .detail-gallery {
   width: 100vw;
-  margin: 0 calc(50% - 50vw - 2rem) 3.5rem;
+  margin: 0 calc(50% - 50vw) 3.5rem;
   padding: 0 4rem;
   box-sizing: border-box;
 }
@@ -1222,7 +1222,7 @@ body.lightbox-open {
   }
 
   .detail-gallery {
-    margin: 0 calc(50% - 50vw - 1.25rem) 3.5rem;
+    margin: 0 calc(50% - 50vw) 3.5rem;
     padding: 0 1.25rem;
   }
 
@@ -1273,7 +1273,7 @@ body.lightbox-open {
   }
 
   .detail-gallery {
-    margin: 0 calc(50% - 50vw - 1rem) 3.5rem;
+    margin: 0 calc(50% - 50vw) 3.5rem;
     padding: 0 1rem;
   }
 
