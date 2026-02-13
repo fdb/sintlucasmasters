@@ -28,6 +28,7 @@
     "bulk-create-fake-users": "node scripts/bulk-create-fake-users.mjs --local",
     "typecheck": "tsc --noEmit && tsc --noEmit -p admin/tsconfig.json",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,html,css,md}\"",
+    "dev-setup": "npm run db:rebuild && npm run setup-secrets && npm run bulk-create-fake-users",
     "test": "vitest run",
     "test:watch": "vitest"
   },
