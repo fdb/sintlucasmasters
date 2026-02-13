@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS projects (
     location_en TEXT,
     location_nl TEXT,
     private_email TEXT,
+    alumni_consent INTEGER NOT NULL DEFAULT 0,
     thumb_image_id TEXT,
     tags TEXT, -- JSON array
     social_links TEXT, -- JSON array

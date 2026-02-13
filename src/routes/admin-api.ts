@@ -43,6 +43,7 @@ const STUDENT_EDITABLE_FIELDS = [
   "location_en",
   "location_nl",
   "private_email",
+  "alumni_consent",
   "social_links",
   "tags",
 ];
@@ -302,6 +303,10 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   if (body.private_email !== undefined) {
     updates.push("private_email = ?");
     values.push(body.private_email);
+  }
+  if (body.alumni_consent !== undefined) {
+    updates.push("alumni_consent = ?");
+    values.push(body.alumni_consent);
   }
   if (body.status !== undefined) {
     updates.push("status = ?");

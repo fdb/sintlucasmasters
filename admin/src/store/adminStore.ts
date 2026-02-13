@@ -78,6 +78,7 @@ export type EditDraft = {
   location_en: string;
   location_nl: string;
   private_email: string;
+  alumni_consent: boolean;
   status: string;
   tags: string[];
   social_links: string[];
@@ -277,6 +278,7 @@ const buildEditDraft = (project: Record<string, unknown>): EditDraft => ({
   location_en: String(project.location_en || project.location_nl || ""),
   location_nl: String(project.location_nl || project.location_en || ""),
   private_email: String(project.private_email || ""),
+  alumni_consent: Boolean(project.alumni_consent),
   tags: parseTags(project.tags),
   social_links: parseSocialLinks(project.social_links),
 });
@@ -574,6 +576,17 @@ export const useAdminStore = create<AdminState>()(
             };
           }
 
+          if (field === "private_email") {
+            const emailValue = String(value ?? "").trim();
+            return {
+              editDraft: {
+                ...state.editDraft,
+                private_email: String(value ?? ""),
+                ...(emailValue === "" ? { alumni_consent: false } : {}),
+              },
+            };
+          }
+
           return {
             editDraft: {
               ...state.editDraft,
@@ -778,6 +791,7 @@ export const useAdminStore = create<AdminState>()(
               location_en: editDraft.location_en || null,
               location_nl: editDraft.location_nl || null,
               private_email: editDraft.private_email || null,
+              alumni_consent: editDraft.private_email?.trim() ? (editDraft.alumni_consent ? 1 : 0) : 0,
               status: editDraft.status,
               tags: editDraft.tags.length > 0 ? JSON.stringify(editDraft.tags) : null,
               social_links: normalizedSocialLinks.length > 0 ? JSON.stringify(normalizedSocialLinks) : null,
