@@ -57,6 +57,73 @@ test.describe("locale routing", () => {
   });
 });
 
+test.describe("localized content", () => {
+  test("NL page shows Dutch navigation labels", async ({ page }) => {
+    await page.goto("/nl/");
+    const nav = page.locator("nav.sub-header");
+    await expect(nav.locator('a[href="/nl/"]')).toHaveText("projecten");
+    await expect(nav.locator('a[href="/nl/archive"]')).toHaveText("archief");
+    await expect(nav.locator('a[href="/nl/about"]')).toHaveText("over");
+  });
+
+  test("EN page shows English navigation labels", async ({ page }) => {
+    await page.goto("/en/");
+    const nav = page.locator("nav.sub-header");
+    await expect(nav.locator('a[href="/en/"]')).toHaveText("projects");
+    await expect(nav.locator('a[href="/en/archive"]')).toHaveText("archive");
+    await expect(nav.locator('a[href="/en/about"]')).toHaveText("about");
+  });
+
+  test("NL page shows Dutch context filter labels", async ({ page }) => {
+    await page.goto("/nl/");
+    const filters = page.locator(".context-nav");
+    await expect(filters.locator("a").first()).toHaveText("alle");
+    await expect(filters.locator("a", { hasText: "digitaal" })).toBeVisible();
+    await expect(filters.locator("a", { hasText: "autonoom" })).toBeVisible();
+  });
+
+  test("EN page shows English context filter labels", async ({ page }) => {
+    await page.goto("/en/");
+    const filters = page.locator(".context-nav");
+    await expect(filters.locator("a").first()).toHaveText("all");
+    await expect(filters.locator("a", { hasText: "digital" })).toBeVisible();
+    await expect(filters.locator("a", { hasText: "autonomous" })).toBeVisible();
+  });
+
+  test("NL project detail shows Dutch title and description", async ({ page }) => {
+    await page.goto("/nl/2024-2025/students/alice-smith/");
+    await expect(page.locator(".detail-project-title")).toHaveText("Digitale Dromen");
+    await expect(page.locator(".detail-location")).toHaveText("Antwerpen, België");
+  });
+
+  test("EN project detail shows English title and description", async ({ page }) => {
+    await page.goto("/en/2024-2025/students/alice-smith/");
+    await expect(page.locator(".detail-project-title")).toHaveText("Digital Dreams");
+    await expect(page.locator(".detail-location")).toHaveText("Antwerp, Belgium");
+  });
+
+  test("NL project card shows Dutch title in grid", async ({ page }) => {
+    await page.goto("/nl/?context=digital");
+    await expect(page.locator(".card-subtitle", { hasText: "Digitale Dromen" })).toBeVisible();
+  });
+
+  test("EN project card shows English title in grid", async ({ page }) => {
+    await page.goto("/en/?context=digital");
+    await expect(page.locator(".card-subtitle", { hasText: "Digital Dreams" })).toBeVisible();
+  });
+
+  test("switching language updates labels and content", async ({ page }) => {
+    await page.goto("/nl/2024-2025/students/alice-smith/");
+    await expect(page.locator(".detail-project-title")).toHaveText("Digitale Dromen");
+    await expect(page.locator("nav.sub-header a").first()).toHaveText("projecten");
+
+    await page.locator(".locale-switch a", { hasText: "EN" }).click();
+    await expect(page).toHaveURL("/en/2024-2025/students/alice-smith/");
+    await expect(page.locator(".detail-project-title")).toHaveText("Digital Dreams");
+    await expect(page.locator("nav.sub-header a").first()).toHaveText("projects");
+  });
+});
+
 test.describe("homepage", () => {
   test("renders current year at homepage", async ({ page }) => {
     await page.goto("/");
