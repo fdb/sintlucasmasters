@@ -72,7 +72,7 @@ test.describe("admin projects table", () => {
 
     // Should show Alice Smith's project
     await expect(page.locator("tbody")).toContainText("Alice Smith");
-    await expect(page.locator("tbody")).toContainText("Digital Dreams");
+    await expect(page.locator("tbody")).toContainText("Digitale Dromen");
 
     // Should not show Bob Jones (Autonomous Context)
     await expect(page.locator("tbody")).not.toContainText("Bob Jones");

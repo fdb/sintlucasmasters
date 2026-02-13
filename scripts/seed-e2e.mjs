@@ -48,11 +48,15 @@ export const E2E_PROJECTS = [
     slug: "alice-smith",
     student_name: "Alice Smith",
     sort_name: "Smith, Alice",
-    project_title: "Digital Dreams",
+    project_title_en: "Digital Dreams",
+    project_title_nl: "Digitale Dromen",
     context: "digital",
     academic_year: "2024-2025",
-    bio: "Alice is a digital artist exploring virtual realities.",
-    description: "A project exploring the intersection of dreams and digital art.",
+    bio_en: "Alice is a digital artist exploring virtual realities.",
+    bio_nl: "Alice is een digitale kunstenaar die virtuele realiteiten verkent.",
+    description_en: "A project exploring the intersection of dreams and digital art.",
+    description_nl:
+      "Een project dat de kruising van dromen en digitale kunst verkent.",
     status: "published",
     tags: '["digital", "interactive"]',
     user_id: null,
@@ -261,10 +265,14 @@ async function main() {
   // Insert projects
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
+    const titleEn = "project_title_en" in project ? project.project_title_en : project.project_title;
+    const titleNl = "project_title_nl" in project ? project.project_title_nl : project.project_title;
     const bioEn = "bio_en" in project ? project.bio_en : project.bio;
+    const bioNl = "bio_nl" in project ? project.bio_nl : project.bio;
     const descEn = "description_en" in project ? project.description_en : project.description;
+    const descNl = "description_nl" in project ? project.description_nl : project.description;
     await runWrangler(
-      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, alumni_consent, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(project.project_title)}, ${escapeSql(project.project_title)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(bioEn)}, ${escapeSql(project.bio)}, ${escapeSql(descEn)}, ${escapeSql(project.description)}, 'Antwerp, Belgium', 'Antwerpen, België', 0, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
+      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, alumni_consent, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(titleEn)}, ${escapeSql(titleNl)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(bioEn)}, ${escapeSql(bioNl)}, ${escapeSql(descEn)}, ${escapeSql(descNl)}, 'Antwerp, Belgium', 'Antwerpen, België', 0, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
     );
   }
 

@@ -72,6 +72,6 @@ test.describe("projects without videos", () => {
 
     // Description text should be present (either as .description or .rich-description)
     const descriptionText = await page.locator(".detail").textContent();
-    expect(descriptionText).toContain("A project exploring the intersection of dreams and digital art.");
+    expect(descriptionText).toContain("Een project dat de kruising van dromen en digitale kunst verkent.");
   });
 });
