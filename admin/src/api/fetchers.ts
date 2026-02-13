@@ -247,6 +247,37 @@ export async function submitProject(projectId: string): Promise<void> {
 }
 
 // ============================================================================
+// Translation
+// ============================================================================
+
+export type TranslateFieldRequest = {
+  field: "bio" | "description";
+  text: string;
+  direction: "nl-to-en" | "en-to-nl";
+};
+
+export type TranslateFieldResponse = {
+  translation: string;
+  status: "ok" | "failed";
+  reason?: string;
+};
+
+export async function translateField(projectId: string, data: TranslateFieldRequest): Promise<TranslateFieldResponse> {
+  const res = await fetch(`/api/admin/projects/${projectId}/translate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = (await res.json()) as { error?: string };
+    throw new Error(error.error || "Translation failed");
+  }
+
+  return (await res.json()) as TranslateFieldResponse;
+}
+
+// ============================================================================
 // Users
 // ============================================================================
 

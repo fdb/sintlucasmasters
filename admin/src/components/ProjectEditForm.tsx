@@ -5,6 +5,7 @@ import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
 import { PrintImageSection } from "./PrintImageSection";
 import { LanguageTabs } from "./LanguageTabs";
+import { TranslateButton } from "./TranslateButton";
 import { queryKeys } from "../api/queryKeys";
 
 const CONTEXTS = [
@@ -505,25 +506,49 @@ export function ProjectEditForm({
                 <label className="edit-label">
                   Bio ({editLanguage.toUpperCase()}) <span className="required-marker">*</span>
                 </label>
-                <textarea
-                  className="edit-textarea"
-                  value={String(editDraft[bioField])}
-                  onChange={(e) => updateEditField(bioField, e.target.value)}
-                  placeholder="A brief introduction about yourself and your practice..."
-                  disabled={isLocked}
-                />
+                <div className="translate-textarea-wrapper">
+                  <textarea
+                    className="edit-textarea"
+                    value={String(editDraft[bioField])}
+                    onChange={(e) => updateEditField(bioField, e.target.value)}
+                    placeholder="A brief introduction about yourself and your practice..."
+                    disabled={isLocked}
+                  />
+                  <TranslateButton
+                    projectId={selectedProjectId!}
+                    field="bio"
+                    sourceText={editLanguage === "en" ? String(editDraft.bio_nl) : String(editDraft.bio_en)}
+                    currentText={String(editDraft[bioField])}
+                    direction={editLanguage === "en" ? "nl-to-en" : "en-to-nl"}
+                    disabled={isLocked}
+                    onTranslated={(text) => updateEditField(bioField, text)}
+                  />
+                </div>
               </div>
               <div className="edit-field">
                 <label className="edit-label">
                   Project Description ({editLanguage.toUpperCase()}) <span className="required-marker">*</span>
                 </label>
-                <textarea
-                  className="edit-textarea tall"
-                  value={String(editDraft[descriptionField])}
-                  onChange={(e) => updateEditField(descriptionField, e.target.value)}
-                  placeholder="Describe the project..."
-                  disabled={isLocked}
-                />
+                <div className="translate-textarea-wrapper">
+                  <textarea
+                    className="edit-textarea tall"
+                    value={String(editDraft[descriptionField])}
+                    onChange={(e) => updateEditField(descriptionField, e.target.value)}
+                    placeholder="Describe the project..."
+                    disabled={isLocked}
+                  />
+                  <TranslateButton
+                    projectId={selectedProjectId!}
+                    field="description"
+                    sourceText={
+                      editLanguage === "en" ? String(editDraft.description_nl) : String(editDraft.description_en)
+                    }
+                    currentText={String(editDraft[descriptionField])}
+                    direction={editLanguage === "en" ? "nl-to-en" : "en-to-nl"}
+                    disabled={isLocked}
+                    onTranslated={(text) => updateEditField(descriptionField, text)}
+                  />
+                </div>
               </div>
             </div>
           </div>
