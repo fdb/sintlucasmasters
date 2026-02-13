@@ -41,7 +41,7 @@ const COPY = {
   },
   nl: {
     defaultDescription: "Ontdek de afstudeerprojecten van de masters in kunst en design van Sint Lucas Antwerpen.",
-    title: "Afstudeerexpo",
+    title: "Graduation Tour",
     tagline: `Met de afstudeerprojecten van de ${CURRENT_YEAR} masters in kunst en design van Sint Lucas Antwerpen.`,
     navProjects: "projecten",
     navArchive: "archief",
