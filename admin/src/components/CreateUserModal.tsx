@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { X, Plus } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 
 const PROGRAMS = [
@@ -30,17 +31,19 @@ export function CreateUserModal() {
     setUserModalTab,
     createUser,
     bulkCreateUsers,
-  } = useAdminStore((state) => ({
-    userModalOpen: state.userModalOpen,
-    userModalTab: state.userModalTab,
-    userCreateStatus: state.userCreateStatus,
-    userCreateError: state.userCreateError,
-    userCreateSuccess: state.userCreateSuccess,
-    closeUserModal: state.closeUserModal,
-    setUserModalTab: state.setUserModalTab,
-    createUser: state.createUser,
-    bulkCreateUsers: state.bulkCreateUsers,
-  }));
+  } = useAdminStore(
+    useShallow((state) => ({
+      userModalOpen: state.userModalOpen,
+      userModalTab: state.userModalTab,
+      userCreateStatus: state.userCreateStatus,
+      userCreateError: state.userCreateError,
+      userCreateSuccess: state.userCreateSuccess,
+      closeUserModal: state.closeUserModal,
+      setUserModalTab: state.setUserModalTab,
+      createUser: state.createUser,
+      bulkCreateUsers: state.bulkCreateUsers,
+    }))
+  );
 
   const academicYears = useMemo(() => generateAcademicYears(), []);
   const currentAcademicYear = useMemo(() => {

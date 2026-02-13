@@ -1,18 +1,21 @@
 import { Sun, Moon, LogOut, Eye, X, ChevronDown } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useSession, useStudentProjects } from "../api/queries";
 import { formatContext } from "../utils";
 
 export function StudentHeader() {
   const { darkMode, toggleDarkMode, impersonatedUser, setImpersonatedUser, selectedProjectId, setSelectedProjectId } =
-    useAdminStore((state) => ({
-      darkMode: state.darkMode,
-      toggleDarkMode: state.toggleDarkMode,
-      impersonatedUser: state.impersonatedUser,
-      setImpersonatedUser: state.setImpersonatedUser,
-      selectedProjectId: state.selectedProjectId,
-      setSelectedProjectId: state.setSelectedProjectId,
-    }));
+    useAdminStore(
+      useShallow((state) => ({
+        darkMode: state.darkMode,
+        toggleDarkMode: state.toggleDarkMode,
+        impersonatedUser: state.impersonatedUser,
+        setImpersonatedUser: state.setImpersonatedUser,
+        selectedProjectId: state.selectedProjectId,
+        setSelectedProjectId: state.setSelectedProjectId,
+      }))
+    );
 
   const { data: session } = useSession();
   const user = session?.user ?? null;

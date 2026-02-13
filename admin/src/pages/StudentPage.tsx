@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useSession, useStudentProjects } from "../api/queries";
 import { StudentHeader } from "../components/StudentHeader";
@@ -7,13 +8,13 @@ import { StudentPreviewPanel } from "../components/StudentPreviewPanel";
 
 export function StudentPage() {
   const { impersonatedUser, selectedProjectId, openEditForProject, editDraft, setSelectedProjectId } = useAdminStore(
-    (state) => ({
+    useShallow((state) => ({
       impersonatedUser: state.impersonatedUser,
       selectedProjectId: state.selectedProjectId,
       openEditForProject: state.openEditForProject,
       editDraft: state.editDraft,
       setSelectedProjectId: state.setSelectedProjectId,
-    })
+    }))
   );
 
   const { data: session } = useSession();

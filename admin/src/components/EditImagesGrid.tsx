@@ -17,6 +17,7 @@ import {
 import { SortableContext, rectSortingStrategy, useSortable, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Plus, Trash2, X, AlertCircle, Loader2, Type } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import type { ProjectImage } from "../store/adminStore";
 
@@ -33,16 +34,18 @@ export function EditImagesGrid() {
     deleteImage,
     uploadStatus,
     uploadError,
-  } = useAdminStore((state) => ({
-    editImages: state.editImages,
-    editDraft: state.editDraft,
-    moveEditImage: state.moveEditImage,
-    updateImageCaption: state.updateImageCaption,
-    uploadImages: state.uploadImages,
-    deleteImage: state.deleteImage,
-    uploadStatus: state.uploadStatus,
-    uploadError: state.uploadError,
-  }));
+  } = useAdminStore(
+    useShallow((state) => ({
+      editImages: state.editImages,
+      editDraft: state.editDraft,
+      moveEditImage: state.moveEditImage,
+      updateImageCaption: state.updateImageCaption,
+      uploadImages: state.uploadImages,
+      deleteImage: state.deleteImage,
+      uploadStatus: state.uploadStatus,
+      uploadError: state.uploadError,
+    }))
+  );
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [captionEditId, setCaptionEditId] = useState<string | null>(null);

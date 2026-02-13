@@ -1,3 +1,4 @@
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 
 type LanguageTabsProps = {
@@ -5,10 +6,12 @@ type LanguageTabsProps = {
 };
 
 export function LanguageTabs({ className = "" }: LanguageTabsProps) {
-  const { editLanguage, setEditLanguage } = useAdminStore((state) => ({
-    editLanguage: state.editLanguage,
-    setEditLanguage: state.setEditLanguage,
-  }));
+  const { editLanguage, setEditLanguage } = useAdminStore(
+    useShallow((state) => ({
+      editLanguage: state.editLanguage,
+      setEditLanguage: state.setEditLanguage,
+    }))
+  );
 
   const classes = `language-tabs ${className}`.trim();
 

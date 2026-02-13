@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GripVertical, Plus, Trash2, X, Lock } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { EditImagesGrid } from "./EditImagesGrid";
 import { PrintImageSection } from "./PrintImageSection";
@@ -57,24 +58,26 @@ export function ProjectEditForm({
     canEditProject,
     selectedProjectId,
     editLanguage,
-  } = useAdminStore((state) => ({
-    editDraft: state.editDraft,
-    editImages: state.editImages,
-    saveStatus: state.saveStatus,
-    newTag: state.newTag,
-    updateEditField: state.updateEditField,
-    setNewTag: state.setNewTag,
-    addTag: state.addTag,
-    removeTag: state.removeTag,
-    addSocialLink: state.addSocialLink,
-    updateSocialLink: state.updateSocialLink,
-    removeSocialLink: state.removeSocialLink,
-    saveProject: state.saveProject,
-    isStudentMode: state.isStudentMode,
-    canEditProject: state.canEditProject,
-    selectedProjectId: state.selectedProjectId,
-    editLanguage: state.editLanguage,
-  }));
+  } = useAdminStore(
+    useShallow((state) => ({
+      editDraft: state.editDraft,
+      editImages: state.editImages,
+      saveStatus: state.saveStatus,
+      newTag: state.newTag,
+      updateEditField: state.updateEditField,
+      setNewTag: state.setNewTag,
+      addTag: state.addTag,
+      removeTag: state.removeTag,
+      addSocialLink: state.addSocialLink,
+      updateSocialLink: state.updateSocialLink,
+      removeSocialLink: state.removeSocialLink,
+      saveProject: state.saveProject,
+      isStudentMode: state.isStudentMode,
+      canEditProject: state.canEditProject,
+      selectedProjectId: state.selectedProjectId,
+      editLanguage: state.editLanguage,
+    }))
+  );
 
   const queryClient = useQueryClient();
 

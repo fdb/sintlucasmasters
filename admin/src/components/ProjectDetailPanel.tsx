@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Pencil, SquareArrowOutUpRight, Trash2, CheckCircle, Mail, Eye } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useProject, useSession } from "../api/queries";
 import { useDeleteProject, useSubmitProject } from "../api/mutations";
@@ -21,18 +22,20 @@ export function ProjectDetailPanel() {
     setImpersonatedUser,
     setSelectedProjectId,
     editLanguage,
-  } = useAdminStore((state) => ({
-    activeTable: state.activeTable,
-    selectedProjectId: state.selectedProjectId,
-    openEditForProject: state.openEditForProject,
-    deleteConfirmOpen: state.deleteConfirmOpen,
-    openDeleteConfirm: state.openDeleteConfirm,
-    closeDeleteConfirm: state.closeDeleteConfirm,
-    isStudentMode: state.isStudentMode,
-    setImpersonatedUser: state.setImpersonatedUser,
-    setSelectedProjectId: state.setSelectedProjectId,
-    editLanguage: state.editLanguage,
-  }));
+  } = useAdminStore(
+    useShallow((state) => ({
+      activeTable: state.activeTable,
+      selectedProjectId: state.selectedProjectId,
+      openEditForProject: state.openEditForProject,
+      deleteConfirmOpen: state.deleteConfirmOpen,
+      openDeleteConfirm: state.openDeleteConfirm,
+      closeDeleteConfirm: state.closeDeleteConfirm,
+      isStudentMode: state.isStudentMode,
+      setImpersonatedUser: state.setImpersonatedUser,
+      setSelectedProjectId: state.setSelectedProjectId,
+      editLanguage: state.editLanguage,
+    }))
+  );
 
   const { data: session } = useSession();
   const user = session?.user ?? null;

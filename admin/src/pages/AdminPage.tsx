@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useSession } from "../api/queries";
 import { AdminHeader } from "../components/AdminHeader";
@@ -11,10 +12,12 @@ import { CreateUserModal } from "../components/CreateUserModal";
 import { ConnectionStatusBanner } from "../components/ConnectionStatusBanner";
 
 export function AdminPage() {
-  const { activeTable, setActiveTable } = useAdminStore((state) => ({
-    activeTable: state.activeTable,
-    setActiveTable: state.setActiveTable,
-  }));
+  const { activeTable, setActiveTable } = useAdminStore(
+    useShallow((state) => ({
+      activeTable: state.activeTable,
+      setActiveTable: state.setActiveTable,
+    }))
+  );
 
   const { data: session, isLoading, isError } = useSession();
   const tables = session?.tables ?? [];

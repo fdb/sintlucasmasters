@@ -1,18 +1,21 @@
 import { useEffect, useRef } from "react";
 import { Sun, Moon, LogOut, Eye, X } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useSession } from "../api/queries";
 
 export function AdminHeader() {
   const { darkMode, userMenuOpen, toggleDarkMode, setUserMenuOpen, impersonatedUser, setImpersonatedUser } =
-    useAdminStore((state) => ({
-      darkMode: state.darkMode,
-      userMenuOpen: state.userMenuOpen,
-      toggleDarkMode: state.toggleDarkMode,
-      setUserMenuOpen: state.setUserMenuOpen,
-      impersonatedUser: state.impersonatedUser,
-      setImpersonatedUser: state.setImpersonatedUser,
-    }));
+    useAdminStore(
+      useShallow((state) => ({
+        darkMode: state.darkMode,
+        userMenuOpen: state.userMenuOpen,
+        toggleDarkMode: state.toggleDarkMode,
+        setUserMenuOpen: state.setUserMenuOpen,
+        impersonatedUser: state.impersonatedUser,
+        setImpersonatedUser: state.setImpersonatedUser,
+      }))
+    );
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   const { data: session } = useSession();

@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { ProjectEditForm } from "./ProjectEditForm";
 import { LanguageTabs } from "./LanguageTabs";
 import { queryKeys } from "../api/queryKeys";
 
 export function EditProjectModal() {
-  const { editModalOpen, closeEdit, isStudentMode } = useAdminStore((state) => ({
-    editModalOpen: state.editModalOpen,
-    closeEdit: state.closeEdit,
-    isStudentMode: state.isStudentMode,
-  }));
+  const { editModalOpen, closeEdit, isStudentMode } = useAdminStore(
+    useShallow((state) => ({
+      editModalOpen: state.editModalOpen,
+      closeEdit: state.closeEdit,
+      isStudentMode: state.isStudentMode,
+    }))
+  );
   const [autosaveNotice, setAutosaveNotice] = useState<"saved" | "error" | null>(null);
 
   const studentMode = isStudentMode();
@@ -71,11 +74,13 @@ export function EditProjectModal() {
 
 function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
   const queryClient = useQueryClient();
-  const { saveStatus, saveProject, canEditProject } = useAdminStore((state) => ({
-    saveStatus: state.saveStatus,
-    saveProject: state.saveProject,
-    canEditProject: state.canEditProject,
-  }));
+  const { saveStatus, saveProject, canEditProject } = useAdminStore(
+    useShallow((state) => ({
+      saveStatus: state.saveStatus,
+      saveProject: state.saveProject,
+      canEditProject: state.canEditProject,
+    }))
+  );
 
   const editCheck = canEditProject();
   const isLocked = !editCheck.allowed;

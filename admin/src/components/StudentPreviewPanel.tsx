@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckCircle, SquareArrowOutUpRight, Undo2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useProject } from "../api/queries";
 import { useSubmitProject } from "../api/mutations";
@@ -15,15 +16,17 @@ export function StudentPreviewPanel() {
   const queryClient = useQueryClient();
 
   const { selectedProjectId, editDraft, editImages, printImage, updateEditField, saveProject, editLanguage } =
-    useAdminStore((state) => ({
-      selectedProjectId: state.selectedProjectId,
-      editDraft: state.editDraft,
-      editImages: state.editImages,
-      printImage: state.printImage,
-      updateEditField: state.updateEditField,
-      saveProject: state.saveProject,
-      editLanguage: state.editLanguage,
-    }));
+    useAdminStore(
+      useShallow((state) => ({
+        selectedProjectId: state.selectedProjectId,
+        editDraft: state.editDraft,
+        editImages: state.editImages,
+        printImage: state.printImage,
+        updateEditField: state.updateEditField,
+        saveProject: state.saveProject,
+        editLanguage: state.editLanguage,
+      }))
+    );
 
   const { data: projectDetail } = useProject(selectedProjectId);
   const submitProjectMutation = useSubmitProject(selectedProjectId);

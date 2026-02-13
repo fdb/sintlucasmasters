@@ -1,14 +1,17 @@
 import { useEffect } from "react";
+import { useShallow } from "zustand/shallow";
 import { useSession } from "./api/queries";
 import { useAdminStore } from "./store/adminStore";
 import { AdminPage } from "./pages/AdminPage";
 import { StudentPage } from "./pages/StudentPage";
 
 export default function App() {
-  const { darkMode, impersonatedUser } = useAdminStore((state) => ({
-    darkMode: state.darkMode,
-    impersonatedUser: state.impersonatedUser,
-  }));
+  const { darkMode, impersonatedUser } = useAdminStore(
+    useShallow((state) => ({
+      darkMode: state.darkMode,
+      impersonatedUser: state.impersonatedUser,
+    }))
+  );
 
   const { data: session, isLoading } = useSession();
 
