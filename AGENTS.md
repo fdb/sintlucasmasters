@@ -150,6 +150,21 @@ Zustand in `admin/src/store/adminStore.ts` handles:
 - UI toggles (`darkMode`, `userMenuOpen`, `editModalOpen`)
 - Filter state (`selectedYear`, `selectedContext`, `searchQuery`)
 
+### Zustand Selector Rule (useShallow)
+
+**Any zustand selector that returns an object or array MUST be wrapped with `useShallow`** from `zustand/shallow`. Without it, React 19's `useSyncExternalStore` sees a new reference on every render and triggers an infinite re-render loop (error #185).
+
+```tsx
+// WRONG — causes infinite re-renders with React 19
+const { foo, bar } = useAdminStore((s) => ({ foo: s.foo, bar: s.bar }));
+
+// CORRECT — useShallow does shallow comparison
+const { foo, bar } = useAdminStore(useShallow((s) => ({ foo: s.foo, bar: s.bar })));
+
+// Also fine — single primitive selectors don't need useShallow
+const foo = useAdminStore((s) => s.foo);
+```
+
 ### Migration Lessons (Do NOT Repeat These Mistakes)
 
 When refactoring state management:
