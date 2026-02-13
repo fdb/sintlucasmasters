@@ -17,20 +17,20 @@ export function LanguageTabs({ className = "" }: LanguageTabsProps) {
       <button
         type="button"
         role="tab"
-        className={`language-tab ${editLanguage === "en" ? "active" : ""}`}
-        aria-selected={editLanguage === "en"}
-        onClick={() => setEditLanguage("en")}
-      >
-        EN
-      </button>
-      <button
-        type="button"
-        role="tab"
         className={`language-tab ${editLanguage === "nl" ? "active" : ""}`}
         aria-selected={editLanguage === "nl"}
         onClick={() => setEditLanguage("nl")}
       >
         NL
+      </button>
+      <button
+        type="button"
+        role="tab"
+        className={`language-tab ${editLanguage === "en" ? "active" : ""}`}
+        aria-selected={editLanguage === "en"}
+        onClick={() => setEditLanguage("en")}
+      >
+        EN
       </button>
     </div>
   );

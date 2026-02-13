@@ -144,11 +144,11 @@ export const Layout: FC<LayoutProps> = ({
               <img src="/logo-white.svg" alt="Sint Lucas Antwerpen" />
             </a>
             <div class="locale-switch locale-switch--top" aria-label={copy.localeLabel}>
-              <a href={enPath} class={locale === "en" ? "active" : ""}>
-                EN
-              </a>
               <a href={nlPath} class={locale === "nl" ? "active" : ""}>
                 NL
+              </a>
+              <a href={enPath} class={locale === "en" ? "active" : ""}>
+                EN
               </a>
             </div>
           </div>
