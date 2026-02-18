@@ -7,6 +7,7 @@ import {
   fetchUser,
   fetchSubmitValidation,
   fetchStudentsForImpersonation,
+  fetchExportStatus,
 } from "./fetchers";
 
 // ============================================================================
@@ -91,6 +92,20 @@ export function useStudentsForImpersonation(enabled: boolean = false) {
     enabled,
     staleTime: 10 * 60 * 1000, // 10 minutes - rarely changes
     refetchOnWindowFocus: false,
+  });
+}
+
+// ============================================================================
+// Export Status
+// ============================================================================
+
+export function useExportStatus(year: string | undefined, program: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.exportStatus(year || "", program || ""),
+    queryFn: () => fetchExportStatus(year!, program!),
+    enabled: !!year && !!program,
+    staleTime: 30_000,
+    refetchOnWindowFocus: true,
   });
 }
 

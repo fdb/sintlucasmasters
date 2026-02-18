@@ -65,7 +65,8 @@ test.describe("admin projects table", () => {
     await page.locator(".filter-select").first().selectOption("");
 
     // Select Digital context (canonical key; should have 1 project: Alice Smith)
-    await page.locator(".filter-select").nth(1).selectOption("digital");
+    // nth(2) because dropdowns are: year, programme, context
+    await page.locator(".filter-select").nth(2).selectOption("digital");
 
     // Wait for filter to apply
     await page.waitForTimeout(100);

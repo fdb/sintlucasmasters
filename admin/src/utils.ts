@@ -89,3 +89,19 @@ export const PRINT_IMAGE_REQUIREMENTS = {
   minLandscape: { width: PRINT_MIN_WIDTH_LANDSCAPE, height: PRINT_MIN_HEIGHT_LANDSCAPE },
   description: "A6 postcard at 300dpi with 3mm bleed",
 };
+
+// =====================================================
+// Programme Labels
+// =====================================================
+
+export const PROGRAM_LABELS: Record<string, string> = {
+  BA_FO: "BA Photography",
+  BA_BK: "BA Fine Arts",
+  MA_BK: "MA Fine Arts",
+  PREMA_BK: "PreMA Fine Arts",
+};
+
+export function formatProgram(value: unknown): string {
+  if (value === null || value === undefined) return "—";
+  return PROGRAM_LABELS[String(value)] || String(value);
+}

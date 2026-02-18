@@ -20,4 +20,7 @@ export const queryKeys = {
 
   // Student projects (filtered by user)
   studentProjects: (userId: string) => ["studentProjects", userId] as const,
+
+  // Export status
+  exportStatus: (year: string, program: string) => ["exportStatus", year, program] as const,
 };

@@ -3481,3 +3481,168 @@ tr.status-draft td:first-child {
     font-size: 0.8125rem;
   }
 }
+
+/* Export Panel */
+.export-panel {
+  border: 1px solid var(--admin-border);
+  border-top: none;
+  padding: 0.75rem 1rem;
+  background: var(--admin-bg-alt);
+}
+
+.export-panel-loading {
+  font-size: 0.8125rem;
+  color: var(--gray);
+  margin: 0;
+}
+
+.export-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.export-panel-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--black);
+}
+
+.export-panel-subtitle {
+  font-size: 0.6875rem;
+  color: var(--gray);
+}
+
+.export-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.export-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.export-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--admin-border);
+  overflow: hidden;
+}
+
+.export-progress-fill {
+  height: 100%;
+  background: var(--black);
+  transition: width 0.3s ease;
+}
+
+.export-progress-text {
+  font-size: 0.75rem;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+.export-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.export-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  color: var(--gray);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.export-toggle-btn:hover {
+  color: var(--black);
+}
+
+.export-download-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  background: var(--black);
+  border: none;
+  cursor: pointer;
+}
+
+.export-download-btn:hover {
+  opacity: 0.85;
+}
+
+.export-download-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.export-not-ready-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--admin-border-light);
+}
+
+.export-not-ready-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.125rem 0;
+}
+
+.export-student-name {
+  color: var(--black);
+  font-weight: 500;
+}
+
+.export-student-status {
+  font-size: 0.6875rem;
+  color: var(--gray);
+}
+
+.export-student-status.status-published {
+  color: #4caf50;
+}
+.export-student-status.status-submitted {
+  color: #f57c00;
+}
+.export-student-status.status-ready_for_print {
+  color: #1976d2;
+}
+
+:root[data-theme="dark"] .export-student-status.status-published {
+  color: #66bb6a;
+}
+:root[data-theme="dark"] .export-student-status.status-submitted {
+  color: #ffb74d;
+}
+:root[data-theme="dark"] .export-student-status.status-ready_for_print {
+  color: #64b5f6;
+}
+
+.export-student-issues {
+  font-size: 0.6875rem;
+  color: var(--gray);
+  font-style: italic;
+}

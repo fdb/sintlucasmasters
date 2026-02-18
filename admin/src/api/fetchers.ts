@@ -351,6 +351,31 @@ export async function bulkCreateUsers(data: BulkCreateUsersData): Promise<BulkCr
 // Impersonation
 // ============================================================================
 
+// ============================================================================
+// Export Status
+// ============================================================================
+
+export type ExportStatusResponse = {
+  total: number;
+  readyForPrint: number;
+  students: Array<{
+    id: string;
+    studentName: string;
+    email: string;
+    status: string;
+    hasPrintImage: boolean;
+    hasCaption: boolean;
+  }>;
+};
+
+export async function fetchExportStatus(year: string, program: string): Promise<ExportStatusResponse> {
+  const res = await fetch(
+    `/api/admin/export/status?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
+  );
+  if (!res.ok) throw new Error("Failed to load export status");
+  return (await res.json()) as ExportStatusResponse;
+}
+
 export async function fetchStudentsForImpersonation(): Promise<StudentForImpersonation[]> {
   const res = await fetch("/api/admin/students-with-projects");
   if (!res.ok) {

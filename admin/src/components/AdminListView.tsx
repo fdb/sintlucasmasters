@@ -4,7 +4,8 @@ import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
 import { useTable } from "../api/queries";
 import { DataTable, formatRole } from "./DataTable";
-import { formatAcademicYear, formatContext } from "../utils";
+import { ExportPanel } from "./ExportPanel";
+import { formatAcademicYear, formatContext, PROGRAM_LABELS } from "../utils";
 
 type LoadStatus = "idle" | "loading" | "ready" | "error";
 
@@ -45,11 +46,13 @@ function AdminProjectsHeader(): React.ReactNode {
 
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
+  const selectedProgram = useAdminStore((s) => s.selectedProgram);
   const selectedStatus = useAdminStore((s) => s.selectedStatus);
   const searchQuery = useAdminStore((s) => s.searchQuery);
   const searchExpanded = useAdminStore((s) => s.searchExpanded);
   const setSelectedYear = useAdminStore((s) => s.setSelectedYear);
   const setSelectedContext = useAdminStore((s) => s.setSelectedContext);
+  const setSelectedProgram = useAdminStore((s) => s.setSelectedProgram);
   const setSelectedStatus = useAdminStore((s) => s.setSelectedStatus);
   const setSearchQuery = useAdminStore((s) => s.setSearchQuery);
   const setSearchExpanded = useAdminStore((s) => s.setSearchExpanded);
@@ -81,6 +84,14 @@ function AdminProjectsHeader(): React.ReactNode {
         {allYears.map((year) => (
           <option key={year} value={year}>
             {formatAcademicYear(year)}
+          </option>
+        ))}
+      </select>
+      <select value={selectedProgram} onChange={(e) => setSelectedProgram(e.target.value)} className="filter-select">
+        <option value="">All programmes</option>
+        {Object.entries(PROGRAM_LABELS).map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
           </option>
         ))}
       </select>
@@ -152,6 +163,7 @@ function filterProjects(
   rows: TableResponse["rows"],
   selectedYear: string,
   selectedContext: string,
+  selectedProgram: string,
   selectedStatus: string,
   searchQuery: string
 ): TableResponse["rows"] {
@@ -160,6 +172,7 @@ function filterProjects(
   return rows.filter((row) => {
     if (selectedYear && String(row.academic_year) !== selectedYear) return false;
     if (selectedContext && String(row.context) !== selectedContext) return false;
+    if (selectedProgram && String(row.program) !== selectedProgram) return false;
     if (selectedStatus) {
       const rowStatus = String(row.status || "draft")
         .toLowerCase()
@@ -199,13 +212,21 @@ function AdminProjectsTable(): React.ReactNode {
   const selectedProjectId = useAdminStore((s) => s.selectedProjectId);
   const selectedYear = useAdminStore((s) => s.selectedYear);
   const selectedContext = useAdminStore((s) => s.selectedContext);
+  const selectedProgram = useAdminStore((s) => s.selectedProgram);
   const selectedStatus = useAdminStore((s) => s.selectedStatus);
   const searchQuery = useAdminStore((s) => s.searchQuery);
   const selectProject = useAdminStore((s) => s.selectProject);
   const openEditForProject = useAdminStore((s) => s.openEditForProject);
 
   const rows = tableData?.table === "projects" ? tableData.rows : [];
-  const filteredRows = filterProjects(rows, selectedYear, selectedContext, selectedStatus, searchQuery);
+  const filteredRows = filterProjects(
+    rows,
+    selectedYear,
+    selectedContext,
+    selectedProgram,
+    selectedStatus,
+    searchQuery
+  );
 
   const handleRowClick = (row: Record<string, unknown>): void => {
     if (typeof row.id === "string") {
@@ -288,6 +309,7 @@ export function AdminListView(): React.ReactNode {
         <h2>{activeTable.replace("_", " ")}</h2>
         {renderTableHeader(activeTable)}
       </div>
+      {activeTable === "projects" && <ExportPanel />}
       {renderTableContent(activeTable)}
     </div>
   );

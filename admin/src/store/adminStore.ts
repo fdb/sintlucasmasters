@@ -116,6 +116,7 @@ type AdminState = {
   projectStatus: LoadStatus;
   selectedYear: string;
   selectedContext: string;
+  selectedProgram: string;
   selectedStatus: string;
   searchQuery: string;
   searchExpanded: boolean;
@@ -162,6 +163,7 @@ type AdminState = {
   setSearchQuery: (query: string) => void;
   setSelectedYear: (year: string) => void;
   setSelectedContext: (context: string) => void;
+  setSelectedProgram: (program: string) => void;
   setSelectedStatus: (status: string) => void;
   loadSession: () => Promise<void>;
   setActiveTable: (table: string) => Promise<void>;
@@ -339,6 +341,7 @@ export const useAdminStore = create<AdminState>()(
       projectStatus: "idle",
       selectedYear: "",
       selectedContext: "",
+      selectedProgram: "",
       selectedStatus: "",
       searchQuery: "",
       searchExpanded: false,
@@ -384,6 +387,7 @@ export const useAdminStore = create<AdminState>()(
       setSearchQuery: (query) => set({ searchQuery: query }),
       setSelectedYear: (year) => set({ selectedYear: year }),
       setSelectedContext: (context) => set({ selectedContext: context }),
+      setSelectedProgram: (program) => set({ selectedProgram: program }),
       setSelectedStatus: (status) => set({ selectedStatus: status }),
       setEditLanguage: (editLanguage) => set({ editLanguage }),
       loadSession: async () => {
@@ -425,6 +429,7 @@ export const useAdminStore = create<AdminState>()(
           activeTable: table,
           selectedYear: "",
           selectedContext: "",
+          selectedProgram: "",
           selectedStatus: "",
           searchQuery: "",
           searchExpanded: false,
