@@ -4,7 +4,6 @@ import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
 import { useTable } from "../api/queries";
 import { DataTable, formatRole } from "./DataTable";
-import { ExportPanel } from "./ExportPanel";
 import { formatAcademicYear, formatContext, PROGRAM_LABELS } from "../utils";
 
 type LoadStatus = "idle" | "loading" | "ready" | "error";
@@ -309,7 +308,6 @@ export function AdminListView(): React.ReactNode {
         <h2>{activeTable.replace("_", " ")}</h2>
         {renderTableHeader(activeTable)}
       </div>
-      {activeTable === "projects" && <ExportPanel />}
       {renderTableContent(activeTable)}
     </div>
   );

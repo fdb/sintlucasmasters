@@ -7,6 +7,7 @@ import { useDeleteProject, useSubmitProject } from "../api/mutations";
 import { formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
+import { ExportButton } from "./ExportPanel";
 
 export function ProjectDetailPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -168,6 +169,12 @@ export function ProjectDetailPanel() {
 
   return (
     <div className="admin-detail-panel">
+      {isProjectsTable && isAdminOrEditor && (
+        <div className="admin-detail-header">
+          <ExportButton />
+        </div>
+      )}
+
       {!isProjectsTable && (
         <div className="admin-detail-empty">
           <p>Select a row to view details</p>

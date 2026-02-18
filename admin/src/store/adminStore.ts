@@ -153,6 +153,8 @@ type AdminState = {
   submitValidation: SubmitValidationResult | null;
   submitStatus: SubmitStatus;
   submitError: string | null;
+  // Export overlay state
+  exportOverlayOpen: boolean;
   // Student page state
   studentProjects: StudentProject[];
   studentProjectsStatus: LoadStatus;
@@ -165,6 +167,7 @@ type AdminState = {
   setSelectedContext: (context: string) => void;
   setSelectedProgram: (program: string) => void;
   setSelectedStatus: (status: string) => void;
+  setExportOverlayOpen: (open: boolean) => void;
   loadSession: () => Promise<void>;
   setActiveTable: (table: string) => Promise<void>;
   loadTable: (table: string) => Promise<void>;
@@ -377,6 +380,8 @@ export const useAdminStore = create<AdminState>()(
       submitValidation: null,
       submitStatus: "idle",
       submitError: null,
+      // Export overlay state
+      exportOverlayOpen: false,
       // Student page state
       studentProjects: [],
       studentProjectsStatus: "idle",
@@ -389,6 +394,7 @@ export const useAdminStore = create<AdminState>()(
       setSelectedContext: (context) => set({ selectedContext: context }),
       setSelectedProgram: (program) => set({ selectedProgram: program }),
       setSelectedStatus: (status) => set({ selectedStatus: status }),
+      setExportOverlayOpen: (open) => set({ exportOverlayOpen: open }),
       setEditLanguage: (editLanguage) => set({ editLanguage }),
       loadSession: async () => {
         set({ status: "loading" });
