@@ -169,11 +169,7 @@ export function ProjectDetailPanel() {
 
   return (
     <div className="admin-detail-panel">
-      {isProjectsTable && isAdminOrEditor && (
-        <div className="admin-detail-header">
-          <ExportButton />
-        </div>
-      )}
+      {isProjectsTable && <div className="admin-detail-header">{isAdminOrEditor && <ExportButton />}</div>}
 
       {!isProjectsTable && (
         <div className="admin-detail-empty">
