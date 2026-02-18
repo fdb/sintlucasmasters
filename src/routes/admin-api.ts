@@ -1,9 +1,10 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
 import Anthropic from "@anthropic-ai/sdk";
+import { zipSync } from "fflate";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
-import { STUDENT_EMAIL_DOMAIN } from "../constants";
+import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
 import { emailSlug } from "../lib/names";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { normalizeContextKey } from "../lib/i18n";
@@ -16,7 +17,7 @@ type TableConfig = {
 const TABLES: Record<string, TableConfig> = {
   projects: {
     select:
-      "id, slug, student_name, sort_name, COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title, context, academic_year, status, updated_at, user_id",
+      "id, slug, student_name, sort_name, COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title, program, context, academic_year, status, updated_at, user_id",
     orderBy: "updated_at DESC",
   },
   project_images: {
@@ -504,7 +505,7 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   const studentSlug = userEmailSlug || slugify(project.student_name);
   const randomId = generateRandomId();
   const extension = getFileExtension(file.name, file.type);
-  const customImageId = `slam/${yearShort}/${studentSlug}/${randomId}.${extension}`;
+  const customImageId = `${R2_PATH_PREFIX}/${yearShort}/${studentSlug}/${randomId}.${extension}`;
 
   // Upload to Cloudflare Images with custom ID
   const cfFormData = new FormData();
@@ -598,13 +599,18 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     return c.json({ error: "Invalid file type. Only JPEG and PNG are allowed for print images." }, 400);
   }
 
-  // Generate R2 key using original filename
-  const userEmailSlug = await getProjectEmailSlug(c, project);
   const yearShort = shortenAcademicYear(project.academic_year);
-  const studentSlug = userEmailSlug || slugify(project.student_name);
-  const sanitizedName = sanitizeFilename(file.name);
   const extension = getFileExtension(file.name, file.type);
-  const r2Key = `print-images/${yearShort}/${studentSlug}/${sanitizedName}.${extension}`;
+
+  // Require linked user account for email-based naming
+  if (!project.user_id) {
+    return c.json({ error: "Project must have a linked user account before uploading print images" }, 400);
+  }
+  const userEmailSlugValue = await getProjectEmailSlug(c, project);
+  if (!userEmailSlugValue) {
+    return c.json({ error: "Could not determine email for print image naming" }, 400);
+  }
+  const r2Key = `${R2_PATH_PREFIX}/print-images/${yearShort}/${userEmailSlugValue}.${extension}`;
 
   // Check if there's already a print image - delete it first
   const existingPrintImage = await c.env.DB.prepare(
@@ -1148,6 +1154,142 @@ adminApiRoutes.get("/students-with-projects", async (c) => {
   ).all<{ id: string; email: string; name: string | null; academic_year: string }>();
 
   return c.json({ students: students ?? [] });
+});
+
+// =====================================================
+// Export Routes (admin/editor only)
+// =====================================================
+
+adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
+  const year = c.req.query("year");
+  const program = c.req.query("program");
+  if (!year || !program) {
+    return c.json({ error: "year and program query parameters are required" }, 400);
+  }
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT
+      p.id, p.student_name, p.status, p.user_id,
+      u.email,
+      pi.id as print_image_id, pi.caption as print_caption
+    FROM projects p
+    LEFT JOIN users u ON p.user_id = u.id
+    LEFT JOIN project_images pi ON p.id = pi.project_id AND pi.type = 'print'
+    WHERE p.academic_year = ? AND p.program = ?
+    ORDER BY p.sort_name ASC`
+  )
+    .bind(year, program)
+    .all<{
+      id: string;
+      student_name: string;
+      status: string;
+      user_id: string | null;
+      email: string | null;
+      print_image_id: string | null;
+      print_caption: string | null;
+    }>();
+
+  const students = (results ?? []).map((row) => ({
+    id: row.id,
+    studentName: row.student_name,
+    email: row.email,
+    status: row.status,
+    hasPrintImage: !!row.print_image_id,
+    hasCaption: !!row.print_caption?.trim(),
+  }));
+
+  const readyForPrint = students.filter((s) => s.hasPrintImage && s.hasCaption).length;
+
+  return c.json({
+    total: students.length,
+    readyForPrint,
+    students,
+  });
+});
+
+adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
+  const year = c.req.query("year");
+  const program = c.req.query("program");
+  if (!year || !program) {
+    return c.json({ error: "year and program query parameters are required" }, 400);
+  }
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT
+      p.id as project_id, p.student_name, p.user_id,
+      u.email,
+      pi.cloudflare_id, pi.caption
+    FROM projects p
+    INNER JOIN project_images pi ON p.id = pi.project_id AND pi.type = 'print'
+    LEFT JOIN users u ON p.user_id = u.id
+    WHERE p.academic_year = ? AND p.program = ?
+    ORDER BY p.sort_name ASC`
+  )
+    .bind(year, program)
+    .all<{
+      project_id: string;
+      student_name: string;
+      user_id: string | null;
+      email: string | null;
+      cloudflare_id: string;
+      caption: string | null;
+    }>();
+
+  if (!results || results.length === 0) {
+    return c.json({ error: "No projects with print images found for this year and program" }, 400);
+  }
+
+  const data: Record<string, Uint8Array> = {};
+  const usedSlugs = new Set<string>();
+
+  for (const row of results) {
+    // Skip if no linked user
+    if (!row.email) continue;
+
+    let slug = emailSlug(row.email);
+
+    // Handle duplicate slugs
+    if (usedSlugs.has(slug)) {
+      slug = `${slug}-${row.project_id.slice(0, 8)}`;
+    }
+    usedSlugs.add(slug);
+
+    // Fetch image from R2
+    const r2Object = await c.env.FILES.get(row.cloudflare_id);
+    if (!r2Object) continue;
+
+    // Get extension from R2 key
+    const extMatch = row.cloudflare_id.match(/\.([a-z0-9]+)$/i);
+    const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
+
+    const imageBytes = new Uint8Array(await r2Object.arrayBuffer());
+    data[`${slug}.${ext}`] = imageBytes;
+
+    // Add caption as text file if present
+    if (row.caption?.trim()) {
+      const encoder = new TextEncoder();
+      data[`${slug}.txt`] = encoder.encode(row.caption.trim());
+    }
+  }
+
+  if (Object.keys(data).length === 0) {
+    return c.json({ error: "No print images could be retrieved" }, 400);
+  }
+
+  // Create ZIP with store mode (level 0) — images are already compressed
+  const zipOptions: Record<string, [Uint8Array, { level: 0 }]> = {};
+  for (const [filename, bytes] of Object.entries(data)) {
+    zipOptions[filename] = [bytes, { level: 0 }];
+  }
+  const zipData = zipSync(zipOptions);
+
+  const yearShort = shortenAcademicYear(year);
+  return new Response(zipData, {
+    headers: {
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename="print-images-${yearShort}-${program}.zip"`,
+    },
+  });
 });
 
 // Bulk create users and projects from CSV

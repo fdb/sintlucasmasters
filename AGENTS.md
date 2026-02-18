@@ -208,6 +208,8 @@ When refactoring state management:
 
 4. **Check existing test usage**: Before using a project in a new test, grep for its name in `e2e/` to see what other tests depend on it.
 
+5. **Avoid index-based selectors**: Never use `.nth(N)` on generic class selectors like `.filter-select` — inserting a new element shifts all indices and silently breaks tests. Instead, use semantic selectors: `aria-label`, `data-testid`, `role` attributes, or text content. For example, prefer `page.getByLabel("Context")` over `page.locator(".filter-select").nth(2)`. When adding new interactive elements, give them a distinguishing attribute so tests can target them directly.
+
 ## Development Phases
 
 1. **Phase 1**: D1 schema + import script (import old data)
