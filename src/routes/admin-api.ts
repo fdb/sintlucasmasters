@@ -17,7 +17,7 @@ type TableConfig = {
 const TABLES: Record<string, TableConfig> = {
   projects: {
     select:
-      "id, slug, student_name, sort_name, COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title, context, academic_year, status, updated_at, user_id",
+      "id, slug, student_name, sort_name, COALESCE(NULLIF(project_title_nl, ''), project_title_en) as project_title, program, context, academic_year, status, updated_at, user_id",
     orderBy: "updated_at DESC",
   },
   project_images: {

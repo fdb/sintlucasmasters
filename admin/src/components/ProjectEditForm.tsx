@@ -17,7 +17,7 @@ const CONTEXTS = [
   { value: "jewelry", label: "Jewelry" },
 ];
 
-const PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"];
+import { PROGRAM_LABELS } from "../utils";
 
 const STATUSES = ["draft", "submitted", "ready_for_print", "published"];
 const AUTOSAVE_DELAY_MS = 1000;
@@ -457,9 +457,9 @@ export function ProjectEditForm({
                     disabled={studentMode || isLocked}
                   >
                     <option value="">Select program...</option>
-                    {PROGRAMS.map((prog) => (
-                      <option key={prog} value={prog}>
-                        {prog.replace("_", " ")}
+                    {Object.entries(PROGRAM_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
                       </option>
                     ))}
                   </select>
