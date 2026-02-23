@@ -64,6 +64,9 @@ a:hover {
 .top-bar {
   background: var(--black);
   height: 36px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .top-bar-inner {
@@ -181,7 +184,7 @@ a:hover {
 .sub-header {
   border-bottom: 1px solid var(--light-gray);
   position: sticky;
-  top: 0;
+  top: 36px;
   z-index: 100;
   background: var(--white);
 }
