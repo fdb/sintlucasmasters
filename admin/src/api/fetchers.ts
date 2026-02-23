@@ -20,6 +20,9 @@ export type SessionData = {
 
 export async function fetchSession(): Promise<SessionData> {
   const res = await fetch("/api/auth/me");
+  if (res.status === 401) {
+    return null;
+  }
   if (!res.ok) {
     throw new Error("Failed to load session");
   }
