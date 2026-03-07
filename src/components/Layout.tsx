@@ -34,8 +34,10 @@ const COPY = {
     footerProgramme: "Our Master's programme",
     footerSub: "The start of your professional career.",
     footerLinkOne: "Explore the Master of Visual Arts",
+    footerLinkOneHref: "https://www.sintlucasantwerpen.be/en/get-to-know-our-study-programmes/master-of-visual-arts/",
     footerNote: "Sint Lucas Antwerpen, School of Arts, is part of KdG University of Applied Sciences and Arts.",
     footerLinkTwo: "Apply now - admission requirements, tuition fees & application",
+    footerLinkTwoHref: "https://www.kdg.be/en/programmes/apply-english-taught-master-programme",
     footerPrivacy: "Terms of Use & Privacy",
     localeLabel: "Language",
   },
@@ -52,8 +54,10 @@ const COPY = {
     footerProgramme: "Onze masteropleiding",
     footerSub: "De start van je professionele carrière.",
     footerLinkOne: "Ontdek de Master of Visual Arts",
+    footerLinkOneHref: "https://www.sintlucasantwerpen.be/opleidingen/master/",
     footerNote: "Sint Lucas Antwerpen, School of Arts, maakt deel uit van KdG Hogeschool.",
     footerLinkTwo: "Schrijf je in - toelatingsvoorwaarden, studiegeld en aanvraag",
+    footerLinkTwoHref: "https://www.kdg.be/inschrijven/inschrijven-voor-de-master-beeldende-kunsten",
     footerPrivacy: "Gebruiksvoorwaarden & privacy",
     localeLabel: "Taal",
   },
@@ -229,21 +233,11 @@ export const Layout: FC<LayoutProps> = ({
               <div class="footer-col footer-col--programme">
                 <h3 class="footer-heading">{copy.footerProgramme}</h3>
                 <p class="footer-sub">{copy.footerSub}</p>
-                <a
-                  href="https://www.sintlucasantwerpen.be/opleidingen/master-of-visual-arts/"
-                  class="footer-arrow-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={copy.footerLinkOneHref} class="footer-arrow-link" target="_blank" rel="noopener noreferrer">
                   {copy.footerLinkOne}
                 </a>
                 <p class="footer-note">{copy.footerNote}</p>
-                <a
-                  href="https://www.kdg.be/en/programmes/apply-english-taught-master-programme"
-                  class="footer-arrow-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={copy.footerLinkTwoHref} class="footer-arrow-link" target="_blank" rel="noopener noreferrer">
                   {copy.footerLinkTwo}
                 </a>
               </div>
