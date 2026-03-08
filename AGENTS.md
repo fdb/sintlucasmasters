@@ -61,13 +61,16 @@ social_links: []
 ## Commands
 
 ```bash
-# Local dev setup (destructive — drops & rebuilds DB, imports data, sets up secrets)
+# Local dev setup (destructive — drops & rebuilds DB, imports data)
 npm run init                # Safe to run repeatedly; always gives a clean state
+
+# Secrets (requires 1Password CLI — run once after cloning)
+npm run setup-secrets       # Fetches real secrets from 1Password → .dev.vars
 
 # Development
 npm run dev                 # Start local dev server on http://localhost:8787
 
-# Tests
+# Tests (no secrets needed — dummy .dev.vars is auto-generated)
 npm run test:e2e            # Builds admin, starts wrangler on 5174, runs Playwright
 
 # Production (non-destructive — only applies unapplied migrations)
@@ -82,6 +85,8 @@ npm run create-admin:remote <email>  # Create admin user on production
 
 - Run `npm run typecheck` every time a change is made.
 - `npm run dev` serves admin from `static/admin`; changes are picked up by the Vite build watcher and require a refresh.
+- For local dev with real API integrations (email, image upload, translation), run `npm run setup-secrets` once after cloning.
+- E2E tests do not require real secrets — `scripts/setup-e2e-env.mjs` auto-generates dummy `.dev.vars` if none exists.
 ```
 
 ## Database Migrations

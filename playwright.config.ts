@@ -15,6 +15,7 @@ export default defineConfig({
     command: "npm run dev:e2e",
     url: "http://localhost:5174",
     reuseExistingServer: false,
+    timeout: 120000,
   },
   projects: [
     {

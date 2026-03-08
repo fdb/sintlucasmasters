@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "concurrently -k -n worker,admin -c blue,magenta \"npm run dev:worker\" \"npm run dev:admin\"",
     "dev:worker": "wrangler dev",
-    "dev:e2e": "npm run build:admin && npm run test:e2e:db:setup && wrangler dev --port 5174 --persist-to .wrangler/e2e-state --var E2E_SKIP_AUTH:true",
+    "dev:e2e": "node scripts/setup-e2e-env.mjs && npm run build:admin && npm run test:e2e:db:setup && wrangler dev --port 5174 --persist-to .wrangler/e2e-state --var E2E_SKIP_AUTH:true",
     "dev:admin": "vite build --watch --config admin/vite.config.ts",
-    "init": "node scripts/db-rebuild.mjs --local && npm run setup-secrets && npm run bulk-create-fake-users",
+    "init": "node scripts/db-rebuild.mjs --local && npm run bulk-create-fake-users",
     "init:remote": "wrangler d1 migrations apply sintlucasmasters --remote",
     "test:e2e": "playwright test",
     "test:e2e:db:reset": "wrangler d1 execute sintlucasmasters --local --persist-to .wrangler/e2e-state --command \"DROP TABLE IF EXISTS project_images; DROP TABLE IF EXISTS projects; DROP TABLE IF EXISTS auth_tokens; DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS d1_migrations;\"",
