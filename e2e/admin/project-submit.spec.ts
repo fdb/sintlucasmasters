@@ -5,18 +5,12 @@ async function ensureProjectIsDraft(page: Page) {
   // Wait for the preview panel to fully load
   await expect(page.locator(".student-preview-panel")).toBeVisible();
 
-  // Give the UI time to load the status from the server
-  await page.waitForTimeout(500);
-
   // Check if we're already in submitted state
   const submittedBanner = page.locator(".detail-submitted-banner");
   const submitSection = page.locator(".detail-submit-section");
 
   // Wait for either the submit section or submitted banner to appear
-  await Promise.race([
-    submitSection.waitFor({ state: "visible", timeout: 5000 }).catch(() => {}),
-    submittedBanner.waitFor({ state: "visible", timeout: 5000 }).catch(() => {}),
-  ]);
+  await expect(submitSection.or(submittedBanner)).toBeVisible({ timeout: 10000 });
 
   const isSubmitted = await submittedBanner.isVisible().catch(() => false);
 
@@ -113,7 +107,7 @@ test.describe.serial("project submission", () => {
     await expect(linkInputs).toHaveCount(initialCount + 1);
 
     await savePromise;
-    await page.waitForTimeout(2000);
+    // Re-assert count to verify save didn't revert the added link
     await expect(linkInputs).toHaveCount(initialCount + 1);
   });
 
@@ -204,18 +198,12 @@ test.describe.serial("project submission", () => {
     // Wait for the preview panel to fully load
     await expect(page.locator(".student-preview-panel")).toBeVisible();
 
-    // Give the UI time to load the status from the server
-    await page.waitForTimeout(500);
-
     // Check if project is already submitted
     const submittedBanner = page.locator(".detail-submitted-banner");
     const submitButton = page.locator(".submit-project-btn");
 
     // Wait for either the submit button or submitted banner to appear
-    await Promise.race([
-      submitButton.waitFor({ state: "visible", timeout: 5000 }).catch(() => {}),
-      submittedBanner.waitFor({ state: "visible", timeout: 5000 }).catch(() => {}),
-    ]);
+    await expect(submitButton.or(submittedBanner)).toBeVisible({ timeout: 10000 });
 
     const isSubmitted = await submittedBanner.isVisible().catch(() => false);
 
@@ -240,18 +228,12 @@ test.describe.serial("project submission", () => {
     // Wait for the preview panel to fully load
     await expect(page.locator(".student-preview-panel")).toBeVisible();
 
-    // Give the UI time to load the status from the server
-    await page.waitForTimeout(500);
-
     // Check if project is already submitted
     const submittedBanner = page.locator(".detail-submitted-banner");
     const submitButton = page.locator(".submit-project-btn");
 
     // Wait for either the submit button or submitted banner to appear
-    await Promise.race([
-      submitButton.waitFor({ state: "visible", timeout: 5000 }).catch(() => {}),
-      submittedBanner.waitFor({ state: "visible", timeout: 5000 }).catch(() => {}),
-    ]);
+    await expect(submitButton.or(submittedBanner)).toBeVisible({ timeout: 10000 });
 
     const isSubmitted = await submittedBanner.isVisible().catch(() => false);
 

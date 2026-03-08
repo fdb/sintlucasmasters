@@ -5,7 +5,7 @@ import { zipSync } from "fflate";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
-import { emailSlug } from "../lib/names";
+import { emailSlug, sortName } from "../lib/names";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { normalizeContextKey } from "../lib/i18n";
 
@@ -623,8 +623,8 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     // Delete from R2
     try {
       await c.env.FILES.delete(existingPrintImage.cloudflare_id);
-    } catch {
-      // Continue even if delete fails
+    } catch (err) {
+      console.error("Failed to delete print image from R2:", err);
     }
     // Delete from database
     await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(existingPrintImage.id).run();
@@ -715,8 +715,8 @@ adminApiRoutes.delete("/projects/:id/print-image", async (c) => {
   // Delete from R2
   try {
     await c.env.FILES.delete(printImage.cloudflare_id);
-  } catch {
-    // Continue even if delete fails
+  } catch (err) {
+    console.error("Failed to delete print image from R2:", err);
   }
 
   // Delete from database
@@ -756,8 +756,8 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
   if (image.type === "print") {
     try {
       await c.env.FILES.delete(image.cloudflare_id);
-    } catch {
-      // Continue even if delete fails
+    } catch (err) {
+      console.error("Failed to delete image from R2:", err);
     }
   } else {
     // Delete from Cloudflare Images
@@ -771,8 +771,8 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
           },
         }
       );
-    } catch {
-      // Continue even if delete fails
+    } catch (err) {
+      console.error("Failed to delete image from Cloudflare Images:", err);
     }
   }
 
@@ -1024,14 +1024,6 @@ adminApiRoutes.delete("/projects/:id", async (c) => {
   return c.json({ success: true, deletedProject: project });
 });
 
-// Generate sort name (ASCII-normalized for sorting)
-function generateSortName(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
-    .toLowerCase();
-}
-
 // Generate project ID using SHA256 hash
 async function generateProjectId(name: string, academicYear: string): Promise<string> {
   const input = `${name}:${academicYear}`;
@@ -1045,9 +1037,6 @@ async function generateProjectId(name: string, academicYear: string): Promise<st
 // Valid programs
 const VALID_PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"] as const;
 type Program = (typeof VALID_PROGRAMS)[number];
-
-// Valid contexts
-const VALID_CONTEXTS = ["autonomous", "applied", "digital", "sociopolitical", "jewelry"] as const;
 
 // Normalize context value to canonical form (case-insensitive, with or without "Context" suffix)
 function normalizeContext(input: unknown): ContextKey | null {
@@ -1470,7 +1459,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
       } else {
         // Create blank project
         const slug = slugify(name);
-        const sortName = generateSortName(name);
+        const normalizedName = sortName(name);
 
         await c.env.DB.prepare(
           `INSERT INTO projects (
@@ -1487,7 +1476,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
             projectId,
             slug,
             name,
-            sortName,
+            normalizedName,
             "", // Empty English project title
             "", // Empty Dutch project title
             program,

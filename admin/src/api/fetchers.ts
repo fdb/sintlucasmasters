@@ -8,6 +8,7 @@ import type {
   SubmitValidationResult,
   ProjectImage,
 } from "../store/adminStore";
+import { formatUploadError } from "../lib/upload-errors";
 
 // ============================================================================
 // Session / Auth
@@ -131,17 +132,8 @@ export async function uploadImage(projectId: string, file: File): Promise<Projec
 
   if (!res.ok) {
     const error = (await res.json()) as { error?: string };
-    let message = error.error || `Failed to upload ${file.name}`;
-
-    // Make Cloudflare errors more user-friendly
-    if (res.status === 413 || message.toLowerCase().includes("too large")) {
-      message = `"${file.name}" is too large. Maximum file size is 10MB.`;
-    }
-    if (message.includes("dimension") || message.includes("12000")) {
-      message = `"${file.name}" exceeds maximum dimensions (12,000px on longest side).`;
-    }
-
-    throw new Error(message);
+    const raw = error.error || `Failed to upload ${file.name}`;
+    throw new Error(formatUploadError(file.name, raw, res.status));
   }
 
   const data = (await res.json()) as { image: ProjectImage };
@@ -189,17 +181,8 @@ export async function uploadPrintImage(projectId: string, file: File): Promise<P
 
   if (!res.ok) {
     const error = (await res.json()) as { error?: string };
-    let message = error.error || `Failed to upload ${file.name}`;
-
-    // Make Cloudflare errors more user-friendly
-    if (res.status === 413 || message.toLowerCase().includes("too large")) {
-      message = `"${file.name}" is too large. Maximum file size is 10MB.`;
-    }
-    if (message.includes("dimension") || message.includes("12000")) {
-      message = `"${file.name}" exceeds maximum dimensions (12,000px on longest side).`;
-    }
-
-    throw new Error(message);
+    const raw = error.error || `Failed to upload ${file.name}`;
+    throw new Error(formatUploadError(file.name, raw, res.status));
   }
 
   const data = (await res.json()) as { image: ProjectImage };
