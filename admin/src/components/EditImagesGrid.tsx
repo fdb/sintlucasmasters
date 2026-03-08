@@ -23,6 +23,7 @@ import type { ProjectImage } from "../store/adminStore";
 
 const ACCEPTED_TYPES = ".jpg,.jpeg,.png,.gif,.webp,.heic,.heif";
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_WEB_IMAGES = 7; // 1 main + 6 gallery
 
 export function EditImagesGrid() {
   const {
@@ -115,6 +116,7 @@ export function EditImagesGrid() {
   // Check if required fields are filled for upload
   const canUpload = editDraft && editDraft.student_name.trim() !== "" && editDraft.academic_year.trim() !== "";
   const uploadBlockedReason = !canUpload ? "Fill in student name and academic year before uploading images" : null;
+  const atImageLimit = editImages.length >= MAX_WEB_IMAGES;
   const activeImage = useMemo(() => {
     if (!activeId) return null;
     return editImages.find((img) => img.id === activeId) || null;
@@ -172,21 +174,23 @@ export function EditImagesGrid() {
               />
             ))}
 
-            {/* Upload Button */}
-            <button
-              type="button"
-              className={`upload-tile ${uploadStatus === "uploading" ? "is-uploading" : ""} ${!canUpload ? "is-blocked" : ""}`}
-              onClick={canUpload ? handleUploadClick : undefined}
-              disabled={uploadStatus === "uploading" || !canUpload}
-              title={uploadBlockedReason || undefined}
-            >
-              {uploadStatus === "uploading" ? (
-                <Loader2 className="upload-tile-spinner" size={24} />
-              ) : (
-                <Plus className="upload-tile-icon" size={24} />
-              )}
-              <span className="upload-tile-label">{uploadStatus === "uploading" ? "Uploading..." : "Add Image"}</span>
-            </button>
+            {/* Upload Button — hidden when at image limit */}
+            {!atImageLimit && (
+              <button
+                type="button"
+                className={`upload-tile ${uploadStatus === "uploading" ? "is-uploading" : ""} ${!canUpload ? "is-blocked" : ""}`}
+                onClick={canUpload ? handleUploadClick : undefined}
+                disabled={uploadStatus === "uploading" || !canUpload}
+                title={uploadBlockedReason || undefined}
+              >
+                {uploadStatus === "uploading" ? (
+                  <Loader2 className="upload-tile-spinner" size={24} />
+                ) : (
+                  <Plus className="upload-tile-icon" size={24} />
+                )}
+                <span className="upload-tile-label">{uploadStatus === "uploading" ? "Uploading..." : "Add Image"}</span>
+              </button>
+            )}
           </div>
         </SortableContext>
 
@@ -205,6 +209,11 @@ export function EditImagesGrid() {
               document.body
             )}
       </DndContext>
+
+      {/* Image count */}
+      <div className="image-count-info">
+        {editImages.length} / {MAX_WEB_IMAGES} images
+      </div>
 
       {/* Upload blocked message */}
       {!canUpload && (

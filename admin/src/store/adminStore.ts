@@ -690,13 +690,29 @@ export const useAdminStore = create<AdminState>()(
         }));
       },
       uploadImages: async (files) => {
-        const { selectedProjectId } = get();
+        const { selectedProjectId, editImages } = get();
         if (!selectedProjectId || files.length === 0) return;
+
+        const MAX_WEB_IMAGES = 7; // 1 main + 6 gallery
+        const remaining = MAX_WEB_IMAGES - editImages.length;
+        if (remaining <= 0) {
+          set({
+            uploadStatus: "error",
+            uploadError: `Maximum ${MAX_WEB_IMAGES} images allowed (1 main + ${MAX_WEB_IMAGES - 1} gallery)`,
+          });
+          setTimeout(() => set({ uploadStatus: "idle", uploadError: null }), 3000);
+          return;
+        }
+
+        const filesToUpload = files.slice(0, remaining);
+        if (filesToUpload.length < files.length) {
+          // Some files will be skipped — we still upload the ones that fit
+        }
 
         set({ uploadStatus: "uploading", uploadError: null });
 
         try {
-          for (const file of files) {
+          for (const file of filesToUpload) {
             const formData = new FormData();
             formData.append("file", file);
 

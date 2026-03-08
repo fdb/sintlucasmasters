@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { zipSync } from "fflate";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
-import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
+import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX, MAX_WEB_IMAGES } from "../constants";
 import { emailSlug } from "../lib/names";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { normalizeContextKey } from "../lib/i18n";
@@ -484,6 +484,17 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   }
   if (!project.academic_year || !project.academic_year.trim()) {
     return c.json({ error: "Academic year is required before uploading images" }, 400);
+  }
+
+  // Check web image count limit
+  const imageCount = await c.env.DB.prepare(
+    "SELECT COUNT(*) as count FROM project_images WHERE project_id = ? AND type = 'web'"
+  )
+    .bind(projectId)
+    .first<{ count: number }>();
+
+  if ((imageCount?.count ?? 0) >= MAX_WEB_IMAGES) {
+    return c.json({ error: `Maximum ${MAX_WEB_IMAGES} images allowed (1 main + ${MAX_WEB_IMAGES - 1} gallery)` }, 400);
   }
 
   const formData = await c.req.formData();
