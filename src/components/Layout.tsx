@@ -19,6 +19,16 @@ type LayoutProps = PropsWithChildren<{
 const SITE_NAME = "Sint Lucas Masters Graduation Tour";
 const SITE_URL = "https://sintlucasmasters.com";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;
+const FOOTER_LINKS = {
+  en: {
+    programme: "https://www.sintlucasantwerpen.be/en/get-to-know-our-study-programmes/master-of-visual-arts/",
+    apply: "https://www.kdg.be/en/programmes/apply-english-taught-master-programme",
+  },
+  nl: {
+    programme: "https://www.sintlucasantwerpen.be/opleidingen/master/",
+    apply: "https://www.kdg.be/inschrijven/inschrijven-voor-de-master-beeldende-kunsten",
+  },
+} as const;
 
 const COPY = {
   en: {
@@ -84,6 +94,7 @@ export const Layout: FC<LayoutProps> = ({
   children,
 }) => {
   const copy = COPY[locale];
+  const footerLinks = FOOTER_LINKS[locale];
   const pageTitle = title ? `${title} - ${SITE_NAME}` : SITE_NAME;
   const description = ogDescription || copy.defaultDescription;
   const finalOgImage = ogImage || DEFAULT_OG_IMAGE;
@@ -229,21 +240,11 @@ export const Layout: FC<LayoutProps> = ({
               <div class="footer-col footer-col--programme">
                 <h3 class="footer-heading">{copy.footerProgramme}</h3>
                 <p class="footer-sub">{copy.footerSub}</p>
-                <a
-                  href="https://www.sintlucasantwerpen.be/opleidingen/master-of-visual-arts/"
-                  class="footer-arrow-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={footerLinks.programme} class="footer-arrow-link" target="_blank" rel="noopener noreferrer">
                   {copy.footerLinkOne}
                 </a>
                 <p class="footer-note">{copy.footerNote}</p>
-                <a
-                  href="https://www.kdg.be/en/programmes/apply-english-taught-master-programme"
-                  class="footer-arrow-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={footerLinks.apply} class="footer-arrow-link" target="_blank" rel="noopener noreferrer">
                   {copy.footerLinkTwo}
                 </a>
               </div>
