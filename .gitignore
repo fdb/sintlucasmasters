@@ -23,6 +23,9 @@ migration.sql
 # Admin build output
 static/admin/
 
+# Temporary files
+tmp/
+
 # Playwright
 /test-results/
 /playwright-report/
