@@ -11,5 +11,7 @@ uploadcare-files.json
 _uploads/
 _data/
 media/
+# Temporary files
+tmp/
 # Local Netlify folder
 .netlify
