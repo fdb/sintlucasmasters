@@ -3524,12 +3524,29 @@ tr.status-draft td:first-child {
 
 .export-overlay-header {
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .export-overlay-header h3 {
   font-size: 1.125rem;
   font-weight: 600;
   margin: 0 0 0.25rem 0;
+}
+
+.export-overlay-close {
+  background: none;
+  border: none;
+  color: var(--admin-text);
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.export-overlay-close:hover {
+  opacity: 1;
 }
 
 .export-overlay-meta {
