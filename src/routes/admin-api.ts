@@ -1150,7 +1150,7 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
     `SELECT
       p.id, p.student_name, p.status, p.user_id,
       p.print_image_path, p.print_caption, p.print_description, p.print_language,
-      u.email,
+      u.email
     FROM projects p
     LEFT JOIN users u ON p.user_id = u.id
     WHERE p.academic_year = ? AND p.program = ?
