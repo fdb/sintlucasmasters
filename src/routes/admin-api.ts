@@ -1235,10 +1235,7 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
   const usedSlugs = new Set<string>();
 
   for (const row of results) {
-    // Skip if no linked user
-    if (!row.email) continue;
-
-    let slug = emailSlug(row.email);
+    let slug = row.email ? emailSlug(row.email) : row.student_name.toLowerCase().replace(/\s+/g, "_");
 
     // Handle duplicate slugs
     if (usedSlugs.has(slug)) {
@@ -1393,8 +1390,7 @@ adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
 adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
   const year = c.req.query("year");
   const program = c.req.query("program");
-  const basePath =
-    c.req.query("basePath") || "file:/Volumes/werkmapServer/sint-lucas/2025/SLA_MASTER_postkaarten_EXPO/Links";
+  const basePath = c.req.query("basePath") || "";
   if (!year || !program) {
     return c.json({ error: "year and program query parameters are required" }, 400);
   }
@@ -1439,7 +1435,7 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
     const filename = `${slug}.${ext}`;
     const encodedFilename = encodeURIComponent(filename).replace(/%2E/gi, ".");
     return {
-      image_uri: `${basePath}/${encodedFilename}`,
+      image_uri: basePath ? `${basePath}/${encodedFilename}` : encodedFilename,
       image_filename: filename,
     };
   });

@@ -184,7 +184,7 @@ export function ExportButton() {
           title="Export print images for selected programme and year"
         >
           <Download size={14} />
-          Export for Print...
+          Export for Print
         </button>
       </div>
       {total > 0 && <span className="detail-header-count">{total} selected</span>}
