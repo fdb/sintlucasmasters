@@ -79,6 +79,24 @@ function normalizeContextKey(input) {
   return map[normalized] || null;
 }
 
+function extractFirstParagraph(text, maxLength = 500) {
+  if (!text) return null;
+  const firstParagraph = text.split(/\n\s*\n/)[0].trim();
+  if (firstParagraph.length <= maxLength) return firstParagraph;
+  // Truncate at word boundary
+  const truncated = firstParagraph.substring(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(" ");
+  return (lastSpace > 0 ? truncated.substring(0, lastSpace) : truncated) + "…";
+}
+
+function determineSourceLanguage(enTranslated, nlTranslated) {
+  // translated: false means this is the original source
+  if (enTranslated === false && nlTranslated !== false) return "en";
+  if (nlTranslated === false && enTranslated !== false) return "nl";
+  // Both false or both true — default to English
+  return "en";
+}
+
 function generateProjectId(studentName, academicYear) {
   const hash = createHash("sha256").update(`${studentName}:${academicYear}`).digest("hex");
   return hash.substring(0, 32);
@@ -125,6 +143,7 @@ async function parseLangFile(filePath, expectedLang) {
   return {
     frontmatter,
     content: description.trim(),
+    translated: frontmatter.translated ?? null,
     academicYear,
     context,
     tags: frontmatter.tags ? JSON.stringify(frontmatter.tags) : null,
@@ -240,6 +259,13 @@ function mergeProjectPair(enParsed, nlParsed, year, baseName) {
   const locationEn = locationEnRaw || locationNlRaw || null;
   const locationNl = locationNlRaw || locationEnRaw || null;
 
+  // Derive print fields from source language
+  const printLanguage = determineSourceLanguage(enParsed.translated, nlParsed.translated);
+  const sourceParsed = printLanguage === "nl" ? nlParsed : enParsed;
+  const printCaption =
+    printLanguage === "nl" ? projectTitleNl : projectTitleEn;
+  const printDescription = extractFirstParagraph(sourceParsed.content);
+
   const project = {
     id: projectId,
     slug: slugify(studentName),
@@ -257,6 +283,9 @@ function mergeProjectPair(enParsed, nlParsed, year, baseName) {
     location_en: locationEn,
     location_nl: locationNl,
     thumb_image_id: thumbImageEn,
+    print_caption: printCaption,
+    print_description: printDescription,
+    print_language: printLanguage,
     tags: enParsed.tags,
     social_links: enParsed.socialLinks,
     status: "published",
@@ -292,7 +321,7 @@ function projectToSql(project) {
     ${sqlEscape(project.bio_en)}, ${sqlEscape(project.bio_nl)},
     ${sqlEscape(project.description_en)}, ${sqlEscape(project.description_nl)},
     ${sqlEscape(project.location_en)}, ${sqlEscape(project.location_nl)},
-    NULL, NULL, NULL, NULL,
+    NULL, ${sqlEscape(project.print_caption)}, ${sqlEscape(project.print_description)}, ${sqlEscape(project.print_language)},
     NULL, 0, ${sqlEscape(project.thumb_image_id)},
     ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)},
     datetime('now'), datetime('now')

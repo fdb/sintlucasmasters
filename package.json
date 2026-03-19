@@ -20,6 +20,8 @@
     "db:migration:create": "wrangler d1 migrations create sintlucasmasters",
     "db:import": "node scripts/import-to-d1.mjs --local",
     "db:import:remote": "node scripts/import-to-d1.mjs --remote",
+    "populate-print-images": "node scripts/populate-print-images.mjs --local",
+    "populate-print-images:remote": "node scripts/populate-print-images.mjs --remote",
     "setup-secrets": "op inject -f -i .env.template -o .env && node scripts/setup-secrets.mjs --local",
     "setup-secrets:remote": "node scripts/setup-secrets.mjs --remote",
     "create-admin": "node scripts/create-admin.mjs --local",

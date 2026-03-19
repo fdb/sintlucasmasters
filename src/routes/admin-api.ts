@@ -2,12 +2,14 @@ import { Hono } from "hono";
 import type { Context } from "hono";
 import Anthropic from "@anthropic-ai/sdk";
 import { zipSync } from "fflate";
+import { generateTextIdml, generateImageIdml } from "../lib/idml-generator";
+import type { PostcardTextData, PostcardImageData } from "../lib/idml-generator";
+import { getContextFullLabel, normalizeContextKey } from "../lib/i18n";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
 import { emailSlug } from "../lib/names";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
-import { normalizeContextKey } from "../lib/i18n";
 
 type TableConfig = {
   select: string;
@@ -1275,6 +1277,180 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": `attachment; filename="print-images-${yearShort}-${program}.zip"`,
+    },
+  });
+});
+
+// =====================================================
+// IDML Postcard Generation
+// =====================================================
+
+function programLabel(program: string): string {
+  if (program === "PREMA_BK") return "Premaster";
+  return "Master";
+}
+
+function buildTrajectory(program: string, context: ContextKey): string {
+  const nl = getContextFullLabel(context, "nl");
+  const en = getContextFullLabel(context, "en");
+  // Capitalize "context" → "Context" to match print convention
+  const nlCap = nl.replace(/\bcontext\b/, "Context");
+  return `${programLabel(program)} ${nlCap} / ${en}`;
+}
+
+function extractFromSocialLinks(socialLinksJson: string | null, type: "website" | "instagram"): string {
+  if (!socialLinksJson) return "";
+  let links: string[];
+  try {
+    links = JSON.parse(socialLinksJson);
+  } catch {
+    return "";
+  }
+  if (!Array.isArray(links)) return "";
+
+  for (const link of links) {
+    if (type === "instagram" && link.includes("instagram.com")) {
+      // Extract handle: https://www.instagram.com/username/ → @username
+      const match = link.match(/instagram\.com\/([^/?]+)/);
+      if (match && match[1] !== "p" && match[1] !== "reel") {
+        return `@${match[1]}`;
+      }
+    }
+    if (type === "website" && !link.includes("instagram.com") && !link.includes("linkedin.com")) {
+      // Return clean display URL (strip protocol)
+      return link.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    }
+  }
+  return "";
+}
+
+adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
+  const year = c.req.query("year");
+  const program = c.req.query("program");
+  if (!year || !program) {
+    return c.json({ error: "year and program query parameters are required" }, 400);
+  }
+
+  // Load template from R2
+  const templateObj = await c.env.FILES.get("templates/postcard-text-template.idml");
+  if (!templateObj) {
+    return c.json({ error: "Text template not found in R2. Upload templates/postcard-text-template.idml first." }, 500);
+  }
+  const templateZip = new Uint8Array(await templateObj.arrayBuffer());
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT
+      p.student_name, p.program, p.context,
+      p.project_title_en, p.project_title_nl,
+      p.print_description, p.print_language,
+      p.social_links
+    FROM projects p
+    WHERE p.academic_year = ?
+      AND p.program = ?
+      AND TRIM(COALESCE(p.print_description, '')) != ''
+      AND p.print_language IN ('en', 'nl')
+    ORDER BY p.sort_name ASC`
+  )
+    .bind(year, program)
+    .all<{
+      student_name: string;
+      program: string;
+      context: ContextKey;
+      project_title_en: string;
+      project_title_nl: string;
+      print_description: string;
+      print_language: "en" | "nl";
+      social_links: string | null;
+    }>();
+
+  if (!results || results.length === 0) {
+    return c.json({ error: "No projects with print data found" }, 400);
+  }
+
+  const students: PostcardTextData[] = results.map((row) => ({
+    student_name: row.student_name,
+    trajectory: buildTrajectory(row.program, row.context),
+    title:
+      row.print_language === "nl"
+        ? row.project_title_nl || row.project_title_en
+        : row.project_title_en || row.project_title_nl,
+    description: row.print_description,
+    website: extractFromSocialLinks(row.social_links, "website"),
+    instagram: extractFromSocialLinks(row.social_links, "instagram"),
+  }));
+
+  const idmlData = generateTextIdml(templateZip, students);
+
+  const yearShort = shortenAcademicYear(year);
+  return new Response(idmlData, {
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename="postcards-text-${yearShort}-${program}.idml"`,
+    },
+  });
+});
+
+adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
+  const year = c.req.query("year");
+  const program = c.req.query("program");
+  const basePath =
+    c.req.query("basePath") || "file:/Volumes/werkmapServer/sint-lucas/2025/SLA_MASTER_postkaarten_EXPO/Links";
+  if (!year || !program) {
+    return c.json({ error: "year and program query parameters are required" }, 400);
+  }
+
+  // Load template from R2
+  const templateObj = await c.env.FILES.get("templates/postcard-images-template.idml");
+  if (!templateObj) {
+    return c.json(
+      { error: "Image template not found in R2. Upload templates/postcard-images-template.idml first." },
+      500
+    );
+  }
+  const templateZip = new Uint8Array(await templateObj.arrayBuffer());
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT
+      p.student_name, p.print_image_path,
+      u.email
+    FROM projects p
+    LEFT JOIN users u ON p.user_id = u.id
+    WHERE p.academic_year = ?
+      AND p.program = ?
+      AND p.print_image_path IS NOT NULL
+    ORDER BY p.sort_name ASC`
+  )
+    .bind(year, program)
+    .all<{
+      student_name: string;
+      print_image_path: string;
+      email: string | null;
+    }>();
+
+  if (!results || results.length === 0) {
+    return c.json({ error: "No projects with print images found" }, 400);
+  }
+
+  const students: PostcardImageData[] = results.map((row) => {
+    // Build filename matching the print-images.zip naming convention
+    const slug = row.email ? emailSlug(row.email) : row.student_name.toLowerCase().replace(/\s+/g, "_");
+    const extMatch = row.print_image_path.match(/\.([a-z0-9]+)$/i);
+    const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
+    const filename = `${slug}.${ext}`;
+    const encodedFilename = encodeURIComponent(filename).replace(/%2E/gi, ".");
+    return {
+      image_uri: `${basePath}/${encodedFilename}`,
+      image_filename: filename,
+    };
+  });
+
+  const idmlData = generateImageIdml(templateZip, students);
+
+  const yearShort = shortenAcademicYear(year);
+  return new Response(idmlData, {
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename="postcards-images-${yearShort}-${program}.idml"`,
     },
   });
 });
