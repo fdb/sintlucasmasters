@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { useExportStatus } from "../api/queries";
 import { formatProgram, formatAcademicYear } from "../utils";
@@ -27,6 +27,18 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
   const handleDownload = () => {
     window.open(
       `/api/admin/export/print-images.zip?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
+    );
+  };
+
+  const handleDownloadTextIdml = () => {
+    window.open(
+      `/api/admin/export/postcards-text.idml?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
+    );
+  };
+
+  const handleDownloadImagesIdml = () => {
+    window.open(
+      `/api/admin/export/postcards-images.idml?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
     );
   };
 
@@ -120,6 +132,24 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
               >
                 <Download size={14} />
                 Download ZIP
+              </button>
+              <button
+                type="button"
+                className={`btn btn-primary${!canDownload ? " disabled" : ""}`}
+                onClick={canDownload ? handleDownloadTextIdml : undefined}
+                disabled={!canDownload}
+              >
+                <FileText size={14} />
+                Text IDML
+              </button>
+              <button
+                type="button"
+                className={`btn btn-primary${!canDownload ? " disabled" : ""}`}
+                onClick={canDownload ? handleDownloadImagesIdml : undefined}
+                disabled={!canDownload}
+              >
+                <Download size={14} />
+                Images IDML
               </button>
             </div>
           </>
