@@ -43,6 +43,9 @@ const STUDENT_EDITABLE_FIELDS = [
   "description_nl",
   "location_en",
   "location_nl",
+  "print_caption",
+  "print_description",
+  "print_language",
   "private_email",
   "alumni_consent",
   "social_links",
@@ -99,6 +102,18 @@ function filterStudentEditableFields(body: Record<string, unknown>, allowedField
     }
   }
   return filtered;
+}
+
+function normalizePrintLanguage(input: unknown): "en" | "nl" | null {
+  if (input === undefined || input === null || input === "") return null;
+  if (input === "en" || input === "nl") return input;
+  return null;
+}
+
+function normalizeNullableText(input: unknown): string | null {
+  if (input === undefined || input === null) return null;
+  const value = String(input);
+  return value.trim() ? value : null;
 }
 
 // =====================================================
@@ -300,6 +315,25 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   if (body.location_nl !== undefined) {
     updates.push("location_nl = ?");
     values.push(body.location_nl);
+  }
+  if (body.print_caption !== undefined) {
+    updates.push("print_caption = ?");
+    values.push(normalizeNullableText(body.print_caption));
+  }
+  if (body.print_description !== undefined) {
+    const printDescription = normalizeNullableText(body.print_description);
+    if (printDescription && printDescription.length > 500) {
+      return c.json({ error: "Print description must be 500 characters or fewer" }, 400);
+    }
+    updates.push("print_description = ?");
+    values.push(printDescription);
+  }
+  if (body.print_language !== undefined) {
+    if (body.print_language !== "" && normalizePrintLanguage(body.print_language) === null) {
+      return c.json({ error: "Invalid print language" }, 400);
+    }
+    updates.push("print_language = ?");
+    values.push(normalizePrintLanguage(body.print_language));
   }
   if (body.private_email !== undefined) {
     updates.push("private_email = ?");
@@ -612,22 +646,13 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
   }
   const r2Key = `${R2_PATH_PREFIX}/print-images/${yearShort}/${userEmailSlugValue}.${extension}`;
 
-  // Check if there's already a print image - delete it first
-  const existingPrintImage = await c.env.DB.prepare(
-    "SELECT id, cloudflare_id FROM project_images WHERE project_id = ? AND type = 'print'"
-  )
-    .bind(projectId)
-    .first<{ id: string; cloudflare_id: string }>();
-
-  if (existingPrintImage) {
+  if (project.print_image_path) {
     // Delete from R2
     try {
-      await c.env.FILES.delete(existingPrintImage.cloudflare_id);
+      await c.env.FILES.delete(project.print_image_path);
     } catch {
       // Continue even if delete fails
     }
-    // Delete from database
-    await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(existingPrintImage.id).run();
   }
 
   // Upload to R2
@@ -638,50 +663,11 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     },
   });
 
-  // Insert into database with type='print'
-  const imageId = crypto.randomUUID();
-  await c.env.DB.prepare(
-    "INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption, type) VALUES (?, ?, ?, 0, NULL, 'print')"
-  )
-    .bind(imageId, projectId, r2Key)
+  await c.env.DB.prepare("UPDATE projects SET print_image_path = ?, updated_at = datetime('now') WHERE id = ?")
+    .bind(r2Key, projectId)
     .run();
 
-  const newImage = await c.env.DB.prepare("SELECT * FROM project_images WHERE id = ?")
-    .bind(imageId)
-    .first<ProjectImage>();
-
-  return c.json({ image: newImage });
-});
-
-// Update print image caption
-adminApiRoutes.put("/projects/:id/print-image/caption", async (c) => {
-  const projectId = c.req.param("id");
-  const user = c.get("user");
-  const project = await checkProjectAccess(c, projectId);
-
-  if (!project) {
-    return c.json({ error: "Project not found or access denied" }, 404);
-  }
-
-  // Check edit permissions for students
-  if (!isAdminOrEditor(user)) {
-    const editCheck = canStudentEdit(project);
-    if (!editCheck.allowed) {
-      return c.json({ error: editCheck.reason }, 403);
-    }
-  }
-
-  const body = await c.req.json<{ caption: string }>();
-
-  await c.env.DB.prepare("UPDATE project_images SET caption = ? WHERE project_id = ? AND type = 'print'")
-    .bind(body.caption || null, projectId)
-    .run();
-
-  const updatedImage = await c.env.DB.prepare("SELECT * FROM project_images WHERE project_id = ? AND type = 'print'")
-    .bind(projectId)
-    .first<ProjectImage>();
-
-  return c.json({ image: updatedImage });
+  return c.json({ print_image_path: r2Key });
 });
 
 // Delete print image
@@ -702,25 +688,20 @@ adminApiRoutes.delete("/projects/:id/print-image", async (c) => {
     }
   }
 
-  const printImage = await c.env.DB.prepare(
-    "SELECT id, cloudflare_id FROM project_images WHERE project_id = ? AND type = 'print'"
-  )
-    .bind(projectId)
-    .first<{ id: string; cloudflare_id: string }>();
-
-  if (!printImage) {
+  if (!project.print_image_path) {
     return c.json({ error: "Print image not found" }, 404);
   }
 
   // Delete from R2
   try {
-    await c.env.FILES.delete(printImage.cloudflare_id);
+    await c.env.FILES.delete(project.print_image_path);
   } catch {
     // Continue even if delete fails
   }
 
-  // Delete from database
-  await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(printImage.id).run();
+  await c.env.DB.prepare("UPDATE projects SET print_image_path = NULL, updated_at = datetime('now') WHERE id = ?")
+    .bind(projectId)
+    .run();
 
   return c.json({ success: true });
 });
@@ -752,28 +733,19 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
     return c.json({ error: "Image not found" }, 404);
   }
 
-  // Delete from appropriate storage based on type
-  if (image.type === "print") {
-    try {
-      await c.env.FILES.delete(image.cloudflare_id);
-    } catch {
-      // Continue even if delete fails
-    }
-  } else {
-    // Delete from Cloudflare Images
-    try {
-      await fetch(
-        `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-          },
-        }
-      );
-    } catch {
-      // Continue even if delete fails
-    }
+  // Delete from Cloudflare Images
+  try {
+    await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+        },
+      }
+    );
+  } catch {
+    // Continue even if delete fails
   }
 
   // Delete from database
@@ -830,17 +802,24 @@ function validateProjectForSubmission(project: Project, images: ProjectImage[]):
   if (!project.location_nl?.trim()) {
     errors.push("Dutch location is required");
   }
-  const webImages = images.filter((img) => img.type !== "print");
+  const webImages = images.filter((img) => img.type === "web");
   if (webImages.length === 0) {
     errors.push("Main image is required");
   }
 
-  // Check for print image with caption
-  const printImage = images.find((img) => img.type === "print");
-  if (!printImage) {
+  if (!project.print_image_path?.trim()) {
     errors.push("Print image is required");
-  } else if (!printImage.caption?.trim()) {
-    errors.push("Print image caption is required");
+  }
+  if (!project.print_caption?.trim()) {
+    errors.push("Print caption is required");
+  }
+  if (!project.print_description?.trim()) {
+    errors.push("Print description is required");
+  } else if (project.print_description.length > 500) {
+    errors.push("Print description must be 500 characters or fewer");
+  }
+  if (project.print_language !== "en" && project.print_language !== "nl") {
+    errors.push("Print language is required");
   }
 
   return { valid: errors.length === 0, errors };
@@ -1170,11 +1149,10 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
   const { results } = await c.env.DB.prepare(
     `SELECT
       p.id, p.student_name, p.status, p.user_id,
+      p.print_image_path, p.print_caption, p.print_description, p.print_language,
       u.email,
-      pi.id as print_image_id, pi.caption as print_caption
     FROM projects p
     LEFT JOIN users u ON p.user_id = u.id
-    LEFT JOIN project_images pi ON p.id = pi.project_id AND pi.type = 'print'
     WHERE p.academic_year = ? AND p.program = ?
     ORDER BY p.sort_name ASC`
   )
@@ -1185,8 +1163,10 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
       status: string;
       user_id: string | null;
       email: string | null;
-      print_image_id: string | null;
+      print_image_path: string | null;
       print_caption: string | null;
+      print_description: string | null;
+      print_language: "en" | "nl" | null;
     }>();
 
   const students = (results ?? []).map((row) => ({
@@ -1194,11 +1174,15 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
     studentName: row.student_name,
     email: row.email,
     status: row.status,
-    hasPrintImage: !!row.print_image_id,
-    hasCaption: !!row.print_caption?.trim(),
+    hasPrintImage: !!row.print_image_path?.trim(),
+    hasPrintCaption: !!row.print_caption?.trim(),
+    hasPrintDescription: !!row.print_description?.trim(),
+    hasPrintLanguage: row.print_language === "en" || row.print_language === "nl",
   }));
 
-  const readyForPrint = students.filter((s) => s.hasPrintImage && s.hasCaption).length;
+  const readyForPrint = students.filter(
+    (s) => s.hasPrintImage && s.hasPrintCaption && s.hasPrintDescription && s.hasPrintLanguage
+  ).length;
 
   return c.json({
     total: students.length,
@@ -1218,11 +1202,15 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     `SELECT
       p.id as project_id, p.student_name, p.user_id,
       u.email,
-      pi.cloudflare_id, pi.caption
+      p.print_image_path, p.print_caption, p.print_description, p.print_language
     FROM projects p
-    INNER JOIN project_images pi ON p.id = pi.project_id AND pi.type = 'print'
     LEFT JOIN users u ON p.user_id = u.id
-    WHERE p.academic_year = ? AND p.program = ?
+    WHERE p.academic_year = ?
+      AND p.program = ?
+      AND p.print_image_path IS NOT NULL
+      AND TRIM(COALESCE(p.print_caption, '')) != ''
+      AND TRIM(COALESCE(p.print_description, '')) != ''
+      AND p.print_language IN ('en', 'nl')
     ORDER BY p.sort_name ASC`
   )
     .bind(year, program)
@@ -1231,8 +1219,10 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
       student_name: string;
       user_id: string | null;
       email: string | null;
-      cloudflare_id: string;
-      caption: string | null;
+      print_image_path: string;
+      print_caption: string;
+      print_description: string;
+      print_language: "en" | "nl";
     }>();
 
   if (!results || results.length === 0) {
@@ -1255,21 +1245,18 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     usedSlugs.add(slug);
 
     // Fetch image from R2
-    const r2Object = await c.env.FILES.get(row.cloudflare_id);
+    const r2Object = await c.env.FILES.get(row.print_image_path);
     if (!r2Object) continue;
 
     // Get extension from R2 key
-    const extMatch = row.cloudflare_id.match(/\.([a-z0-9]+)$/i);
+    const extMatch = row.print_image_path.match(/\.([a-z0-9]+)$/i);
     const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
 
     const imageBytes = new Uint8Array(await r2Object.arrayBuffer());
     data[`${slug}.${ext}`] = imageBytes;
 
-    // Add caption as text file if present
-    if (row.caption?.trim()) {
-      const encoder = new TextEncoder();
-      data[`${slug}.txt`] = encoder.encode(row.caption.trim());
-    }
+    const encoder = new TextEncoder();
+    data[`${slug}.txt`] = encoder.encode(`${row.print_caption.trim()}\n\n${row.print_description.trim()}`);
   }
 
   if (Object.keys(data).length === 0) {

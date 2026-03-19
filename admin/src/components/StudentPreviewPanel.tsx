@@ -15,18 +15,16 @@ export function StudentPreviewPanel() {
   const [isReverting, setIsReverting] = useState(false);
   const queryClient = useQueryClient();
 
-  const { selectedProjectId, editDraft, editImages, printImage, updateEditField, saveProject, editLanguage } =
-    useAdminStore(
-      useShallow((state) => ({
-        selectedProjectId: state.selectedProjectId,
-        editDraft: state.editDraft,
-        editImages: state.editImages,
-        printImage: state.printImage,
-        updateEditField: state.updateEditField,
-        saveProject: state.saveProject,
-        editLanguage: state.editLanguage,
-      }))
-    );
+  const { selectedProjectId, editDraft, editImages, updateEditField, saveProject, editLanguage } = useAdminStore(
+    useShallow((state) => ({
+      selectedProjectId: state.selectedProjectId,
+      editDraft: state.editDraft,
+      editImages: state.editImages,
+      updateEditField: state.updateEditField,
+      saveProject: state.saveProject,
+      editLanguage: state.editLanguage,
+    }))
+  );
 
   const { data: projectDetail } = useProject(selectedProjectId);
   const submitProjectMutation = useSubmitProject(selectedProjectId);
@@ -65,7 +63,7 @@ export function StudentPreviewPanel() {
   const project = editDraft || projectDetail?.project;
   const status = editDraft?.status || String(projectDetail?.project.status || "draft");
   const canSubmit = status === "draft";
-  const webImages = editImages.filter((img) => img.type !== "print");
+  const webImages = editImages.filter((img) => img.type === "web");
   const mainImage = webImages[0] || null;
   const contextLabels: Record<string, string> = {
     autonomous: "Autonomous",
@@ -114,11 +112,19 @@ export function StudentPreviewPanel() {
       },
       {
         label: "Print Image",
-        valid: !!printImage,
+        valid: !!editDraft.print_image_path.trim(),
       },
       {
-        label: "Print Image Caption",
-        valid: !!printImage && !!(printImage.caption || "").trim(),
+        label: "Print Caption",
+        valid: !!editDraft.print_caption.trim(),
+      },
+      {
+        label: "Print Description",
+        valid: !!editDraft.print_description.trim(),
+      },
+      {
+        label: "Print Language",
+        valid: editDraft.print_language === "en" || editDraft.print_language === "nl",
       },
       {
         label: "Main Image",

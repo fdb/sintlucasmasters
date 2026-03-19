@@ -65,7 +65,7 @@ export function ProjectDetailPanel() {
   const canSubmit = projectStatus_ === "draft";
   const isAdminOrEditor = user?.role === "admin" || user?.role === "editor";
   const canImpersonate = isAdminOrEditor && !!projectDetail?.project.user_id;
-  const webImages = projectDetail?.images?.filter((img) => img.type !== "print") ?? [];
+  const webImages = projectDetail?.images?.filter((img) => img.type === "web") ?? [];
   const projectTitleEn = String(projectDetail?.project.project_title_en || "");
   const projectTitleNl = String(projectDetail?.project.project_title_nl || "");
   const descriptionEn = String(projectDetail?.project.description_en || "");
@@ -113,8 +113,6 @@ export function ProjectDetailPanel() {
     if (!projectDetail) return [];
 
     const project = projectDetail.project;
-    const images = projectDetail.images || [];
-    const printImage = images.find((img) => img.type === "print");
 
     return [
       {
@@ -151,11 +149,19 @@ export function ProjectDetailPanel() {
       },
       {
         label: "Print Image",
-        valid: !!printImage,
+        valid: !!String(project.print_image_path || "").trim(),
       },
       {
-        label: "Print Image Caption",
-        valid: !!printImage && !!String(printImage.caption || "").trim(),
+        label: "Print Caption",
+        valid: !!String(project.print_caption || "").trim(),
+      },
+      {
+        label: "Print Description",
+        valid: !!String(project.print_description || "").trim(),
+      },
+      {
+        label: "Print Language",
+        valid: project.print_language === "en" || project.print_language === "nl",
       },
       {
         label: "Main Image",

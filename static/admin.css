@@ -2768,6 +2768,13 @@ tr.status-draft td:first-child {
   color: var(--gray);
 }
 
+.field-character-count {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--gray);
+  text-align: right;
+}
+
 /* Print image upload area */
 .print-image-upload {
   display: flex;

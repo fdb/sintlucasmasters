@@ -152,6 +152,36 @@ test.describe("admin project editing", () => {
     await expect(reopenedLocationInput).toHaveValue(enLocation);
   });
 
+  test("print description mirrors into selected locale and stops after divergence", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Print Mirror Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    const enTab = modal.getByRole("tab", { name: "EN" });
+    const nlTab = modal.getByRole("tab", { name: "NL" });
+    const printLanguage = modal.locator("#print-language");
+    const printDescription = modal.locator("#print-description");
+    const projectDescription = modal.locator('.edit-field:has-text("Project Description") textarea');
+
+    await expect(nlTab).toHaveAttribute("aria-selected", "true");
+    await printLanguage.selectOption("en");
+    await expect(enTab).toHaveAttribute("aria-selected", "true");
+
+    await projectDescription.clear();
+
+    const mirroredText = `Mirrored print ${Date.now()}`;
+    await printDescription.fill(mirroredText);
+    await expect(projectDescription).toHaveValue(mirroredText);
+
+    await projectDescription.fill("Custom EN description");
+
+    const updatedPrintText = `Updated print ${Date.now()}`;
+    await printDescription.fill(updatedPrintText);
+    await expect(projectDescription).toHaveValue("Custom EN description");
+  });
+
   test("status buttons toggle correctly", async ({ page }) => {
     // Double-click first row
     await page.locator("tbody tr").first().dblclick();

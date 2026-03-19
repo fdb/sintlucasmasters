@@ -8,7 +8,6 @@ import {
   deleteImage,
   reorderImages,
   uploadPrintImage,
-  updatePrintImageCaption,
   deletePrintImage,
   submitProject,
   createUser,
@@ -131,22 +130,6 @@ export function useUploadPrintImage(projectId: string | null) {
     mutationFn: (file: File) => {
       if (!projectId) throw new Error("No project selected");
       return uploadPrintImage(projectId, file);
-    },
-    onSuccess: () => {
-      if (projectId) {
-        queryClient.invalidateQueries({ queryKey: queryKeys.project(projectId) });
-      }
-    },
-  });
-}
-
-export function useUpdatePrintImageCaption(projectId: string | null) {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (caption: string) => {
-      if (!projectId) throw new Error("No project selected");
-      return updatePrintImageCaption(projectId, caption);
     },
     onSuccess: () => {
       if (projectId) {

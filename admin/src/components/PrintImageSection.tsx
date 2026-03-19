@@ -1,5 +1,6 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import { FileCheck, FileImage, Trash2 } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { ConfirmDialog } from "./ConfirmDialog";
 import {
@@ -18,7 +19,6 @@ const TEMPLATES = [
   { orientation: "Portrait", format: "PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.png` },
 ];
 
-// Get basename from a path and split into name + extension
 function getFilenameParts(filepath: string): { name: string; extension: string } {
   const parts = filepath.split("/");
   const basename = parts[parts.length - 1] || filepath;
@@ -28,48 +28,49 @@ function getFilenameParts(filepath: string): { name: string; extension: string }
   }
   return {
     name: basename.slice(0, dotIndex),
-    extension: basename.slice(dotIndex), // includes the dot
+    extension: basename.slice(dotIndex),
   };
 }
 
 export function PrintImageSection() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [validationResult, setValidationResult] = useState<PrintImageValidationResult | null>(null);
-  const [captionValue, setCaptionValue] = useState("");
-  const [captionSaving, setCaptionSaving] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const printImage = useAdminStore((state) => state.printImage);
-  const printImageStatus = useAdminStore((state) => state.printImageStatus);
-  const printImageError = useAdminStore((state) => state.printImageError);
-  const uploadPrintImage = useAdminStore((state) => state.uploadPrintImage);
-  const updatePrintImageCaption = useAdminStore((state) => state.updatePrintImageCaption);
-  const deletePrintImage = useAdminStore((state) => state.deletePrintImage);
-  const canEditProject = useAdminStore((state) => state.canEditProject);
+  const {
+    editDraft,
+    updateEditField,
+    printImageStatus,
+    printImageError,
+    uploadPrintImage,
+    deletePrintImage,
+    canEditProject,
+  } = useAdminStore(
+    useShallow((state) => ({
+      editDraft: state.editDraft,
+      updateEditField: state.updateEditField,
+      printImageStatus: state.printImageStatus,
+      printImageError: state.printImageError,
+      uploadPrintImage: state.uploadPrintImage,
+      deletePrintImage: state.deletePrintImage,
+      canEditProject: state.canEditProject,
+    }))
+  );
 
   const editAllowed = canEditProject().allowed;
 
-  // Initialize caption value when print image changes
-  const initCaption = useCallback(() => {
-    if (printImage?.caption !== undefined) {
-      setCaptionValue(printImage.caption || "");
-    }
-  }, [printImage?.caption]);
+  if (!editDraft) return null;
 
-  // Call initCaption when printImage changes
-  if (printImage && captionValue === "" && printImage.caption) {
-    initCaption();
-  }
+  const printImagePath = editDraft.print_image_path;
+  const printDescriptionLength = editDraft.print_description.length;
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Reset input
     event.target.value = "";
 
-    // Check file type
     if (!isPrintImageSupported(file)) {
       setValidationResult({
         valid: false,
@@ -80,7 +81,6 @@ export function PrintImageSection() {
       return;
     }
 
-    // Validate dimensions
     const result = await validatePrintImageDimensions(file);
     setValidationResult(result);
 
@@ -90,22 +90,12 @@ export function PrintImageSection() {
     }
   };
 
-  const handleCaptionBlur = async () => {
-    if (!printImage) return;
-    if (captionValue === (printImage.caption || "")) return;
-
-    setCaptionSaving(true);
-    await updatePrintImageCaption(captionValue);
-    setCaptionSaving(false);
-  };
-
   const handleDelete = async () => {
     setIsDeleting(true);
     await deletePrintImage();
     setIsDeleting(false);
     setShowDeleteConfirm(false);
     setValidationResult(null);
-    setCaptionValue("");
   };
 
   return (
@@ -117,20 +107,20 @@ export function PrintImageSection() {
         {PRINT_IMAGE_REQUIREMENTS.minLandscape.height}px (landscape).
       </p>
 
-      {/* Current print image - show as file indicator, not preview */}
-      {printImage && (
+      {printImagePath && (
         <div className="print-image-file">
           <div className="print-image-file-info">
             <FileCheck size={20} className="file-icon" />
             <span
               className="file-name"
-              title={`${getFilenameParts(printImage.cloudflare_id).name}${getFilenameParts(printImage.cloudflare_id).extension}`}
+              title={`${getFilenameParts(printImagePath).name}${getFilenameParts(printImagePath).extension}`}
             >
-              <span className="file-name-base">{getFilenameParts(printImage.cloudflare_id).name}</span>
-              <span className="file-name-ext">{getFilenameParts(printImage.cloudflare_id).extension}</span>
+              <span className="file-name-base">{getFilenameParts(printImagePath).name}</span>
+              <span className="file-name-ext">{getFilenameParts(printImagePath).extension}</span>
             </span>
             {editAllowed && (
               <button
+                type="button"
                 className="delete-print-image-btn"
                 onClick={() => setShowDeleteConfirm(true)}
                 title="Delete print image"
@@ -139,24 +129,59 @@ export function PrintImageSection() {
               </button>
             )}
           </div>
-          <div className="print-image-caption">
-            <label htmlFor="print-image-caption">Caption (required for submission)</label>
-            <input
-              id="print-image-caption"
-              type="text"
-              value={captionValue}
-              onChange={(e) => setCaptionValue(e.target.value)}
-              onBlur={handleCaptionBlur}
-              placeholder="Enter a caption for the print image"
-              disabled={!editAllowed || captionSaving}
-            />
-            {captionSaving && <span className="caption-saving">Saving...</span>}
-          </div>
         </div>
       )}
 
-      {/* Upload area */}
-      {!printImage && editAllowed && (
+      <div className="edit-row" style={{ marginTop: "1rem" }}>
+        <div className="edit-field">
+          <label className="edit-label" htmlFor="print-caption">
+            Print Caption <span className="required-marker">*</span>
+          </label>
+          <input
+            id="print-caption"
+            type="text"
+            className="edit-input"
+            value={editDraft.print_caption}
+            onChange={(e) => updateEditField("print_caption", e.target.value)}
+            placeholder="Short heading for the postcard"
+            disabled={!editAllowed}
+          />
+        </div>
+        <div className="edit-field">
+          <label className="edit-label" htmlFor="print-language">
+            Print Language <span className="required-marker">*</span>
+          </label>
+          <select
+            id="print-language"
+            className="edit-select"
+            value={editDraft.print_language}
+            onChange={(e) => updateEditField("print_language", e.target.value)}
+            disabled={!editAllowed}
+          >
+            <option value="">Choose language...</option>
+            <option value="nl">NL</option>
+            <option value="en">EN</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="edit-field" style={{ marginTop: "1rem" }}>
+        <label className="edit-label" htmlFor="print-description">
+          Print Description <span className="required-marker">*</span>
+        </label>
+        <textarea
+          id="print-description"
+          className="edit-textarea"
+          value={editDraft.print_description}
+          onChange={(e) => updateEditField("print_description", e.target.value)}
+          placeholder="Description for the printed postcard..."
+          maxLength={500}
+          disabled={!editAllowed}
+        />
+        <div className="field-character-count">{printDescriptionLength}/500</div>
+      </div>
+
+      {!printImagePath && editAllowed && (
         <>
           <div className="print-image-upload">
             <input
@@ -167,6 +192,7 @@ export function PrintImageSection() {
               style={{ display: "none" }}
             />
             <button
+              type="button"
               className="upload-print-image-btn"
               onClick={() => fileInputRef.current?.click()}
               disabled={printImageStatus === "uploading"}
@@ -176,7 +202,6 @@ export function PrintImageSection() {
             <span className="upload-hint">JPEG or PNG only</span>
           </div>
 
-          {/* Templates section */}
           <div className="print-templates">
             <div className="templates-header">
               <span className="templates-label">Download templates</span>
@@ -201,7 +226,6 @@ export function PrintImageSection() {
         </>
       )}
 
-      {/* Validation error */}
       {validationResult && !validationResult.valid && (
         <div className="print-image-error">
           {validationResult.error}
@@ -213,11 +237,9 @@ export function PrintImageSection() {
         </div>
       )}
 
-      {/* Upload error */}
       {printImageError && <div className="print-image-error">{printImageError}</div>}
 
-      {/* No edit hint for students */}
-      {!editAllowed && !printImage && <p className="no-edit-hint">Editing is disabled for this project.</p>}
+      {!editAllowed && !printImagePath && <p className="no-edit-hint">Editing is disabled for this project.</p>}
 
       <ConfirmDialog
         open={showDeleteConfirm}

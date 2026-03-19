@@ -15,8 +15,13 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
 
   if (!open) return null;
 
-  const readyStudents = data?.students.filter((s) => s.hasPrintImage && s.hasCaption) ?? [];
-  const notReady = data?.students.filter((s) => !s.hasPrintImage || !s.hasCaption) ?? [];
+  const readyStudents =
+    data?.students.filter((s) => s.hasPrintImage && s.hasPrintCaption && s.hasPrintDescription && s.hasPrintLanguage) ??
+    [];
+  const notReady =
+    data?.students.filter(
+      (s) => !s.hasPrintImage || !s.hasPrintCaption || !s.hasPrintDescription || !s.hasPrintLanguage
+    ) ?? [];
   const canDownload = readyStudents.length > 0;
 
   const handleDownload = () => {
@@ -38,10 +43,17 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
     }
   };
 
-  const getIssues = (student: { hasPrintImage: boolean; hasCaption: boolean }) => {
+  const getIssues = (student: {
+    hasPrintImage: boolean;
+    hasPrintCaption: boolean;
+    hasPrintDescription: boolean;
+    hasPrintLanguage: boolean;
+  }) => {
     const issues: string[] = [];
     if (!student.hasPrintImage) issues.push("missing print image");
-    if (!student.hasCaption) issues.push("missing caption");
+    if (!student.hasPrintCaption) issues.push("missing print caption");
+    if (!student.hasPrintDescription) issues.push("missing print description");
+    if (!student.hasPrintLanguage) issues.push("missing print language");
     return issues;
   };
 

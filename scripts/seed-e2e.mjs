@@ -115,6 +115,10 @@ export const E2E_PROJECTS = [
     academic_year: "2024-2025",
     bio: "Test student for submission testing.",
     description: "A project with all fields complete for submission testing.",
+    print_image_path: "slam/testing/print-images/24-25/submit-student.jpg",
+    print_caption: "Print heading",
+    print_description: "Print description for submission testing.",
+    print_language: "en",
     status: "draft",
     tags: '["test"]',
     user_id: "e2e-student-submit",
@@ -151,6 +155,21 @@ export const E2E_PROJECTS = [
     tags: '["translate-test"]',
     user_id: null,
   },
+  {
+    id: "e2e-project-print-mirror",
+    slug: "print-mirror-student",
+    student_name: "Print Mirror Student",
+    sort_name: "Student, Print Mirror",
+    project_title: "Print Mirror Project",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Test student for print mirroring.",
+    description: "Base description used for print mirroring tests.",
+    status: "draft",
+    tags: '["print-mirror-test"]',
+    user_id: null,
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
@@ -178,14 +197,6 @@ export const E2E_PROJECT_IMAGES = [
     sort_order: 0,
     caption: "Main image",
     type: "web",
-  },
-  {
-    id: "e2e-pimg-submit-print",
-    project_id: "e2e-project-submittable",
-    cloudflare_id: "e2e-cf-submit-print",
-    sort_order: 0,
-    caption: "Print image caption for submission",
-    type: "print",
   },
 ];
 
@@ -271,8 +282,12 @@ async function main() {
     const bioNl = "bio_nl" in project ? project.bio_nl : project.bio;
     const descEn = "description_en" in project ? project.description_en : project.description;
     const descNl = "description_nl" in project ? project.description_nl : project.description;
+    const printImagePath = "print_image_path" in project ? project.print_image_path : null;
+    const printCaption = "print_caption" in project ? project.print_caption : null;
+    const printDescription = "print_description" in project ? project.print_description : null;
+    const printLanguage = "print_language" in project ? project.print_language : null;
     await runWrangler(
-      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, alumni_consent, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(titleEn)}, ${escapeSql(titleNl)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(bioEn)}, ${escapeSql(bioNl)}, ${escapeSql(descEn)}, ${escapeSql(descNl)}, 'Antwerp, Belgium', 'Antwerpen, België', 0, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
+      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, print_image_path, print_caption, print_description, print_language, alumni_consent, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(titleEn)}, ${escapeSql(titleNl)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(bioEn)}, ${escapeSql(bioNl)}, ${escapeSql(descEn)}, ${escapeSql(descNl)}, 'Antwerp, Belgium', 'Antwerpen, België', ${escapeSql(printImagePath)}, ${escapeSql(printCaption)}, ${escapeSql(printDescription)}, ${escapeSql(printLanguage)}, 0, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
     );
   }
 
