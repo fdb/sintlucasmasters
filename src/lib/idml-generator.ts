@@ -24,6 +24,8 @@ export interface PostcardTextData {
 export interface PostcardImageData {
   image_uri: string;
   image_filename: string;
+  portrait: boolean;
+  imageHeight?: number;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -316,6 +318,43 @@ function buildOutput(
   return zipSync({ mimetype: [mimetypeContent, { level: 0 }], ...rest }, { level: 6 });
 }
 
+// ── Portrait rotation ────────────────────────────────────────────────
+
+/**
+ * Rotate an Image element's ItemTransform 90° CCW for portrait images.
+ *
+ * IDML's ItemTransform "a b c d tx ty" represents the affine matrix:
+ *   | a  c  tx |
+ *   | b  d  ty |
+ *   | 0  0  1  |
+ *
+ * To rotate the image content 90° CCW (portrait → landscape), we compose
+ * the existing transform M with a rotation-and-shift matrix R:
+ *   R = | 0  -1  H |    where H = image height in pixels
+ *       | 1   0  0 |
+ *       | 0   0  1 |
+ *
+ * Result M×R: new_a=c, new_b=d, new_c=-a, new_d=-b,
+ *             new_tx = a*H + tx, new_ty = b*H + ty
+ */
+function rotateImageTransform90CCW(spreadXml: string, imageHeight: number): string {
+  return spreadXml.replace(/(<Image\b[^>]*ItemTransform=")([^"]+)(")/, (_match, prefix, transform, suffix) => {
+    const parts = transform.split(/\s+/).map(Number);
+    if (parts.length !== 6 || parts.some(isNaN)) return _match;
+
+    const [a, b, c, d, tx, ty] = parts;
+    const na = c;
+    const nb = d;
+    const nc = -a;
+    const nd = -b;
+    const ntx = a * imageHeight + tx;
+    const nty = b * imageHeight + ty;
+
+    const newTransform = `${na} ${nb} ${nc} ${nd} ${ntx} ${nty}`;
+    return `${prefix}${newTransform}${suffix}`;
+  });
+}
+
 // ── Public API ───────────────────────────────────────────────────────
 
 export function generateTextIdml(templateZip: Uint8Array, students: PostcardTextData[]): Uint8Array {
@@ -405,7 +444,12 @@ export function generateImageIdml(templateZip: Uint8Array, students: PostcardIma
     const student = students[i];
 
     // Image URI replacement happens in the spread XML, not stories
-    const modifiedSpreadXml = templateSpreadXml.replace("{{image_uri}}", student.image_uri);
+    let modifiedSpreadXml = templateSpreadXml.replace("{{image_uri}}", student.image_uri);
+
+    // For portrait images, rotate the Image element 90° CCW so it displays in landscape
+    if (student.portrait && student.imageHeight) {
+      modifiedSpreadXml = rotateImageTransform90CCW(modifiedSpreadXml, student.imageHeight);
+    }
 
     const { spreadEntry, storyEntries } = cloneSpreadAndStories(
       modifiedSpreadXml,

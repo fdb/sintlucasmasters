@@ -20,12 +20,12 @@ import { writeFile, unlink, mkdtemp } from "fs/promises";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { tmpdir } from "os";
+import sharp from "sharp";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
 
-const CF_IMAGES_BASE =
-  "https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/";
+const CF_IMAGES_BASE = "https://imagedelivery.net/7-GLn6-56OyK7JwwGe0hfg/";
 
 function academicYearToShort(academicYear) {
   // "2024-2025" → "24-25"
@@ -69,12 +69,7 @@ function runCommand(command, args, options = {}) {
 
     child.on("close", (code) => {
       if (code === 0) resolve(stdout.trim());
-      else
-        reject(
-          new Error(
-            `Command failed (code ${code}): ${command} ${args.join(" ")}\n${stderr}`
-          )
-        );
+      else reject(new Error(`Command failed (code ${code}): ${command} ${args.join(" ")}\n${stderr}`));
     });
     child.on("error", reject);
   });
@@ -84,16 +79,7 @@ async function queryD1(sql, isRemote) {
   const target = isRemote ? "--remote" : "--local";
   const result = await runCommand(
     "npx",
-    [
-      "wrangler",
-      "d1",
-      "execute",
-      "sintlucasmasters",
-      target,
-      "--json",
-      "--command",
-      JSON.stringify(sql),
-    ],
+    ["wrangler", "d1", "execute", "sintlucasmasters", target, "--json", "--command", JSON.stringify(sql)],
     { stdio: ["pipe", "pipe", "pipe"] }
   );
 
@@ -107,19 +93,9 @@ async function queryD1(sql, isRemote) {
 
 async function executeD1(sql, isRemote) {
   const target = isRemote ? "--remote" : "--local";
-  await runCommand(
-    "npx",
-    [
-      "wrangler",
-      "d1",
-      "execute",
-      "sintlucasmasters",
-      target,
-      "--command",
-      JSON.stringify(sql),
-    ],
-    { stdio: ["pipe", "pipe", "pipe"] }
-  );
+  await runCommand("npx", ["wrangler", "d1", "execute", "sintlucasmasters", target, "--command", JSON.stringify(sql)], {
+    stdio: ["pipe", "pipe", "pipe"],
+  });
 }
 
 async function main() {
@@ -128,16 +104,12 @@ async function main() {
   const isLocal = args.includes("--local");
 
   if (!isRemote && !isLocal) {
-    console.error(
-      "Usage: node scripts/populate-print-images.mjs --local|--remote"
-    );
+    console.error("Usage: node scripts/populate-print-images.mjs --local|--remote");
     process.exit(1);
   }
 
   const targetLabel = isRemote ? "REMOTE (production)" : "LOCAL";
-  console.log(
-    `\nPopulating print images on ${targetLabel} database...\n`
-  );
+  console.log(`\nPopulating print images on ${targetLabel} database...\n`);
 
   // Find projects without print_image_path, using thumb_image_id or first project_image
   const projects = await queryD1(
@@ -171,6 +143,15 @@ async function main() {
       }
 
       const buffer = Buffer.from(await response.arrayBuffer());
+
+      // Read dimensions for portrait detection at IDML generation time
+      const metadata = await sharp(buffer).metadata();
+      const imgWidth = metadata.width || null;
+      const imgHeight = metadata.height || null;
+      if (imgWidth && imgHeight && imgHeight > imgWidth) {
+        console.log(`  PORTRAIT: ${project.student_name} — ${imgWidth}x${imgHeight} (will rotate in IDML)`);
+      }
+
       const tmpFile = join(tmpDir, `${slug}.jpg`);
       await writeFile(tmpFile, buffer);
 
@@ -190,11 +171,8 @@ async function main() {
         { stdio: ["pipe", "pipe", "pipe"] }
       );
 
-      // Update DB
-      await executeD1(
-        `UPDATE projects SET print_image_path = '${r2Key}' WHERE id = '${project.id}'`,
-        isRemote
-      );
+      // Update DB with path and dimensions
+      await executeD1(`UPDATE projects SET print_image_path = '${r2Key}', print_image_width = ${imgWidth || 'NULL'}, print_image_height = ${imgHeight || 'NULL'} WHERE id = '${project.id}'`, isRemote);
 
       console.log(`  OK: ${project.student_name} (${yearShort}) → ${r2Key}`);
       succeeded++;
@@ -202,9 +180,7 @@ async function main() {
       // Clean up temp file
       await unlink(tmpFile).catch(() => {});
     } catch (err) {
-      console.error(
-        `  FAIL: ${project.student_name} (${yearShort}): ${err.message}`
-      );
+      console.error(`  FAIL: ${project.student_name} (${yearShort}): ${err.message}`);
       failed++;
     }
   }

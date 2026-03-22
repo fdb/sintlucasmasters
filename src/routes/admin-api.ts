@@ -1408,6 +1408,7 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
   const { results } = await c.env.DB.prepare(
     `SELECT
       p.student_name, p.print_image_path,
+      p.print_image_width, p.print_image_height,
       u.email
     FROM projects p
     LEFT JOIN users u ON p.user_id = u.id
@@ -1420,6 +1421,8 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
     .all<{
       student_name: string;
       print_image_path: string;
+      print_image_width: number | null;
+      print_image_height: number | null;
       email: string | null;
     }>();
 
@@ -1434,9 +1437,13 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
     const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
     const filename = `${slug}.${ext}`;
     const encodedFilename = encodeURIComponent(filename).replace(/%2E/gi, ".");
+    const w = row.print_image_width;
+    const h = row.print_image_height;
     return {
       image_uri: basePath ? `${basePath}/${encodedFilename}` : encodedFilename,
       image_filename: filename,
+      portrait: !!(w && h && h > w),
+      imageHeight: h ?? undefined,
     };
   });
 

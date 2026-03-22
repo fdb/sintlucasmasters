@@ -310,7 +310,7 @@ function projectToSql(project) {
     bio_en, bio_nl,
     description_en, description_nl,
     location_en, location_nl,
-    print_image_path, print_caption, print_description, print_language,
+    print_image_path, print_image_width, print_image_height, print_caption, print_description, print_language,
     private_email, alumni_consent, thumb_image_id,
     tags, social_links, status,
     created_at, updated_at
@@ -321,7 +321,7 @@ function projectToSql(project) {
     ${sqlEscape(project.bio_en)}, ${sqlEscape(project.bio_nl)},
     ${sqlEscape(project.description_en)}, ${sqlEscape(project.description_nl)},
     ${sqlEscape(project.location_en)}, ${sqlEscape(project.location_nl)},
-    NULL, ${sqlEscape(project.print_caption)}, ${sqlEscape(project.print_description)}, ${sqlEscape(project.print_language)},
+    NULL, NULL, NULL, ${sqlEscape(project.print_caption)}, ${sqlEscape(project.print_description)}, ${sqlEscape(project.print_language)},
     NULL, 0, ${sqlEscape(project.thumb_image_id)},
     ${sqlEscape(project.tags)}, ${sqlEscape(project.social_links)}, ${sqlEscape(project.status)},
     datetime('now'), datetime('now')
