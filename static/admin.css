@@ -1605,6 +1605,13 @@ tr.status-draft td:first-child {
   min-height: 160px;
 }
 
+.edit-field-hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--gray);
+  opacity: 0.8;
+}
+
 .edit-select {
   cursor: pointer;
   background: var(--admin-bg);

@@ -30,6 +30,11 @@ test.describe("admin project editing", () => {
     await expect(modal.locator(".edit-section-title", { hasText: "Content" })).toBeVisible();
     await expect(modal.locator(".edit-section-title", { hasText: "Media" })).toBeVisible();
     await expect(modal.locator(".edit-section-title", { hasText: "Tags" })).toBeVisible();
+
+    const projectDescriptionField = modal.locator('.edit-field:has-text("Project Description")');
+    await expect(projectDescriptionField).toContainText(
+      "YouTube and Vimeo links pasted here will be embedded on the project page."
+    );
   });
 
   test("can edit student name field", async ({ page }) => {

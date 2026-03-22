@@ -568,6 +568,9 @@ export function ProjectEditForm({
                     onTranslated={(text) => updateEditField(descriptionField, text)}
                   />
                 </div>
+                <p className="edit-field-hint">
+                  YouTube and Vimeo links pasted here will be embedded on the project page.
+                </p>
               </div>
             </div>
           </div>
