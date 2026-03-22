@@ -309,6 +309,32 @@ test.describe.serial("project submission", () => {
     // Submit section should be visible again
     await expect(page.locator(".detail-submit-section")).toBeVisible();
   });
+
+  test("print fields autosave and persist in student mode", async ({ page }) => {
+    await navigateToSubmitStudent(page);
+    await ensureProjectIsDraft(page);
+
+    const printCaption = `Print heading ${Date.now()}`;
+    const printDescription = `Print description ${Date.now()}`;
+
+    const savePromise = page.waitForResponse(
+      (response) =>
+        response.request().method() === "PUT" && response.url().includes("/api/admin/projects/") && response.ok(),
+      { timeout: 10000 }
+    );
+
+    await page.locator("#print-language").selectOption("en");
+    await page.locator("#print-caption").fill(printCaption);
+    await page.locator("#print-description").fill(printDescription);
+
+    await savePromise;
+    await page.reload();
+    await expect(page.locator(".student-preview-panel")).toBeVisible();
+
+    await expect(page.locator("#print-language")).toHaveValue("en");
+    await expect(page.locator("#print-caption")).toHaveValue(printCaption);
+    await expect(page.locator("#print-description")).toHaveValue(printDescription);
+  });
 });
 
 test.describe("project submission validation", () => {
@@ -335,31 +361,5 @@ test.describe("project submission validation", () => {
     const hint = page.locator(".submit-hint");
     await expect(hint).toBeVisible();
     await expect(hint).toContainText("Complete all checklist items");
-  });
-
-  test("print fields autosave and persist in student mode", async ({ page }) => {
-    await navigateToSubmitStudent(page);
-    await ensureProjectIsDraft(page);
-
-    const printCaption = `Print heading ${Date.now()}`;
-    const printDescription = `Print description ${Date.now()}`;
-
-    const savePromise = page.waitForResponse(
-      (response) =>
-        response.request().method() === "PUT" && response.url().includes("/api/admin/projects/") && response.ok(),
-      { timeout: 10000 }
-    );
-
-    await page.locator("#print-language").selectOption("en");
-    await page.locator("#print-caption").fill(printCaption);
-    await page.locator("#print-description").fill(printDescription);
-
-    await savePromise;
-    await page.reload();
-    await expect(page.locator(".student-preview-panel")).toBeVisible();
-
-    await expect(page.locator("#print-language")).toHaveValue("en");
-    await expect(page.locator("#print-caption")).toHaveValue(printCaption);
-    await expect(page.locator("#print-description")).toHaveValue(printDescription);
   });
 });
