@@ -10,6 +10,9 @@ import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../mid
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
 import { emailSlug } from "../lib/names";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
+import { generateMagicToken, storeMagicToken } from "../lib/tokens";
+import { sendReviewNotification } from "../lib/email";
+import type { SESConfig } from "../lib/aws-ses";
 
 type TableConfig = {
   select: string;
@@ -370,6 +373,37 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   await c.env.DB.prepare(query)
     .bind(...values)
     .run();
+
+  // Send review notification email when status changes to "reviewed"
+  if (body.status === "reviewed" && project.status !== "reviewed" && project.user_id) {
+    const studentUser = await c.env.DB.prepare("SELECT email, name FROM users WHERE id = ?")
+      .bind(project.user_id)
+      .first<{ email: string; name: string | null }>();
+
+    if (studentUser?.email) {
+      const sesConfig: SESConfig = {
+        accessKeyId: c.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: c.env.AWS_SECRET_ACCESS_KEY,
+        region: c.env.AWS_REGION,
+      };
+      const token = generateMagicToken();
+      await storeMagicToken(c.env.DB, studentUser.email, token);
+      const loginUrl = `${c.env.APP_BASE_URL}/auth/verify?token=${token}`;
+      const studentName = studentUser.name || project.student_name;
+      const projectTitle = project.project_title_en || project.project_title_nl;
+
+      c.executionCtx.waitUntil(
+        sendReviewNotification(
+          sesConfig,
+          studentUser.email,
+          loginUrl,
+          studentName,
+          projectTitle,
+          c.env.SES_CONFIGURATION_SET
+        ).catch((err) => console.error("Failed to send review notification:", err))
+      );
+    }
+  }
 
   // Return updated project
   const updatedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(id).first<Project>();
@@ -877,6 +911,28 @@ adminApiRoutes.post("/projects/:id/submit", async (c) => {
 
   // Update status
   await c.env.DB.prepare("UPDATE projects SET status = 'submitted', updated_at = datetime('now') WHERE id = ?")
+    .bind(projectId)
+    .run();
+
+  const updatedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(projectId).first<Project>();
+
+  return c.json({ project: updatedProject });
+});
+
+// Approve project (changes status from reviewed to ready_for_print)
+adminApiRoutes.post("/projects/:id/approve", async (c) => {
+  const projectId = c.req.param("id");
+  const project = await checkProjectAccess(c, projectId);
+
+  if (!project) {
+    return c.json({ error: "Project not found or access denied" }, 404);
+  }
+
+  if (project.status !== "reviewed") {
+    return c.json({ error: `Project cannot be approved from '${project.status}' status` }, 400);
+  }
+
+  await c.env.DB.prepare("UPDATE projects SET status = 'ready_for_print', updated_at = datetime('now') WHERE id = ?")
     .bind(projectId)
     .run();
 
