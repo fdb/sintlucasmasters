@@ -4,8 +4,9 @@
  * Rebuild database: drop tables, recreate schema, and import data
  *
  * Usage:
- *   node scripts/db-rebuild.mjs --local   # Rebuild local D1
- *   node scripts/db-rebuild.mjs --remote  # Rebuild production D1
+ *   node scripts/db-rebuild.mjs --local                  # Rebuild local D1 (no R2 uploads)
+ *   node scripts/db-rebuild.mjs --local --upload-images  # Rebuild + re-upload images/templates to R2
+ *   node scripts/db-rebuild.mjs --remote                 # Rebuild production D1
  */
 
 import { spawn } from "child_process";
@@ -19,9 +20,10 @@ const PROJECT_ROOT = join(__dirname, "..");
 const args = process.argv.slice(2);
 const isRemote = args.includes("--remote");
 const isLocal = args.includes("--local");
+const uploadImages = args.includes("--upload-images");
 
 if (!isRemote && !isLocal) {
-  console.error("Usage: node scripts/db-rebuild.mjs --local|--remote");
+  console.error("Usage: node scripts/db-rebuild.mjs --local|--remote [--upload-images]");
   process.exit(1);
 }
 
@@ -67,25 +69,29 @@ async function main() {
   console.log("\n📦 Step 3: Importing data...");
   await runCommand("node", ["scripts/import-to-d1.mjs", target]);
 
-  // Step 4: Populate print images from Cloudflare Images → R2
-  console.log("\n📦 Step 4: Populating print images...");
-  await runCommand("node", ["scripts/populate-print-images.mjs", target]);
+  if (uploadImages) {
+    // Step 4: Populate print images from Cloudflare Images → R2
+    console.log("\n📦 Step 4: Populating print images...");
+    await runCommand("node", ["scripts/populate-print-images.mjs", target]);
 
-  // Step 5: Upload IDML templates to R2
-  console.log("\n📦 Step 5: Uploading IDML templates to R2...");
-  const templatesDir = join(PROJECT_ROOT, "templates");
-  const templateFiles = (await readdir(templatesDir)).filter((f) => f.endsWith(".idml"));
-  for (const file of templateFiles) {
-    await runCommand("npx", [
-      "wrangler",
-      "r2",
-      "object",
-      "put",
-      `sintlucasmasters/templates/${file}`,
-      `--file=templates/${file}`,
-      "--content-type=application/octet-stream",
-      target,
-    ]);
+    // Step 5: Upload IDML templates to R2
+    console.log("\n📦 Step 5: Uploading IDML templates to R2...");
+    const templatesDir = join(PROJECT_ROOT, "templates");
+    const templateFiles = (await readdir(templatesDir)).filter((f) => f.endsWith(".idml"));
+    for (const file of templateFiles) {
+      await runCommand("npx", [
+        "wrangler",
+        "r2",
+        "object",
+        "put",
+        `sintlucasmasters/templates/${file}`,
+        `--file=templates/${file}`,
+        "--content-type=application/octet-stream",
+        target,
+      ]);
+    }
+  } else {
+    console.log("\n⏭️  Skipping R2 uploads (use --upload-images to upload print images and templates)");
   }
 
   console.log(`\n✅ ${targetLabel} database rebuilt successfully!`);
