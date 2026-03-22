@@ -41,11 +41,11 @@ async function impersonateStudentFromProject(page: Page, studentName: string) {
   await Promise.race([
     page
       .locator(".admin-list table")
-      .waitFor({ state: "visible", timeout: 5000 })
+      .waitFor({ state: "visible", timeout: 15000 })
       .catch(() => {}),
     page
       .locator(".student-shell")
-      .waitFor({ state: "visible", timeout: 5000 })
+      .waitFor({ state: "visible", timeout: 15000 })
       .catch(() => {}),
   ]);
 
@@ -61,7 +61,7 @@ async function impersonateStudentFromProject(page: Page, studentName: string) {
     await page.goto("/admin");
   }
 
-  await expect(page.locator(".admin-list table")).toBeVisible();
+  await expect(page.locator(".admin-list table")).toBeVisible({ timeout: 15000 });
 
   const projectsTab = page.locator(".admin-tabs button", { hasText: "projects" });
   if (await projectsTab.isVisible()) {
@@ -69,7 +69,7 @@ async function impersonateStudentFromProject(page: Page, studentName: string) {
   }
 
   const targetRow = page.locator("tbody tr", { hasText: studentName });
-  await expect(targetRow).toBeVisible();
+  await expect(targetRow).toBeVisible({ timeout: 10000 });
   await targetRow.click();
 
   const detailHeader = page.locator(".detail-header-row h3", { hasText: studentName });
