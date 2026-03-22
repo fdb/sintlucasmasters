@@ -19,7 +19,7 @@ const CONTEXTS = [
 
 import { PROGRAM_LABELS } from "../utils";
 
-const STATUSES = ["draft", "submitted", "ready_for_print", "published"];
+const STATUSES = ["draft", "submitted", "reviewed", "ready_for_print", "published"];
 const AUTOSAVE_DELAY_MS = 1000;
 const AUTOSAVE_BACKOFF_BASE_MS = 2000;
 const AUTOSAVE_BACKOFF_MAX_MS = 30000;

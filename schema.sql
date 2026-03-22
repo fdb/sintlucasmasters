@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS projects (
     status TEXT NOT NULL DEFAULT 'published' CHECK (status IN (
         'draft',
         'submitted',
+        'reviewed',
         'ready_for_print',
         'published'
     )),

@@ -36,6 +36,7 @@ const STATUS_FILTERS = [
   { value: "", label: "All" },
   { value: "draft", label: "Draft" },
   { value: "submitted", label: "Submitted" },
+  { value: "reviewed", label: "Reviewed" },
   { value: "ready_for_print", label: "Ready for print" },
   { value: "published", label: "Published" },
 ];

@@ -42,6 +42,13 @@ export const E2E_SUBMIT_STUDENT = {
   role: "student",
 };
 
+export const E2E_REVIEW_STUDENT = {
+  id: "e2e-student-review",
+  email: "review-student@example.com",
+  name: "Review Student",
+  role: "student",
+};
+
 export const E2E_PROJECTS = [
   {
     id: "e2e-project-001",
@@ -124,6 +131,25 @@ export const E2E_PROJECTS = [
     user_id: "e2e-student-submit",
   },
   {
+    id: "e2e-project-reviewable",
+    slug: "review-student",
+    student_name: "Review Student",
+    sort_name: "Student, Review",
+    project_title: "Reviewable Project",
+    program: "BA_FO",
+    context: "autonomous",
+    academic_year: "2024-2025",
+    bio: "Test student for review workflow testing.",
+    description: "A project with all fields complete for review workflow testing.",
+    print_image_path: "slam/testing/print-images/24-25/review-student.jpg",
+    print_caption: "Review print heading",
+    print_description: "Print description for review testing.",
+    print_language: "en",
+    status: "submitted",
+    tags: '["review-test"]',
+    user_id: "e2e-student-review",
+  },
+  {
     id: "e2e-project-editable",
     slug: "editable-student",
     student_name: "Editable Student",
@@ -187,6 +213,15 @@ export const E2E_PROJECT_IMAGES = [
     cloudflare_id: "slam/testing/e2e-test-image",
     sort_order: 1,
     caption: "Detail shot",
+    type: "web",
+  },
+  // Reviewable project images
+  {
+    id: "e2e-pimg-review-main",
+    project_id: "e2e-project-reviewable",
+    cloudflare_id: "e2e-cf-review-main",
+    sort_order: 0,
+    caption: "Main image",
     type: "web",
   },
   // Submittable project images (has main image + print image with caption)
@@ -273,6 +308,12 @@ async function main() {
     `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_SUBMIT_STUDENT.id)}, ${escapeSql(E2E_SUBMIT_STUDENT.email)}, ${escapeSql(E2E_SUBMIT_STUDENT.name)}, ${escapeSql(E2E_SUBMIT_STUDENT.role)}, datetime('now'))`
   );
 
+  // Insert review test student user
+  console.log("Creating review test student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_REVIEW_STUDENT.id)}, ${escapeSql(E2E_REVIEW_STUDENT.email)}, ${escapeSql(E2E_REVIEW_STUDENT.name)}, ${escapeSql(E2E_REVIEW_STUDENT.role)}, datetime('now'))`
+  );
+
   // Insert projects
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
@@ -301,7 +342,7 @@ async function main() {
 
   console.log("\nE2E database seeded successfully!");
   console.log(`  - 1 admin user: ${E2E_ADMIN.email}`);
-  console.log(`  - 2 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}`);
+  console.log(`  - 3 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}, ${E2E_REVIEW_STUDENT.email}`);
   console.log(`  - ${E2E_PROJECTS.length} projects`);
   console.log(`  - ${E2E_PROJECT_IMAGES.length} project images`);
 }

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { CheckCircle, SquareArrowOutUpRight, Undo2 } from "lucide-react";
+import { CheckCircle, ClipboardCheck, SquareArrowOutUpRight, Undo2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useProject } from "../api/queries";
-import { useSubmitProject } from "../api/mutations";
+import { useSubmitProject, useApproveProject } from "../api/mutations";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
 import { queryKeys } from "../api/queryKeys";
@@ -12,6 +12,7 @@ import { queryKeys } from "../api/queryKeys";
 export function StudentPreviewPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [showRevertConfirm, setShowRevertConfirm] = useState(false);
+  const [showApproveConfirm, setShowApproveConfirm] = useState(false);
   const [isReverting, setIsReverting] = useState(false);
   const queryClient = useQueryClient();
 
@@ -28,6 +29,7 @@ export function StudentPreviewPanel() {
 
   const { data: projectDetail } = useProject(selectedProjectId);
   const submitProjectMutation = useSubmitProject(selectedProjectId);
+  const approveProjectMutation = useApproveProject(selectedProjectId);
   const submitStatus = submitProjectMutation.isPending
     ? "submitting"
     : submitProjectMutation.isError
@@ -58,6 +60,22 @@ export function StudentPreviewPanel() {
     setIsReverting(false);
     setShowRevertConfirm(false);
   };
+
+  const handleApprove = async () => {
+    setShowApproveConfirm(false);
+    approveProjectMutation.mutate(undefined, {
+      onSuccess: () => {
+        updateEditField("status", "ready_for_print");
+      },
+    });
+  };
+
+  const approveStatus = approveProjectMutation.isPending
+    ? "submitting"
+    : approveProjectMutation.isError
+      ? "error"
+      : "idle";
+  const approveError = approveProjectMutation.error?.message || null;
 
   // Use editDraft for live preview, falling back to projectDetail
   const project = editDraft || projectDetail?.project;
@@ -195,6 +213,25 @@ export function StudentPreviewPanel() {
         </div>
       )}
 
+      {/* Reviewed status — student can edit and approve */}
+      {status === "reviewed" && (
+        <div className="detail-reviewed-banner">
+          <div className="reviewed-banner-content">
+            <ClipboardCheck size={18} />
+            <span>Your project has been reviewed by an editor. Please check the text and approve it for print.</span>
+          </div>
+          <button
+            type="button"
+            className="btn btn-primary btn-small"
+            onClick={() => setShowApproveConfirm(true)}
+            disabled={approveStatus === "submitting"}
+          >
+            {approveStatus === "submitting" ? "Approving..." : "Approve for Print"}
+          </button>
+          {approveError && <div className="banner-error">{approveError}</div>}
+        </div>
+      )}
+
       {/* Locked status */}
       {status === "ready_for_print" && (
         <div className="detail-locked-banner">
@@ -328,6 +365,18 @@ export function StudentPreviewPanel() {
         onConfirm={handleRevertToDraft}
         isLoading={isReverting}
         confirmLabel="Return to Draft"
+        confirmVariant="primary"
+      />
+
+      <ConfirmDialog
+        open={showApproveConfirm}
+        title="Approve for print?"
+        description="Once approved, your project will be locked for printing. Contact an administrator if changes are needed after approval."
+        onCancel={() => setShowApproveConfirm(false)}
+        onConfirm={handleApprove}
+        isLoading={approveStatus === "submitting"}
+        errorMessage={approveError}
+        confirmLabel="Approve for Print"
         confirmVariant="primary"
       />
     </div>

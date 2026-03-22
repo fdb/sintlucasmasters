@@ -248,6 +248,17 @@ export async function submitProject(projectId: string): Promise<void> {
   }
 }
 
+export async function approveProject(projectId: string): Promise<void> {
+  const res = await fetch(`/api/admin/projects/${projectId}/approve`, {
+    method: "POST",
+  });
+
+  if (!res.ok) {
+    const error = (await res.json()) as { error?: string };
+    throw new Error(error.error || "Approval failed");
+  }
+}
+
 // ============================================================================
 // Translation
 // ============================================================================

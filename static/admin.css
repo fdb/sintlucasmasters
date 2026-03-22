@@ -723,6 +723,14 @@
   background: #64b5f6;
 }
 
+.status-dot.status-reviewed {
+  background: #7b1fa2;
+}
+
+:root[data-theme="dark"] .status-dot.status-reviewed {
+  background: #ce93d8;
+}
+
 .status-dot.status-draft {
   background: #757575;
 }
@@ -981,6 +989,16 @@
   border-color: #ffb74d;
 }
 
+.status-badge.status-reviewed {
+  color: #7b1fa2;
+  border-color: #7b1fa2;
+}
+
+:root[data-theme="dark"] .status-badge.status-reviewed {
+  color: #ce93d8;
+  border-color: #ce93d8;
+}
+
 .status-badge.status-ready_for_print {
   color: #1976d2;
   border-color: #1976d2;
@@ -1008,6 +1026,10 @@ tr.status-published td:first-child {
 
 tr.status-submitted td:first-child {
   box-shadow: inset 4px 0 0 #ff9800;
+}
+
+tr.status-reviewed td:first-child {
+  box-shadow: inset 4px 0 0 #9c27b0;
 }
 
 tr.status-ready_for_print td:first-child {
@@ -2983,6 +3005,39 @@ tr.status-draft td:first-child {
   gap: 0.375rem;
 }
 
+.detail-reviewed-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f3e5f5;
+  border: 1px solid #ce93d8;
+  color: #4a148c;
+  font-size: 0.875rem;
+}
+
+.reviewed-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.detail-reviewed-banner .btn-small {
+  align-self: flex-start;
+  flex-shrink: 0;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.detail-reviewed-banner .banner-error {
+  color: #c00;
+  font-size: 0.75rem;
+}
+
 .detail-locked-banner {
   margin: 1rem 0;
   padding: 1rem;
@@ -2996,6 +3051,16 @@ tr.status-draft td:first-child {
   background: rgba(0, 128, 0, 0.1);
   border-color: rgba(0, 200, 0, 0.3);
   color: #8d8;
+}
+
+:root[data-theme="dark"] .detail-reviewed-banner {
+  background: rgba(123, 31, 162, 0.15);
+  border-color: rgba(206, 147, 216, 0.4);
+  color: #ce93d8;
+}
+
+:root[data-theme="dark"] .detail-reviewed-banner .banner-error {
+  color: #f88;
 }
 
 /* Student Page Styles */
@@ -3618,6 +3683,9 @@ tr.status-draft td:first-child {
 .export-overlay-status.status-submitted {
   color: #f57c00;
 }
+.export-overlay-status.status-reviewed {
+  color: #7b1fa2;
+}
 .export-overlay-status.status-ready_for_print {
   color: #1976d2;
 }
@@ -3627,6 +3695,9 @@ tr.status-draft td:first-child {
 }
 :root[data-theme="dark"] .export-overlay-status.status-submitted {
   color: #ffb74d;
+}
+:root[data-theme="dark"] .export-overlay-status.status-reviewed {
+  color: #ce93d8;
 }
 :root[data-theme="dark"] .export-overlay-status.status-ready_for_print {
   color: #64b5f6;
