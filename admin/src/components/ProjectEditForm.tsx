@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { GripVertical, Plus, Trash2, X, Lock } from "lucide-react";
+import { GripVertical, Plus, Trash2, Lock } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
@@ -45,11 +45,7 @@ export function ProjectEditForm({
     editDraft,
     editImages,
     saveStatus,
-    newTag,
     updateEditField,
-    setNewTag,
-    addTag,
-    removeTag,
     addSocialLink,
     updateSocialLink,
     removeSocialLink,
@@ -63,11 +59,7 @@ export function ProjectEditForm({
       editDraft: state.editDraft,
       editImages: state.editImages,
       saveStatus: state.saveStatus,
-      newTag: state.newTag,
       updateEditField: state.updateEditField,
-      setNewTag: state.setNewTag,
-      addTag: state.addTag,
-      removeTag: state.removeTag,
       addSocialLink: state.addSocialLink,
       updateSocialLink: state.updateSocialLink,
       removeSocialLink: state.removeSocialLink,
@@ -591,43 +583,6 @@ export function ProjectEditForm({
             </div>
           </div>
 
-          {/* Section 6: Tags */}
-          <div className="edit-section">
-            <div className="edit-section-header">
-              <h3 className="edit-section-title">Tags</h3>
-            </div>
-            <div className="edit-section-content">
-              <div className="edit-field">
-                <div className="edit-tags">
-                  {editDraft.tags.map((tag) => (
-                    <span key={tag} className="edit-tag">
-                      {tag}
-                      {!isLocked && (
-                        <button type="button" className="edit-tag-remove" onClick={() => removeTag(tag)}>
-                          <X size={10} />
-                        </button>
-                      )}
-                    </span>
-                  ))}
-                  {!isLocked && (
-                    <input
-                      type="text"
-                      className="edit-tag-input"
-                      value={newTag}
-                      onChange={(e) => setNewTag(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addTag();
-                        }
-                      }}
-                      placeholder="Add tag..."
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 

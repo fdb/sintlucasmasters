@@ -325,19 +325,6 @@ export function StudentPreviewPanel() {
           </div>
         )}
 
-        {/* Tags */}
-        {editDraft?.tags && editDraft.tags.length > 0 && (
-          <div className="preview-section">
-            <div className="preview-section-label">Tags</div>
-            <div className="preview-tags">
-              {editDraft.tags.map((tag) => (
-                <span key={tag} className="preview-tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       <ConfirmDialog

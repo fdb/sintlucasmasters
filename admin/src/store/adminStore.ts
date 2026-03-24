@@ -133,7 +133,6 @@ type AdminState = {
   mirroredLocalizedTouched: MirroredLocalizedTouched;
   editImages: ProjectImage[];
   saveStatus: SaveStatus;
-  newTag: string;
   // User selection and detail state
   selectedUserId: string | null;
   userDetail: UserDetailResponse | null;
@@ -180,9 +179,6 @@ type AdminState = {
   resetEditSession: () => void;
   updateEditField: (field: keyof EditDraft, value: EditDraft[keyof EditDraft]) => void;
   setEditLanguage: (language: EditLanguage) => void;
-  setNewTag: (value: string) => void;
-  addTag: () => void;
-  removeTag: (tag: string) => void;
   addSocialLink: () => void;
   updateSocialLink: (index: number, value: string) => void;
   removeSocialLink: (index: number) => void;
@@ -398,7 +394,6 @@ export const useAdminStore = create<AdminState>()(
       saveStatus: "idle",
       uploadStatus: "idle",
       uploadError: null,
-      newTag: "",
       selectedUserId: null,
       userDetail: null,
       userDetailStatus: "idle",
@@ -561,7 +556,6 @@ export const useAdminStore = create<AdminState>()(
           mirroredLocalizedTouched: createInitialMirroredLocalizedTouched(),
           editImages: allImages.filter((img) => img.type === "web"),
           saveStatus: "idle",
-          newTag: "",
           submitValidation: null,
           submitStatus: "idle",
           submitError: null,
@@ -580,7 +574,6 @@ export const useAdminStore = create<AdminState>()(
           submitStatus: "idle",
           submitError: null,
           saveStatus: "idle",
-          newTag: "",
         }),
       closeEdit: () => get().resetEditSession(),
       updateEditField: (field, value) => {
@@ -673,33 +666,6 @@ export const useAdminStore = create<AdminState>()(
             editDraft: {
               ...state.editDraft,
               [field]: value,
-            },
-          };
-        });
-      },
-      setNewTag: (value) => set({ newTag: value }),
-      addTag: () => {
-        set((state) => {
-          if (!state.editDraft) return { newTag: "" };
-          const trimmed = state.newTag.trim();
-          if (!trimmed) return { newTag: "" };
-          if (state.editDraft.tags.includes(trimmed)) return { newTag: "" };
-          return {
-            editDraft: {
-              ...state.editDraft,
-              tags: [...state.editDraft.tags, trimmed],
-            },
-            newTag: "",
-          };
-        });
-      },
-      removeTag: (tag) => {
-        set((state) => {
-          if (!state.editDraft) return {};
-          return {
-            editDraft: {
-              ...state.editDraft,
-              tags: state.editDraft.tags.filter((t) => t !== tag),
             },
           };
         });
