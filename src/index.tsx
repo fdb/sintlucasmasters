@@ -26,20 +26,20 @@ import {
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
-// Security headers + cache control
+// Security headers
 app.use("*", async (c, next) => {
   await next();
   c.header("X-Frame-Options", "DENY");
   c.header("X-Content-Type-Options", "nosniff");
+});
 
-  // Hashed assets (Vite builds) are immutable — cache forever
-  const path = c.req.path;
-  if (path.startsWith("/admin/assets/") || path.startsWith("/assets/")) {
-    c.header("Cache-Control", "public, max-age=31536000, immutable");
-  } else if (path.endsWith(".js") || path.endsWith(".css")) {
-    // Non-hashed static files — cache briefly, revalidate
-    c.header("Cache-Control", "public, max-age=3600, must-revalidate");
-  }
+// Hashed assets (Vite builds) — serve via worker to add immutable cache headers
+// Without this, the Assets binding serves them directly with max-age=0
+app.get("/admin/assets/*", async (c) => {
+  const res = await c.env.ASSETS.fetch(new Request(new URL(c.req.url).toString(), c.req.raw));
+  const response = new Response(res.body, res);
+  response.headers.set("Cache-Control", "public, max-age=31536000, immutable");
+  return response;
 });
 
 type PublicLocale = "nl" | "en";
