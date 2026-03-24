@@ -117,6 +117,16 @@ const TEXT = {
   },
 } as const;
 
+// Health check endpoint
+app.get("/api/health", async (c) => {
+  try {
+    const row = await c.env.DB.prepare("SELECT COUNT(*) as count FROM projects").first<{ count: number }>();
+    return c.json({ status: "ok", db: "connected", projects: row?.count ?? 0 });
+  } catch (e) {
+    return c.json({ status: "error", db: "unreachable" }, 503);
+  }
+});
+
 // Sentry tunnel endpoint
 app.post("/api/sentry-tunnel", async (c) => {
   const { SENTRY_HOST, SENTRY_PROJECT_ID } = c.env;
