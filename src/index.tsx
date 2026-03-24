@@ -113,11 +113,13 @@ const TEXT = {
   },
 } as const;
 
+declare const GIT_HASH: string;
+
 // Health check endpoint
 app.get("/api/health", async (c) => {
   try {
     await c.env.DB.prepare("SELECT 1").first();
-    return c.json({ status: "ok", db: "connected" });
+    return c.json({ status: "ok", db: "connected", version: typeof GIT_HASH !== "undefined" ? GIT_HASH : "dev" });
   } catch (e) {
     console.error("Health check DB failure:", e);
     return c.json({ status: "error", db: "unreachable" }, 503);

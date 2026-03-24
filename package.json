@@ -17,7 +17,7 @@
     "test:e2e:db:setup": "npm run test:e2e:db:reset && npm run test:e2e:db:init && npm run test:e2e:db:seed",
     "build:admin": "vite build --config admin/vite.config.ts",
     "build": "wrangler deploy --dry-run",
-    "deploy": "npm run build:admin && wrangler deploy --env=''",
+    "deploy": "npm run build:admin && wrangler deploy --env='' --define GIT_HASH:\"\\\"$(git rev-parse HEAD)\\\"\"",
     "db:migration:create": "wrangler d1 migrations create sintlucasmasters",
     "db:import": "node scripts/import-to-d1.mjs --local",
     "db:import:remote": "node scripts/import-to-d1.mjs --remote",
