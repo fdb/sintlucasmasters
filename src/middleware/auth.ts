@@ -83,11 +83,8 @@ async function getDevAdminUser(c: Context<{ Bindings: AuthBindings }>): Promise<
 export async function authMiddleware(c: Context<{ Bindings: AuthBindings }>, next: Next): Promise<Response | void> {
   // Safety: never allow dev/test auth bypasses on the production domain
   const isProduction = c.env.APP_BASE_URL?.includes("sintlucasmasters.com") && !c.env.APP_BASE_URL?.includes("dev.");
-  if (isProduction && c.env.E2E_SKIP_AUTH) {
-    throw new Error("E2E_SKIP_AUTH must not be set in production");
-  }
-  if (isProduction && c.env.DEV_ADMIN_EMAIL) {
-    throw new Error("DEV_ADMIN_EMAIL must not be set in production");
+  if (isProduction && (c.env.E2E_SKIP_AUTH || c.env.DEV_ADMIN_EMAIL)) {
+    throw new Error("E2E_SKIP_AUTH and DEV_ADMIN_EMAIL must not be set in production");
   }
 
   // E2E bypass: inject fake admin user when E2E_SKIP_AUTH is enabled

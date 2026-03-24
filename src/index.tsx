@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { setCookie } from "hono/cookie";
+import { secureHeaders } from "hono/secure-headers";
 import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
@@ -26,12 +27,7 @@ import {
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
-// Security headers
-app.use("*", async (c, next) => {
-  await next();
-  c.header("X-Frame-Options", "DENY");
-  c.header("X-Content-Type-Options", "nosniff");
-});
+app.use("*", secureHeaders());
 
 type PublicLocale = "nl" | "en";
 
@@ -120,9 +116,10 @@ const TEXT = {
 // Health check endpoint
 app.get("/api/health", async (c) => {
   try {
-    const row = await c.env.DB.prepare("SELECT COUNT(*) as count FROM projects").first<{ count: number }>();
-    return c.json({ status: "ok", db: "connected", projects: row?.count ?? 0 });
+    await c.env.DB.prepare("SELECT 1").first();
+    return c.json({ status: "ok", db: "connected" });
   } catch (e) {
+    console.error("Health check DB failure:", e);
     return c.json({ status: "error", db: "unreachable" }, 503);
   }
 });
@@ -1056,10 +1053,12 @@ app.notFound((c) => {
   if (c.req.path.startsWith("/api/")) {
     return c.json({ error: "Not found" }, 404);
   }
+  const locale = c.req.path.startsWith("/nl") ? "nl" : "en";
+  const text = TEXT[locale];
   return c.html(
-    <Layout locale="en" currentPath={c.req.path} title="Not Found">
-      <p>The page you're looking for doesn't exist.</p>
-      <a href="/en/">Go to homepage</a>
+    <Layout locale={locale} currentPath={c.req.path} title={text.notFound}>
+      <p>{text.studentNotFound}</p>
+      <a href={`/${locale}/`}>{text.home}</a>
     </Layout>,
     404
   );
