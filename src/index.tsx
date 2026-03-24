@@ -33,15 +33,6 @@ app.use("*", async (c, next) => {
   c.header("X-Content-Type-Options", "nosniff");
 });
 
-// Hashed assets (Vite builds) — serve via worker to add immutable cache headers
-// Without this, the Assets binding serves them directly with max-age=0
-app.get("/admin/assets/*", async (c) => {
-  const res = await c.env.ASSETS.fetch(new Request(new URL(c.req.url).toString(), c.req.raw));
-  const response = new Response(res.body, res);
-  response.headers.set("Cache-Control", "public, max-age=31536000, immutable");
-  return response;
-});
-
 type PublicLocale = "nl" | "en";
 
 type LocalizedProject = ProjectWithMainImage & {
