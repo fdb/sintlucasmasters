@@ -26,11 +26,20 @@ import {
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
-// Security headers
+// Security headers + cache control
 app.use("*", async (c, next) => {
   await next();
   c.header("X-Frame-Options", "DENY");
   c.header("X-Content-Type-Options", "nosniff");
+
+  // Hashed assets (Vite builds) are immutable — cache forever
+  const path = c.req.path;
+  if (path.startsWith("/admin/assets/") || path.startsWith("/assets/")) {
+    c.header("Cache-Control", "public, max-age=31536000, immutable");
+  } else if (path.endsWith(".js") || path.endsWith(".css")) {
+    // Non-hashed static files — cache briefly, revalidate
+    c.header("Cache-Control", "public, max-age=3600, must-revalidate");
+  }
 });
 
 type PublicLocale = "nl" | "en";
