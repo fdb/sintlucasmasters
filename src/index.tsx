@@ -26,6 +26,13 @@ import {
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
+// Security headers
+app.use("*", async (c, next) => {
+  await next();
+  c.header("X-Frame-Options", "DENY");
+  c.header("X-Content-Type-Options", "nosniff");
+});
+
 type PublicLocale = "nl" | "en";
 
 type LocalizedProject = ProjectWithMainImage & {
@@ -1034,6 +1041,20 @@ app.get("/:year/students/:slug/", (c) =>
   c.redirect(`/nl/${c.req.param("year")}/students/${c.req.param("slug")}/`, 301)
 );
 
+// Catch-all 404
+app.notFound((c) => {
+  if (c.req.path.startsWith("/api/")) {
+    return c.json({ error: "Not found" }, 404);
+  }
+  return c.html(
+    <Layout locale="en" currentPath={c.req.path} title="Not Found">
+      <p>The page you're looking for doesn't exist.</p>
+      <a href="/en/">Go to homepage</a>
+    </Layout>,
+    404
+  );
+});
+
 const scheduled: ExportedHandlerScheduledHandler<Bindings> = async (_event, env, ctx) => {
   ctx.waitUntil(
     env.DB.prepare(
@@ -1048,7 +1069,7 @@ export default Sentry.withSentry(
   (env: Bindings) => ({
     dsn: env.SENTRY_DSN,
     release: env.CF_VERSION_METADATA?.id,
-    sendDefaultPii: true,
+    sendDefaultPii: false,
     tracesSampleRate: 1.0,
   }),
   { fetch: app.fetch, scheduled }

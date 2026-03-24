@@ -51,5 +51,5 @@ crons = ["0 0 * * *"]
 
 [observability]
 [observability.logs]
-enabled = false
+enabled = true
 invocation_logs = true

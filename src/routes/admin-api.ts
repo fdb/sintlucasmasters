@@ -9,6 +9,7 @@ import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../t
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
 import { emailSlug } from "../lib/names";
+import { getImageDimensions } from "../lib/image-dimensions";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { generateMagicToken, storeMagicToken } from "../lib/tokens";
 import { sendReviewNotification } from "../lib/email";
@@ -699,11 +700,20 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     },
   });
 
-  await c.env.DB.prepare("UPDATE projects SET print_image_path = ?, updated_at = datetime('now') WHERE id = ?")
-    .bind(r2Key, projectId)
+  // Extract dimensions for print layout (portrait detection)
+  const dims = getImageDimensions(fileBuffer);
+
+  await c.env.DB.prepare(
+    "UPDATE projects SET print_image_path = ?, print_image_width = ?, print_image_height = ?, updated_at = datetime('now') WHERE id = ?"
+  )
+    .bind(r2Key, dims?.width ?? null, dims?.height ?? null, projectId)
     .run();
 
-  return c.json({ print_image_path: r2Key });
+  return c.json({
+    print_image_path: r2Key,
+    print_image_width: dims?.width ?? null,
+    print_image_height: dims?.height ?? null,
+  });
 });
 
 // Delete print image
