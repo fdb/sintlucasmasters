@@ -51,6 +51,7 @@ export function StudentPreviewPanel() {
 
   const handleRevertToDraft = async () => {
     setIsReverting(true);
+    submitProjectMutation.reset();
     updateEditField("status", "draft");
     await saveProject({
       onSuccess: () => {
