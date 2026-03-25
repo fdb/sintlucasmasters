@@ -50,6 +50,8 @@ const TEXT = {
     year: "Year",
     all: "all",
     notFound: "Not Found",
+    pageNotFound: "Page not found",
+    returnToHomepage: "Return to Homepage",
     noProjectsForYear: "No projects found for this year.",
     goToCurrentYear: "Go to current year",
     noProjectsForContext: "No projects found for this context.",
@@ -85,6 +87,8 @@ const TEXT = {
     year: "Jaar",
     all: "alle",
     notFound: "Niet gevonden",
+    pageNotFound: "Pagina niet gevonden",
+    returnToHomepage: "Terug naar de startpagina",
     noProjectsForYear: "Geen projecten gevonden voor dit jaar.",
     goToCurrentYear: "Ga naar huidig jaar",
     noProjectsForContext: "Geen projecten gevonden voor deze context.",
@@ -1059,8 +1063,13 @@ app.notFound((c) => {
   const text = TEXT[locale];
   return c.html(
     <Layout locale={locale} currentPath={c.req.path} title={text.notFound}>
-      <p>{text.studentNotFound}</p>
-      <a href={`/${locale}/`}>{text.home}</a>
+      <div class="not-found-page">
+        <h1>404</h1>
+        <p>{text.pageNotFound}</p>
+        <a href={`/${locale}/`} class="not-found-link">
+          {text.returnToHomepage}
+        </a>
+      </div>
     </Layout>,
     404
   );
