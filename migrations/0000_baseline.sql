@@ -28,8 +28,6 @@ CREATE TABLE IF NOT EXISTS projects (
     location_en TEXT,
     location_nl TEXT,
     print_image_path TEXT,
-    print_image_width INTEGER,
-    print_image_height INTEGER,
     print_caption TEXT,
     print_description TEXT CHECK (print_description IS NULL OR length(print_description) <= 500),
     print_language TEXT CHECK (print_language IN ('nl', 'en')),
