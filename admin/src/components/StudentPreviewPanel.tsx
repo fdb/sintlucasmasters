@@ -325,7 +325,6 @@ export function StudentPreviewPanel() {
             </div>
           </div>
         )}
-
       </div>
 
       <ConfirmDialog

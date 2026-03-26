@@ -582,7 +582,6 @@ export function ProjectEditForm({
               )}
             </div>
           </div>
-
         </div>
       </div>
 
