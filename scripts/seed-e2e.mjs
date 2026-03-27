@@ -49,6 +49,13 @@ export const E2E_REVIEW_STUDENT = {
   role: "student",
 };
 
+export const E2E_INCOMPLETE_STUDENT = {
+  id: "e2e-student-incomplete",
+  email: "incomplete-student@example.com",
+  name: "Incomplete Student",
+  role: "student",
+};
+
 export const E2E_MULTI_STUDENT = {
   id: "e2e-student-multi",
   email: "lisa.peeters@student.kdg.be",
@@ -202,6 +209,21 @@ export const E2E_PROJECTS = [
     status: "draft",
     tags: '["print-mirror-test"]',
     user_id: null,
+  },
+  {
+    id: "e2e-project-incomplete",
+    slug: "incomplete-student",
+    student_name: "Incomplete Student",
+    sort_name: "Student, Incomplete",
+    project_title: "Incomplete Project",
+    program: "MA_BK",
+    context: "autonomous",
+    academic_year: "2024-2025",
+    bio: "Test student for submission validation testing.",
+    description: "A draft project missing print image — used for submit validation tests.",
+    status: "draft",
+    tags: '["validation-test"]',
+    user_id: "e2e-student-incomplete",
   },
   {
     id: "e2e-project-multi-ba",
@@ -366,6 +388,12 @@ async function main() {
     `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_REVIEW_STUDENT.id)}, ${escapeSql(E2E_REVIEW_STUDENT.email)}, ${escapeSql(E2E_REVIEW_STUDENT.name)}, ${escapeSql(E2E_REVIEW_STUDENT.role)}, datetime('now'))`
   );
 
+  // Insert incomplete student user (for submit validation tests)
+  console.log("Creating incomplete student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_INCOMPLETE_STUDENT.id)}, ${escapeSql(E2E_INCOMPLETE_STUDENT.email)}, ${escapeSql(E2E_INCOMPLETE_STUDENT.name)}, ${escapeSql(E2E_INCOMPLETE_STUDENT.role)}, datetime('now'))`
+  );
+
   // Insert multi-project student user
   console.log("Creating multi-project student user...");
   await runWrangler(
@@ -400,7 +428,7 @@ async function main() {
 
   console.log("\nE2E database seeded successfully!");
   console.log(`  - 1 admin user: ${E2E_ADMIN.email}`);
-  console.log(`  - 4 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}, ${E2E_REVIEW_STUDENT.email}, ${E2E_MULTI_STUDENT.email}`);
+  console.log(`  - 5 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}, ${E2E_REVIEW_STUDENT.email}, ${E2E_INCOMPLETE_STUDENT.email}, ${E2E_MULTI_STUDENT.email}`);
   console.log(`  - ${E2E_PROJECTS.length} projects`);
   console.log(`  - ${E2E_PROJECT_IMAGES.length} project images`);
 }

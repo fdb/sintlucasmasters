@@ -339,12 +339,12 @@ test.describe.serial("project submission", () => {
 
 test.describe("project submission validation", () => {
   test.beforeEach(async ({ page }) => {
-    // Impersonate "Existing Student" who has Bob Jones project (which is a draft but incomplete)
-    await impersonateStudentFromProject(page, "Bob Jones");
+    // Impersonate "Incomplete Student" who has a draft project missing print image
+    await impersonateStudentFromProject(page, "Incomplete Student");
   });
 
   test("submit button is disabled when project is missing print image", async ({ page }) => {
-    // Bob Jones project doesn't have a print image
+    // Incomplete Student project doesn't have a print image
     const checklist = page.locator(".submit-checklist");
     await expect(checklist).toBeVisible();
 
