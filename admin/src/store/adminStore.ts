@@ -35,6 +35,11 @@ export type UserDetailResponse = {
     created_at: string;
     last_login_at: string | null;
   };
+  projects: Array<{
+    program: string | null;
+    context: string;
+    academic_year: string;
+  }>;
 };
 
 export type StudentForImpersonation = {

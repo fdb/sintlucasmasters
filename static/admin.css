@@ -1133,6 +1133,11 @@ tr.status-draft td:first-child {
   word-break: break-word;
 }
 
+.detail-project-item {
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
 /* Images */
 .detail-images {
   display: flex;

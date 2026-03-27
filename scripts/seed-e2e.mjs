@@ -49,6 +49,13 @@ export const E2E_REVIEW_STUDENT = {
   role: "student",
 };
 
+export const E2E_MULTI_STUDENT = {
+  id: "e2e-student-multi",
+  email: "lisa.peeters@student.kdg.be",
+  name: "Lisa Peeters",
+  role: "student",
+};
+
 export const E2E_PROJECTS = [
   {
     id: "e2e-project-001",
@@ -196,6 +203,51 @@ export const E2E_PROJECTS = [
     tags: '["print-mirror-test"]',
     user_id: null,
   },
+  {
+    id: "e2e-project-multi-ba",
+    slug: "lisa-peeters-ba",
+    student_name: "Lisa Peeters",
+    sort_name: "Peeters, Lisa",
+    project_title: "Lichtspel",
+    program: "BA_FO",
+    context: "autonomous",
+    academic_year: "2022-2023",
+    bio: "Lisa Peeters explores light and form.",
+    description: "A photographic exploration of light and shadow.",
+    status: "published",
+    tags: '["photography"]',
+    user_id: "e2e-student-multi",
+  },
+  {
+    id: "e2e-project-multi-prema",
+    slug: "lisa-peeters-prema",
+    student_name: "Lisa Peeters",
+    sort_name: "Peeters, Lisa",
+    project_title: "Tussenruimte",
+    program: "PREMA_BK",
+    context: "applied",
+    academic_year: "2023-2024",
+    bio: "Lisa Peeters bridges photography and fine arts.",
+    description: "An applied research project on spatial perception.",
+    status: "published",
+    tags: '["fine-arts"]',
+    user_id: "e2e-student-multi",
+  },
+  {
+    id: "e2e-project-multi-ma",
+    slug: "lisa-peeters-ma",
+    student_name: "Lisa Peeters",
+    sort_name: "Peeters, Lisa",
+    project_title: "Verdwijnpunt",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Lisa Peeters creates immersive digital installations.",
+    description: "A master thesis on digital vanishing points.",
+    status: "draft",
+    tags: '["digital", "installation"]',
+    user_id: "e2e-student-multi",
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
@@ -314,6 +366,12 @@ async function main() {
     `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_REVIEW_STUDENT.id)}, ${escapeSql(E2E_REVIEW_STUDENT.email)}, ${escapeSql(E2E_REVIEW_STUDENT.name)}, ${escapeSql(E2E_REVIEW_STUDENT.role)}, datetime('now'))`
   );
 
+  // Insert multi-project student user
+  console.log("Creating multi-project student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_MULTI_STUDENT.id)}, ${escapeSql(E2E_MULTI_STUDENT.email)}, ${escapeSql(E2E_MULTI_STUDENT.name)}, ${escapeSql(E2E_MULTI_STUDENT.role)}, datetime('now'))`
+  );
+
   // Insert projects
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
@@ -342,7 +400,7 @@ async function main() {
 
   console.log("\nE2E database seeded successfully!");
   console.log(`  - 1 admin user: ${E2E_ADMIN.email}`);
-  console.log(`  - 3 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}, ${E2E_REVIEW_STUDENT.email}`);
+  console.log(`  - 4 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}, ${E2E_REVIEW_STUDENT.email}, ${E2E_MULTI_STUDENT.email}`);
   console.log(`  - ${E2E_PROJECTS.length} projects`);
   console.log(`  - ${E2E_PROJECT_IMAGES.length} project images`);
 }

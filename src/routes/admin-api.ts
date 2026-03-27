@@ -1161,7 +1161,13 @@ adminApiRoutes.get("/users/:id", async (c) => {
     return c.json({ error: "User not found" }, 404);
   }
 
-  return c.json({ user: foundUser });
+  const projects = await c.env.DB.prepare(
+    "SELECT program, context, academic_year FROM projects WHERE user_id = ? ORDER BY academic_year DESC"
+  )
+    .bind(id)
+    .all();
+
+  return c.json({ user: foundUser, projects: projects.results });
 });
 
 adminApiRoutes.delete("/users/:id", async (c) => {

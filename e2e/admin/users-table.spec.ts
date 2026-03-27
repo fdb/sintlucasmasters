@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { E2E_ADMIN, E2E_STUDENT } from "./fixtures";
+import { E2E_ADMIN, E2E_STUDENT, E2E_MULTI_STUDENT } from "./fixtures";
 
 test.describe("admin users table", () => {
   test.beforeEach(async ({ page }) => {
@@ -122,6 +122,32 @@ test.describe("admin users table", () => {
 
     // Create button should be enabled
     await expect(createBtn).toBeEnabled();
+  });
+
+  test("user detail shows projects for multi-project student", async ({ page }) => {
+    // Click on the multi-project student row
+    await page.locator("tbody tr", { hasText: E2E_MULTI_STUDENT.email }).click();
+
+    // Wait for detail panel to show the user's name
+    const detail = page.locator(".admin-detail-panel");
+    await expect(detail.locator("h3")).toHaveText(E2E_MULTI_STUDENT.name);
+
+    // Should show a Projects section with all 3 projects (newest first)
+    const projectItems = detail.locator(".detail-project-item");
+    await expect(projectItems).toHaveCount(3);
+
+    // Newest first: MA 24-25, PreMA 23-24, BA 22-23
+    await expect(projectItems.nth(0)).toContainText("MA Fine Arts");
+    await expect(projectItems.nth(0)).toContainText("Digital");
+    await expect(projectItems.nth(0)).toContainText("24-25");
+
+    await expect(projectItems.nth(1)).toContainText("PreMA Fine Arts");
+    await expect(projectItems.nth(1)).toContainText("Applied");
+    await expect(projectItems.nth(1)).toContainText("23-24");
+
+    await expect(projectItems.nth(2)).toContainText("BA Photography");
+    await expect(projectItems.nth(2)).toContainText("Autonomous");
+    await expect(projectItems.nth(2)).toContainText("22-23");
   });
 
   test("escape key closes user modal", async ({ page }) => {
