@@ -137,11 +137,11 @@ test.describe("admin users table", () => {
     await expect(projectItems).toHaveCount(3);
 
     // Newest first: MA 24-25, PreMA 23-24, BA 22-23
-    await expect(projectItems.nth(0)).toContainText("MA Fine Arts");
+    await expect(projectItems.nth(0)).toContainText("MA Visual Arts");
     await expect(projectItems.nth(0)).toContainText("Digital");
     await expect(projectItems.nth(0)).toContainText("24-25");
 
-    await expect(projectItems.nth(1)).toContainText("PreMA Fine Arts");
+    await expect(projectItems.nth(1)).toContainText("PreMA Visual Arts");
     await expect(projectItems.nth(1)).toContainText("Applied");
     await expect(projectItems.nth(1)).toContainText("23-24");
 
