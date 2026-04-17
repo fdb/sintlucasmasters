@@ -42,6 +42,27 @@ export const E2E_SUBMIT_STUDENT = {
   role: "student",
 };
 
+export const E2E_REVIEW_STUDENT = {
+  id: "e2e-student-review",
+  email: "review-student@example.com",
+  name: "Review Student",
+  role: "student",
+};
+
+export const E2E_INCOMPLETE_STUDENT = {
+  id: "e2e-student-incomplete",
+  email: "incomplete-student@example.com",
+  name: "Incomplete Student",
+  role: "student",
+};
+
+export const E2E_MULTI_STUDENT = {
+  id: "e2e-student-multi",
+  email: "lisa.peeters@student.kdg.be",
+  name: "Lisa Peeters",
+  role: "student",
+};
+
 export const E2E_PROJECTS = [
   {
     id: "e2e-project-001",
@@ -115,9 +136,32 @@ export const E2E_PROJECTS = [
     academic_year: "2024-2025",
     bio: "Test student for submission testing.",
     description: "A project with all fields complete for submission testing.",
+    print_image_path: "slam/testing/print-images/24-25/submit-student.jpg",
+    print_caption: "Print heading",
+    print_description: "Print description for submission testing.",
+    print_language: "en",
     status: "draft",
     tags: '["test"]',
     user_id: "e2e-student-submit",
+  },
+  {
+    id: "e2e-project-reviewable",
+    slug: "review-student",
+    student_name: "Review Student",
+    sort_name: "Student, Review",
+    project_title: "Reviewable Project",
+    program: "BA_FO",
+    context: "autonomous",
+    academic_year: "2024-2025",
+    bio: "Test student for review workflow testing.",
+    description: "A project with all fields complete for review workflow testing.",
+    print_image_path: "slam/testing/print-images/24-25/review-student.jpg",
+    print_caption: "Review print heading",
+    print_description: "Print description for review testing.",
+    print_language: "en",
+    status: "submitted",
+    tags: '["review-test"]',
+    user_id: "e2e-student-review",
   },
   {
     id: "e2e-project-editable",
@@ -151,6 +195,81 @@ export const E2E_PROJECTS = [
     tags: '["translate-test"]',
     user_id: null,
   },
+  {
+    id: "e2e-project-print-mirror",
+    slug: "print-mirror-student",
+    student_name: "Print Mirror Student",
+    sort_name: "Student, Print Mirror",
+    project_title: "Print Mirror Project",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Test student for print mirroring.",
+    description: "Base description used for print mirroring tests.",
+    status: "draft",
+    tags: '["print-mirror-test"]',
+    user_id: null,
+  },
+  {
+    id: "e2e-project-incomplete",
+    slug: "incomplete-student",
+    student_name: "Incomplete Student",
+    sort_name: "Student, Incomplete",
+    project_title: "Incomplete Project",
+    program: "MA_BK",
+    context: "autonomous",
+    academic_year: "2024-2025",
+    bio: "Test student for submission validation testing.",
+    description: "A draft project missing print image — used for submit validation tests.",
+    status: "draft",
+    tags: '["validation-test"]',
+    user_id: "e2e-student-incomplete",
+  },
+  {
+    id: "e2e-project-multi-ba",
+    slug: "lisa-peeters-ba",
+    student_name: "Lisa Peeters",
+    sort_name: "Peeters, Lisa",
+    project_title: "Lichtspel",
+    program: "BA_FO",
+    context: "autonomous",
+    academic_year: "2022-2023",
+    bio: "Lisa Peeters explores light and form.",
+    description: "A photographic exploration of light and shadow.",
+    status: "published",
+    tags: '["photography"]',
+    user_id: "e2e-student-multi",
+  },
+  {
+    id: "e2e-project-multi-prema",
+    slug: "lisa-peeters-prema",
+    student_name: "Lisa Peeters",
+    sort_name: "Peeters, Lisa",
+    project_title: "Tussenruimte",
+    program: "PREMA_BK",
+    context: "applied",
+    academic_year: "2023-2024",
+    bio: "Lisa Peeters bridges photography and fine arts.",
+    description: "An applied research project on spatial perception.",
+    status: "published",
+    tags: '["fine-arts"]',
+    user_id: "e2e-student-multi",
+  },
+  {
+    id: "e2e-project-multi-ma",
+    slug: "lisa-peeters-ma",
+    student_name: "Lisa Peeters",
+    sort_name: "Peeters, Lisa",
+    project_title: "Verdwijnpunt",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Lisa Peeters creates immersive digital installations.",
+    description: "A master thesis on digital vanishing points.",
+    status: "draft",
+    tags: '["digital", "installation"]',
+    user_id: "e2e-student-multi",
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
@@ -170,6 +289,15 @@ export const E2E_PROJECT_IMAGES = [
     caption: "Detail shot",
     type: "web",
   },
+  // Reviewable project images
+  {
+    id: "e2e-pimg-review-main",
+    project_id: "e2e-project-reviewable",
+    cloudflare_id: "e2e-cf-review-main",
+    sort_order: 0,
+    caption: "Main image",
+    type: "web",
+  },
   // Submittable project images (has main image + print image with caption)
   {
     id: "e2e-pimg-submit-main",
@@ -178,14 +306,6 @@ export const E2E_PROJECT_IMAGES = [
     sort_order: 0,
     caption: "Main image",
     type: "web",
-  },
-  {
-    id: "e2e-pimg-submit-print",
-    project_id: "e2e-project-submittable",
-    cloudflare_id: "e2e-cf-submit-print",
-    sort_order: 0,
-    caption: "Print image caption for submission",
-    type: "print",
   },
 ];
 
@@ -262,6 +382,24 @@ async function main() {
     `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_SUBMIT_STUDENT.id)}, ${escapeSql(E2E_SUBMIT_STUDENT.email)}, ${escapeSql(E2E_SUBMIT_STUDENT.name)}, ${escapeSql(E2E_SUBMIT_STUDENT.role)}, datetime('now'))`
   );
 
+  // Insert review test student user
+  console.log("Creating review test student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_REVIEW_STUDENT.id)}, ${escapeSql(E2E_REVIEW_STUDENT.email)}, ${escapeSql(E2E_REVIEW_STUDENT.name)}, ${escapeSql(E2E_REVIEW_STUDENT.role)}, datetime('now'))`
+  );
+
+  // Insert incomplete student user (for submit validation tests)
+  console.log("Creating incomplete student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_INCOMPLETE_STUDENT.id)}, ${escapeSql(E2E_INCOMPLETE_STUDENT.email)}, ${escapeSql(E2E_INCOMPLETE_STUDENT.name)}, ${escapeSql(E2E_INCOMPLETE_STUDENT.role)}, datetime('now'))`
+  );
+
+  // Insert multi-project student user
+  console.log("Creating multi-project student user...");
+  await runWrangler(
+    `INSERT INTO users (id, email, name, role, created_at) VALUES (${escapeSql(E2E_MULTI_STUDENT.id)}, ${escapeSql(E2E_MULTI_STUDENT.email)}, ${escapeSql(E2E_MULTI_STUDENT.name)}, ${escapeSql(E2E_MULTI_STUDENT.role)}, datetime('now'))`
+  );
+
   // Insert projects
   console.log("Creating projects...");
   for (const project of E2E_PROJECTS) {
@@ -271,8 +409,12 @@ async function main() {
     const bioNl = "bio_nl" in project ? project.bio_nl : project.bio;
     const descEn = "description_en" in project ? project.description_en : project.description;
     const descNl = "description_nl" in project ? project.description_nl : project.description;
+    const printImagePath = "print_image_path" in project ? project.print_image_path : null;
+    const printCaption = "print_caption" in project ? project.print_caption : null;
+    const printDescription = "print_description" in project ? project.print_description : null;
+    const printLanguage = "print_language" in project ? project.print_language : null;
     await runWrangler(
-      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, alumni_consent, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(titleEn)}, ${escapeSql(titleNl)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(bioEn)}, ${escapeSql(bioNl)}, ${escapeSql(descEn)}, ${escapeSql(descNl)}, 'Antwerp, Belgium', 'Antwerpen, België', 0, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
+      `INSERT INTO projects (id, slug, student_name, sort_name, project_title_en, project_title_nl, program, context, academic_year, bio_en, bio_nl, description_en, description_nl, location_en, location_nl, print_image_path, print_caption, print_description, print_language, alumni_consent, status, tags, user_id, created_at, updated_at) VALUES (${escapeSql(project.id)}, ${escapeSql(project.slug)}, ${escapeSql(project.student_name)}, ${escapeSql(project.sort_name)}, ${escapeSql(titleEn)}, ${escapeSql(titleNl)}, ${project.program ? escapeSql(project.program) : "NULL"}, ${escapeSql(project.context)}, ${escapeSql(project.academic_year)}, ${escapeSql(bioEn)}, ${escapeSql(bioNl)}, ${escapeSql(descEn)}, ${escapeSql(descNl)}, 'Antwerp, Belgium', 'Antwerpen, België', ${escapeSql(printImagePath)}, ${escapeSql(printCaption)}, ${escapeSql(printDescription)}, ${escapeSql(printLanguage)}, 0, ${escapeSql(project.status)}, ${escapeSql(project.tags)}, ${project.user_id ? escapeSql(project.user_id) : "NULL"}, datetime('now'), datetime('now'))`
     );
   }
 
@@ -286,7 +428,7 @@ async function main() {
 
   console.log("\nE2E database seeded successfully!");
   console.log(`  - 1 admin user: ${E2E_ADMIN.email}`);
-  console.log(`  - 2 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}`);
+  console.log(`  - 5 student users: ${E2E_STUDENT.email}, ${E2E_SUBMIT_STUDENT.email}, ${E2E_REVIEW_STUDENT.email}, ${E2E_INCOMPLETE_STUDENT.email}, ${E2E_MULTI_STUDENT.email}`);
   console.log(`  - ${E2E_PROJECTS.length} projects`);
   console.log(`  - ${E2E_PROJECT_IMAGES.length} project images`);
 }

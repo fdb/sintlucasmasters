@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import { Download, FileText, X } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { useExportStatus } from "../api/queries";
 import { formatProgram, formatAcademicYear } from "../utils";
@@ -15,13 +15,30 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
 
   if (!open) return null;
 
-  const readyStudents = data?.students.filter((s) => s.hasPrintImage && s.hasCaption) ?? [];
-  const notReady = data?.students.filter((s) => !s.hasPrintImage || !s.hasCaption) ?? [];
+  const readyStudents =
+    data?.students.filter((s) => s.hasPrintImage && s.hasPrintCaption && s.hasPrintDescription && s.hasPrintLanguage) ??
+    [];
+  const notReady =
+    data?.students.filter(
+      (s) => !s.hasPrintImage || !s.hasPrintCaption || !s.hasPrintDescription || !s.hasPrintLanguage
+    ) ?? [];
   const canDownload = readyStudents.length > 0;
 
   const handleDownload = () => {
     window.open(
       `/api/admin/export/print-images.zip?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
+    );
+  };
+
+  const handleDownloadTextIdml = () => {
+    window.open(
+      `/api/admin/export/postcards-text.idml?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
+    );
+  };
+
+  const handleDownloadImagesIdml = () => {
+    window.open(
+      `/api/admin/export/postcards-images.idml?year=${encodeURIComponent(year)}&program=${encodeURIComponent(program)}`
     );
   };
 
@@ -38,10 +55,17 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
     }
   };
 
-  const getIssues = (student: { hasPrintImage: boolean; hasCaption: boolean }) => {
+  const getIssues = (student: {
+    hasPrintImage: boolean;
+    hasPrintCaption: boolean;
+    hasPrintDescription: boolean;
+    hasPrintLanguage: boolean;
+  }) => {
     const issues: string[] = [];
     if (!student.hasPrintImage) issues.push("missing print image");
-    if (!student.hasCaption) issues.push("missing caption");
+    if (!student.hasPrintCaption) issues.push("missing print caption");
+    if (!student.hasPrintDescription) issues.push("missing print description");
+    if (!student.hasPrintLanguage) issues.push("missing print language");
     return issues;
   };
 
@@ -49,10 +73,15 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
     <div className="confirm-overlay" onClick={onClose}>
       <div className="export-overlay" onClick={(e) => e.stopPropagation()}>
         <div className="export-overlay-header">
-          <h3>Export for Print</h3>
-          <span className="export-overlay-meta">
-            {formatProgram(program)} &middot; {formatAcademicYear(year)}
-          </span>
+          <div>
+            <h3>Export for Print</h3>
+            <span className="export-overlay-meta">
+              {formatProgram(program)} &middot; {formatAcademicYear(year)}
+            </span>
+          </div>
+          <button type="button" className="export-overlay-close" onClick={onClose} title="Close">
+            <X size={20} />
+          </button>
         </div>
 
         {isLoading && <p className="export-overlay-loading">Loading export status...</p>}
@@ -97,9 +126,6 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
             )}
 
             <div className="export-overlay-actions">
-              <button type="button" className="btn btn-secondary" onClick={onClose}>
-                Close
-              </button>
               <button
                 type="button"
                 className={`btn btn-primary${!canDownload ? " disabled" : ""}`}
@@ -108,6 +134,24 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
               >
                 <Download size={14} />
                 Download ZIP
+              </button>
+              <button
+                type="button"
+                className={`btn btn-primary${!canDownload ? " disabled" : ""}`}
+                onClick={canDownload ? handleDownloadTextIdml : undefined}
+                disabled={!canDownload}
+              >
+                <FileText size={14} />
+                Text IDML
+              </button>
+              <button
+                type="button"
+                className={`btn btn-primary${!canDownload ? " disabled" : ""}`}
+                onClick={canDownload ? handleDownloadImagesIdml : undefined}
+                disabled={!canDownload}
+              >
+                <Download size={14} />
+                Images IDML
               </button>
             </div>
           </>
@@ -140,7 +184,7 @@ export function ExportButton() {
           title="Export print images for selected programme and year"
         >
           <Download size={14} />
-          Export for Print...
+          Export for Print
         </button>
       </div>
       {total > 0 && <span className="detail-header-count">{total} selected</span>}

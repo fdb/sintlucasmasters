@@ -32,6 +32,29 @@ async function ensureProjectIsDraft(page: Page) {
 
 async function impersonateStudentFromProject(page: Page, studentName: string) {
   await page.goto("/admin");
+  await Promise.race([
+    page
+      .locator(".admin-list table")
+      .waitFor({ state: "visible", timeout: 5000 })
+      .catch(() => {}),
+    page
+      .locator(".student-shell")
+      .waitFor({ state: "visible", timeout: 5000 })
+      .catch(() => {}),
+  ]);
+
+  if (
+    await page
+      .locator(".student-shell")
+      .isVisible()
+      .catch(() => false)
+  ) {
+    await page.evaluate(() => {
+      localStorage.removeItem("admin-ui");
+    });
+    await page.goto("/admin");
+  }
+
   await expect(page.locator(".admin-list table")).toBeVisible();
 
   const projectsTab = page.locator(".admin-tabs button", { hasText: "projects" });
@@ -74,7 +97,7 @@ test.describe.serial("project submission", () => {
 
     // All checklist items should be valid (have green checkmarks)
     const validItems = checklist.locator(".checklist-item.valid");
-    await expect(validItems).toHaveCount(11); // title EN/NL, bio EN/NL, description EN/NL, location EN/NL, print image, print caption, main image
+    await expect(validItems).toHaveCount(13); // title EN/NL, bio EN/NL, description EN/NL, location EN/NL, print image, print caption, print description, print language, main image
   });
 
   test("submit button is enabled when all fields are complete", async ({ page }) => {
@@ -268,16 +291,42 @@ test.describe.serial("project submission", () => {
     // Submit section should be visible again
     await expect(page.locator(".detail-submit-section")).toBeVisible();
   });
+
+  test("print fields autosave and persist in student mode", async ({ page }) => {
+    await navigateToSubmitStudent(page);
+    await ensureProjectIsDraft(page);
+
+    const printCaption = `Print heading ${Date.now()}`;
+    const printDescription = `Print description ${Date.now()}`;
+
+    const savePromise = page.waitForResponse(
+      (response) =>
+        response.request().method() === "PUT" && response.url().includes("/api/admin/projects/") && response.ok(),
+      { timeout: 10000 }
+    );
+
+    await page.locator("#print-language").selectOption("en");
+    await page.locator("#print-caption").fill(printCaption);
+    await page.locator("#print-description").fill(printDescription);
+
+    await savePromise;
+    await page.reload();
+    await expect(page.locator(".student-preview-panel")).toBeVisible();
+
+    await expect(page.locator("#print-language")).toHaveValue("en");
+    await expect(page.locator("#print-caption")).toHaveValue(printCaption);
+    await expect(page.locator("#print-description")).toHaveValue(printDescription);
+  });
 });
 
 test.describe("project submission validation", () => {
   test.beforeEach(async ({ page }) => {
-    // Impersonate "Existing Student" who has Bob Jones project (which is a draft but incomplete)
-    await impersonateStudentFromProject(page, "Bob Jones");
+    // Impersonate "Incomplete Student" who has a draft project missing print image
+    await impersonateStudentFromProject(page, "Incomplete Student");
   });
 
   test("submit button is disabled when project is missing print image", async ({ page }) => {
-    // Bob Jones project doesn't have a print image
+    // Incomplete Student project doesn't have a print image
     const checklist = page.locator(".submit-checklist");
     await expect(checklist).toBeVisible();
 

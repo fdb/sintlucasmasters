@@ -2,12 +2,18 @@ import { Hono } from "hono";
 import type { Context } from "hono";
 import Anthropic from "@anthropic-ai/sdk";
 import { zipSync } from "fflate";
+import { generateTextIdml, generateImageIdml } from "../lib/idml-generator";
+import type { PostcardTextData, PostcardImageData } from "../lib/idml-generator";
+import { getContextFullLabel, normalizeContextKey } from "../lib/i18n";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
 import { emailSlug, sortName } from "../lib/names";
+import { getImageDimensions } from "../lib/image-dimensions";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
-import { normalizeContextKey } from "../lib/i18n";
+import { generateMagicToken, storeMagicToken } from "../lib/tokens";
+import { sendReviewNotification } from "../lib/email";
+import type { SESConfig } from "../lib/aws-ses";
 
 type TableConfig = {
   select: string;
@@ -43,6 +49,9 @@ const STUDENT_EDITABLE_FIELDS = [
   "description_nl",
   "location_en",
   "location_nl",
+  "print_caption",
+  "print_description",
+  "print_language",
   "private_email",
   "alumni_consent",
   "social_links",
@@ -99,6 +108,18 @@ function filterStudentEditableFields(body: Record<string, unknown>, allowedField
     }
   }
   return filtered;
+}
+
+function normalizePrintLanguage(input: unknown): "en" | "nl" | null {
+  if (input === undefined || input === null || input === "") return null;
+  if (input === "en" || input === "nl") return input;
+  return null;
+}
+
+function normalizeNullableText(input: unknown): string | null {
+  if (input === undefined || input === null) return null;
+  const value = String(input);
+  return value.trim() ? value : null;
 }
 
 // =====================================================
@@ -301,6 +322,25 @@ adminApiRoutes.put("/projects/:id", async (c) => {
     updates.push("location_nl = ?");
     values.push(body.location_nl);
   }
+  if (body.print_caption !== undefined) {
+    updates.push("print_caption = ?");
+    values.push(normalizeNullableText(body.print_caption));
+  }
+  if (body.print_description !== undefined) {
+    const printDescription = normalizeNullableText(body.print_description);
+    if (printDescription && printDescription.length > 500) {
+      return c.json({ error: "Print description must be 500 characters or fewer" }, 400);
+    }
+    updates.push("print_description = ?");
+    values.push(printDescription);
+  }
+  if (body.print_language !== undefined) {
+    if (body.print_language !== "" && normalizePrintLanguage(body.print_language) === null) {
+      return c.json({ error: "Invalid print language" }, 400);
+    }
+    updates.push("print_language = ?");
+    values.push(normalizePrintLanguage(body.print_language));
+  }
   if (body.private_email !== undefined) {
     updates.push("private_email = ?");
     values.push(body.private_email);
@@ -334,6 +374,37 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   await c.env.DB.prepare(query)
     .bind(...values)
     .run();
+
+  // Send review notification email when status changes to "reviewed"
+  if (body.status === "reviewed" && project.status !== "reviewed" && project.user_id) {
+    const studentUser = await c.env.DB.prepare("SELECT email, name FROM users WHERE id = ?")
+      .bind(project.user_id)
+      .first<{ email: string; name: string | null }>();
+
+    if (studentUser?.email) {
+      const sesConfig: SESConfig = {
+        accessKeyId: c.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: c.env.AWS_SECRET_ACCESS_KEY,
+        region: c.env.AWS_REGION,
+      };
+      const token = generateMagicToken();
+      await storeMagicToken(c.env.DB, studentUser.email, token);
+      const loginUrl = `${c.env.APP_BASE_URL}/auth/verify?token=${token}`;
+      const studentName = studentUser.name || project.student_name;
+      const projectTitle = project.project_title_en || project.project_title_nl;
+
+      c.executionCtx.waitUntil(
+        sendReviewNotification(
+          sesConfig,
+          studentUser.email,
+          loginUrl,
+          studentName,
+          projectTitle,
+          c.env.SES_CONFIGURATION_SET
+        ).catch((err) => console.error("Failed to send review notification:", err))
+      );
+    }
+  }
 
   // Return updated project
   const updatedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(id).first<Project>();
@@ -612,22 +683,13 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
   }
   const r2Key = `${R2_PATH_PREFIX}/print-images/${yearShort}/${userEmailSlugValue}.${extension}`;
 
-  // Check if there's already a print image - delete it first
-  const existingPrintImage = await c.env.DB.prepare(
-    "SELECT id, cloudflare_id FROM project_images WHERE project_id = ? AND type = 'print'"
-  )
-    .bind(projectId)
-    .first<{ id: string; cloudflare_id: string }>();
-
-  if (existingPrintImage) {
+  if (project.print_image_path) {
     // Delete from R2
     try {
-      await c.env.FILES.delete(existingPrintImage.cloudflare_id);
+      await c.env.FILES.delete(project.print_image_path);
     } catch (err) {
       console.error("Failed to delete print image from R2:", err);
     }
-    // Delete from database
-    await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(existingPrintImage.id).run();
   }
 
   // Upload to R2
@@ -638,50 +700,20 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     },
   });
 
-  // Insert into database with type='print'
-  const imageId = crypto.randomUUID();
+  // Extract dimensions for print layout (portrait detection)
+  const dims = getImageDimensions(fileBuffer);
+
   await c.env.DB.prepare(
-    "INSERT INTO project_images (id, project_id, cloudflare_id, sort_order, caption, type) VALUES (?, ?, ?, 0, NULL, 'print')"
+    "UPDATE projects SET print_image_path = ?, print_image_width = ?, print_image_height = ?, updated_at = datetime('now') WHERE id = ?"
   )
-    .bind(imageId, projectId, r2Key)
+    .bind(r2Key, dims?.width ?? null, dims?.height ?? null, projectId)
     .run();
 
-  const newImage = await c.env.DB.prepare("SELECT * FROM project_images WHERE id = ?")
-    .bind(imageId)
-    .first<ProjectImage>();
-
-  return c.json({ image: newImage });
-});
-
-// Update print image caption
-adminApiRoutes.put("/projects/:id/print-image/caption", async (c) => {
-  const projectId = c.req.param("id");
-  const user = c.get("user");
-  const project = await checkProjectAccess(c, projectId);
-
-  if (!project) {
-    return c.json({ error: "Project not found or access denied" }, 404);
-  }
-
-  // Check edit permissions for students
-  if (!isAdminOrEditor(user)) {
-    const editCheck = canStudentEdit(project);
-    if (!editCheck.allowed) {
-      return c.json({ error: editCheck.reason }, 403);
-    }
-  }
-
-  const body = await c.req.json<{ caption: string }>();
-
-  await c.env.DB.prepare("UPDATE project_images SET caption = ? WHERE project_id = ? AND type = 'print'")
-    .bind(body.caption || null, projectId)
-    .run();
-
-  const updatedImage = await c.env.DB.prepare("SELECT * FROM project_images WHERE project_id = ? AND type = 'print'")
-    .bind(projectId)
-    .first<ProjectImage>();
-
-  return c.json({ image: updatedImage });
+  return c.json({
+    print_image_path: r2Key,
+    print_image_width: dims?.width ?? null,
+    print_image_height: dims?.height ?? null,
+  });
 });
 
 // Delete print image
@@ -702,25 +734,20 @@ adminApiRoutes.delete("/projects/:id/print-image", async (c) => {
     }
   }
 
-  const printImage = await c.env.DB.prepare(
-    "SELECT id, cloudflare_id FROM project_images WHERE project_id = ? AND type = 'print'"
-  )
-    .bind(projectId)
-    .first<{ id: string; cloudflare_id: string }>();
-
-  if (!printImage) {
+  if (!project.print_image_path) {
     return c.json({ error: "Print image not found" }, 404);
   }
 
   // Delete from R2
   try {
-    await c.env.FILES.delete(printImage.cloudflare_id);
+    await c.env.FILES.delete(project.print_image_path);
   } catch (err) {
     console.error("Failed to delete print image from R2:", err);
   }
 
-  // Delete from database
-  await c.env.DB.prepare("DELETE FROM project_images WHERE id = ?").bind(printImage.id).run();
+  await c.env.DB.prepare("UPDATE projects SET print_image_path = NULL, updated_at = datetime('now') WHERE id = ?")
+    .bind(projectId)
+    .run();
 
   return c.json({ success: true });
 });
@@ -752,28 +779,19 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
     return c.json({ error: "Image not found" }, 404);
   }
 
-  // Delete from appropriate storage based on type
-  if (image.type === "print") {
-    try {
-      await c.env.FILES.delete(image.cloudflare_id);
-    } catch (err) {
-      console.error("Failed to delete image from R2:", err);
-    }
-  } else {
-    // Delete from Cloudflare Images
-    try {
-      await fetch(
-        `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-          },
-        }
-      );
-    } catch (err) {
-      console.error("Failed to delete image from Cloudflare Images:", err);
-    }
+  // Delete from Cloudflare Images
+  try {
+    await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+        },
+      }
+    );
+  } catch (err) {
+    console.error("Failed to delete image from Cloudflare Images:", err);
   }
 
   // Delete from database
@@ -830,17 +848,24 @@ function validateProjectForSubmission(project: Project, images: ProjectImage[]):
   if (!project.location_nl?.trim()) {
     errors.push("Dutch location is required");
   }
-  const webImages = images.filter((img) => img.type !== "print");
+  const webImages = images.filter((img) => img.type === "web");
   if (webImages.length === 0) {
     errors.push("Main image is required");
   }
 
-  // Check for print image with caption
-  const printImage = images.find((img) => img.type === "print");
-  if (!printImage) {
+  if (!project.print_image_path?.trim()) {
     errors.push("Print image is required");
-  } else if (!printImage.caption?.trim()) {
-    errors.push("Print image caption is required");
+  }
+  if (!project.print_caption?.trim()) {
+    errors.push("Print caption is required");
+  }
+  if (!project.print_description?.trim()) {
+    errors.push("Print description is required");
+  } else if (project.print_description.length > 500) {
+    errors.push("Print description must be 500 characters or fewer");
+  }
+  if (project.print_language !== "en" && project.print_language !== "nl") {
+    errors.push("Print language is required");
   }
 
   return { valid: errors.length === 0, errors };
@@ -896,6 +921,28 @@ adminApiRoutes.post("/projects/:id/submit", async (c) => {
 
   // Update status
   await c.env.DB.prepare("UPDATE projects SET status = 'submitted', updated_at = datetime('now') WHERE id = ?")
+    .bind(projectId)
+    .run();
+
+  const updatedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(projectId).first<Project>();
+
+  return c.json({ project: updatedProject });
+});
+
+// Approve project (changes status from reviewed to ready_for_print)
+adminApiRoutes.post("/projects/:id/approve", async (c) => {
+  const projectId = c.req.param("id");
+  const project = await checkProjectAccess(c, projectId);
+
+  if (!project) {
+    return c.json({ error: "Project not found or access denied" }, 404);
+  }
+
+  if (project.status !== "reviewed") {
+    return c.json({ error: `Project cannot be approved from '${project.status}' status` }, 400);
+  }
+
+  await c.env.DB.prepare("UPDATE projects SET status = 'ready_for_print', updated_at = datetime('now') WHERE id = ?")
     .bind(projectId)
     .run();
 
@@ -1103,7 +1150,13 @@ adminApiRoutes.get("/users/:id", async (c) => {
     return c.json({ error: "User not found" }, 404);
   }
 
-  return c.json({ user: foundUser });
+  const projects = await c.env.DB.prepare(
+    "SELECT program, context, academic_year FROM projects WHERE user_id = ? ORDER BY academic_year DESC"
+  )
+    .bind(id)
+    .all();
+
+  return c.json({ user: foundUser, projects: projects.results });
 });
 
 adminApiRoutes.delete("/users/:id", async (c) => {
@@ -1159,11 +1212,10 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
   const { results } = await c.env.DB.prepare(
     `SELECT
       p.id, p.student_name, p.status, p.user_id,
-      u.email,
-      pi.id as print_image_id, pi.caption as print_caption
+      p.print_image_path, p.print_caption, p.print_description, p.print_language,
+      u.email
     FROM projects p
     LEFT JOIN users u ON p.user_id = u.id
-    LEFT JOIN project_images pi ON p.id = pi.project_id AND pi.type = 'print'
     WHERE p.academic_year = ? AND p.program = ?
     ORDER BY p.sort_name ASC`
   )
@@ -1174,8 +1226,10 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
       status: string;
       user_id: string | null;
       email: string | null;
-      print_image_id: string | null;
+      print_image_path: string | null;
       print_caption: string | null;
+      print_description: string | null;
+      print_language: "en" | "nl" | null;
     }>();
 
   const students = (results ?? []).map((row) => ({
@@ -1183,11 +1237,15 @@ adminApiRoutes.get("/export/status", requireAdmin, async (c) => {
     studentName: row.student_name,
     email: row.email,
     status: row.status,
-    hasPrintImage: !!row.print_image_id,
-    hasCaption: !!row.print_caption?.trim(),
+    hasPrintImage: !!row.print_image_path?.trim(),
+    hasPrintCaption: !!row.print_caption?.trim(),
+    hasPrintDescription: !!row.print_description?.trim(),
+    hasPrintLanguage: row.print_language === "en" || row.print_language === "nl",
   }));
 
-  const readyForPrint = students.filter((s) => s.hasPrintImage && s.hasCaption).length;
+  const readyForPrint = students.filter(
+    (s) => s.hasPrintImage && s.hasPrintCaption && s.hasPrintDescription && s.hasPrintLanguage
+  ).length;
 
   return c.json({
     total: students.length,
@@ -1207,11 +1265,15 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     `SELECT
       p.id as project_id, p.student_name, p.user_id,
       u.email,
-      pi.cloudflare_id, pi.caption
+      p.print_image_path, p.print_caption, p.print_description, p.print_language
     FROM projects p
-    INNER JOIN project_images pi ON p.id = pi.project_id AND pi.type = 'print'
     LEFT JOIN users u ON p.user_id = u.id
-    WHERE p.academic_year = ? AND p.program = ?
+    WHERE p.academic_year = ?
+      AND p.program = ?
+      AND p.print_image_path IS NOT NULL
+      AND TRIM(COALESCE(p.print_caption, '')) != ''
+      AND TRIM(COALESCE(p.print_description, '')) != ''
+      AND p.print_language IN ('en', 'nl')
     ORDER BY p.sort_name ASC`
   )
     .bind(year, program)
@@ -1220,8 +1282,10 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
       student_name: string;
       user_id: string | null;
       email: string | null;
-      cloudflare_id: string;
-      caption: string | null;
+      print_image_path: string;
+      print_caption: string;
+      print_description: string;
+      print_language: "en" | "nl";
     }>();
 
   if (!results || results.length === 0) {
@@ -1232,10 +1296,7 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
   const usedSlugs = new Set<string>();
 
   for (const row of results) {
-    // Skip if no linked user
-    if (!row.email) continue;
-
-    let slug = emailSlug(row.email);
+    let slug = row.email ? emailSlug(row.email) : row.student_name.toLowerCase().replace(/\s+/g, "_");
 
     // Handle duplicate slugs
     if (usedSlugs.has(slug)) {
@@ -1244,21 +1305,18 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     usedSlugs.add(slug);
 
     // Fetch image from R2
-    const r2Object = await c.env.FILES.get(row.cloudflare_id);
+    const r2Object = await c.env.FILES.get(row.print_image_path);
     if (!r2Object) continue;
 
     // Get extension from R2 key
-    const extMatch = row.cloudflare_id.match(/\.([a-z0-9]+)$/i);
+    const extMatch = row.print_image_path.match(/\.([a-z0-9]+)$/i);
     const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
 
     const imageBytes = new Uint8Array(await r2Object.arrayBuffer());
     data[`${slug}.${ext}`] = imageBytes;
 
-    // Add caption as text file if present
-    if (row.caption?.trim()) {
-      const encoder = new TextEncoder();
-      data[`${slug}.txt`] = encoder.encode(row.caption.trim());
-    }
+    const encoder = new TextEncoder();
+    data[`${slug}.txt`] = encoder.encode(`${row.print_caption.trim()}\n\n${row.print_description.trim()}`);
   }
 
   if (Object.keys(data).length === 0) {
@@ -1277,6 +1335,186 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": `attachment; filename="print-images-${yearShort}-${program}.zip"`,
+    },
+  });
+});
+
+// =====================================================
+// IDML Postcard Generation
+// =====================================================
+
+function programLabel(program: string): string {
+  if (program === "PREMA_BK") return "Premaster";
+  return "Master";
+}
+
+function buildTrajectory(program: string, context: ContextKey): string {
+  const nl = getContextFullLabel(context, "nl");
+  const en = getContextFullLabel(context, "en");
+  // Capitalize "context" → "Context" to match print convention
+  const nlCap = nl.replace(/\bcontext\b/, "Context");
+  return `${programLabel(program)} ${nlCap} / ${en}`;
+}
+
+function extractFromSocialLinks(socialLinksJson: string | null, type: "website" | "instagram"): string {
+  if (!socialLinksJson) return "";
+  let links: string[];
+  try {
+    links = JSON.parse(socialLinksJson);
+  } catch {
+    return "";
+  }
+  if (!Array.isArray(links)) return "";
+
+  for (const link of links) {
+    if (type === "instagram" && link.includes("instagram.com")) {
+      // Extract handle: https://www.instagram.com/username/ → @username
+      const match = link.match(/instagram\.com\/([^/?]+)/);
+      if (match && match[1] !== "p" && match[1] !== "reel") {
+        return `@${match[1]}`;
+      }
+    }
+    if (type === "website" && !link.includes("instagram.com") && !link.includes("linkedin.com")) {
+      // Return clean display URL (strip protocol)
+      return link.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    }
+  }
+  return "";
+}
+
+adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
+  const year = c.req.query("year");
+  const program = c.req.query("program");
+  if (!year || !program) {
+    return c.json({ error: "year and program query parameters are required" }, 400);
+  }
+
+  // Load template from R2
+  const templateObj = await c.env.FILES.get("templates/postcard-text-template.idml");
+  if (!templateObj) {
+    return c.json({ error: "Text template not found in R2. Upload templates/postcard-text-template.idml first." }, 500);
+  }
+  const templateZip = new Uint8Array(await templateObj.arrayBuffer());
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT
+      p.student_name, p.program, p.context,
+      p.project_title_en, p.project_title_nl,
+      p.print_description, p.print_language,
+      p.social_links
+    FROM projects p
+    WHERE p.academic_year = ?
+      AND p.program = ?
+      AND TRIM(COALESCE(p.print_description, '')) != ''
+      AND p.print_language IN ('en', 'nl')
+    ORDER BY p.sort_name ASC`
+  )
+    .bind(year, program)
+    .all<{
+      student_name: string;
+      program: string;
+      context: ContextKey;
+      project_title_en: string;
+      project_title_nl: string;
+      print_description: string;
+      print_language: "en" | "nl";
+      social_links: string | null;
+    }>();
+
+  if (!results || results.length === 0) {
+    return c.json({ error: "No projects with print data found" }, 400);
+  }
+
+  const students: PostcardTextData[] = results.map((row) => ({
+    student_name: row.student_name,
+    trajectory: buildTrajectory(row.program, row.context),
+    title:
+      row.print_language === "nl"
+        ? row.project_title_nl || row.project_title_en
+        : row.project_title_en || row.project_title_nl,
+    description: row.print_description,
+    website: extractFromSocialLinks(row.social_links, "website"),
+    instagram: extractFromSocialLinks(row.social_links, "instagram"),
+  }));
+
+  const idmlData = generateTextIdml(templateZip, students);
+
+  const yearShort = shortenAcademicYear(year);
+  return new Response(idmlData, {
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename="postcards-text-${yearShort}-${program}.idml"`,
+    },
+  });
+});
+
+adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
+  const year = c.req.query("year");
+  const program = c.req.query("program");
+  const basePath = c.req.query("basePath") || "";
+  if (!year || !program) {
+    return c.json({ error: "year and program query parameters are required" }, 400);
+  }
+
+  // Load template from R2
+  const templateObj = await c.env.FILES.get("templates/postcard-images-template.idml");
+  if (!templateObj) {
+    return c.json(
+      { error: "Image template not found in R2. Upload templates/postcard-images-template.idml first." },
+      500
+    );
+  }
+  const templateZip = new Uint8Array(await templateObj.arrayBuffer());
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT
+      p.student_name, p.print_image_path,
+      p.print_image_width, p.print_image_height,
+      u.email
+    FROM projects p
+    LEFT JOIN users u ON p.user_id = u.id
+    WHERE p.academic_year = ?
+      AND p.program = ?
+      AND p.print_image_path IS NOT NULL
+    ORDER BY p.sort_name ASC`
+  )
+    .bind(year, program)
+    .all<{
+      student_name: string;
+      print_image_path: string;
+      print_image_width: number | null;
+      print_image_height: number | null;
+      email: string | null;
+    }>();
+
+  if (!results || results.length === 0) {
+    return c.json({ error: "No projects with print images found" }, 400);
+  }
+
+  const students: PostcardImageData[] = results.map((row) => {
+    // Build filename matching the print-images.zip naming convention
+    const slug = row.email ? emailSlug(row.email) : row.student_name.toLowerCase().replace(/\s+/g, "_");
+    const extMatch = row.print_image_path.match(/\.([a-z0-9]+)$/i);
+    const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
+    const filename = `${slug}.${ext}`;
+    const encodedFilename = encodeURIComponent(filename).replace(/%2E/gi, ".");
+    const w = row.print_image_width;
+    const h = row.print_image_height;
+    return {
+      image_uri: basePath ? `${basePath}/${encodedFilename}` : encodedFilename,
+      image_filename: filename,
+      portrait: !!(w && h && h > w),
+      imageHeight: h ?? undefined,
+    };
+  });
+
+  const idmlData = generateImageIdml(templateZip, students);
+
+  const yearShort = shortenAcademicYear(year);
+  return new Response(idmlData, {
+    headers: {
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename="postcards-images-${yearShort}-${program}.idml"`,
     },
   });
 });

@@ -27,7 +27,7 @@ migrations_table = "d1_migrations"
 # CLOUDFLARE_API_TOKEN - Cloudflare API token with Images permissions
 
 [vars]
-APP_BASE_URL = "https://dev.sintlucasmasters.com"
+APP_BASE_URL = "https://sintlucasmasters.com"
 SES_CONFIGURATION_SET = "sintlucasmasters-events"
 SENTRY_DSN = "https://940c808bee865bc2ba2d24da4101ef17@o4510688180568064.ingest.de.sentry.io/4510832618831952"
 SENTRY_HOST = "o4510688180568064.ingest.de.sentry.io"
@@ -51,5 +51,5 @@ crons = ["0 0 * * *"]
 
 [observability]
 [observability.logs]
-enabled = false
+enabled = true
 invocation_logs = true

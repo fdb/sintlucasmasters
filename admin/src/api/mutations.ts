@@ -8,9 +8,9 @@ import {
   deleteImage,
   reorderImages,
   uploadPrintImage,
-  updatePrintImageCaption,
   deletePrintImage,
   submitProject,
+  approveProject,
   createUser,
   bulkCreateUsers,
   deleteUser,
@@ -140,22 +140,6 @@ export function useUploadPrintImage(projectId: string | null) {
   });
 }
 
-export function useUpdatePrintImageCaption(projectId: string | null) {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (caption: string) => {
-      if (!projectId) throw new Error("No project selected");
-      return updatePrintImageCaption(projectId, caption);
-    },
-    onSuccess: () => {
-      if (projectId) {
-        queryClient.invalidateQueries({ queryKey: queryKeys.project(projectId) });
-      }
-    },
-  });
-}
-
 export function useDeletePrintImage(projectId: string | null) {
   const queryClient = useQueryClient();
 
@@ -188,6 +172,23 @@ export function useSubmitProject(projectId: string | null) {
       if (projectId) {
         queryClient.invalidateQueries({ queryKey: queryKeys.project(projectId) });
         queryClient.invalidateQueries({ queryKey: queryKeys.submitValidation(projectId) });
+        queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+      }
+    },
+  });
+}
+
+export function useApproveProject(projectId: string | null) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => {
+      if (!projectId) throw new Error("No project selected");
+      return approveProject(projectId);
+    },
+    onSuccess: () => {
+      if (projectId) {
+        queryClient.invalidateQueries({ queryKey: queryKeys.project(projectId) });
         queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
       }
     },

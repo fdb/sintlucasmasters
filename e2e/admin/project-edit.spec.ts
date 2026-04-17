@@ -29,7 +29,10 @@ test.describe("admin project editing", () => {
     await expect(modal.locator(".edit-section-title", { hasText: "Classification" })).toBeVisible();
     await expect(modal.locator(".edit-section-title", { hasText: "Content" })).toBeVisible();
     await expect(modal.locator(".edit-section-title", { hasText: "Media" })).toBeVisible();
-    await expect(modal.locator(".edit-section-title", { hasText: "Tags" })).toBeVisible();
+    const projectDescriptionField = modal.locator('.edit-field:has-text("Project Description")');
+    await expect(projectDescriptionField).toContainText(
+      "YouTube and Vimeo links pasted here will be embedded on the project page."
+    );
   });
 
   test("can edit student name field", async ({ page }) => {
@@ -152,6 +155,36 @@ test.describe("admin project editing", () => {
     await expect(reopenedLocationInput).toHaveValue(enLocation);
   });
 
+  test("print description mirrors into selected locale and stops after divergence", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Print Mirror Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    const enTab = modal.getByRole("tab", { name: "EN" });
+    const nlTab = modal.getByRole("tab", { name: "NL" });
+    const printLanguage = modal.locator("#print-language");
+    const printDescription = modal.locator("#print-description");
+    const projectDescription = modal.locator('.edit-field:has-text("Project Description") textarea');
+
+    await expect(nlTab).toHaveAttribute("aria-selected", "true");
+    await printLanguage.selectOption("en");
+    await expect(enTab).toHaveAttribute("aria-selected", "true");
+
+    await projectDescription.clear();
+
+    const mirroredText = `Mirrored print ${Date.now()}`;
+    await printDescription.fill(mirroredText);
+    await expect(projectDescription).toHaveValue(mirroredText);
+
+    await projectDescription.fill("Custom EN description");
+
+    const updatedPrintText = `Updated print ${Date.now()}`;
+    await printDescription.fill(updatedPrintText);
+    await expect(projectDescription).toHaveValue("Custom EN description");
+  });
+
   test("status buttons toggle correctly", async ({ page }) => {
     // Double-click first row
     await page.locator("tbody tr").first().dblclick();
@@ -170,40 +203,6 @@ test.describe("admin project editing", () => {
     await publishedBtn.click();
     await expect(publishedBtn).toHaveClass(/active/);
     await expect(draftBtn).not.toHaveClass(/active/);
-  });
-
-  test("can add and remove tags", async ({ page }) => {
-    // Double-click first row
-    await page.locator("tbody tr").first().dblclick();
-
-    const modal = page.locator(".edit-modal-overlay.is-open");
-    await expect(modal).toBeVisible();
-
-    // Wait for Tags section to be visible (find section by title)
-    const tagsSection = modal.locator('.edit-section:has(.edit-section-title:text("Tags"))');
-    await expect(tagsSection).toBeVisible();
-
-    // Wait for existing tags to be rendered (seeded data has tags)
-    const tagInput = tagsSection.locator(".edit-tag-input");
-    await expect(tagInput).toBeVisible();
-
-    // Get initial tag count (wait for at least some tags to be present)
-    await expect(tagsSection.locator(".edit-tag")).not.toHaveCount(0);
-    const initialTagCount = await tagsSection.locator(".edit-tag").count();
-
-    // Add a new tag
-    await tagInput.fill("newtag");
-    await tagInput.press("Enter");
-
-    // Should have one more tag
-    await expect(tagsSection.locator(".edit-tag")).toHaveCount(initialTagCount + 1);
-
-    // Remove the new tag
-    const newTag = tagsSection.locator(".edit-tag", { hasText: "newtag" });
-    await newTag.locator(".edit-tag-remove").click();
-
-    // Should be back to original count
-    await expect(tagsSection.locator(".edit-tag")).toHaveCount(initialTagCount);
   });
 
   test("escape key closes modal", async ({ page }) => {

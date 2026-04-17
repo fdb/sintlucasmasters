@@ -96,9 +96,9 @@ export const PRINT_IMAGE_REQUIREMENTS = {
 
 export const PROGRAM_LABELS: Record<string, string> = {
   BA_FO: "BA Photography",
-  BA_BK: "BA Fine Arts",
-  MA_BK: "MA Fine Arts",
-  PREMA_BK: "PreMA Fine Arts",
+  BA_BK: "BA Visual Arts",
+  MA_BK: "MA Visual Arts",
+  PREMA_BK: "PreMA Visual Arts",
 };
 
 export function formatProgram(value: unknown): string {

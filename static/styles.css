@@ -1327,3 +1327,40 @@ body.lightbox-open {
     right: 12px;
   }
 }
+
+/* 404 page */
+.not-found-page {
+  text-align: center;
+  padding: 6rem 1rem;
+}
+
+.not-found-page h1 {
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0 0 0.5rem;
+  color: var(--black);
+}
+
+.not-found-page p {
+  font-size: 1.25rem;
+  color: var(--gray);
+  margin: 0 0 2rem;
+}
+
+.not-found-link {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--black);
+  color: var(--black);
+  text-decoration: none;
+  font-weight: 600;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.not-found-link:hover {
+  background: var(--black);
+  color: var(--white);
+}

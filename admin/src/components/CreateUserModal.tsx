@@ -4,9 +4,9 @@ import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 
 const PROGRAMS = [
-  { value: "MA_BK", label: "MA Fine Arts" },
-  { value: "PREMA_BK", label: "PreMA Fine Arts" },
-  { value: "BA_BK", label: "BA Fine Arts" },
+  { value: "MA_BK", label: "MA Visual Arts" },
+  { value: "PREMA_BK", label: "PreMA Visual Arts" },
+  { value: "BA_BK", label: "BA Visual Arts" },
   { value: "BA_FO", label: "BA Photography" },
 ] as const;
 

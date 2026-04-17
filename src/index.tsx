@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { setCookie } from "hono/cookie";
+import { secureHeaders } from "hono/secure-headers";
 import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
@@ -26,6 +27,8 @@ import {
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
+app.use("*", secureHeaders());
+
 type PublicLocale = "nl" | "en";
 
 type LocalizedProject = ProjectWithMainImage & {
@@ -47,6 +50,8 @@ const TEXT = {
     year: "Year",
     all: "all",
     notFound: "Not Found",
+    pageNotFound: "Page not found",
+    returnToHomepage: "Return to Homepage",
     noProjectsForYear: "No projects found for this year.",
     goToCurrentYear: "Go to current year",
     noProjectsForContext: "No projects found for this context.",
@@ -82,6 +87,8 @@ const TEXT = {
     year: "Jaar",
     all: "alle",
     notFound: "Niet gevonden",
+    pageNotFound: "Pagina niet gevonden",
+    returnToHomepage: "Terug naar de startpagina",
     noProjectsForYear: "Geen projecten gevonden voor dit jaar.",
     goToCurrentYear: "Ga naar huidig jaar",
     noProjectsForContext: "Geen projecten gevonden voor deze context.",
@@ -109,6 +116,19 @@ const TEXT = {
     localeCode: "nl",
   },
 } as const;
+
+declare const GIT_HASH: string;
+
+// Health check endpoint
+app.get("/api/health", async (c) => {
+  try {
+    await c.env.DB.prepare("SELECT 1").first();
+    return c.json({ status: "ok", db: "connected", version: typeof GIT_HASH !== "undefined" ? GIT_HASH : "dev" });
+  } catch (e) {
+    console.error("Health check DB failure:", e);
+    return c.json({ status: "error", db: "unreachable" }, 503);
+  }
+});
 
 // Sentry tunnel endpoint
 app.post("/api/sentry-tunnel", async (c) => {
@@ -1034,6 +1054,27 @@ app.get("/:year/students/:slug/", (c) =>
   c.redirect(`/nl/${c.req.param("year")}/students/${c.req.param("slug")}/`, 301)
 );
 
+// Catch-all 404
+app.notFound((c) => {
+  if (c.req.path.startsWith("/api/")) {
+    return c.json({ error: "Not found" }, 404);
+  }
+  const locale = c.req.path.startsWith("/nl") ? "nl" : "en";
+  const text = TEXT[locale];
+  return c.html(
+    <Layout locale={locale} currentPath={c.req.path} title={text.notFound}>
+      <div class="not-found-page">
+        <h1>404</h1>
+        <p>{text.pageNotFound}</p>
+        <a href={`/${locale}/`} class="not-found-link">
+          {text.returnToHomepage}
+        </a>
+      </div>
+    </Layout>,
+    404
+  );
+});
+
 const scheduled: ExportedHandlerScheduledHandler<Bindings> = async (_event, env, ctx) => {
   ctx.waitUntil(
     env.DB.prepare(
@@ -1048,7 +1089,7 @@ export default Sentry.withSentry(
   (env: Bindings) => ({
     dsn: env.SENTRY_DSN,
     release: env.CF_VERSION_METADATA?.id,
-    sendDefaultPii: true,
+    sendDefaultPii: false,
     tracesSampleRate: 1.0,
   }),
   { fetch: app.fetch, scheduled }

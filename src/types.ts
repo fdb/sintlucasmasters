@@ -57,6 +57,10 @@ export interface Project {
   location_en: string | null;
   location_nl: string | null;
   location?: string | null;
+  print_image_path: string | null;
+  print_caption: string | null;
+  print_description: string | null;
+  print_language: "en" | "nl" | null;
   private_email: string | null;
   alumni_consent: number;
   thumb_image_id: string | null;

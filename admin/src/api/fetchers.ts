@@ -90,6 +90,9 @@ export type SaveProjectData = {
   description_nl: string;
   location_en: string | null;
   location_nl: string | null;
+  print_caption: string | null;
+  print_description: string;
+  print_language: "en" | "nl" | "";
   private_email: string | null;
   alumni_consent: number;
   status: string;
@@ -185,19 +188,14 @@ export async function uploadPrintImage(projectId: string, file: File): Promise<P
     throw new Error(formatUploadError(file.name, raw, res.status));
   }
 
-  const data = (await res.json()) as { image: ProjectImage };
-  return data.image;
-}
-
-export async function updatePrintImageCaption(projectId: string, caption: string): Promise<void> {
-  const res = await fetch(`/api/admin/projects/${projectId}/print-image/caption`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ caption }),
-  });
-  if (!res.ok) {
-    throw new Error("Failed to update caption");
-  }
+  const data = (await res.json()) as { print_image_path: string };
+  return {
+    id: "print-image",
+    cloudflare_id: data.print_image_path,
+    sort_order: 0,
+    caption: null,
+    type: "print",
+  };
 }
 
 export async function deletePrintImage(projectId: string): Promise<void> {
@@ -230,6 +228,17 @@ export async function submitProject(projectId: string): Promise<void> {
     const error = (await res.json()) as { error?: string; validationErrors?: string[] };
     const message = error.validationErrors?.join(", ") || error.error || "Submission failed";
     throw new Error(message);
+  }
+}
+
+export async function approveProject(projectId: string): Promise<void> {
+  const res = await fetch(`/api/admin/projects/${projectId}/approve`, {
+    method: "POST",
+  });
+
+  if (!res.ok) {
+    const error = (await res.json()) as { error?: string };
+    throw new Error(error.error || "Approval failed");
   }
 }
 
@@ -347,10 +356,12 @@ export type ExportStatusResponse = {
   students: Array<{
     id: string;
     studentName: string;
-    email: string;
+    email: string | null;
     status: string;
     hasPrintImage: boolean;
-    hasCaption: boolean;
+    hasPrintCaption: boolean;
+    hasPrintDescription: boolean;
+    hasPrintLanguage: boolean;
   }>;
 };
 

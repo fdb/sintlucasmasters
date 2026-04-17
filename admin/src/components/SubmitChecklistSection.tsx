@@ -43,10 +43,6 @@ export function SubmitChecklistSection({
         ))}
       </div>
 
-      {hasSubmit && submitStatus === "success" && (
-        <div className="submit-success-message">Project submitted successfully!</div>
-      )}
-
       {hasSubmit && submitError && <div className="submit-error-message">{submitError}</div>}
 
       {hasSubmit && (

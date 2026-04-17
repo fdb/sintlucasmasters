@@ -36,6 +36,11 @@ export type UserDetailResponse = {
     created_at: string;
     last_login_at: string | null;
   };
+  projects: Array<{
+    program: string | null;
+    context: string;
+    academic_year: string;
+  }>;
 };
 
 export type StudentForImpersonation = {
@@ -78,6 +83,10 @@ export type EditDraft = {
   description_nl: string;
   location_en: string;
   location_nl: string;
+  print_image_path: string;
+  print_caption: string;
+  print_description: string;
+  print_language: PrintLanguage;
   private_email: string;
   alumni_consent: boolean;
   status: string;
@@ -86,6 +95,7 @@ export type EditDraft = {
 };
 
 export type EditLanguage = "en" | "nl";
+export type PrintLanguage = "" | EditLanguage;
 
 type SessionStatus = "loading" | "ready" | "error";
 type LoadStatus = "idle" | "loading" | "ready" | "error";
@@ -129,7 +139,6 @@ type AdminState = {
   mirroredLocalizedTouched: MirroredLocalizedTouched;
   editImages: ProjectImage[];
   saveStatus: SaveStatus;
-  newTag: string;
   // User selection and detail state
   selectedUserId: string | null;
   deleteConfirmOpen: boolean;
@@ -144,8 +153,6 @@ type AdminState = {
   impersonatedUser: StudentForImpersonation | null;
   studentsForImpersonation: StudentForImpersonation[];
   impersonationDropdownOpen: boolean;
-  // Print image state
-  printImage: ProjectImage | null;
   printImageStatus: PrintImageStatus;
   printImageError: string | null;
   // Submit state
@@ -176,9 +183,6 @@ type AdminState = {
   resetEditSession: () => void;
   updateEditField: (field: keyof EditDraft, value: EditDraft[keyof EditDraft]) => void;
   setEditLanguage: (language: EditLanguage) => void;
-  setNewTag: (value: string) => void;
-  addTag: () => void;
-  removeTag: (tag: string) => void;
   addSocialLink: () => void;
   updateSocialLink: (index: number, value: string) => void;
   removeSocialLink: (index: number) => void;
@@ -208,7 +212,6 @@ type AdminState = {
   setImpersonationDropdownOpen: (open: boolean) => void;
   // Print image actions
   uploadPrintImage: (file: File) => Promise<void>;
-  updatePrintImageCaption: (caption: string) => Promise<void>;
   deletePrintImage: () => Promise<void>;
   // Submit actions
   loadSubmitValidation: () => Promise<void>;
@@ -220,7 +223,6 @@ type AdminState = {
   isStudentMode: () => boolean;
   canEditProject: () => { allowed: boolean; reason?: string };
   getWebImages: () => ProjectImage[];
-  getPrintImage: () => ProjectImage | null;
   // Selection setters
   setSelectedProjectId: (id: string | null) => void;
   setSelectedUserId: (id: string | null) => void;
@@ -267,25 +269,64 @@ const parseTags = (value: unknown): string[] => {
   return [];
 };
 
-const buildEditDraft = (project: Record<string, unknown>): EditDraft => ({
-  student_name: String(project.student_name || ""),
-  project_title_en: String(project.project_title_en || ""),
-  project_title_nl: String(project.project_title_nl || ""),
-  context: String(project.context || ""),
-  program: String(project.program || ""),
-  academic_year: String(project.academic_year || ""),
-  status: String(project.status || "draft"),
-  bio_en: String(project.bio_en || ""),
-  bio_nl: String(project.bio_nl || ""),
-  description_en: String(project.description_en || ""),
-  description_nl: String(project.description_nl || ""),
-  location_en: String(project.location_en || project.location_nl || ""),
-  location_nl: String(project.location_nl || project.location_en || ""),
-  private_email: String(project.private_email || ""),
-  alumni_consent: Boolean(project.alumni_consent),
-  tags: parseTags(project.tags),
-  social_links: parseSocialLinks(project.social_links),
-});
+const buildEditDraft = (project: Record<string, unknown>): EditDraft =>
+  applyInitialPrintDescriptionMirror({
+    student_name: String(project.student_name || ""),
+    project_title_en: String(project.project_title_en || ""),
+    project_title_nl: String(project.project_title_nl || ""),
+    context: String(project.context || ""),
+    program: String(project.program || ""),
+    academic_year: String(project.academic_year || ""),
+    status: String(project.status || "draft"),
+    bio_en: String(project.bio_en || ""),
+    bio_nl: String(project.bio_nl || ""),
+    description_en: String(project.description_en || ""),
+    description_nl: String(project.description_nl || ""),
+    location_en: String(project.location_en || project.location_nl || ""),
+    location_nl: String(project.location_nl || project.location_en || ""),
+    print_image_path: String(project.print_image_path || ""),
+    print_caption: String(project.print_caption || ""),
+    print_description: String(project.print_description || ""),
+    print_language:
+      project.print_language === "en" || project.print_language === "nl"
+        ? (project.print_language as EditLanguage)
+        : "",
+    private_email: String(project.private_email || ""),
+    alumni_consent: Boolean(project.alumni_consent),
+    tags: parseTags(project.tags),
+    social_links: parseSocialLinks(project.social_links),
+  });
+
+const getPrintDescriptionField = (language: EditLanguage): "description_en" | "description_nl" =>
+  language === "en" ? "description_en" : "description_nl";
+
+const applyInitialPrintDescriptionMirror = (draft: EditDraft): EditDraft => {
+  if (!draft.print_description.trim() || !draft.print_language) return draft;
+
+  const targetField = getPrintDescriptionField(draft.print_language);
+  if (String(draft[targetField] || "").trim()) return draft;
+
+  return {
+    ...draft,
+    [targetField]: draft.print_description,
+  };
+};
+
+const applyPrintDescriptionMirror = (draft: EditDraft, previousPrintDescription: string): EditDraft => {
+  if (!draft.print_language) return draft;
+
+  const targetField = getPrintDescriptionField(draft.print_language);
+  const currentTarget = String(draft[targetField] || "");
+
+  if (!currentTarget.trim() || currentTarget === previousPrintDescription) {
+    return {
+      ...draft,
+      [targetField]: draft.print_description,
+    };
+  }
+
+  return draft;
+};
 
 const createInitialMirroredLocalizedTouched = (): MirroredLocalizedTouched => ({
   project_title: { en: false, nl: false },
@@ -357,7 +398,6 @@ export const useAdminStore = create<AdminState>()(
       saveStatus: "idle",
       uploadStatus: "idle",
       uploadError: null,
-      newTag: "",
       selectedUserId: null,
       deleteConfirmOpen: false,
       deleteStatus: "idle",
@@ -369,8 +409,6 @@ export const useAdminStore = create<AdminState>()(
       impersonatedUser: null,
       studentsForImpersonation: [],
       impersonationDropdownOpen: false,
-      // Print image state
-      printImage: null,
       printImageStatus: "idle",
       printImageError: null,
       // Submit state
@@ -510,17 +548,14 @@ export const useAdminStore = create<AdminState>()(
 
         if (!detail) return;
         const allImages = normalizeImages(detail.images);
-        const webImages = allImages.filter((img) => img.type !== "print");
-        const printImg = allImages.find((img) => img.type === "print") || null;
+        const editDraft = buildEditDraft(detail.project);
         set({
           editModalOpen: true,
-          editDraft: buildEditDraft(detail.project),
-          editLanguage: "nl",
+          editDraft,
+          editLanguage: editDraft.print_language || "nl",
           mirroredLocalizedTouched: createInitialMirroredLocalizedTouched(),
-          editImages: webImages,
-          printImage: printImg,
+          editImages: allImages.filter((img) => img.type === "web"),
           saveStatus: "idle",
-          newTag: "",
           submitValidation: null,
           submitStatus: "idle",
           submitError: null,
@@ -533,14 +568,12 @@ export const useAdminStore = create<AdminState>()(
           editLanguage: "nl",
           mirroredLocalizedTouched: createInitialMirroredLocalizedTouched(),
           editImages: [],
-          printImage: null,
           printImageStatus: "idle",
           printImageError: null,
           submitValidation: null,
           submitStatus: "idle",
           submitError: null,
           saveStatus: "idle",
-          newTag: "",
         }),
       closeEdit: () => get().resetEditSession(),
       updateEditField: (field, value) => {
@@ -593,37 +626,46 @@ export const useAdminStore = create<AdminState>()(
             };
           }
 
+          if (field === "print_language") {
+            const nextLanguage = value === "en" || value === "nl" ? value : "";
+            let nextDraft: EditDraft = {
+              ...state.editDraft,
+              print_language: nextLanguage,
+            };
+
+            if (nextLanguage && nextDraft.print_description.trim()) {
+              const targetField = getPrintDescriptionField(nextLanguage);
+              if (!String(nextDraft[targetField] || "").trim()) {
+                nextDraft = {
+                  ...nextDraft,
+                  [targetField]: nextDraft.print_description,
+                };
+              }
+            }
+
+            return {
+              editDraft: nextDraft,
+              ...(nextLanguage ? { editLanguage: nextLanguage } : {}),
+            };
+          }
+
+          if (field === "print_description") {
+            const previousPrintDescription = state.editDraft.print_description;
+            return {
+              editDraft: applyPrintDescriptionMirror(
+                {
+                  ...state.editDraft,
+                  print_description: String(value ?? ""),
+                },
+                previousPrintDescription
+              ),
+            };
+          }
+
           return {
             editDraft: {
               ...state.editDraft,
               [field]: value,
-            },
-          };
-        });
-      },
-      setNewTag: (value) => set({ newTag: value }),
-      addTag: () => {
-        set((state) => {
-          if (!state.editDraft) return { newTag: "" };
-          const trimmed = state.newTag.trim();
-          if (!trimmed) return { newTag: "" };
-          if (state.editDraft.tags.includes(trimmed)) return { newTag: "" };
-          return {
-            editDraft: {
-              ...state.editDraft,
-              tags: [...state.editDraft.tags, trimmed],
-            },
-            newTag: "",
-          };
-        });
-      },
-      removeTag: (tag) => {
-        set((state) => {
-          if (!state.editDraft) return {};
-          return {
-            editDraft: {
-              ...state.editDraft,
-              tags: state.editDraft.tags.filter((t) => t !== tag),
             },
           };
         });
@@ -787,6 +829,9 @@ export const useAdminStore = create<AdminState>()(
               description_nl: editDraft.description_nl,
               location_en: editDraft.location_en || null,
               location_nl: editDraft.location_nl || null,
+              print_caption: editDraft.print_caption || null,
+              print_description: editDraft.print_description,
+              print_language: editDraft.print_language,
               private_email: editDraft.private_email || null,
               alumni_consent: editDraft.private_email?.trim() ? (editDraft.alumni_consent ? 1 : 0) : 0,
               status: editDraft.status,
@@ -1091,53 +1136,34 @@ export const useAdminStore = create<AdminState>()(
             throw new Error(error.error || "Failed to upload print image");
           }
 
-          const data = (await res.json()) as { image: ProjectImage };
-          set({
-            printImage: {
-              id: data.image.id,
-              cloudflare_id: data.image.cloudflare_id,
-              sort_order: 0,
-              caption: data.image.caption,
-              type: "print",
-            },
+          const data = (await res.json()) as { print_image_path: string };
+          set((state) => ({
+            editDraft: state.editDraft
+              ? {
+                  ...state.editDraft,
+                  print_image_path: data.print_image_path,
+                }
+              : state.editDraft,
+            projectDetail: state.projectDetail
+              ? {
+                  ...state.projectDetail,
+                  project: {
+                    ...state.projectDetail.project,
+                    print_image_path: data.print_image_path,
+                  },
+                }
+              : state.projectDetail,
             printImageStatus: "idle",
-          });
+          }));
         } catch (err) {
           const message = err instanceof Error ? err.message : "Upload failed";
           set({ printImageStatus: "error", printImageError: message });
           setTimeout(() => set({ printImageStatus: "idle", printImageError: null }), 3000);
         }
       },
-      updatePrintImageCaption: async (caption) => {
-        const { selectedProjectId, printImage } = get();
-        if (!selectedProjectId || !printImage) return;
-
-        try {
-          const res = await fetch(`/api/admin/projects/${selectedProjectId}/print-image/caption`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ caption }),
-          });
-
-          if (!res.ok) {
-            throw new Error("Failed to update caption");
-          }
-
-          set({
-            printImage: {
-              ...printImage,
-              caption: caption || null,
-            },
-          });
-        } catch (err) {
-          console.error("Update print image caption error:", err);
-          set({ printImageError: "Failed to update caption" });
-          setTimeout(() => set({ printImageError: null }), 3000);
-        }
-      },
       deletePrintImage: async () => {
-        const { selectedProjectId, printImage } = get();
-        if (!selectedProjectId || !printImage) return;
+        const { selectedProjectId, editDraft } = get();
+        if (!selectedProjectId || !editDraft?.print_image_path) return;
 
         try {
           const res = await fetch(`/api/admin/projects/${selectedProjectId}/print-image`, {
@@ -1148,7 +1174,23 @@ export const useAdminStore = create<AdminState>()(
             throw new Error("Failed to delete print image");
           }
 
-          set({ printImage: null });
+          set((state) => ({
+            editDraft: state.editDraft
+              ? {
+                  ...state.editDraft,
+                  print_image_path: "",
+                }
+              : state.editDraft,
+            projectDetail: state.projectDetail
+              ? {
+                  ...state.projectDetail,
+                  project: {
+                    ...state.projectDetail.project,
+                    print_image_path: null,
+                  },
+                }
+              : state.projectDetail,
+          }));
         } catch (err) {
           console.error("Delete print image error:", err);
           set({ printImageError: "Failed to delete print image" });
@@ -1305,10 +1347,7 @@ export const useAdminStore = create<AdminState>()(
       },
       getWebImages: () => {
         const { editImages } = get();
-        return editImages.filter((img) => img.type !== "print");
-      },
-      getPrintImage: () => {
-        return get().printImage;
+        return editImages.filter((img) => img.type === "web");
       },
       // Selection setters
       setSelectedProjectId: (selectedProjectId) => set({ selectedProjectId }),

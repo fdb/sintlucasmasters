@@ -2,7 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
 import { useUser } from "../api/queries";
 import { useDeleteUser } from "../api/mutations";
-import { formatDate } from "../utils";
+import { formatDate, formatContext, formatProgram, formatAcademicYear } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 
 function formatRole(role: string): string {
@@ -91,6 +91,21 @@ export function UserDetailPanel() {
             <div className="detail-section">
               <div className="detail-section-label">Name</div>
               <div className="detail-text">{userDetail.user.name}</div>
+            </div>
+          )}
+
+          {userDetail.projects.length > 0 && (
+            <div className="detail-section">
+              <div className="detail-section-label">Projects</div>
+              <div className="detail-project-list">
+                {userDetail.projects.map((p, i) => (
+                  <div key={i} className="detail-project-item">
+                    {[formatProgram(p.program), formatContext(p.context), formatAcademicYear(p.academic_year)]
+                      .filter((s) => s !== "—")
+                      .join(" · ")}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

@@ -44,6 +44,13 @@ export const E2E_PROJECTS = [
   },
 ];
 
+export const E2E_MULTI_STUDENT = {
+  id: "e2e-student-multi",
+  email: "lisa.peeters@student.kdg.be",
+  name: "Lisa Peeters",
+  role: "student",
+};
+
 export const E2E_TRANSLATE_PROJECT = {
   id: "e2e-project-translate",
   studentName: "Translate Student",
