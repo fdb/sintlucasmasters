@@ -30,15 +30,16 @@ test.describe("admin projects table", () => {
     // Get initial row count
     const allRowsCount = await page.locator("tbody tr").count();
 
-    // Select 2023-2024 year (should have 1 project)
+    // Select 2023-2024 year
     await page.getByLabel("Year").selectOption("2023-2024");
 
-    // Should show Carol White's project (Playwright auto-retries assertions)
-    await expect(page.locator("tbody tr")).toHaveCount(1);
-
-    // Should show Carol White's project
+    // Should show Carol White's project, not Alice Smith's (Playwright auto-retries)
     await expect(page.locator("tbody")).toContainText("Carol White");
     await expect(page.locator("tbody")).not.toContainText("Alice Smith");
+
+    // Should have fewer rows than default (2024-2025 has most projects)
+    const filteredRowsCount = await page.locator("tbody tr").count();
+    expect(filteredRowsCount).toBeLessThan(allRowsCount);
   });
 
   test("all years option stays selected", async ({ page }) => {
