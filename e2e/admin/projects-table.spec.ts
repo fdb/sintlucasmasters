@@ -30,30 +30,25 @@ test.describe("admin projects table", () => {
     // Get initial row count
     const allRowsCount = await page.locator("tbody tr").count();
 
-    // Select 2023-2024 year (should have 1 project)
-    await page.locator(".filter-select").first().selectOption("2023-2024");
+    // Select 2023-2024 year
+    await page.getByLabel("Year").selectOption("2023-2024");
 
-    // Wait for filter to apply
-    await page.waitForTimeout(100);
-
-    // Should have fewer rows (only Carol White is in 2023-2024)
-    const filteredRowsCount = await page.locator("tbody tr").count();
-    expect(filteredRowsCount).toBeLessThan(allRowsCount);
-
-    // Should show Carol White's project
+    // Should show Carol White's project, not Alice Smith's (Playwright auto-retries)
     await expect(page.locator("tbody")).toContainText("Carol White");
     await expect(page.locator("tbody")).not.toContainText("Alice Smith");
+
+    // Should have fewer rows than default (2024-2025 has most projects)
+    const filteredRowsCount = await page.locator("tbody tr").count();
+    expect(filteredRowsCount).toBeLessThan(allRowsCount);
   });
 
   test("all years option stays selected", async ({ page }) => {
-    const yearSelect = page.locator(".filter-select").first();
+    const yearSelect = page.getByLabel("Year");
 
     await expect(yearSelect).toHaveValue("2024-2025");
     const defaultRowsCount = await page.locator("tbody tr").count();
 
     await yearSelect.selectOption("");
-    await page.waitForTimeout(200);
-
     await expect(yearSelect).toHaveValue("");
     await expect(page.locator("tbody")).toContainText("Carol White");
     const allRowsCount = await page.locator("tbody tr").count();
@@ -62,16 +57,12 @@ test.describe("admin projects table", () => {
 
   test("context filter works", async ({ page }) => {
     // First, select "All years" to see all projects
-    await page.locator(".filter-select").first().selectOption("");
+    await page.getByLabel("Year").selectOption("");
 
-    // Select Digital context (canonical key; should have 1 project: Alice Smith)
-    // nth(2) because dropdowns are: year, programme, context
-    await page.locator(".filter-select").nth(2).selectOption("digital");
+    // Select Digital context (should have 1 project: Alice Smith)
+    await page.getByLabel("Context").selectOption("digital");
 
-    // Wait for filter to apply
-    await page.waitForTimeout(100);
-
-    // Should show Alice Smith's project
+    // Should show Alice Smith's project (Playwright auto-retries)
     await expect(page.locator("tbody")).toContainText("Alice Smith");
     await expect(page.locator("tbody")).toContainText("Digitale Dromen");
 
@@ -81,10 +72,7 @@ test.describe("admin projects table", () => {
 
   test("search filter works", async ({ page }) => {
     // First, select "All years" to see all projects
-    await page.locator(".filter-select").first().selectOption("");
-
-    // Wait for filter to apply
-    await page.waitForTimeout(200);
+    await page.getByLabel("Year").selectOption("");
 
     // Click search button to expand
     await page.locator(".search-toggle").click();
@@ -92,10 +80,7 @@ test.describe("admin projects table", () => {
     // Type in search - search for "Alice" which is in the default year
     await page.locator(".search-input").fill("Alice");
 
-    // Wait for filter to apply
-    await page.waitForTimeout(200);
-
-    // Should only show Alice Smith
+    // Should only show Alice Smith (Playwright auto-retries)
     await expect(page.locator("tbody")).toContainText("Alice Smith");
     await expect(page.locator("tbody")).not.toContainText("Carol White");
     await expect(page.locator("tbody")).not.toContainText("Bob Jones");
@@ -116,7 +101,7 @@ test.describe("admin projects table", () => {
 
   test("row shows status styling", async ({ page }) => {
     // First, select "All years" to see all projects
-    await page.locator(".filter-select").first().selectOption("");
+    await page.getByLabel("Year").selectOption("");
 
     // Bob Jones is draft status
     const draftRow = page.locator("tbody tr", { hasText: "Bob Jones" });
@@ -129,7 +114,7 @@ test.describe("admin projects table", () => {
 
   test("deletes a project", async ({ page }) => {
     // First, select "All years" to see all projects
-    await page.locator(".filter-select").first().selectOption("");
+    await page.getByLabel("Year").selectOption("");
 
     // Click on Bob Jones' project (draft status, good candidate for deletion)
     const bobRow = page.locator("tbody tr", { hasText: "Bob Jones" });

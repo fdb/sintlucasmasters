@@ -79,7 +79,12 @@ function AdminProjectsHeader(): React.ReactNode {
 
   return (
     <div className="admin-filters">
-      <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="filter-select">
+      <select
+        value={selectedYear}
+        onChange={(e) => setSelectedYear(e.target.value)}
+        className="filter-select"
+        aria-label="Year"
+      >
         <option value="">All years</option>
         {allYears.map((year) => (
           <option key={year} value={year}>
@@ -87,7 +92,12 @@ function AdminProjectsHeader(): React.ReactNode {
           </option>
         ))}
       </select>
-      <select value={selectedProgram} onChange={(e) => setSelectedProgram(e.target.value)} className="filter-select">
+      <select
+        value={selectedProgram}
+        onChange={(e) => setSelectedProgram(e.target.value)}
+        className="filter-select"
+        aria-label="Programme"
+      >
         <option value="">All programmes</option>
         {Object.entries(PROGRAM_LABELS).map(([value, label]) => (
           <option key={value} value={value}>
@@ -95,7 +105,12 @@ function AdminProjectsHeader(): React.ReactNode {
           </option>
         ))}
       </select>
-      <select value={selectedContext} onChange={(e) => setSelectedContext(e.target.value)} className="filter-select">
+      <select
+        value={selectedContext}
+        onChange={(e) => setSelectedContext(e.target.value)}
+        className="filter-select"
+        aria-label="Context"
+      >
         <option value="">All contexts</option>
         {allContexts.map((ctx) => (
           <option key={ctx} value={ctx}>

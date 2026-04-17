@@ -158,7 +158,7 @@ test.describe("homepage", () => {
   test("context filter navigation works", async ({ page }) => {
     await page.goto("/");
     // Click on a context filter (not "All")
-    const contextFilter = page.locator(".context-nav a").nth(1);
+    const contextFilter = page.locator(".context-nav a:not(.active)").first();
     await contextFilter.click();
     // URL should have context query param
     await expect(page).toHaveURL(/\?context=/);
@@ -188,7 +188,7 @@ test.describe("archive page", () => {
   test("year filter navigation works", async ({ page }) => {
     await page.goto("/nl/archive");
     // Click on a year filter (not "All")
-    const yearFilter = page.locator(".year-nav a").nth(1);
+    const yearFilter = page.locator(".year-nav a:not(.active)").first();
     await yearFilter.click();
     await expect(page).toHaveURL(/\?year=/);
   });

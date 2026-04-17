@@ -8,7 +8,7 @@ import { getContextFullLabel, normalizeContextKey } from "../lib/i18n";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
-import { emailSlug } from "../lib/names";
+import { emailSlug, sortName } from "../lib/names";
 import { getImageDimensions } from "../lib/image-dimensions";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { generateMagicToken, storeMagicToken } from "../lib/tokens";
@@ -687,8 +687,8 @@ adminApiRoutes.post("/projects/:id/print-image/upload", async (c) => {
     // Delete from R2
     try {
       await c.env.FILES.delete(project.print_image_path);
-    } catch {
-      // Continue even if delete fails
+    } catch (err) {
+      console.error("Failed to delete print image from R2:", err);
     }
   }
 
@@ -741,8 +741,8 @@ adminApiRoutes.delete("/projects/:id/print-image", async (c) => {
   // Delete from R2
   try {
     await c.env.FILES.delete(project.print_image_path);
-  } catch {
-    // Continue even if delete fails
+  } catch (err) {
+    console.error("Failed to delete print image from R2:", err);
   }
 
   await c.env.DB.prepare("UPDATE projects SET print_image_path = NULL, updated_at = datetime('now') WHERE id = ?")
@@ -790,8 +790,8 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
         },
       }
     );
-  } catch {
-    // Continue even if delete fails
+  } catch (err) {
+    console.error("Failed to delete image from Cloudflare Images:", err);
   }
 
   // Delete from database
@@ -1071,14 +1071,6 @@ adminApiRoutes.delete("/projects/:id", async (c) => {
   return c.json({ success: true, deletedProject: project });
 });
 
-// Generate sort name (ASCII-normalized for sorting)
-function generateSortName(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
-    .toLowerCase();
-}
-
 // Generate project ID using SHA256 hash
 async function generateProjectId(name: string, academicYear: string): Promise<string> {
   const input = `${name}:${academicYear}`;
@@ -1092,9 +1084,6 @@ async function generateProjectId(name: string, academicYear: string): Promise<st
 // Valid programs
 const VALID_PROGRAMS = ["BA_FO", "BA_BK", "MA_BK", "PREMA_BK"] as const;
 type Program = (typeof VALID_PROGRAMS)[number];
-
-// Valid contexts
-const VALID_CONTEXTS = ["autonomous", "applied", "digital", "sociopolitical", "jewelry"] as const;
 
 // Normalize context value to canonical form (case-insensitive, with or without "Context" suffix)
 function normalizeContext(input: unknown): ContextKey | null {
@@ -1708,7 +1697,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
       } else {
         // Create blank project
         const slug = slugify(name);
-        const sortName = generateSortName(name);
+        const normalizedName = sortName(name);
 
         await c.env.DB.prepare(
           `INSERT INTO projects (
@@ -1725,7 +1714,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
             projectId,
             slug,
             name,
-            sortName,
+            normalizedName,
             "", // Empty English project title
             "", // Empty Dutch project title
             program,

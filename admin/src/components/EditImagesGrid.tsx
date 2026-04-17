@@ -20,9 +20,9 @@ import { Plus, Trash2, X, AlertCircle, Loader2, Type } from "lucide-react";
 import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import type { ProjectImage } from "../store/adminStore";
+import { MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB } from "../lib/upload-errors";
 
 const ACCEPTED_TYPES = ".jpg,.jpeg,.png,.gif,.webp,.heic,.heif";
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export function EditImagesGrid() {
   const {
@@ -51,6 +51,7 @@ export function EditImagesGrid() {
   const [captionEditId, setCaptionEditId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [fileSizeError, setFileSizeError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const sensors = useSensors(
@@ -79,12 +80,12 @@ export function EditImagesGrid() {
     if (files.length === 0) return;
 
     // Check file size
-    const oversizedFiles = files.filter((f) => f.size > MAX_FILE_SIZE);
+    const oversizedFiles = files.filter((f) => f.size > MAX_FILE_SIZE_BYTES);
     if (oversizedFiles.length > 0) {
-      alert(`Files too large (max 10MB): ${oversizedFiles.map((f) => f.name).join(", ")}`);
+      setFileSizeError(`Files too large (max ${MAX_FILE_SIZE_MB}MB): ${oversizedFiles.map((f) => f.name).join(", ")}`);
     }
 
-    const validFiles = files.filter((f) => f.size <= MAX_FILE_SIZE);
+    const validFiles = files.filter((f) => f.size <= MAX_FILE_SIZE_BYTES);
     if (validFiles.length > 0) {
       await uploadImages(validFiles);
     }
@@ -211,6 +212,17 @@ export function EditImagesGrid() {
         <div className="upload-blocked-message">
           <AlertCircle size={14} />
           <span>{uploadBlockedReason}</span>
+        </div>
+      )}
+
+      {/* File Size Error */}
+      {fileSizeError && (
+        <div className="upload-error">
+          <AlertCircle size={14} />
+          <span>{fileSizeError}</span>
+          <button type="button" className="upload-error-dismiss" onClick={() => setFileSizeError(null)}>
+            <X size={12} />
+          </button>
         </div>
       )}
 

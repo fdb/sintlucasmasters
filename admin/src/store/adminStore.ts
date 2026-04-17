@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { normalizeSocialLink, normalizeSocialLinks } from "../lib/socialLinks";
+import { formatUploadError } from "../lib/upload-errors";
 
 export type UserRole = "student" | "editor" | "admin";
 
@@ -140,8 +141,6 @@ type AdminState = {
   saveStatus: SaveStatus;
   // User selection and detail state
   selectedUserId: string | null;
-  userDetail: UserDetailResponse | null;
-  userDetailStatus: LoadStatus;
   deleteConfirmOpen: boolean;
   deleteStatus: LoadStatus;
   // User creation modal state
@@ -400,8 +399,6 @@ export const useAdminStore = create<AdminState>()(
       uploadStatus: "idle",
       uploadError: null,
       selectedUserId: null,
-      userDetail: null,
-      userDetailStatus: "idle",
       deleteConfirmOpen: false,
       deleteStatus: "idle",
       userModalOpen: false,
@@ -498,8 +495,6 @@ export const useAdminStore = create<AdminState>()(
             projectDetail: null,
             projectStatus: "idle",
             selectedUserId: null,
-            userDetail: null,
-            userDetailStatus: "idle",
           });
         } catch {
           set({ tableStatus: "error" });
@@ -749,17 +744,8 @@ export const useAdminStore = create<AdminState>()(
 
             if (!res.ok) {
               const error = (await res.json()) as { error?: string };
-              let message = error.error || `Failed to upload ${file.name}`;
-
-              // Make Cloudflare errors more user-friendly
-              if (res.status === 413 || message.toLowerCase().includes("too large")) {
-                message = `"${file.name}" is too large. Maximum file size is 10MB.`;
-              }
-              if (message.includes("dimension") || message.includes("12000")) {
-                message = `"${file.name}" exceeds maximum dimensions (12,000px on longest side).`;
-              }
-
-              throw new Error(message);
+              const raw = error.error || `Failed to upload ${file.name}`;
+              throw new Error(formatUploadError(file.name, raw, res.status));
             }
 
             const data = (await res.json()) as { image: ProjectImage };
@@ -949,36 +935,7 @@ export const useAdminStore = create<AdminState>()(
       },
       // User selection and delete actions
       selectUser: async (userId) => {
-        if (!userId) {
-          set({
-            selectedUserId: null,
-            userDetail: null,
-            userDetailStatus: "idle",
-          });
-          return;
-        }
-        if (userId === get().selectedUserId && get().userDetailStatus === "ready") {
-          return;
-        }
-        set({
-          selectedUserId: userId,
-          userDetail: null,
-          userDetailStatus: "loading",
-        });
-        try {
-          const res = await fetch(`/api/admin/users/${userId}`);
-          if (!res.ok) {
-            set({ userDetailStatus: "error" });
-            return;
-          }
-          const data = (await res.json()) as UserDetailResponse;
-          set({
-            userDetail: data,
-            userDetailStatus: "ready",
-          });
-        } catch {
-          set({ userDetailStatus: "error" });
-        }
+        set({ selectedUserId: userId });
       },
       openDeleteConfirm: () => set({ deleteConfirmOpen: true }),
       closeDeleteConfirm: () => set({ deleteConfirmOpen: false, deleteStatus: "idle" }),
@@ -1000,8 +957,6 @@ export const useAdminStore = create<AdminState>()(
             deleteConfirmOpen: false,
             deleteStatus: "idle",
             selectedUserId: null,
-            userDetail: null,
-            userDetailStatus: "idle",
           });
 
           // Refresh the users table
@@ -1238,6 +1193,8 @@ export const useAdminStore = create<AdminState>()(
           }));
         } catch (err) {
           console.error("Delete print image error:", err);
+          set({ printImageError: "Failed to delete print image" });
+          setTimeout(() => set({ printImageError: null }), 3000);
         }
       },
       // Submit actions
