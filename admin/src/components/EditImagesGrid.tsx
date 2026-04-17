@@ -35,6 +35,7 @@ export function EditImagesGrid() {
     deleteImage,
     uploadStatus,
     uploadError,
+    uploadNotice,
   } = useAdminStore(
     useShallow((state) => ({
       editImages: state.editImages,
@@ -45,6 +46,7 @@ export function EditImagesGrid() {
       deleteImage: state.deleteImage,
       uploadStatus: state.uploadStatus,
       uploadError: state.uploadError,
+      uploadNotice: state.uploadNotice,
     }))
   );
 
@@ -228,6 +230,14 @@ export function EditImagesGrid() {
         <div className="upload-error">
           <AlertCircle size={14} />
           <span>{uploadError}</span>
+        </div>
+      )}
+
+      {/* Upload Notice (informational, e.g. partial upload) */}
+      {uploadNotice && (
+        <div className="upload-blocked-message">
+          <AlertCircle size={14} />
+          <span>{uploadNotice}</span>
         </div>
       )}
 

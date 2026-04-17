@@ -189,6 +189,7 @@ type AdminState = {
   deleteImage: (imageId: string) => Promise<void>;
   uploadStatus: "idle" | "uploading" | "error";
   uploadError: string | null;
+  uploadNotice: string | null;
   saveProject: (options?: { closeOnSuccess?: boolean; onSuccess?: () => void }) => Promise<boolean>;
   // Project delete actions
   openDeleteConfirm: () => void;
@@ -358,6 +359,7 @@ export const useAdminStore = create<AdminState>()(
       saveStatus: "idle",
       uploadStatus: "idle",
       uploadError: null,
+      uploadNotice: null,
       newTag: "",
       selectedUserId: null,
       userDetail: null,
@@ -705,11 +707,9 @@ export const useAdminStore = create<AdminState>()(
         }
 
         const filesToUpload = files.slice(0, remaining);
-        if (filesToUpload.length < files.length) {
-          // Some files will be skipped — we still upload the ones that fit
-        }
+        const skippedCount = files.length - filesToUpload.length;
 
-        set({ uploadStatus: "uploading", uploadError: null });
+        set({ uploadStatus: "uploading", uploadError: null, uploadNotice: null });
 
         try {
           for (const file of filesToUpload) {
@@ -751,7 +751,13 @@ export const useAdminStore = create<AdminState>()(
             }));
           }
 
-          set({ uploadStatus: "idle" });
+          if (skippedCount > 0) {
+            const notice = `Uploaded ${filesToUpload.length} of ${files.length} images — ${skippedCount} skipped (max ${MAX_WEB_IMAGES} per project)`;
+            set({ uploadStatus: "idle", uploadNotice: notice });
+            setTimeout(() => set({ uploadNotice: null }), 6000);
+          } else {
+            set({ uploadStatus: "idle" });
+          }
         } catch (err) {
           const message = err instanceof Error ? err.message : "Upload failed";
           set({ uploadStatus: "error", uploadError: message });
