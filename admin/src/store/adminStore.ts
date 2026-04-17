@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { normalizeSocialLink, normalizeSocialLinks } from "../lib/socialLinks";
 
+export const MAX_WEB_IMAGES = 7;
+
 export type UserRole = "student" | "editor" | "admin";
 
 export type AuthUser = {
@@ -695,7 +697,6 @@ export const useAdminStore = create<AdminState>()(
         const { selectedProjectId, editImages } = get();
         if (!selectedProjectId || files.length === 0) return;
 
-        const MAX_WEB_IMAGES = 7; // 1 main + 6 gallery
         const remaining = MAX_WEB_IMAGES - editImages.length;
         if (remaining <= 0) {
           set({

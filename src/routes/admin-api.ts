@@ -486,14 +486,13 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
     return c.json({ error: "Academic year is required before uploading images" }, 400);
   }
 
-  // Check web image count limit
-  const imageCount = await c.env.DB.prepare(
-    "SELECT COUNT(*) as count FROM project_images WHERE project_id = ? AND type = 'web'"
+  const webImageStats = await c.env.DB.prepare(
+    "SELECT COUNT(*) as count, MAX(sort_order) as max_order FROM project_images WHERE project_id = ? AND type = 'web'"
   )
     .bind(projectId)
-    .first<{ count: number }>();
+    .first<{ count: number; max_order: number | null }>();
 
-  if ((imageCount?.count ?? 0) >= MAX_WEB_IMAGES) {
+  if ((webImageStats?.count ?? 0) >= MAX_WEB_IMAGES) {
     return c.json({ error: `Maximum ${MAX_WEB_IMAGES} images allowed (1 main + ${MAX_WEB_IMAGES - 1} gallery)` }, 400);
   }
 
@@ -550,14 +549,7 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
 
   const cloudflareId = uploadResult.result.id;
 
-  // Get current max sort_order for web images
-  const maxOrder = await c.env.DB.prepare(
-    "SELECT MAX(sort_order) as max_order FROM project_images WHERE project_id = ? AND type = 'web'"
-  )
-    .bind(projectId)
-    .first<{ max_order: number | null }>();
-
-  const newSortOrder = (maxOrder?.max_order ?? -1) + 1;
+  const newSortOrder = (webImageStats?.max_order ?? -1) + 1;
   const imageId = crypto.randomUUID();
 
   // Insert into database with type='web'

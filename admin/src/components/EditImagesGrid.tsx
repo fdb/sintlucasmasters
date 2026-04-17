@@ -18,12 +18,11 @@ import { SortableContext, rectSortingStrategy, useSortable, sortableKeyboardCoor
 import { CSS } from "@dnd-kit/utilities";
 import { Plus, Trash2, X, AlertCircle, Loader2, Type } from "lucide-react";
 import { useShallow } from "zustand/shallow";
-import { useAdminStore } from "../store/adminStore";
+import { useAdminStore, MAX_WEB_IMAGES } from "../store/adminStore";
 import type { ProjectImage } from "../store/adminStore";
 
 const ACCEPTED_TYPES = ".jpg,.jpeg,.png,.gif,.webp,.heic,.heif";
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const MAX_WEB_IMAGES = 7; // 1 main + 6 gallery
 
 export function EditImagesGrid() {
   const {
@@ -118,7 +117,6 @@ export function EditImagesGrid() {
   // Check if required fields are filled for upload
   const canUpload = editDraft && editDraft.student_name.trim() !== "" && editDraft.academic_year.trim() !== "";
   const uploadBlockedReason = !canUpload ? "Fill in student name and academic year before uploading images" : null;
-  const atImageLimit = editImages.length >= MAX_WEB_IMAGES;
   const activeImage = useMemo(() => {
     if (!activeId) return null;
     return editImages.find((img) => img.id === activeId) || null;
@@ -176,8 +174,7 @@ export function EditImagesGrid() {
               />
             ))}
 
-            {/* Upload Button — hidden when at image limit */}
-            {!atImageLimit && (
+            {editImages.length < MAX_WEB_IMAGES && (
               <button
                 type="button"
                 className={`upload-tile ${uploadStatus === "uploading" ? "is-uploading" : ""} ${!canUpload ? "is-blocked" : ""}`}
@@ -233,7 +230,6 @@ export function EditImagesGrid() {
         </div>
       )}
 
-      {/* Upload Notice (informational, e.g. partial upload) */}
       {uploadNotice && (
         <div className="upload-blocked-message">
           <AlertCircle size={14} />
