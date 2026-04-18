@@ -16,6 +16,7 @@ export type Bindings = {
   FILES: R2Bucket;
   // E2E testing
   E2E_SKIP_AUTH?: string;
+  E2E_MOCK_CLOUDFLARE_IMAGES?: string;
   // Local development
   DEV_ADMIN_EMAIL?: string;
   // AI Translation

@@ -151,6 +151,51 @@ export const E2E_PROJECTS = [
     tags: '["translate-test"]',
     user_id: null,
   },
+  {
+    id: "e2e-project-at-limit",
+    slug: "at-limit-student",
+    student_name: "At Limit Student",
+    sort_name: "Student, At Limit",
+    project_title: "At Limit Project",
+    program: "BA_FO",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Project seeded with the maximum 7 web images for image-limit tests.",
+    description: "Used to verify UI/API behavior when the 7-image cap is reached.",
+    status: "draft",
+    tags: '["image-limit-test"]',
+    user_id: null,
+  },
+  {
+    id: "e2e-project-upload-room",
+    slug: "upload-room-student",
+    student_name: "Upload Room Student",
+    sort_name: "Student, Upload Room",
+    project_title: "Upload Room Project",
+    program: "BA_FO",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Project seeded with 4 web images, leaving 3 slots for partial-upload tests.",
+    description: "Used to verify the partial-upload notice when more files than slots are selected.",
+    status: "draft",
+    tags: '["image-limit-test"]',
+    user_id: null,
+  },
+  {
+    id: "e2e-project-delete-restore",
+    slug: "delete-restore-student",
+    student_name: "Delete Restore Student",
+    sort_name: "Student, Delete Restore",
+    project_title: "Delete Restore Project",
+    program: "BA_FO",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Project seeded at the 7-image cap for the delete-then-restore test.",
+    description: "Mutated by one test only, isolated from the read-only at-limit fixture.",
+    status: "draft",
+    tags: '["image-limit-test"]',
+    user_id: null,
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
@@ -187,6 +232,33 @@ export const E2E_PROJECT_IMAGES = [
     caption: "Print image caption for submission",
     type: "print",
   },
+  // At-limit project: 7 web images (cap reached)
+  ...Array.from({ length: 7 }, (_, i) => ({
+    id: `e2e-pimg-atlimit-${i}`,
+    project_id: "e2e-project-at-limit",
+    cloudflare_id: `slam/testing/e2e-at-limit-${i}`,
+    sort_order: i,
+    caption: null,
+    type: "web",
+  })),
+  // Upload-room project: 4 web images (3 slots remaining)
+  ...Array.from({ length: 4 }, (_, i) => ({
+    id: `e2e-pimg-uploadroom-${i}`,
+    project_id: "e2e-project-upload-room",
+    cloudflare_id: `slam/testing/e2e-upload-room-${i}`,
+    sort_order: i,
+    caption: null,
+    type: "web",
+  })),
+  // Delete-restore project: 7 web images (cap reached), isolated mutation target
+  ...Array.from({ length: 7 }, (_, i) => ({
+    id: `e2e-pimg-deleterestore-${i}`,
+    project_id: "e2e-project-delete-restore",
+    cloudflare_id: `slam/testing/e2e-delete-restore-${i}`,
+    sort_order: i,
+    caption: null,
+    type: "web",
+  })),
 ];
 
 /**

@@ -517,37 +517,42 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   const extension = getFileExtension(file.name, file.type);
   const customImageId = `${R2_PATH_PREFIX}/${yearShort}/${studentSlug}/${randomId}.${extension}`;
 
-  // Upload to Cloudflare Images with custom ID
-  const cfFormData = new FormData();
-  cfFormData.append("file", file);
-  cfFormData.append("id", customImageId);
+  let cloudflareId: string;
+  if (c.env.E2E_MOCK_CLOUDFLARE_IMAGES === "true") {
+    cloudflareId = customImageId;
+  } else {
+    // Upload to Cloudflare Images with custom ID
+    const cfFormData = new FormData();
+    cfFormData.append("file", file);
+    cfFormData.append("id", customImageId);
 
-  const uploadResponse = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-      },
-      body: cfFormData,
+    const uploadResponse = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+        },
+        body: cfFormData,
+      }
+    );
+
+    const uploadResult = (await uploadResponse.json()) as {
+      success: boolean;
+      errors?: Array<{ message: string }>;
+      result?: { id: string };
+    };
+
+    if (!uploadResult.success || !uploadResult.result) {
+      const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
+      if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
+        return c.json({ error: "Image too large. Maximum: 10MB, 12,000px on longest side." }, 400);
+      }
+      return c.json({ error: errorMsg }, 400);
     }
-  );
 
-  const uploadResult = (await uploadResponse.json()) as {
-    success: boolean;
-    errors?: Array<{ message: string }>;
-    result?: { id: string };
-  };
-
-  if (!uploadResult.success || !uploadResult.result) {
-    const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
-    if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
-      return c.json({ error: "Image too large. Maximum: 10MB, 12,000px on longest side." }, 400);
-    }
-    return c.json({ error: errorMsg }, 400);
+    cloudflareId = uploadResult.result.id;
   }
-
-  const cloudflareId = uploadResult.result.id;
 
   const newSortOrder = (webImageStats?.max_order ?? -1) + 1;
   const imageId = crypto.randomUUID();
@@ -762,7 +767,7 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
     } catch {
       // Continue even if delete fails
     }
-  } else {
+  } else if (c.env.E2E_MOCK_CLOUDFLARE_IMAGES !== "true") {
     // Delete from Cloudflare Images
     try {
       await fetch(
