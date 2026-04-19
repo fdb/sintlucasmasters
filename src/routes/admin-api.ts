@@ -531,6 +531,11 @@ async function getProjectEmailSlug(c: Context<{ Bindings: Bindings }>, project: 
 // Image Upload Routes
 // =====================================================
 
+// Maximum web images per project (1 main + 6 extras).
+// Existing projects with more than this are not retroactively pruned;
+// the limit only blocks new uploads beyond it.
+export const MAX_WEB_IMAGES_PER_PROJECT = 7;
+
 // Upload image to Cloudflare Images (web images)
 adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   const projectId = c.req.param("id");
@@ -557,6 +562,16 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
     return c.json({ error: "Academic year is required before uploading images" }, 400);
   }
 
+  // Enforce the per-project image cap before touching the file or Cloudflare.
+  const existingCount = await c.env.DB.prepare(
+    "SELECT COUNT(*) as count FROM project_images WHERE project_id = ? AND type = 'web'"
+  )
+    .bind(projectId)
+    .first<{ count: number }>();
+  if ((existingCount?.count ?? 0) >= MAX_WEB_IMAGES_PER_PROJECT) {
+    return c.json({ error: `Maximum of ${MAX_WEB_IMAGES_PER_PROJECT} images reached (1 main + 6 extra).` }, 400);
+  }
+
   const formData = await c.req.formData();
   const file = formData.get("file") as File | null;
 
@@ -578,37 +593,44 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   const extension = getFileExtension(file.name, file.type);
   const customImageId = `${R2_PATH_PREFIX}/${yearShort}/${studentSlug}/${randomId}.${extension}`;
 
-  // Upload to Cloudflare Images with custom ID
-  const cfFormData = new FormData();
-  cfFormData.append("file", file);
-  cfFormData.append("id", customImageId);
+  let cloudflareId: string;
+  if (c.env.E2E_FAKE_IMAGE_UPLOAD) {
+    // E2E shortcut: skip the real Cloudflare round-trip so tests don't need network
+    // access or live credentials. The fake id is shaped like a real custom image id.
+    cloudflareId = customImageId;
+  } else {
+    // Upload to Cloudflare Images with custom ID
+    const cfFormData = new FormData();
+    cfFormData.append("file", file);
+    cfFormData.append("id", customImageId);
 
-  const uploadResponse = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-      },
-      body: cfFormData,
+    const uploadResponse = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+        },
+        body: cfFormData,
+      }
+    );
+
+    const uploadResult = (await uploadResponse.json()) as {
+      success: boolean;
+      errors?: Array<{ message: string }>;
+      result?: { id: string };
+    };
+
+    if (!uploadResult.success || !uploadResult.result) {
+      const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
+      if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
+        return c.json({ error: "Image too large. Maximum: 10MB, 12,000px on longest side." }, 400);
+      }
+      return c.json({ error: errorMsg }, 400);
     }
-  );
 
-  const uploadResult = (await uploadResponse.json()) as {
-    success: boolean;
-    errors?: Array<{ message: string }>;
-    result?: { id: string };
-  };
-
-  if (!uploadResult.success || !uploadResult.result) {
-    const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
-    if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
-      return c.json({ error: "Image too large. Maximum: 10MB, 12,000px on longest side." }, 400);
-    }
-    return c.json({ error: errorMsg }, 400);
+    cloudflareId = uploadResult.result.id;
   }
-
-  const cloudflareId = uploadResult.result.id;
 
   // Get current max sort_order for web images
   const maxOrder = await c.env.DB.prepare(
@@ -779,19 +801,21 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
     return c.json({ error: "Image not found" }, 404);
   }
 
-  // Delete from Cloudflare Images
-  try {
-    await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-        },
-      }
-    );
-  } catch {
-    // Continue even if delete fails
+  // Delete from Cloudflare Images (skipped in E2E fake-upload mode)
+  if (!c.env.E2E_FAKE_IMAGE_UPLOAD) {
+    try {
+      await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
+          },
+        }
+      );
+    } catch {
+      // Continue even if delete fails
+    }
   }
 
   // Delete from database

@@ -256,6 +256,36 @@ export const E2E_PROJECTS = [
     user_id: "e2e-student-multi",
   },
   {
+    id: "e2e-project-image-room",
+    slug: "image-limit-room",
+    student_name: "Image Limit Room",
+    sort_name: "Room, Image Limit",
+    project_title: "Image Limit Room Project",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Test student with room for more images.",
+    description: "Project used for testing the per-project image upload cap.",
+    status: "draft",
+    tags: '["image-limit-test"]',
+    user_id: null,
+  },
+  {
+    id: "e2e-project-image-full",
+    slug: "image-limit-full",
+    student_name: "Image Limit Full",
+    sort_name: "Full, Image Limit",
+    project_title: "Image Limit Full Project",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2024-2025",
+    bio: "Legacy project that already exceeds the per-project image cap.",
+    description: "Used to verify legacy projects with more than 7 images are not pruned.",
+    status: "draft",
+    tags: '["image-limit-test"]',
+    user_id: null,
+  },
+  {
     id: "e2e-project-multi-ma",
     slug: "lisa-peeters-ma",
     student_name: "Lisa Peeters",
@@ -307,6 +337,25 @@ export const E2E_PROJECT_IMAGES = [
     caption: "Main image",
     type: "web",
   },
+  // Image-limit-room project: 5 web images so 2 slots remain (limit is 7).
+  ...Array.from({ length: 5 }, (_, i) => ({
+    id: `e2e-pimg-room-${i + 1}`,
+    project_id: "e2e-project-image-room",
+    cloudflare_id: `slam/testing/image-limit-room-${i + 1}`,
+    sort_order: i,
+    caption: null,
+    type: "web",
+  })),
+  // Image-limit-full project: 8 web images — legacy data exceeding the 7-image cap.
+  // The cap should not retroactively prune them, but no further uploads are allowed.
+  ...Array.from({ length: 8 }, (_, i) => ({
+    id: `e2e-pimg-full-${i + 1}`,
+    project_id: "e2e-project-image-full",
+    cloudflare_id: `slam/testing/image-limit-full-${i + 1}`,
+    sort_order: i,
+    caption: null,
+    type: "web",
+  })),
 ];
 
 /**

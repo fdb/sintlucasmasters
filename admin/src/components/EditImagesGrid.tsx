@@ -23,6 +23,8 @@ import type { ProjectImage } from "../store/adminStore";
 
 const ACCEPTED_TYPES = ".jpg,.jpeg,.png,.gif,.webp,.heic,.heif";
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+// 1 main image + 6 extras. Existing projects with more are not pruned.
+const MAX_WEB_IMAGES = 7;
 
 export function EditImagesGrid() {
   const {
@@ -51,7 +53,11 @@ export function EditImagesGrid() {
   const [captionEditId, setCaptionEditId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [limitWarning, setLimitWarning] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const remainingSlots = Math.max(0, MAX_WEB_IMAGES - editImages.length);
+  const atLimit = remainingSlots === 0;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -84,7 +90,20 @@ export function EditImagesGrid() {
       alert(`Files too large (max 10MB): ${oversizedFiles.map((f) => f.name).join(", ")}`);
     }
 
-    const validFiles = files.filter((f) => f.size <= MAX_FILE_SIZE);
+    let validFiles = files.filter((f) => f.size <= MAX_FILE_SIZE);
+
+    // Cap to remaining slots so we never exceed the per-project limit.
+    setLimitWarning(null);
+    if (validFiles.length > remainingSlots) {
+      const dropped = validFiles.length - remainingSlots;
+      validFiles = validFiles.slice(0, remainingSlots);
+      setLimitWarning(
+        `Only ${remainingSlots} of the selected ${remainingSlots + dropped} image${
+          remainingSlots + dropped === 1 ? "" : "s"
+        } uploaded. A project can have at most ${MAX_WEB_IMAGES} images (1 main + 6 extra).`
+      );
+    }
+
     if (validFiles.length > 0) {
       await uploadImages(validFiles);
     }
@@ -172,21 +191,23 @@ export function EditImagesGrid() {
               />
             ))}
 
-            {/* Upload Button */}
-            <button
-              type="button"
-              className={`upload-tile ${uploadStatus === "uploading" ? "is-uploading" : ""} ${!canUpload ? "is-blocked" : ""}`}
-              onClick={canUpload ? handleUploadClick : undefined}
-              disabled={uploadStatus === "uploading" || !canUpload}
-              title={uploadBlockedReason || undefined}
-            >
-              {uploadStatus === "uploading" ? (
-                <Loader2 className="upload-tile-spinner" size={24} />
-              ) : (
-                <Plus className="upload-tile-icon" size={24} />
-              )}
-              <span className="upload-tile-label">{uploadStatus === "uploading" ? "Uploading..." : "Add Image"}</span>
-            </button>
+            {/* Upload Button — hidden once the per-project limit is reached */}
+            {!atLimit && (
+              <button
+                type="button"
+                className={`upload-tile ${uploadStatus === "uploading" ? "is-uploading" : ""} ${!canUpload ? "is-blocked" : ""}`}
+                onClick={canUpload ? handleUploadClick : undefined}
+                disabled={uploadStatus === "uploading" || !canUpload}
+                title={uploadBlockedReason || undefined}
+              >
+                {uploadStatus === "uploading" ? (
+                  <Loader2 className="upload-tile-spinner" size={24} />
+                ) : (
+                  <Plus className="upload-tile-icon" size={24} />
+                )}
+                <span className="upload-tile-label">{uploadStatus === "uploading" ? "Uploading..." : "Add Image"}</span>
+              </button>
+            )}
           </div>
         </SortableContext>
 
@@ -219,6 +240,14 @@ export function EditImagesGrid() {
         <div className="upload-error">
           <AlertCircle size={14} />
           <span>{uploadError}</span>
+        </div>
+      )}
+
+      {/* Image-limit warning shown when more files were picked than slots remain */}
+      {limitWarning && (
+        <div className="upload-error" data-testid="image-limit-warning">
+          <AlertCircle size={14} />
+          <span>{limitWarning}</span>
         </div>
       )}
 
