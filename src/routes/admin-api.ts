@@ -6,6 +6,11 @@ import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../t
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX, MAX_WEB_IMAGES } from "../constants";
 import { emailSlug } from "../lib/names";
+import {
+  uploadImage as uploadCloudflareImage,
+  deleteImage as deleteCloudflareImage,
+  UploadImageError,
+} from "../lib/cloudflare-images";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { normalizeContextKey } from "../lib/i18n";
 
@@ -518,40 +523,13 @@ adminApiRoutes.post("/projects/:id/images/upload", async (c) => {
   const customImageId = `${R2_PATH_PREFIX}/${yearShort}/${studentSlug}/${randomId}.${extension}`;
 
   let cloudflareId: string;
-  if (c.env.E2E_MOCK_CLOUDFLARE_IMAGES === "true") {
-    cloudflareId = customImageId;
-  } else {
-    // Upload to Cloudflare Images with custom ID
-    const cfFormData = new FormData();
-    cfFormData.append("file", file);
-    cfFormData.append("id", customImageId);
-
-    const uploadResponse = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-        },
-        body: cfFormData,
-      }
-    );
-
-    const uploadResult = (await uploadResponse.json()) as {
-      success: boolean;
-      errors?: Array<{ message: string }>;
-      result?: { id: string };
-    };
-
-    if (!uploadResult.success || !uploadResult.result) {
-      const errorMsg = uploadResult.errors?.[0]?.message || "Upload failed";
-      if (errorMsg.includes("dimension") || errorMsg.includes("size")) {
-        return c.json({ error: "Image too large. Maximum: 10MB, 12,000px on longest side." }, 400);
-      }
-      return c.json({ error: errorMsg }, 400);
+  try {
+    cloudflareId = await uploadCloudflareImage(c.env, file, customImageId);
+  } catch (err) {
+    if (err instanceof UploadImageError) {
+      return c.json({ error: err.message }, 400);
     }
-
-    cloudflareId = uploadResult.result.id;
+    throw err;
   }
 
   const newSortOrder = (webImageStats?.max_order ?? -1) + 1;
@@ -760,28 +738,14 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
     return c.json({ error: "Image not found" }, 404);
   }
 
-  // Delete from appropriate storage based on type
   if (image.type === "print") {
     try {
       await c.env.FILES.delete(image.cloudflare_id);
     } catch {
-      // Continue even if delete fails
+      // Best-effort — the DB row is the source of truth.
     }
-  } else if (c.env.E2E_MOCK_CLOUDFLARE_IMAGES !== "true") {
-    // Delete from Cloudflare Images
-    try {
-      await fetch(
-        `https://api.cloudflare.com/client/v4/accounts/${c.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${image.cloudflare_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${c.env.CLOUDFLARE_API_TOKEN}`,
-          },
-        }
-      );
-    } catch {
-      // Continue even if delete fails
-    }
+  } else {
+    await deleteCloudflareImage(c.env, image.cloudflare_id);
   }
 
   // Delete from database

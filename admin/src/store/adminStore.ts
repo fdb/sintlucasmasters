@@ -4,6 +4,18 @@ import { normalizeSocialLink, normalizeSocialLinks } from "../lib/socialLinks";
 
 export const MAX_WEB_IMAGES = 7;
 
+const UPLOAD_ERROR_DISMISS_MS = 3000;
+const UPLOAD_NOTICE_DISMISS_MS = 6000;
+
+let uploadDismissTimer: ReturnType<typeof setTimeout> | null = null;
+function scheduleUploadDismiss(reset: () => void, ms: number) {
+  if (uploadDismissTimer !== null) clearTimeout(uploadDismissTimer);
+  uploadDismissTimer = setTimeout(() => {
+    uploadDismissTimer = null;
+    reset();
+  }, ms);
+}
+
 export type UserRole = "student" | "editor" | "admin";
 
 export type AuthUser = {
@@ -703,7 +715,7 @@ export const useAdminStore = create<AdminState>()(
             uploadStatus: "error",
             uploadError: `Maximum ${MAX_WEB_IMAGES} images allowed (1 main + ${MAX_WEB_IMAGES - 1} gallery)`,
           });
-          setTimeout(() => set({ uploadStatus: "idle", uploadError: null }), 3000);
+          scheduleUploadDismiss(() => set({ uploadStatus: "idle", uploadError: null }), UPLOAD_ERROR_DISMISS_MS);
           return;
         }
 
@@ -713,6 +725,8 @@ export const useAdminStore = create<AdminState>()(
         set({ uploadStatus: "uploading", uploadError: null, uploadNotice: null });
 
         try {
+          // Sequential on purpose: the backend cap is enforced per-request via COUNT(*),
+          // so concurrent uploads to a near-full project could all pass the check and exceed the cap.
           for (const file of filesToUpload) {
             const formData = new FormData();
             formData.append("file", file);
@@ -755,14 +769,14 @@ export const useAdminStore = create<AdminState>()(
           if (skippedCount > 0) {
             const notice = `Uploaded ${filesToUpload.length} of ${files.length} images — ${skippedCount} skipped (max ${MAX_WEB_IMAGES} per project)`;
             set({ uploadStatus: "idle", uploadNotice: notice });
-            setTimeout(() => set({ uploadNotice: null }), 6000);
+            scheduleUploadDismiss(() => set({ uploadNotice: null }), UPLOAD_NOTICE_DISMISS_MS);
           } else {
             set({ uploadStatus: "idle" });
           }
         } catch (err) {
           const message = err instanceof Error ? err.message : "Upload failed";
           set({ uploadStatus: "error", uploadError: message });
-          setTimeout(() => set({ uploadStatus: "idle", uploadError: null }), 3000);
+          scheduleUploadDismiss(() => set({ uploadStatus: "idle", uploadError: null }), UPLOAD_ERROR_DISMISS_MS);
         }
       },
       deleteImage: async (imageId) => {

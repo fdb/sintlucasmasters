@@ -209,12 +209,10 @@ export function EditImagesGrid() {
             )}
       </DndContext>
 
-      {/* Image count */}
       <div className="image-count-info">
         {editImages.length} / {MAX_WEB_IMAGES} images
       </div>
 
-      {/* Upload blocked message */}
       {!canUpload && (
         <div className="upload-blocked-message">
           <AlertCircle size={14} />
@@ -222,7 +220,6 @@ export function EditImagesGrid() {
         </div>
       )}
 
-      {/* Upload Error */}
       {uploadStatus === "error" && uploadError && (
         <div className="upload-error">
           <AlertCircle size={14} />
