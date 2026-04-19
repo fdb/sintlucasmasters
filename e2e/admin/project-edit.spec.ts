@@ -346,9 +346,9 @@ test.describe("admin project editing", () => {
   });
 
   test("editing student name updates table after save", async ({ page }) => {
-    // Use "Editable Student" project - a dedicated project for this test
-    // with a valid program value (required for save) and not used by other tests
-    const originalName = "Editable Student";
+    // Dedicated project "Name Edit Student" — renaming the row would race any other test
+    // that locates by "Editable Student", so this test gets its own isolated fixture.
+    const originalName = "Name Edit Student";
     const targetRow = page.locator("tbody tr", { hasText: originalName });
 
     // Double-click to open edit modal
