@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("lightbox", () => {
-  const projectUrl = "/nl/2024-2025/students/alice-smith/";
+  // Alice Smith is a published MA_BK project (see scripts/seed-e2e.mjs).
+  const projectUrl = "/nl/2024-2025/ma-bk/students/alice-smith/";
 
   // Gallery images load from external Cloudflare URLs, which may render with
   // zero dimensions in test environments. Use force:true to click them.

@@ -7,7 +7,7 @@ import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
 import type { Bindings, ContextKey, Project, ProjectImage, ProjectWithMainImage } from "./types";
-import { CONTEXT_KEYS, getImageUrl } from "./types";
+import { CONTEXT_KEYS, getImageUrl, getStudentUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
 import {
   type ProgrammeCode,
@@ -291,7 +291,7 @@ const renderListing = async (c: Context<{ Bindings: Bindings }>, options: Listin
     itemListElement: localizedProjects.map((project, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${siteUrl}/${locale}/${project.academic_year}/students/${project.slug}/`,
+      url: `${siteUrl}${getStudentUrl(project, locale)}`,
       name: project.project_title,
     })),
   };
@@ -416,8 +416,12 @@ app.get("/sitemap.xml", async (c) => {
     }
 
     for (const project of projects) {
+      // Skip projects without a programme — they have no canonical URL under
+      // the new scheme. (Should not happen in practice for published rows.)
+      if (!project.program) continue;
+      const projectPath = getStudentUrl({ ...project, program: project.program } as Project, locale);
       urls.push(`  <url>
-      <loc>${siteUrl}/${locale}/${project.academic_year}/students/${project.slug}/</loc>
+      <loc>${siteUrl}${projectPath}</loc>
       <lastmod>${formatDate(project.updated_at)}</lastmod>
       <priority>0.8</priority>
     </url>`);
@@ -500,7 +504,7 @@ app.get("/api/search", async (c) => {
       project_title: project.project_title,
       academic_year: project.academic_year,
       context: project.context,
-      url: `/${locale}/${project.academic_year}/students/${project.slug}/`,
+      url: getStudentUrl(project, locale),
       image_url: getImageUrl(imageId, "thumb") || null,
     };
   });
@@ -791,16 +795,49 @@ app.get("/:locale/archive", async (c) => {
   );
 });
 
+// Legacy redirect: pre-programme project URLs (still produced by old links and
+// by getStudentUrl for projects with NULL programme). Look up the project and
+// 301 to the new programme-aware URL when possible. Registered BEFORE the
+// programme detail route so the literal `students` segment at position 3 wins
+// over /:locale/:year/:programme/:context/.
 app.get("/:locale/:year/students/:slug/", async (c) => {
   const locale = c.req.param("locale");
+  const year = c.req.param("year");
+  const slug = c.req.param("slug");
+
   if (!isPublicLocale(locale)) {
-    const year = c.req.param("year");
-    const slug = c.req.param("slug");
+    // Pre-locale legacy form: /YYYY-YYYY/students/slug/ — Hono parses
+    // locale=YYYY-YYYY, year="students", slug=slug.
     if (year === "students" && isAcademicYearSegment(locale)) {
       return c.redirect(`/nl/${locale}/students/${slug}/`, 301);
     }
     return c.notFound();
   }
+
+  const project = await c.env.DB.prepare(
+    "SELECT slug, program FROM projects WHERE academic_year = ? AND slug = ? AND status = 'published'"
+  )
+    .bind(year, slug)
+    .first<{ slug: string; program: string | null }>();
+
+  if (!project) return c.notFound();
+  if (!project.program || !(PROGRAMME_CODES as readonly string[]).includes(project.program)) {
+    // Project has no programme — can't build the new URL. Treat as not found.
+    return c.notFound();
+  }
+
+  const programmeSlug = programmeToSlug(project.program as ProgrammeCode);
+  return c.redirect(`/${locale}/${year}/${programmeSlug}/students/${slug}/`, 301);
+});
+
+// /:locale/:year/:programme/students/:slug/ — canonical project detail URL.
+app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) return c.notFound();
+
+  const programmeSlugInUrl = c.req.param("programme");
+  const programmeFromUrl = slugToProgramme(programmeSlugInUrl);
+  if (!programmeFromUrl) return c.notFound();
 
   setLocalePreference(c, locale);
   const text = TEXT[locale];
@@ -822,6 +859,14 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
       </Layout>,
       404
     );
+  }
+
+  // If the URL's programme segment doesn't match the project's actual
+  // programme, 301 to the canonical programme path so search engines see one
+  // canonical URL per project.
+  if (project.program && project.program !== programmeFromUrl) {
+    const correctSlug = programmeToSlug(project.program as ProgrammeCode);
+    return c.redirect(`/${locale}/${year}/${correctSlug}/students/${slug}/`, 301);
   }
 
   const localizedProject = {
@@ -998,7 +1043,8 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
     project.program && (PROGRAMME_CODES as readonly string[]).includes(project.program)
       ? primarySiteFor(project.program as ProgrammeCode)
       : site;
-  const canonicalUrl = `${siteUrlFor(canonicalSite)}/${locale}/${year}/students/${slug}/`;
+  const canonicalProgrammeSlug = programmeToSlug(programmeFromUrl);
+  const canonicalUrl = `${siteUrlFor(canonicalSite)}/${locale}/${year}/${canonicalProgrammeSlug}/students/${slug}/`;
   const projectUrl = canonicalUrl;
   const backLinkHref = year === CURRENT_YEAR ? `/${locale}/` : `/${locale}/${year}/`;
   const mainImage = images[0] || null;

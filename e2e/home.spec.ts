@@ -57,8 +57,21 @@ test.describe("locale routing", () => {
     await page.goto("/about");
     await expect(page).toHaveURL("/nl/about");
 
+    // Bare-year project URL → first redirects to /nl/, then again to the
+    // programme-aware canonical URL once the project's programme is known.
     await page.goto("/2024-2025/students/alice-smith/");
-    await expect(page).toHaveURL("/nl/2024-2025/students/alice-smith/");
+    await expect(page).toHaveURL("/nl/2024-2025/ma-bk/students/alice-smith/");
+  });
+
+  test("pre-programme project URL redirects to programme-aware canonical", async ({ page }) => {
+    await page.goto("/nl/2024-2025/students/alice-smith/");
+    await expect(page).toHaveURL("/nl/2024-2025/ma-bk/students/alice-smith/");
+  });
+
+  test("URL with wrong programme redirects to canonical programme", async ({ page }) => {
+    // Frida Lens is BA_FO; visiting under ma-bk should 301 to ba-fo.
+    await page.goto("/nl/2024-2025/ma-bk/students/frida-lens/");
+    await expect(page).toHaveURL("/nl/2024-2025/ba-fo/students/frida-lens/");
   });
 });
 
@@ -96,13 +109,13 @@ test.describe("localized content (masters chrome)", () => {
   });
 
   test("NL project detail shows Dutch title and description", async ({ page }) => {
-    await page.goto("/nl/2024-2025/students/alice-smith/");
+    await page.goto("/nl/2024-2025/ma-bk/students/alice-smith/");
     await expect(page.locator(".detail-project-title")).toHaveText("Digitale Dromen");
     await expect(page.locator(".detail-location")).toHaveText("Antwerpen, België");
   });
 
   test("EN project detail shows English title and description", async ({ page }) => {
-    await page.goto("/en/2024-2025/students/alice-smith/");
+    await page.goto("/en/2024-2025/ma-bk/students/alice-smith/");
     await expect(page.locator(".detail-project-title")).toHaveText("Digital Dreams");
     await expect(page.locator(".detail-location")).toHaveText("Antwerp, Belgium");
   });
@@ -118,12 +131,12 @@ test.describe("localized content (masters chrome)", () => {
   });
 
   test("switching language updates labels and content", async ({ page }) => {
-    await page.goto("/nl/2024-2025/students/alice-smith/?__site=masters");
+    await page.goto("/nl/2024-2025/ma-bk/students/alice-smith/?__site=masters");
     await expect(page.locator(".detail-project-title")).toHaveText("Digitale Dromen");
     await expect(page.locator("nav.sub-header a").first()).toHaveText("projecten");
 
     await page.locator(".locale-switch a", { hasText: "EN" }).click();
-    await expect(page).toHaveURL("/en/2024-2025/students/alice-smith/?__site=masters");
+    await expect(page).toHaveURL("/en/2024-2025/ma-bk/students/alice-smith/?__site=masters");
     await expect(page.locator(".detail-project-title")).toHaveText("Digital Dreams");
     await expect(page.locator("nav.sub-header a").first()).toHaveText("projects");
   });
@@ -134,7 +147,7 @@ test.describe("homepage (masters chrome)", () => {
     await page.goto("/?__site=masters");
     await expect(page).toHaveURL(/\/nl\/(\?__site=masters)?$/);
     const firstCard = page.locator(".grid a.card").first();
-    await expect(firstCard).toHaveAttribute("href", /\/nl\/\d{4}-\d{4}\/students\//);
+    await expect(firstCard).toHaveAttribute("href", /\/nl\/\d{4}-\d{4}\/[a-z-]+\/students\//);
   });
 
   test("shows project grid", async ({ page }) => {
@@ -220,8 +233,9 @@ test.describe("site routing (host / __site override)", () => {
   });
 
   test("project URL works on a non-primary domain (cross-domain access)", async ({ page }) => {
-    // Frida Lens is BA_FO — primary site is fotografie. Access via masters.
-    await page.goto("/nl/2024-2025/students/frida-lens/?__site=masters");
+    // Frida Lens is BA_FO — primary site is fotografie. Access via masters
+    // using the canonical programme-aware URL.
+    await page.goto("/nl/2024-2025/ba-fo/students/frida-lens/?__site=masters");
     await expect(page.locator(".detail-project-title")).toHaveText("Lange Schaduwen");
     // Canonical must point to the primary (fotografie) domain.
     const canonical = page.locator('link[rel="canonical"]');
@@ -274,7 +288,7 @@ test.describe("project detail page", () => {
   test("can navigate to project from grid", async ({ page }) => {
     await page.goto("/?__site=masters");
     await page.locator(".grid a.card").first().click();
-    await expect(page).toHaveURL(/\/nl\/\d{4}-\d{4}\/students\/[^/]+\//);
+    await expect(page).toHaveURL(/\/nl\/\d{4}-\d{4}\/[a-z-]+\/students\/[^/]+\//);
   });
 
   test("shows back link", async ({ page }) => {

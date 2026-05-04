@@ -4,7 +4,7 @@ import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { useProject, useSession } from "../api/queries";
 import { useDeleteProject, useSubmitProject } from "../api/mutations";
-import { formatDate } from "../utils";
+import { buildProjectUrl, formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
 import { ExportButton } from "./ExportPanel";
@@ -235,7 +235,7 @@ export function ProjectDetailPanel() {
                 )}
                 {projectDetail.project.status === "published" ? (
                   <a
-                    href={`/nl/${projectDetail.project.academic_year}/students/${projectDetail.project.slug}/`}
+                    href={buildProjectUrl(projectDetail.project)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="detail-action-btn"
