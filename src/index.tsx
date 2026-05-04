@@ -1058,18 +1058,14 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
     .filter((url): url is string => Boolean(url));
   const imageUrls = [...(mainImageUrl ? [mainImageUrl] : []), ...galleryImageUrls];
   const creatorSameAs = socialItems.map((item) => item.href).filter(Boolean);
-  // Meta line shown under the project title. On the graduates umbrella site
-  // we prefix MA_BK/PREMA_BK contexts with the programme name ("Master
-  // Jewelry Context") because programmes mix on that site. BA_FO / BA_BK
-  // always use the programme label and ignore the schema's `context` column,
-  // which has no real taxonomy for those programmes.
+  // Meta line shown under the project title. Identical across all three
+  // sites — only chrome differs by domain. MA_BK/PREMA_BK get
+  // "Master/Premaster {Context}"; BA_FO/BA_BK get the programme label alone.
   const projectProgramme =
     project.program && (PROGRAMME_CODES as readonly string[]).includes(project.program)
       ? (project.program as ProgrammeCode)
       : null;
-  const metaLabel = getProjectMetaLabel(projectProgramme, project.context, locale, {
-    showProgrammePrefix: site.id === "graduates",
-  });
+  const metaLabel = getProjectMetaLabel(projectProgramme, project.context, locale);
 
   const creativeWorkSchema = {
     "@context": "https://schema.org",

@@ -242,30 +242,23 @@ test.describe("site routing (host / __site override)", () => {
     await expect(canonical).toHaveAttribute("href", /sintlucasfotografie\.com/);
   });
 
-  test("graduates project meta prefixes context with programme", async ({ page }) => {
-    // Alice Smith is MA_BK + digital. On graduates we want the prefixed label.
-    // Page is /nl/ → Dutch context label ("Digitale context").
-    await page.goto("/nl/2024-2025/ma-bk/students/alice-smith/?__site=graduates");
-    await expect(page.locator(".detail-meta")).toContainText("Master Digitale context");
+  test("project meta is identical across all three sites (graduates / masters / fotografie)", async ({ page }) => {
+    // Alice Smith is MA_BK + digital. The label should NOT change with site —
+    // only the chrome (header/footer/nav) does.
+    const expected = "Master Digitale context"; // /nl/ → Dutch context label
+    for (const site of ["graduates", "masters", "fotografie"]) {
+      await page.goto(`/nl/2024-2025/ma-bk/students/alice-smith/?__site=${site}`);
+      await expect(page.locator(".detail-meta")).toContainText(expected);
+    }
   });
 
-  test("graduates project meta for BA_FO uses programme label only", async ({ page }) => {
-    // Frida Lens is BA_FO. The schema's `context` column is irrelevant for
-    // photography — we show the programme label instead.
+  test("BA_FO project meta uses the programme label and drops spurious context", async ({ page }) => {
+    // Frida Lens is BA_FO. The schema's `context` column has no taxonomy for
+    // photography — we show the programme label everywhere.
     await page.goto("/nl/2024-2025/ba-fo/students/frida-lens/?__site=graduates");
     await expect(page.locator(".detail-meta")).toContainText("Professionele bachelor fotografie");
     await expect(page.locator(".detail-meta")).not.toContainText("Autonoom");
-  });
 
-  test("masters project meta keeps the flat context label (no programme prefix)", async ({ page }) => {
-    // Same project on masters: programme is implicit from the domain, so we
-    // don't repeat it in the meta line.
-    await page.goto("/en/2024-2025/ma-bk/students/alice-smith/?__site=masters");
-    await expect(page.locator(".detail-meta")).toContainText("Digital Context");
-    await expect(page.locator(".detail-meta")).not.toContainText("Master Digital");
-  });
-
-  test("fotografie project meta uses programme label, drops spurious context", async ({ page }) => {
     await page.goto("/en/2024-2025/ba-fo/students/frida-lens/?__site=fotografie");
     await expect(page.locator(".detail-meta")).toContainText("Professional Bachelor Photography");
     await expect(page.locator(".detail-meta")).not.toContainText("Autonomous");
