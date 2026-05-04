@@ -3,6 +3,7 @@ import { FileCheck, FileImage, Trash2 } from "lucide-react";
 import { useShallow } from "zustand/shallow";
 import { useAdminStore } from "../store/adminStore";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { FILES_BASE_URL } from "../constants";
 import {
   validatePrintImageDimensions,
   isPrintImageSupported,
@@ -10,13 +11,11 @@ import {
   type PrintImageValidationResult,
 } from "../utils";
 
-const TEMPLATE_BASE_URL = "https://files.sintlucasmasters.com/postcard-templates";
-
 const TEMPLATES = [
-  { orientation: "Landscape", format: "PDF", url: `${TEMPLATE_BASE_URL}/postcard-a6-landscape.pdf` },
-  { orientation: "Landscape", format: "PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-landscape.png` },
-  { orientation: "Portrait", format: "PDF", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.pdf` },
-  { orientation: "Portrait", format: "PNG", url: `${TEMPLATE_BASE_URL}/postcard-a6-portrait.png` },
+  { orientation: "Landscape", format: "PDF", url: `${FILES_BASE_URL}/postcard-templates/postcard-a6-landscape.pdf` },
+  { orientation: "Landscape", format: "PNG", url: `${FILES_BASE_URL}/postcard-templates/postcard-a6-landscape.png` },
+  { orientation: "Portrait", format: "PDF", url: `${FILES_BASE_URL}/postcard-templates/postcard-a6-portrait.pdf` },
+  { orientation: "Portrait", format: "PNG", url: `${FILES_BASE_URL}/postcard-templates/postcard-a6-portrait.png` },
 ];
 
 function getFilenameParts(filepath: string): { name: string; extension: string } {
@@ -111,13 +110,17 @@ export function PrintImageSection() {
         <div className="print-image-file">
           <div className="print-image-file-info">
             <FileCheck size={20} className="file-icon" />
-            <span
+            <a
+              href={`${FILES_BASE_URL}/${printImagePath}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              download={`${getFilenameParts(printImagePath).name}${getFilenameParts(printImagePath).extension}`}
               className="file-name"
               title={`${getFilenameParts(printImagePath).name}${getFilenameParts(printImagePath).extension}`}
             >
               <span className="file-name-base">{getFilenameParts(printImagePath).name}</span>
               <span className="file-name-ext">{getFilenameParts(printImagePath).extension}</span>
-            </span>
+            </a>
             {editAllowed && (
               <button
                 type="button"

@@ -3,6 +3,7 @@
 import type { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
 import { verifyToken, type JWTPayload } from "../lib/jwt";
+import { isProductionHost } from "../sites";
 
 export const AUTH_COOKIE_NAME = "auth_token";
 
@@ -81,8 +82,11 @@ async function getDevAdminUser(c: Context<{ Bindings: AuthBindings }>): Promise<
 
 // Parse JWT from cookie and attach user to context (does not enforce auth)
 export async function authMiddleware(c: Context<{ Bindings: AuthBindings }>, next: Next): Promise<Response | void> {
-  // Safety: never allow dev/test auth bypasses on the production domain
-  const isProduction = c.env.APP_BASE_URL?.includes("sintlucasmasters.com") && !c.env.APP_BASE_URL?.includes("dev.");
+  // Safety: never allow dev/test auth bypasses on a registered production
+  // domain. We check the request host against the SITES registry so the
+  // safeguard covers all three public domains, not just the masters one.
+  const requestHost = c.req.header("host") ?? new URL(c.req.url).hostname;
+  const isProduction = isProductionHost(requestHost);
   if (isProduction && (c.env.E2E_SKIP_AUTH || c.env.DEV_ADMIN_EMAIL)) {
     throw new Error("E2E_SKIP_AUTH and DEV_ADMIN_EMAIL must not be set in production");
   }

@@ -47,6 +47,7 @@ export interface Project {
   project_title_en: string;
   project_title_nl: string;
   project_title?: string;
+  program: string | null;
   context: ContextKey;
   academic_year: string;
   bio_en: string | null;

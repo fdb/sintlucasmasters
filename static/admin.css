@@ -2662,6 +2662,11 @@ tr.status-draft td:first-child {
   font-size: 0.875rem;
   font-family: monospace;
   color: var(--black);
+  text-decoration: none;
+}
+
+.print-image-file-info a.file-name:hover {
+  text-decoration: underline;
 }
 
 .print-image-file-info .file-name-base {
