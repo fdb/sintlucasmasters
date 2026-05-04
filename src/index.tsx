@@ -4,6 +4,9 @@ import { setCookie } from "hono/cookie";
 import { secureHeaders } from "hono/secure-headers";
 import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
+import { MastersAboutBody } from "./components/sites/MastersTemplate";
+import { FotografieAboutBody } from "./components/sites/FotografieTemplate";
+import { GraduatesAboutBody } from "./components/sites/GraduatesTemplate";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
 import type { Bindings, ContextKey, Project, ProjectImage, ProjectWithMainImage } from "./types";
@@ -77,14 +80,6 @@ const TEXT = {
     detailAbout: "About",
     detailProject: "Project",
     aboutTitle: "About",
-    aboutHeading: "Master Expo",
-    aboutText: "Discover the new generation of artists, designers and photographers of Sint Lucas Antwerpen.",
-    credits: "Credits",
-    headMaster: "Head of the Master",
-    communication: "Communication",
-    development: "Development",
-    design: "Design",
-    codeIsFree: "The code for this website is free software, available on GitHub.",
     yearDescriptionPrefix: "Discover",
     yearDescriptionMiddle: "graduation projects from Sint Lucas Masters",
     yearDescriptionSuffix: "Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.",
@@ -114,14 +109,6 @@ const TEXT = {
     detailAbout: "Over",
     detailProject: "Project",
     aboutTitle: "Over",
-    aboutHeading: "Master Expo",
-    aboutText: "Ontdek de nieuwe generatie kunstenaars, ontwerpers en fotografen van Sint Lucas Antwerpen.",
-    credits: "Credits",
-    headMaster: "Hoofd van de master",
-    communication: "Communicatie",
-    development: "Ontwikkeling",
-    design: "Vormgeving",
-    codeIsFree: "De code van deze website is vrije software en beschikbaar op GitHub.",
     yearDescriptionPrefix: "Ontdek",
     yearDescriptionMiddle: "afstudeerprojecten van Sint Lucas Masters",
     yearDescriptionSuffix: "Verken werk binnen autonome, toegepaste, digitale, socio-politieke en juwelencontexten.",
@@ -628,8 +615,17 @@ app.get("/:locale/about", (c) => {
   const canonicalUrl = `${siteUrlFor(site)}/${locale}/about`;
   const description =
     locale === "nl"
-      ? "Lees meer over de Sint Lucas Masters afstudeerexpo met masterprojecten uit Antwerpen."
-      : "Learn about the Sint Lucas Masters Graduation Tour exhibition showcasing master-level art and design projects from Antwerp.";
+      ? "Lees meer over de afstudeerexpo Graduation Tour 2026 van Sint Lucas Antwerpen."
+      : "Learn about the Graduation Tour 2026 exhibition at Sint Lucas Antwerpen.";
+
+  const body =
+    site.id === "fotografie" ? (
+      <FotografieAboutBody locale={locale} />
+    ) : site.id === "graduates" ? (
+      <GraduatesAboutBody locale={locale} />
+    ) : (
+      <MastersAboutBody locale={locale} />
+    );
 
   return c.html(
     <Layout
@@ -641,42 +637,7 @@ app.get("/:locale/about", (c) => {
       ogDescription={description}
       jsonLd={organizationSchemaFor(site)}
     >
-      <div class="about-content">
-        <h2 class="about-heading">{text.aboutHeading}</h2>
-        <p class="about-text">
-          {text.aboutText.split("Sint Lucas Antwerpen")[0]}
-          <a href="https://www.sintlucasantwerpen.be/" target="_blank" rel="noopener noreferrer">
-            Sint Lucas Antwerpen
-          </a>
-          .
-        </p>
-        <h3>{text.credits}</h3>
-        <dl class="credits-list">
-          <div class="credits-entry">
-            <dt>{text.headMaster}</dt>
-            <dd>Reg Herygers</dd>
-          </div>
-          <div class="credits-entry">
-            <dt>{text.communication}</dt>
-            <dd>Nicolas Van Herck</dd>
-          </div>
-          <div class="credits-entry">
-            <dt>{text.development}</dt>
-            <dd>Frederik De Bleser</dd>
-          </div>
-          <div class="credits-entry">
-            <dt>{text.design}</dt>
-            <dd>Chloé D'Hauwe</dd>
-          </div>
-        </dl>
-        <p class="credits-source">
-          {text.codeIsFree.split("GitHub")[0]}
-          <a href="https://github.com/fdb/sintlucasmasters/" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          .
-        </p>
-      </div>
+      {body}
     </Layout>
   );
 });

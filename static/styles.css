@@ -974,6 +974,18 @@ body.lightbox-open {
   color: var(--gray);
 }
 
+.programme-block {
+  margin: 1rem 0 1.75rem;
+}
+
+.programme-block-label {
+  margin-bottom: 0.25rem;
+}
+
+.programme-links {
+  font-size: 0.9375rem;
+}
+
 /* ───────────────────────────────────
    Empty state
    ─────────────────────────────────── */
