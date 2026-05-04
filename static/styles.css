@@ -249,8 +249,14 @@ a:hover {
   border-bottom-color: currentColor;
 }
 
+.locale-switch--top {
+  align-self: stretch;
+}
+
 .locale-switch--top a {
+  align-self: stretch;
   color: rgba(255, 255, 255, 0.72);
+  border-bottom-width: 2px;
 }
 
 .locale-switch--top a:hover {
