@@ -32,6 +32,7 @@ import {
   getLocalizedProjectDescription,
   getLocalizedProjectLocation,
   getLocalizedProjectTitle,
+  getProjectMetaLabel,
   isPublicLocale,
 } from "./lib/i18n";
 
@@ -1057,7 +1058,18 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
     .filter((url): url is string => Boolean(url));
   const imageUrls = [...(mainImageUrl ? [mainImageUrl] : []), ...galleryImageUrls];
   const creatorSameAs = socialItems.map((item) => item.href).filter(Boolean);
-  const contextLabel = getContextFullLabel(project.context, locale);
+  // Meta line shown under the project title. On the graduates umbrella site
+  // we prefix MA_BK/PREMA_BK contexts with the programme name ("Master
+  // Jewelry Context") because programmes mix on that site. BA_FO / BA_BK
+  // always use the programme label and ignore the schema's `context` column,
+  // which has no real taxonomy for those programmes.
+  const projectProgramme =
+    project.program && (PROGRAMME_CODES as readonly string[]).includes(project.program)
+      ? (project.program as ProgrammeCode)
+      : null;
+  const metaLabel = getProjectMetaLabel(projectProgramme, project.context, locale, {
+    showProgrammePrefix: site.id === "graduates",
+  });
 
   const creativeWorkSchema = {
     "@context": "https://schema.org",
@@ -1113,7 +1125,7 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
       currentPath={requestPathWithQuery(c)}
       title={`${project.student_name} - ${localizedProject.project_title}`}
       ogImage={mainImageUrl}
-      ogDescription={`${localizedProject.project_title} by ${project.student_name} · ${contextLabel}`}
+      ogDescription={`${localizedProject.project_title} by ${project.student_name} · ${metaLabel}`}
       ogType="article"
       canonicalUrl={canonicalUrl}
       jsonLd={[organizationSchemaFor(canonicalSite), creativeWorkSchema, breadcrumbSchema]}
@@ -1129,7 +1141,7 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
               {localizedProject.project_title}
             </h1>
             <p class="detail-meta">
-              {contextLabel} · {project.academic_year}
+              {metaLabel} · {project.academic_year}
             </p>
           </div>
           <div class="detail-header-right">
