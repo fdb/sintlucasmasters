@@ -1,15 +1,16 @@
 ---
 name: deploy
-description: Deploy the Sint Lucas Masters app to Cloudflare Workers — commits, pushes, applies pending D1 migrations, deploys, and verifies via health endpoint
+description: Deploy the Sint Lucas Masters app to Cloudflare Workers — verifies main is clean and pushed, applies pending D1 migrations, deploys, and verifies via health endpoint
 ---
 
-# Deploy — Commit, Push, Migrate & Ship to Cloudflare
+# Deploy — Verify, Migrate & Ship to Cloudflare
 
-Safely deploy the Sint Lucas Masters application to production. Ensures everything is committed and pushed, applies pending database migrations, deploys the worker, and verifies the deployment is healthy.
+Safely deploy the Sint Lucas Masters application to production. Verifies the working tree is clean and `main` is pushed, applies pending database migrations, deploys the worker, and verifies the deployment is healthy. **The skill never commits or pushes on the user's behalf — that must already be done.**
 
 **CRITICAL SAFETY RULES:**
 - This skill NEVER drops, rebuilds, or re-initializes the database. It only applies *pending* migrations via `npm run init:remote`. The production database contains live student data.
 - Deploys only from the `main` branch. If on any other branch, **stop** and tell the user.
+- **NEVER deploys from a dirty working tree.** All changes must be committed AND pushed to `origin/main` before deploying. If there are uncommitted changes, untracked files, or unpushed commits, **stop** and tell the user to commit and push first. This skill must not create commits or push on the user's behalf — the deployed commit must be a deliberate human action.
 
 ## Steps
 
@@ -32,42 +33,33 @@ npm run test
 
 If either fails, **stop** — do not deploy broken code.
 
-### 3. Commit and push
+### 3. Verify clean working tree and synced with origin/main
 
-Check for uncommitted changes:
+**This is a hard gate.** The skill must NOT create commits, stage files, or push on behalf of the user. Only verify, and refuse if anything is off.
 
-```bash
-git status
-git diff
-git diff --staged
-```
-
-If there are staged or unstaged changes:
-
-1. Stage relevant files by name (`git add <file>...`). Never stage files that look like secrets (`.env`, credentials, keys).
-2. Generate a concise commit message following the repo's style (`git log --oneline -5`). Summarize the "why" not the "what".
-3. Commit using a HEREDOC:
+First, fetch the latest remote state so the comparison is accurate:
 
 ```bash
-git commit -m "$(cat <<'EOF'
-Your commit message here.
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-EOF
-)"
+git fetch origin main
 ```
 
-Then push:
+Then check three things:
 
 ```bash
-git push
+# 1. Working tree must be fully clean (no staged, unstaged, or untracked files)
+git status --porcelain
+
+# 2. Local main must exactly match origin/main
+git rev-parse HEAD
+git rev-parse origin/main
 ```
 
-If the working tree is already clean, just ensure we're up to date with remote:
+**Stop and refuse to deploy if any of these are true:**
 
-```bash
-git push
-```
+- `git status --porcelain` produces ANY output → there are uncommitted or untracked changes. Tell the user: "Working tree is dirty. Commit (or stash/clean) all changes before deploying. /deploy will not commit on your behalf."
+- `HEAD` ≠ `origin/main` → either local is ahead (unpushed commits) or behind (need to pull). Tell the user: "Local `main` is not in sync with `origin/main`. Push (or pull) before deploying."
+
+Only proceed to step 4 when the working tree is clean AND `HEAD` exactly equals `origin/main`.
 
 ### 4. Apply pending D1 migrations
 
