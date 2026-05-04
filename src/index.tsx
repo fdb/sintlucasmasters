@@ -7,8 +7,18 @@ import { Layout } from "./components/Layout";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
 import type { Bindings, ContextKey, Project, ProjectImage, ProjectWithMainImage } from "./types";
-import { CONTEXT_KEYS, getImageUrl } from "./types";
+import { CONTEXT_KEYS, getImageUrl, getStudentUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
+import {
+  type ProgrammeCode,
+  type SiteConfig,
+  PROGRAMME_CODES,
+  primarySiteFor,
+  programmeToSlug,
+  resolveSite,
+  slugToProgramme,
+} from "./sites";
+import { siteMiddleware } from "./middleware/site";
 import { authApiRoutes, authPageRoutes } from "./routes/auth";
 import { adminPageRoutes } from "./routes/admin";
 import { adminApiRoutes } from "./routes/admin-api";
@@ -22,6 +32,7 @@ import {
   getLocalizedProjectDescription,
   getLocalizedProjectLocation,
   getLocalizedProjectTitle,
+  getProjectMetaLabel,
   isPublicLocale,
 } from "./lib/i18n";
 
@@ -38,7 +49,10 @@ type LocalizedProject = ProjectWithMainImage & {
   location: string | null;
 };
 
-const SITE_URL = "https://sintlucasmasters.com";
+// Per-request site URL — derived from c.var.site.hostname inside handlers.
+function siteUrlFor(site: SiteConfig): string {
+  return `https://${site.hostname}`;
+}
 
 const TEXT = {
   en: {
@@ -156,14 +170,21 @@ app.route("/auth", authPageRoutes);
 app.route("/api/admin", adminApiRoutes);
 app.route("/admin", adminPageRoutes);
 
+// Public-site middleware: every route below this point gets c.var.site set
+// from the Host header (or ?__site=/X-Site-Override in dev). Admin and auth
+// routes above are intentionally site-agnostic.
+app.use("*", siteMiddleware);
+
 const escapeLikeValue = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  name: "Sint Lucas Antwerpen",
-  url: SITE_URL,
-};
+function organizationSchemaFor(site: SiteConfig) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    name: "Sint Lucas Antwerpen",
+    url: siteUrlFor(site),
+  };
+}
 
 function setLocalePreference(c: Context<{ Bindings: Bindings }>, locale: PublicLocale) {
   const isSecure = new URL(c.req.url).protocol === "https:";
@@ -200,18 +221,28 @@ function localizeProject(project: ProjectWithMainImage, locale: PublicLocale): L
   };
 }
 
-type YearPageOptions = {
+type ListingOptions = {
   locale: PublicLocale;
   year: string;
-  basePath: string;
+  // Single programme = programme listing page; null/undefined = site default.
+  programme?: ProgrammeCode | null;
+  // Context filter — only meaningful when programme has contexts (MA_BK/PREMA_BK).
+  context?: ContextKey | null;
+  // Title shown in the page chrome (e.g. "2024-2025" or "Master 2024-2025").
+  title: string;
   canonicalUrl: string;
 };
 
-const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearPageOptions) => {
-  const { locale, year, basePath, canonicalUrl } = options;
+// Programmes that have a context taxonomy. BA_FO / BA_BK don't.
+const PROGRAMMES_WITH_CONTEXT: ReadonlySet<ProgrammeCode> = new Set<ProgrammeCode>(["MA_BK", "PREMA_BK"]);
+
+const renderListing = async (c: Context<{ Bindings: Bindings }>, options: ListingOptions) => {
+  const site = c.var.site;
+  const { locale, year, programme, context, title, canonicalUrl } = options;
   const text = TEXT[locale];
   setLocalePreference(c, locale);
-  const context = contextFromQuery(c.req.query("context"));
+
+  const programmesToShow: ProgrammeCode[] = programme ? [programme] : site.programmes;
 
   let query = `SELECT p.*,
     (
@@ -224,6 +255,11 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
     FROM projects p
     WHERE p.academic_year = ? AND p.status = 'published'`;
   const params: string[] = [year];
+
+  if (programmesToShow.length > 0) {
+    query += ` AND p.program IN (${programmesToShow.map(() => "?").join(",")})`;
+    params.push(...programmesToShow);
+  }
 
   if (context) {
     query += " AND p.context = ?";
@@ -238,9 +274,9 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
 
   const localizedProjects = projects.map((project) => localizeProject(project, locale));
 
-  if (localizedProjects.length === 0 && !context) {
+  if (localizedProjects.length === 0 && !context && !programme) {
     return c.html(
-      <Layout locale={locale} currentPath={requestPathWithQuery(c)} title={text.notFound}>
+      <Layout site={site} locale={locale} currentPath={requestPathWithQuery(c)} title={text.notFound}>
         <p>{text.noProjectsForYear}</p>
         <a href={`/${locale}/${CURRENT_YEAR}/`}>{text.goToCurrentYear}</a>
       </Layout>,
@@ -250,12 +286,13 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
 
   const description = `${text.yearDescriptionPrefix} ${localizedProjects.length} ${text.yearDescriptionMiddle} ${year}. ${text.yearDescriptionSuffix}`;
   const collectionName = context ? `${getContextFullLabel(context, locale)} - ${year}` : `${year} ${text.projects}`;
+  const siteUrl = siteUrlFor(site);
   const itemList = {
     "@type": "ItemList",
     itemListElement: localizedProjects.map((project, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE_URL}/${locale}/${project.academic_year}/students/${project.slug}/`,
+      url: `${siteUrl}${getStudentUrl(project, locale)}`,
       name: project.project_title,
     })),
   };
@@ -269,18 +306,27 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
     mainEntity: itemList,
   };
 
+  // Show the context filter only on a programme listing whose programme has
+  // a context taxonomy. The site default homepage has no context filter
+  // (would mix programmes), and BA_FO/BA_BK have no contexts.
+  const showContextFilter = programme != null && PROGRAMMES_WITH_CONTEXT.has(programme);
+  const programmeBasePath = programme ? `/${locale}/${year}/${programmeToSlug(programme)}` : null;
+
   return c.html(
     <Layout
+      site={site}
       locale={locale}
       currentPath={requestPathWithQuery(c)}
-      title={year}
+      title={title}
       canonicalUrl={canonicalUrl}
       ogDescription={description}
-      jsonLd={[organizationSchema, collectionSchema]}
+      jsonLd={[organizationSchemaFor(site), collectionSchema]}
     >
-      <div class="page-filters">
-        <ContextFilter locale={locale} basePath={basePath} activeContext={context} showLabel />
-      </div>
+      {showContextFilter && programmeBasePath && (
+        <div class="page-filters">
+          <ContextFilter locale={locale} basePath={programmeBasePath} activeContext={context ?? null} showLabel />
+        </div>
+      )}
       <div class="grid" data-project-grid data-show-year="false">
         {localizedProjects.map((project) => (
           <ProjectCard project={project} localePrefix={locale} />
@@ -292,19 +338,33 @@ const renderYearPage = async (c: Context<{ Bindings: Bindings }>, options: YearP
 };
 
 app.get("/robots.txt", (c) => {
+  const siteUrl = siteUrlFor(c.var.site);
   const robotsTxt = `User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /auth
-Sitemap: ${SITE_URL}/sitemap.xml
+Sitemap: ${siteUrl}/sitemap.xml
 `;
   return c.text(robotsTxt, 200, { "Content-Type": "text/plain" });
 });
 
 app.get("/sitemap.xml", async (c) => {
+  // Each domain serves a sitemap of *its own* programmes only. Cross-domain
+  // project URLs technically work, but listing them here would invite duplicate
+  // content penalties — the canonical URL points to the primary site anyway.
+  const site = c.var.site;
+  const siteUrl = siteUrlFor(site);
+  const placeholders = site.programmes.map(() => "?").join(",");
+
   const { results: projects } = await c.env.DB.prepare(
-    "SELECT academic_year, slug, updated_at FROM projects WHERE status = 'published' ORDER BY academic_year DESC, sort_name"
-  ).all<{ academic_year: string; slug: string; updated_at: string | null }>();
+    `SELECT academic_year, slug, program, updated_at
+       FROM projects
+      WHERE status = 'published'
+        AND program IN (${placeholders})
+      ORDER BY academic_year DESC, sort_name`
+  )
+    .bind(...site.programmes)
+    .all<{ academic_year: string; slug: string; program: string | null; updated_at: string | null }>();
 
   const years = [...new Set(projects.map((p) => p.academic_year))];
 
@@ -318,17 +378,17 @@ app.get("/sitemap.xml", async (c) => {
 
   for (const locale of ["nl", "en"] as const) {
     urls.push(`  <url>
-    <loc>${SITE_URL}/${locale}/</loc>
+    <loc>${siteUrl}/${locale}/</loc>
     <lastmod>${today}</lastmod>
     <priority>1.0</priority>
   </url>`);
     urls.push(`  <url>
-    <loc>${SITE_URL}/${locale}/about</loc>
+    <loc>${siteUrl}/${locale}/about</loc>
     <lastmod>${today}</lastmod>
     <priority>0.5</priority>
   </url>`);
     urls.push(`  <url>
-    <loc>${SITE_URL}/${locale}/archive</loc>
+    <loc>${siteUrl}/${locale}/archive</loc>
     <lastmod>${today}</lastmod>
     <priority>0.6</priority>
   </url>`);
@@ -341,15 +401,28 @@ app.get("/sitemap.xml", async (c) => {
       }, "");
 
       urls.push(`  <url>
-      <loc>${SITE_URL}/${locale}/${year}/</loc>
+      <loc>${siteUrl}/${locale}/${year}/</loc>
       <lastmod>${formatDate(latestUpdate)}</lastmod>
       <priority>0.7</priority>
     </url>`);
+
+      for (const programme of site.programmes) {
+        const slug = programmeToSlug(programme);
+        urls.push(`  <url>
+      <loc>${siteUrl}/${locale}/${year}/${slug}/</loc>
+      <lastmod>${formatDate(latestUpdate)}</lastmod>
+      <priority>0.65</priority>
+    </url>`);
+      }
     }
 
     for (const project of projects) {
+      // Skip projects without a programme — they have no canonical URL under
+      // the new scheme. (Should not happen in practice for published rows.)
+      if (!project.program) continue;
+      const projectPath = getStudentUrl({ ...project, program: project.program } as Project, locale);
       urls.push(`  <url>
-      <loc>${SITE_URL}/${locale}/${project.academic_year}/students/${project.slug}/</loc>
+      <loc>${siteUrl}${projectPath}</loc>
       <lastmod>${formatDate(project.updated_at)}</lastmod>
       <priority>0.8</priority>
     </url>`);
@@ -375,13 +448,19 @@ app.get("/api/search", async (c) => {
     return c.json({ query: rawQuery, results: [] });
   }
 
+  const site = c.var.site;
   const like = `%${escapeLikeValue(rawQuery)}%`;
+  const programmePlaceholders = site.programmes.map(() => "?").join(",");
 
+  // Search is scoped to the visiting site's programmes. On graduates this
+  // covers all visible programmes (the umbrella view); on masters/fotografie
+  // it restricts results to that domain's content.
   const conditions = [
     "status = 'published'",
+    `program IN (${programmePlaceholders})`,
     "(student_name LIKE ? ESCAPE '\\' OR project_title_en LIKE ? ESCAPE '\\' OR project_title_nl LIKE ? ESCAPE '\\' OR description_en LIKE ? ESCAPE '\\' OR description_nl LIKE ? ESCAPE '\\' OR tags LIKE ? ESCAPE '\\')",
   ];
-  const params: string[] = [like, like, like, like, like, like];
+  const params: string[] = [...site.programmes, like, like, like, like, like, like];
 
   const { results } = await c.env.DB.prepare(
     `SELECT
@@ -426,7 +505,7 @@ app.get("/api/search", async (c) => {
       project_title: project.project_title,
       academic_year: project.academic_year,
       context: project.context,
-      url: `/${locale}/${project.academic_year}/students/${project.slug}/`,
+      url: getStudentUrl(project, locale),
       image_url: getImageUrl(imageId, "thumb") || null,
     };
   });
@@ -434,33 +513,50 @@ app.get("/api/search", async (c) => {
   return c.json({ query: rawQuery, results: resultsWithUrls });
 });
 
+// Filter that links to path-based context URLs under a programme listing.
+// Used on /:locale/:year/:programme[/:context]/ pages — links go to
+// /:locale/:year/:programme/        (all)
+// /:locale/:year/:programme/:context (specific context)
+//
+// On the archive page it falls back to query-string filters (basePath ends in
+// /archive) because archive composes year + context filters across multiple
+// programmes; that path is intentionally untouched in this migration.
 const ContextFilter = ({
   locale,
   basePath,
   activeContext,
-  queryPrefix,
+  archiveYear,
   showLabel,
 }: {
   locale: PublicLocale;
   basePath: string;
   activeContext: ContextKey | null;
-  queryPrefix?: string;
+  archiveYear?: string;
   showLabel?: boolean;
 }) => {
   const text = TEXT[locale];
+  const isArchive = basePath.endsWith("/archive");
+
+  const allHref = isArchive
+    ? archiveYear
+      ? `${basePath}?year=${encodeURIComponent(archiveYear)}`
+      : basePath
+    : `${basePath}/`;
 
   return (
     <div class="filter-row">
       {showLabel && <span class="filter-label">{text.context}</span>}
       <nav class="context-nav">
-        <a href={`${basePath}${queryPrefix || ""}`} class={!activeContext ? "active" : ""}>
+        <a href={allHref} class={!activeContext ? "active" : ""}>
           {text.all}
         </a>
         {CONTEXT_KEYS.map((ctx) => {
           const label = getContextShortLabel(ctx, locale).toLowerCase();
-          const href = queryPrefix
-            ? `${basePath}${queryPrefix}&context=${encodeURIComponent(ctx)}`
-            : `${basePath}?context=${encodeURIComponent(ctx)}`;
+          const href = isArchive
+            ? archiveYear
+              ? `${basePath}?year=${encodeURIComponent(archiveYear)}&context=${encodeURIComponent(ctx)}`
+              : `${basePath}?context=${encodeURIComponent(ctx)}`
+            : `${basePath}/${encodeURIComponent(ctx)}/`;
           return (
             <a href={href} class={activeContext === ctx ? "active" : ""}>
               {label}
@@ -481,11 +577,12 @@ app.get("/:locale/", async (c) => {
     return c.notFound();
   }
 
-  return renderYearPage(c, {
+  const site = c.var.site;
+  return renderListing(c, {
     locale,
     year: CURRENT_YEAR,
-    basePath: `/${locale}/`,
-    canonicalUrl: `${SITE_URL}/${locale}/`,
+    title: CURRENT_YEAR,
+    canonicalUrl: `${siteUrlFor(site)}/${locale}/`,
   });
 });
 
@@ -504,15 +601,22 @@ app.get("/:locale/:year/", async (c) => {
   const locale = c.req.param("locale");
   if (!isPublicLocale(locale)) return c.notFound();
 
+  const site = c.var.site;
   const year = c.req.param("year");
-  const canonicalUrl = `${SITE_URL}/${locale}/${year}/`;
-  return renderYearPage(c, {
+  const siteUrl = siteUrlFor(site);
+  const canonicalUrl = year === CURRENT_YEAR ? `${siteUrl}/${locale}/` : `${siteUrl}/${locale}/${year}/`;
+  return renderListing(c, {
     locale,
     year,
-    basePath: year === CURRENT_YEAR ? `/${locale}/` : `/${locale}/${year}/`,
-    canonicalUrl: year === CURRENT_YEAR ? `${SITE_URL}/${locale}/` : canonicalUrl,
+    title: year,
+    canonicalUrl,
   });
 });
+
+// Note: the path-based programme listings (/:locale/:year/:programme[/:context]/)
+// are registered LATER in this file, after the project detail route
+// (/:locale/:year/students/:slug/), so the literal `students` segment wins
+// over the generic `:programme` segment in Hono's matcher.
 
 app.get("/:locale/about", (c) => {
   const locale = c.req.param("locale");
@@ -520,7 +624,8 @@ app.get("/:locale/about", (c) => {
 
   setLocalePreference(c, locale);
   const text = TEXT[locale];
-  const canonicalUrl = `${SITE_URL}/${locale}/about`;
+  const site = c.var.site;
+  const canonicalUrl = `${siteUrlFor(site)}/${locale}/about`;
   const description =
     locale === "nl"
       ? "Lees meer over de Sint Lucas Masters afstudeerexpo met masterprojecten uit Antwerpen."
@@ -528,12 +633,13 @@ app.get("/:locale/about", (c) => {
 
   return c.html(
     <Layout
+      site={site}
       locale={locale}
       currentPath={requestPathWithQuery(c)}
       title={text.aboutTitle}
       canonicalUrl={canonicalUrl}
       ogDescription={description}
-      jsonLd={organizationSchema}
+      jsonLd={organizationSchemaFor(site)}
     >
       <div class="about-content">
         <h2 class="about-heading">{text.aboutHeading}</h2>
@@ -581,12 +687,19 @@ app.get("/:locale/archive", async (c) => {
 
   setLocalePreference(c, locale);
   const text = TEXT[locale];
+  const site = c.var.site;
   const year = c.req.query("year");
   const context = contextFromQuery(c.req.query("context"));
+  const programmePlaceholders = site.programmes.map(() => "?").join(",");
 
   const { results: yearResults } = await c.env.DB.prepare(
-    "SELECT DISTINCT academic_year FROM projects WHERE status = 'published' ORDER BY academic_year DESC"
-  ).all<{ academic_year: string }>();
+    `SELECT DISTINCT academic_year FROM projects
+       WHERE status = 'published'
+         AND program IN (${programmePlaceholders})
+       ORDER BY academic_year DESC`
+  )
+    .bind(...site.programmes)
+    .all<{ academic_year: string }>();
 
   const years = yearResults.map((r) => r.academic_year);
 
@@ -600,7 +713,8 @@ app.get("/:locale/archive", async (c) => {
     ) AS main_image_id
     FROM projects p`;
   const params: string[] = [];
-  const conditions: string[] = ["p.status = 'published'"];
+  const conditions: string[] = ["p.status = 'published'", `p.program IN (${programmePlaceholders})`];
+  params.push(...site.programmes);
 
   if (year) {
     conditions.push("p.academic_year = ?");
@@ -622,22 +736,27 @@ app.get("/:locale/archive", async (c) => {
   const localizedProjects = projects.map((project) => localizeProject(project, locale));
 
   const { results: countResult } = await c.env.DB.prepare(
-    "SELECT COUNT(*) as count FROM projects WHERE status = 'published'"
-  ).all<{ count: number }>();
+    `SELECT COUNT(*) as count FROM projects
+       WHERE status = 'published'
+         AND program IN (${programmePlaceholders})`
+  )
+    .bind(...site.programmes)
+    .all<{ count: number }>();
   const totalCount = countResult[0]?.count || 0;
 
   const yearRange = years.length > 1 ? `${years[years.length - 1]}-${years[0]}` : years[0] || "";
-  const canonicalUrl = `${SITE_URL}/${locale}/archive`;
+  const canonicalUrl = `${siteUrlFor(site)}/${locale}/archive`;
   const description = `${text.archiveDescriptionPrefix} ${totalCount} ${text.archiveDescriptionMiddle} ${yearRange}.`;
 
   return c.html(
     <Layout
+      site={site}
       locale={locale}
       currentPath={requestPathWithQuery(c)}
       title={text.archive}
       canonicalUrl={canonicalUrl}
       ogDescription={description}
-      jsonLd={organizationSchema}
+      jsonLd={organizationSchemaFor(site)}
     >
       <div class="archive-filters">
         <div class="filter-row">
@@ -663,7 +782,7 @@ app.get("/:locale/archive", async (c) => {
           locale={locale}
           basePath={`/${locale}/archive`}
           activeContext={context}
-          queryPrefix={year ? `?year=${encodeURIComponent(year)}&` : "?"}
+          archiveYear={year || undefined}
           showLabel
         />
       </div>
@@ -677,19 +796,53 @@ app.get("/:locale/archive", async (c) => {
   );
 });
 
+// Legacy redirect: pre-programme project URLs (still produced by old links and
+// by getStudentUrl for projects with NULL programme). Look up the project and
+// 301 to the new programme-aware URL when possible. Registered BEFORE the
+// programme detail route so the literal `students` segment at position 3 wins
+// over /:locale/:year/:programme/:context/.
 app.get("/:locale/:year/students/:slug/", async (c) => {
   const locale = c.req.param("locale");
+  const year = c.req.param("year");
+  const slug = c.req.param("slug");
+
   if (!isPublicLocale(locale)) {
-    const year = c.req.param("year");
-    const slug = c.req.param("slug");
+    // Pre-locale legacy form: /YYYY-YYYY/students/slug/ — Hono parses
+    // locale=YYYY-YYYY, year="students", slug=slug.
     if (year === "students" && isAcademicYearSegment(locale)) {
       return c.redirect(`/nl/${locale}/students/${slug}/`, 301);
     }
     return c.notFound();
   }
 
+  const project = await c.env.DB.prepare(
+    "SELECT slug, program FROM projects WHERE academic_year = ? AND slug = ? AND status = 'published'"
+  )
+    .bind(year, slug)
+    .first<{ slug: string; program: string | null }>();
+
+  if (!project) return c.notFound();
+  if (!project.program || !(PROGRAMME_CODES as readonly string[]).includes(project.program)) {
+    // Project has no programme — can't build the new URL. Treat as not found.
+    return c.notFound();
+  }
+
+  const programmeSlug = programmeToSlug(project.program as ProgrammeCode);
+  return c.redirect(`/${locale}/${year}/${programmeSlug}/students/${slug}/`, 301);
+});
+
+// /:locale/:year/:programme/students/:slug/ — canonical project detail URL.
+app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) return c.notFound();
+
+  const programmeSlugInUrl = c.req.param("programme");
+  const programmeFromUrl = slugToProgramme(programmeSlugInUrl);
+  if (!programmeFromUrl) return c.notFound();
+
   setLocalePreference(c, locale);
   const text = TEXT[locale];
+  const site = c.var.site;
   const year = c.req.param("year");
   const slug = c.req.param("slug");
 
@@ -701,12 +854,20 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
 
   if (!project) {
     return c.html(
-      <Layout locale={locale} currentPath={requestPathWithQuery(c)} title={text.notFound}>
+      <Layout site={site} locale={locale} currentPath={requestPathWithQuery(c)} title={text.notFound}>
         <p>{text.studentNotFound}</p>
         <a href={`/${locale}/${CURRENT_YEAR}/`}>{text.back}</a>
       </Layout>,
       404
     );
+  }
+
+  // If the URL's programme segment doesn't match the project's actual
+  // programme, 301 to the canonical programme path so search engines see one
+  // canonical URL per project.
+  if (project.program && project.program !== programmeFromUrl) {
+    const correctSlug = programmeToSlug(project.program as ProgrammeCode);
+    return c.redirect(`/${locale}/${year}/${correctSlug}/students/${slug}/`, 301);
   }
 
   const localizedProject = {
@@ -876,7 +1037,15 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
     </svg>
   );
 
-  const canonicalUrl = `${SITE_URL}/${locale}/${year}/students/${slug}/`;
+  // Canonical for a project lives on the *primary* site for its programme,
+  // not whichever domain the visitor used. This avoids duplicate-content
+  // penalties when the same project is reachable from all three sites.
+  const canonicalSite =
+    project.program && (PROGRAMME_CODES as readonly string[]).includes(project.program)
+      ? primarySiteFor(project.program as ProgrammeCode)
+      : site;
+  const canonicalProgrammeSlug = programmeToSlug(programmeFromUrl);
+  const canonicalUrl = `${siteUrlFor(canonicalSite)}/${locale}/${year}/${canonicalProgrammeSlug}/students/${slug}/`;
   const projectUrl = canonicalUrl;
   const backLinkHref = year === CURRENT_YEAR ? `/${locale}/` : `/${locale}/${year}/`;
   const mainImage = images[0] || null;
@@ -889,7 +1058,14 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
     .filter((url): url is string => Boolean(url));
   const imageUrls = [...(mainImageUrl ? [mainImageUrl] : []), ...galleryImageUrls];
   const creatorSameAs = socialItems.map((item) => item.href).filter(Boolean);
-  const contextLabel = getContextFullLabel(project.context, locale);
+  // Meta line shown under the project title. Identical across all three
+  // sites — only chrome differs by domain. MA_BK/PREMA_BK get
+  // "Master/Premaster {Context}"; BA_FO/BA_BK get the programme label alone.
+  const projectProgramme =
+    project.program && (PROGRAMME_CODES as readonly string[]).includes(project.program)
+      ? (project.program as ProgrammeCode)
+      : null;
+  const metaLabel = getProjectMetaLabel(projectProgramme, project.context, locale);
 
   const creativeWorkSchema = {
     "@context": "https://schema.org",
@@ -913,6 +1089,7 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
     ...(tags.length > 0 && { keywords: tags.join(", ") }),
   };
 
+  const breadcrumbBaseUrl = siteUrlFor(canonicalSite);
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -921,13 +1098,13 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
         "@type": "ListItem",
         position: 1,
         name: text.home,
-        item: `${SITE_URL}/${locale}/`,
+        item: `${breadcrumbBaseUrl}/${locale}/`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: year,
-        item: `${SITE_URL}/${locale}/${year}/`,
+        item: `${breadcrumbBaseUrl}/${locale}/${year}/`,
       },
       {
         "@type": "ListItem",
@@ -939,14 +1116,15 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
 
   return c.html(
     <Layout
+      site={site}
       locale={locale}
       currentPath={requestPathWithQuery(c)}
       title={`${project.student_name} - ${localizedProject.project_title}`}
       ogImage={mainImageUrl}
-      ogDescription={`${localizedProject.project_title} by ${project.student_name} · ${contextLabel}`}
+      ogDescription={`${localizedProject.project_title} by ${project.student_name} · ${metaLabel}`}
       ogType="article"
       canonicalUrl={canonicalUrl}
-      jsonLd={[organizationSchema, creativeWorkSchema, breadcrumbSchema]}
+      jsonLd={[organizationSchemaFor(canonicalSite), creativeWorkSchema, breadcrumbSchema]}
     >
       <article class="detail">
         <a href={backLinkHref} class="back-link">
@@ -959,7 +1137,7 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
               {localizedProject.project_title}
             </h1>
             <p class="detail-meta">
-              {contextLabel} · {project.academic_year}
+              {metaLabel} · {project.academic_year}
             </p>
           </div>
           <div class="detail-header-right">
@@ -1045,6 +1223,72 @@ app.get("/:locale/:year/students/:slug/", async (c) => {
   );
 });
 
+// /:locale/:year/:programme/ — projects of a single programme.
+// Programme URL slug ↔ DB code mapping lives in src/sites.ts. Registered
+// AFTER /:locale/:year/students/:slug/ so the literal `students` segment
+// wins in the matcher.
+app.get("/:locale/:year/:programme/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) {
+    // The pattern /:locale/:year/:programme/ also matches the *legacy*
+    // pre-locale URL /YYYY-YYYY/students/slug/. Hono's per-pattern dispatch
+    // means the bare-year legacy redirect at the bottom of the file can't
+    // claim those URLs first — handle them here.
+    const year = c.req.param("year");
+    const programmeSlug = c.req.param("programme");
+    if (isAcademicYearSegment(locale) && year === "students") {
+      return c.redirect(`/nl/${locale}/students/${programmeSlug}/`, 301);
+    }
+    return c.notFound();
+  }
+
+  const year = c.req.param("year");
+  const programmeSlug = c.req.param("programme");
+  const programme = slugToProgramme(programmeSlug);
+  if (!programme) return c.notFound();
+
+  // Canonical for a programme listing always lives on the programme's primary
+  // site (masters for MA_BK/PREMA_BK, fotografie for BA_FO).
+  const canonicalSite = primarySiteFor(programme);
+  const canonicalUrl = `${siteUrlFor(canonicalSite)}/${locale}/${year}/${programmeSlug}/`;
+
+  return renderListing(c, {
+    locale,
+    year,
+    programme,
+    title: `${programmeSlug.toUpperCase()} ${year}`,
+    canonicalUrl,
+  });
+});
+
+// /:locale/:year/:programme/:context/ — programme + context (MA_BK/PREMA_BK only).
+app.get("/:locale/:year/:programme/:context/", async (c) => {
+  const locale = c.req.param("locale");
+  if (!isPublicLocale(locale)) return c.notFound();
+
+  const year = c.req.param("year");
+  const programmeSlug = c.req.param("programme");
+  const programme = slugToProgramme(programmeSlug);
+  if (!programme) return c.notFound();
+  if (!PROGRAMMES_WITH_CONTEXT.has(programme)) return c.notFound();
+
+  const contextRaw = c.req.param("context");
+  const context = CONTEXT_KEYS.includes(contextRaw as ContextKey) ? (contextRaw as ContextKey) : null;
+  if (!context) return c.notFound();
+
+  const canonicalSite = primarySiteFor(programme);
+  const canonicalUrl = `${siteUrlFor(canonicalSite)}/${locale}/${year}/${programmeSlug}/${context}/`;
+
+  return renderListing(c, {
+    locale,
+    year,
+    programme,
+    context,
+    title: `${getContextFullLabel(context, locale)} ${year}`,
+    canonicalUrl,
+  });
+});
+
 // Legacy redirects to default locale
 app.get("/", (c) => c.redirect("/nl/", 301));
 app.get("/about", (c) => c.redirect("/nl/about", 301));
@@ -1061,8 +1305,11 @@ app.notFound((c) => {
   }
   const locale = c.req.path.startsWith("/nl") ? "nl" : "en";
   const text = TEXT[locale];
+  // siteMiddleware runs before notFound for public paths; fall back to
+  // resolveSite from the request host for safety on unmounted prefixes.
+  const site = c.get("site") ?? resolveSite(c.req.header("host"));
   return c.html(
-    <Layout locale={locale} currentPath={c.req.path} title={text.notFound}>
+    <Layout site={site} locale={locale} currentPath={c.req.path} title={text.notFound}>
       <div class="not-found-page">
         <h1>404</h1>
         <p>{text.pageNotFound}</p>

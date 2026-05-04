@@ -1,3 +1,21 @@
+// Build the public project URL with the programme as a path segment.
+// Mirrors `getStudentUrl` in src/types.ts. Admin can't import from src/, so
+// we duplicate the slug rule here. Programme codes (`MA_BK`, `BA_FO`, etc.)
+// map to URL slugs by lowercasing and replacing underscores with hyphens.
+export function buildProjectUrl(
+  project: { academic_year?: unknown; slug?: unknown; program?: unknown },
+  locale: "nl" | "en" = "nl"
+): string {
+  const year = String(project.academic_year || "");
+  const slug = String(project.slug || "");
+  const program = project.program ? String(project.program) : null;
+  if (program) {
+    const programmeSlug = program.toLowerCase().replace(/_/g, "-");
+    return `/${locale}/${year}/${programmeSlug}/students/${slug}/`;
+  }
+  return `/${locale}/${year}/students/${slug}/`;
+}
+
 export function formatContext(value: unknown): string {
   if (value === null || value === undefined) return "—";
   const context = String(value).toLowerCase();

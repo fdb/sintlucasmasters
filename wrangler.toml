@@ -35,11 +35,40 @@ SENTRY_PROJECT_ID = "4510832618831952"
 
 # Production overrides
 [env.production.vars]
+# APP_BASE_URL is retained for the auth flow's magic-link emails (single
+# central inbox across all three sites). Per-request site URLs are derived
+# from the Host header — see src/sites.ts.
 APP_BASE_URL = "https://sintlucasmasters.com"
 SES_CONFIGURATION_SET = "sintlucasmasters-events"
 SENTRY_DSN = "https://940c808bee865bc2ba2d24da4101ef17@o4510688180568064.ingest.de.sentry.io/4510832618831952"
 SENTRY_HOST = "o4510688180568064.ingest.de.sentry.io"
 SENTRY_PROJECT_ID = "4510832618831952"
+
+# Custom domain routes — all three sites are served by this single Worker.
+# Cloudflare requires the zones to exist in the same account; SSL is automatic.
+[[env.production.routes]]
+pattern = "sintlucasmasters.com"
+custom_domain = true
+
+[[env.production.routes]]
+pattern = "www.sintlucasmasters.com"
+custom_domain = true
+
+[[env.production.routes]]
+pattern = "sintlucasfotografie.com"
+custom_domain = true
+
+[[env.production.routes]]
+pattern = "www.sintlucasfotografie.com"
+custom_domain = true
+
+[[env.production.routes]]
+pattern = "sintlucasgraduates.com"
+custom_domain = true
+
+[[env.production.routes]]
+pattern = "www.sintlucasgraduates.com"
+custom_domain = true
 
 [[r2_buckets]]
 binding = "FILES"

@@ -1,4 +1,5 @@
 import type { ContextKey, Project } from "../types";
+import type { ProgrammeCode } from "../sites";
 
 export const PUBLIC_LOCALES = ["nl", "en"] as const;
 export type PublicLocale = (typeof PUBLIC_LOCALES)[number];
@@ -37,6 +38,48 @@ export function getContextShortLabel(context: ContextKey, locale: PublicLocale):
 
 export function getContextFullLabel(context: ContextKey, locale: PublicLocale): string {
   return CONTEXT_LABELS[locale][context].full;
+}
+
+const PROGRAMME_LABELS = {
+  en: {
+    MA_BK: "Master",
+    PREMA_BK: "Premaster",
+    BA_FO: "Professional Bachelor Photography",
+    BA_BK: "Professional Bachelor Visual Arts",
+  },
+  nl: {
+    MA_BK: "Master",
+    PREMA_BK: "Premaster",
+    BA_FO: "Professionele bachelor fotografie",
+    BA_BK: "Professionele bachelor beeldende kunsten",
+  },
+} satisfies Record<PublicLocale, Record<ProgrammeCode, string>>;
+
+export function getProgrammeLabel(programme: ProgrammeCode, locale: PublicLocale): string {
+  return PROGRAMME_LABELS[locale][programme];
+}
+
+// The label shown under a project title (and in OG descriptions). Identical
+// across all three sites — only headers, navigation, and footers differ
+// between domains; content stays consistent.
+//
+// - BA_FO / BA_BK: programme label only. The schema's `context` column has
+//   no real taxonomy for these programmes, so we ignore it.
+// - MA_BK / PREMA_BK: programme label + context full label
+//   ("Master Jewelry Context"). Falls back to programme alone if context
+//   is missing, or to context alone if programme is missing.
+export function getProjectMetaLabel(
+  programme: ProgrammeCode | null,
+  context: ContextKey | null,
+  locale: PublicLocale
+): string {
+  if (programme === "BA_FO" || programme === "BA_BK") {
+    return getProgrammeLabel(programme, locale);
+  }
+  const contextLabel = context ? getContextFullLabel(context, locale) : "";
+  if (!programme) return contextLabel;
+  const programmeLabel = getProgrammeLabel(programme, locale);
+  return contextLabel ? `${programmeLabel} ${contextLabel}` : programmeLabel;
 }
 
 const CONTEXT_ALIASES: Record<string, ContextKey> = {

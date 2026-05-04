@@ -1,3 +1,5 @@
+import { type ProgrammeCode, programmeToSlug } from "./sites";
+
 // Cloudflare Worker bindings
 export type Bindings = {
   DB: D1Database;
@@ -47,6 +49,7 @@ export interface Project {
   project_title_en: string;
   project_title_nl: string;
   project_title?: string;
+  program: string | null;
   context: ContextKey;
   academic_year: string;
   bio_en: string | null;
@@ -107,10 +110,15 @@ export function getImageUrl(imageId: string | null | undefined, variant: ImageVa
   return `https://imagedelivery.net/${CF_ACCOUNT_HASH}/${imageId}/${variant}`;
 }
 
-// Generate student URL from project
+// Generate student URL from project. The new public scheme includes the
+// programme as a path segment: /:locale/:year/:programme/students/:slug/.
+// Projects without a programme (legacy data) fall back to the pre-programme
+// path; the server redirects those to the canonical URL when possible.
 export function getStudentUrl(project: Project, localePrefix?: string): string {
-  if (localePrefix) {
-    return `/${localePrefix}/${project.academic_year}/students/${project.slug}/`;
+  const prefix = localePrefix ? `/${localePrefix}` : "";
+  const programmeSlug = project.program ? programmeToSlug(project.program as ProgrammeCode) : null;
+  if (programmeSlug) {
+    return `${prefix}/${project.academic_year}/${programmeSlug}/students/${project.slug}/`;
   }
-  return `/${project.academic_year}/students/${project.slug}/`;
+  return `${prefix}/${project.academic_year}/students/${project.slug}/`;
 }

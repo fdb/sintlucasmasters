@@ -31,6 +31,29 @@ npm run deploy              # Deploy to Cloudflare (not auto-deployed on push)
 - When fixing a bug using TDD with red/green workflow.
 - Commit after each phase
 
+## Multi-domain (sites)
+
+One Worker serves three public domains: `sintlucasmasters.com` (MA_BK + PREMA_BK), `sintlucasfotografie.com` (BA_FO), and `sintlucasgraduates.com` (umbrella, all programmes). The hostname is resolved to a `SiteConfig` by `siteMiddleware` (`src/middleware/site.ts`) and read from `c.var.site` everywhere downstream.
+
+Editable per site:
+
+- **Header / footer / copy** — `src/components/sites/{Masters,Fotografie,Graduates}Template.tsx`. Each file owns one site's chrome.
+- **Programmes / nav / hostname / OG image / logo** — `src/sites.ts`. Adding a new programme to graduates is a one-line edit to `SITES.graduates.programmes` and `SITES.graduates.nav`.
+
+Project URLs (`/:locale/:year/students/:slug/`) work on every domain. Listing URLs use path-based filters: `/:locale/:year/:programme[/:context]/`. Programme slug ↔ DB code is in `programmeToSlug` / `slugToProgramme`.
+
+### Local dev: switching sites
+
+`localhost:8787` defaults to **graduates** (umbrella view — easiest to spot regressions across all programmes). Switch with the `?__site=` query parameter; the choice is sticky for the session via the `slam_dev_site` cookie:
+
+```
+http://localhost:8787/nl/                       # graduates (default)
+http://localhost:8787/nl/?__site=masters        # masters chrome + filter
+http://localhost:8787/nl/?__site=fotografie     # fotografie chrome + filter
+```
+
+The override is **dev-only** — production hosts ignore both the query param and the cookie. E2E tests can also use the `X-Site-Override: masters` header instead of the query string.
+
 ## Design
 
 - Strict black/white palette with mid-gray shades for contrast.

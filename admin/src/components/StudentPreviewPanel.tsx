@@ -8,6 +8,7 @@ import { useSubmitProject, useApproveProject } from "../api/mutations";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
 import { queryKeys } from "../api/queryKeys";
+import { buildProjectUrl } from "../utils";
 
 export function StudentPreviewPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -171,7 +172,7 @@ export function StudentPreviewPanel() {
         <h3>Preview</h3>
         {status === "published" ? (
           <a
-            href={`/nl/${projectDetail?.project.academic_year || ""}/students/${projectDetail?.project.slug || ""}/`}
+            href={buildProjectUrl(projectDetail?.project ?? {})}
             target="_blank"
             rel="noopener noreferrer"
             className="preview-external-link"
