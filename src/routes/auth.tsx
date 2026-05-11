@@ -33,6 +33,11 @@ authApiRoutes.post("/login", async (c) => {
   const token = generateMagicToken();
   await storeMagicToken(c.env.DB, email, token);
 
+  if (c.env.E2E_DISABLE_EMAIL === "true") {
+    console.log("Skipping magic link email because E2E_DISABLE_EMAIL is enabled:", email);
+    return c.json({ success: true, message: "Check your email for a login link" });
+  }
+
   const sesConfig = {
     accessKeyId: c.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: c.env.AWS_SECRET_ACCESS_KEY,
