@@ -4,7 +4,7 @@ import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
 import { useTable } from "../api/queries";
 import { DataTable, formatRole } from "./DataTable";
-import { formatAcademicYear, formatContext, PROGRAM_LABELS } from "../utils";
+import { formatAcademicYear, formatContext, formatProgrammeContext, PROGRAM_LABELS } from "../utils";
 
 type LoadStatus = "idle" | "loading" | "ready" | "error";
 
@@ -195,7 +195,11 @@ function filterProjects(
 const PROJECT_COLUMNS = [
   { key: "student_name", label: "Student name" },
   { key: "project_title", label: "Project title" },
-  { key: "context", label: "Context", formatter: formatContext },
+  {
+    key: "program",
+    label: "Programme",
+    formatter: (_value: unknown, row: Record<string, unknown>) => formatProgrammeContext(row),
+  },
   { key: "academic_year", label: "Academic year", formatter: formatAcademicYear },
 ];
 

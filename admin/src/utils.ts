@@ -29,6 +29,17 @@ export function formatContext(value: unknown): string {
   return map[context] || String(value);
 }
 
+export function formatProgrammeContext(row: { program?: unknown; context?: unknown }): string {
+  const program = String(row.program || "");
+  const context = row.context ? formatContext(row.context) : "";
+
+  if (program === "BA_FO") return "BA Photography";
+  if (program === "BA_BK") return "BA Visual Arts";
+  if (program === "MA_BK") return context && context !== "—" ? `MA ${context}` : "MA Visual Arts";
+  if (program === "PREMA_BK") return context && context !== "—" ? `PreMA ${context}` : "PreMA Visual Arts";
+  return program ? formatProgram(program) : context || "—";
+}
+
 export function formatAcademicYear(value: unknown): string {
   if (value === null || value === undefined) return "—";
   const str = String(value);
