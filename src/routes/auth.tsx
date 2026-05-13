@@ -25,9 +25,13 @@ authApiRoutes.post("/login", async (c) => {
   const existingUser = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?").bind(email).first();
 
   if (!existingUser) {
-    // Log warning but return same response to prevent email enumeration
+    // Usability trade-off: disclose this so users know no email will arrive.
     console.warn("Login attempt for unregistered email:", email);
-    return c.json({ success: true, message: "Check your email for a login link" });
+    return c.json({
+      success: true,
+      status: "account_not_found",
+      message: "No account exists for this email address",
+    });
   }
 
   const token = generateMagicToken();
@@ -35,7 +39,7 @@ authApiRoutes.post("/login", async (c) => {
 
   if (c.env.E2E_DISABLE_EMAIL === "true") {
     console.log("Skipping magic link email because E2E_DISABLE_EMAIL is enabled:", email);
-    return c.json({ success: true, message: "Check your email for a login link" });
+    return c.json({ success: true, status: "email_sent", message: "Check your email for a login link" });
   }
 
   const sesConfig = {
@@ -55,7 +59,7 @@ authApiRoutes.post("/login", async (c) => {
     return c.json({ error: "Failed to send email" }, 500);
   }
 
-  return c.json({ success: true, message: "Check your email for a login link" });
+  return c.json({ success: true, status: "email_sent", message: "Check your email for a login link" });
 });
 
 // GET /api/auth/me - Return current user info
@@ -150,6 +154,35 @@ authPageRoutes.get("/login", (c) => {
           </p>
         </div>
 
+        <div id="not-found-message" class="email-sent-card auth-status-card" style="display: none;">
+          <div class="email-sent-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4" />
+              <path d="M12 16h.01" />
+            </svg>
+          </div>
+          <p class="email-sent-title">No account was found for</p>
+          <p class="email-sent-address" id="missing-email"></p>
+          <p class="email-sent-retry">
+            Check the address or contact an administrator if you should have access.
+            <br />
+            <a href="#" id="not-found-try-again-link">
+              Try another email
+            </a>
+          </p>
+        </div>
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -173,8 +206,13 @@ authPageRoutes.get("/login", (c) => {
 
 							if (res.ok) {
 								form.style.display = 'none';
-								document.getElementById('sent-email').textContent = email;
-								document.getElementById('success-message').style.display = 'block';
+								if (data.status === 'account_not_found') {
+									document.getElementById('missing-email').textContent = email;
+									document.getElementById('not-found-message').style.display = 'block';
+								} else {
+									document.getElementById('sent-email').textContent = email;
+									document.getElementById('success-message').style.display = 'block';
+								}
 							} else {
 								alert(data.error || 'Failed to send email');
 								button.disabled = false;
@@ -190,6 +228,16 @@ authPageRoutes.get("/login", (c) => {
 					document.getElementById('try-again-link').addEventListener('click', (e) => {
 						e.preventDefault();
 						document.getElementById('success-message').style.display = 'none';
+						const form = document.getElementById('login-form');
+						form.style.display = '';
+						const button = form.querySelector('button');
+						button.disabled = false;
+						button.textContent = 'Send sign-in link';
+					});
+
+					document.getElementById('not-found-try-again-link').addEventListener('click', (e) => {
+						e.preventDefault();
+						document.getElementById('not-found-message').style.display = 'none';
 						const form = document.getElementById('login-form');
 						form.style.display = '';
 						const button = form.querySelector('button');
