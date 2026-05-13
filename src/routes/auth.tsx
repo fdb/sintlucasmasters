@@ -175,7 +175,7 @@ authPageRoutes.get("/login", (c) => {
           <p class="email-sent-title">No account was found for</p>
           <p class="email-sent-address" id="missing-email"></p>
           <p class="email-sent-retry">
-            No sign-in email will be sent. Check the address or contact an administrator if you should have access.
+            Check the address or contact an administrator if you should have access.
             <br />
             <a href="#" id="not-found-try-again-link">
               Try another email
