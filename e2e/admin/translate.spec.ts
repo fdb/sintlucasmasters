@@ -43,17 +43,6 @@ test.describe("admin translate button", () => {
   });
 
   test("clicking translate populates the field", async ({ page }) => {
-    await page.route("**/api/admin/projects/*/translate", async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({
-          translation: "Translated bio text for testing",
-          status: "ok",
-        }),
-      });
-    });
-
     const targetRow = page.locator("tbody tr", { hasText: "Translate Student" });
     await targetRow.dblclick();
 
@@ -70,24 +59,13 @@ test.describe("admin translate button", () => {
 
     // Verify bio textarea has the translated text
     const bioTextarea = bioField.locator("textarea");
-    await expect(bioTextarea).toHaveValue("Translated bio text for testing");
+    await expect(bioTextarea).toHaveValue(/^\[Local English translation\] /);
 
     // Translate button should disappear since field is now populated
     await expect(translateBtn).not.toBeVisible();
   });
 
   test("translate button reappears after clearing field", async ({ page }) => {
-    await page.route("**/api/admin/projects/*/translate", async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({
-          translation: "Translated bio text",
-          status: "ok",
-        }),
-      });
-    });
-
     const targetRow = page.locator("tbody tr", { hasText: "Translate Student" });
     await targetRow.dblclick();
 
@@ -102,7 +80,7 @@ test.describe("admin translate button", () => {
 
     // Wait for translation to populate
     const bioTextarea = bioField.locator("textarea");
-    await expect(bioTextarea).toHaveValue("Translated bio text");
+    await expect(bioTextarea).toHaveValue(/^\[Local English translation\] /);
 
     // Button should be gone
     await expect(bioField.locator(".translate-btn")).not.toBeVisible();

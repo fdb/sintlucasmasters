@@ -9,11 +9,12 @@ The previous Eleventy-based implementation is preserved in `old/` for reference.
 ## Commands
 
 ```bash
-# Local dev setup (destructive — drops & rebuilds DB, imports data, sets up secrets)
+# Local dev setup (destructive — drops & rebuilds DB, imports data, writes local-only dev vars)
 npm run init                # Safe to run repeatedly; always gives a clean state
 
 # Development
 npm run dev                 # Start local dev server on http://localhost:8787
+npm run setup-secrets       # Opt-in: use 1Password live-service secrets for production-backed local dev
 
 # Tests
 npm run test
@@ -71,7 +72,9 @@ Schema changes use Wrangler D1 migrations. Migration files live in `migrations/`
 
 ## Environment Variables
 
-See `.env.template` for the list of required secret environment variables.
+Regular local development does not require 1Password or live service secrets. `npm run init` writes a local-only `.dev.vars` with localhost auth, a deterministic dev JWT secret, and fake translation enabled.
+
+Use `npm run setup-secrets` only when you intentionally want local dev backed by live services (SES, Cloudflare account/API credentials for Images/R2/D1-related operations, and Anthropic). Use `npm run setup-secrets:remote` to upload production Worker secrets. `.env.template` documents the live-service values and is not needed for normal local dev.
 
 ## Admin State Management
 
