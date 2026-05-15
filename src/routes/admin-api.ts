@@ -1000,6 +1000,11 @@ Translate English text to Dutch. Preserve the student's voice, tone, and artisti
 Keep proper nouns, artwork titles, and technical art terms as-is when appropriate.
 Output ONLY the translation inside <translation> tags. If you cannot translate, output <translation status="failed" reason="..."></translation>.`;
 
+function fakeTranslation(text: string, direction: TranslateDirection): string {
+  const targetLanguage = direction === "nl-to-en" ? "English" : "Dutch";
+  return `[Local ${targetLanguage} translation] ${text.trim()}`;
+}
+
 adminApiRoutes.post("/projects/:id/translate", async (c) => {
   const projectId = c.req.param("id");
   const project = await checkProjectAccess(c, projectId);
@@ -1019,6 +1024,10 @@ adminApiRoutes.post("/projects/:id/translate", async (c) => {
   }
   if (!text || !text.trim()) {
     return c.json({ error: "No text to translate" }, 400);
+  }
+
+  if (c.env.FAKE_TRANSLATION === "true") {
+    return c.json({ translation: fakeTranslation(text, direction), status: "ok" });
   }
 
   const systemPrompt = direction === "nl-to-en" ? NL_TO_EN_SYSTEM : EN_TO_NL_SYSTEM;

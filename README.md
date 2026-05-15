@@ -13,11 +13,15 @@ Student exhibition website for Sint Lucas Antwerpen Masters program.
 
 ```bash
 npm install
-npm run init        # Drops & rebuilds DB, imports data, sets up secrets, creates fake users
+npm run init        # Drops & rebuilds DB, imports data, writes local dev vars, creates fake users
 npm run dev         # Start dev server on http://localhost:8787
 ```
 
 `npm run init` is **destructive** — it drops and recreates the local database from scratch every time. Safe to run repeatedly; it always gives you a clean state.
+
+Regular local development does not require 1Password or live service secrets. `npm run init` writes `.dev.vars` with localhost auth, a deterministic dev JWT secret, and fake translation enabled.
+
+Run `npm run setup-secrets` only when you intentionally want local dev to use live-service credentials from 1Password, such as SES email, Cloudflare Images/account credentials, and Anthropic translation.
 
 `npm run dev` runs `wrangler dev` and a Vite build watcher that outputs admin assets to `static/admin`. Refresh `/admin` to see changes.
 
