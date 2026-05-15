@@ -10,7 +10,7 @@ test.describe("admin projects table", () => {
     const headers = page.locator("thead th");
     await expect(headers.filter({ hasText: "Student name" })).toBeVisible();
     await expect(headers.filter({ hasText: "Project title" })).toBeVisible();
-    await expect(headers.filter({ hasText: "Context" })).toBeVisible();
+    await expect(headers.filter({ hasText: "Programme" })).toBeVisible();
     await expect(headers.filter({ hasText: "Academic year" })).toBeVisible();
   });
 
@@ -22,8 +22,21 @@ test.describe("admin projects table", () => {
     // Verify each expected column header
     await expect(headers.nth(0)).toHaveText("Student name");
     await expect(headers.nth(1)).toHaveText("Project title");
-    await expect(headers.nth(2)).toHaveText("Context");
+    await expect(headers.nth(2)).toHaveText("Programme");
     await expect(headers.nth(3)).toHaveText("Academic year");
+  });
+
+  test("shows merged programme and context labels", async ({ page }) => {
+    await page.locator(".filter-select").first().selectOption("");
+
+    const aliceRow = page.locator("tbody tr", { hasText: "Alice Smith" });
+    await expect(aliceRow.locator("td").nth(2)).toHaveText("MA Digital");
+
+    const fridaRow = page.locator("tbody tr", { hasText: "Frida Lens" });
+    await expect(fridaRow.locator("td").nth(2)).toHaveText("BA Photography");
+
+    const miloRow = page.locator("tbody tr", { hasText: "Milo Thread" });
+    await expect(miloRow.locator("td").nth(2)).toHaveText("PreMA Autonomous");
   });
 
   test("year filter works", async ({ page }) => {

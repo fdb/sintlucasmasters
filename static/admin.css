@@ -112,6 +112,10 @@
   border: 1px solid var(--admin-border);
 }
 
+.auth-status-card .email-sent-retry {
+  line-height: 1.5;
+}
+
 .email-sent-icon {
   color: var(--black);
   margin-bottom: 1.5rem;

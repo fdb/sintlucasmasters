@@ -382,6 +382,13 @@ adminApiRoutes.put("/projects/:id", async (c) => {
       .first<{ email: string; name: string | null }>();
 
     if (studentUser?.email) {
+      if (c.env.E2E_DISABLE_EMAIL === "true") {
+        console.log("Skipping review notification email because E2E_DISABLE_EMAIL is enabled:", studentUser.email);
+        return c.json({
+          project: await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(id).first<Project>(),
+        });
+      }
+
       const sesConfig: SESConfig = {
         accessKeyId: c.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: c.env.AWS_SECRET_ACCESS_KEY,

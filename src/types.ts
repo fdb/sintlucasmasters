@@ -19,6 +19,7 @@ export type Bindings = {
   // E2E testing
   E2E_SKIP_AUTH?: string;
   E2E_FAKE_IMAGE_UPLOAD?: string;
+  E2E_DISABLE_EMAIL?: string;
   FAKE_TRANSLATION?: string;
   // Local development
   DEV_ADMIN_EMAIL?: string;
