@@ -4,8 +4,9 @@ import Anthropic from "@anthropic-ai/sdk";
 import { zipSync } from "fflate";
 import { generateTextIdml, generateImageIdml } from "../lib/idml-generator";
 import type { PostcardTextData, PostcardImageData } from "../lib/idml-generator";
-import { getContextFullLabel, normalizeContextKey } from "../lib/i18n";
+import { getContextFullLabel, getProgrammeLabel, normalizeContextKey } from "../lib/i18n";
 import type { Bindings, ContextKey, Project, ProjectImage, UserRole } from "../types";
+import type { ProgrammeCode } from "../sites";
 import { authMiddleware, requireAuth, requireAdmin, type AuthUser } from "../middleware/auth";
 import { STUDENT_EMAIL_DOMAIN, R2_PATH_PREFIX } from "../constants";
 import { emailSlug } from "../lib/names";
@@ -1402,7 +1403,13 @@ function programLabel(program: string): string {
   return "Master";
 }
 
-function buildTrajectory(program: string, context: ContextKey): string {
+export function buildTrajectory(program: ProgrammeCode, context: ContextKey | null): string {
+  // BA_FO / BA_BK have no context taxonomy (their `context` column is NULL);
+  // like getProjectMetaLabel() in i18n.ts, any project without a context gets
+  // the bilingual programme label only.
+  if (!context) {
+    return `${getProgrammeLabel(program, "nl")} / ${getProgrammeLabel(program, "en")}`;
+  }
   const nl = getContextFullLabel(context, "nl");
   const en = getContextFullLabel(context, "en");
   // Capitalize "context" → "Context" to match print convention
@@ -1466,8 +1473,8 @@ adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
     .bind(year, program)
     .all<{
       student_name: string;
-      program: string;
-      context: ContextKey;
+      program: ProgrammeCode;
+      context: ContextKey | null;
       project_title_en: string;
       project_title_nl: string;
       print_description: string;
