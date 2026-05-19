@@ -4,9 +4,14 @@
  * Rebuild database: drop tables, recreate schema, and import data
  *
  * Usage:
- *   node scripts/db-rebuild.mjs --local                  # Rebuild local D1 (no R2 uploads)
- *   node scripts/db-rebuild.mjs --local --upload-images  # Rebuild + re-upload images/templates to R2
+ *   node scripts/db-rebuild.mjs --local                  # Rebuild local D1 (+ IDML templates to R2)
+ *   node scripts/db-rebuild.mjs --local --upload-images  # Also populate print images from Cloudflare Images
  *   node scripts/db-rebuild.mjs --remote                 # Rebuild production D1
+ *
+ * IDML templates are tiny in-repo files needed for any InDesign export test,
+ * so they are always uploaded. --upload-images additionally backfills print
+ * images from Cloudflare Images (network + slow), gated because most local
+ * dev does not need it.
  */
 
 import { spawn } from "child_process";
@@ -73,25 +78,25 @@ async function main() {
     // Step 4: Populate print images from Cloudflare Images → R2
     console.log("\n📦 Step 4: Populating print images...");
     await runCommand("node", ["scripts/populate-print-images.mjs", target]);
-
-    // Step 5: Upload IDML templates to R2
-    console.log("\n📦 Step 5: Uploading IDML templates to R2...");
-    const templatesDir = join(PROJECT_ROOT, "templates");
-    const templateFiles = (await readdir(templatesDir)).filter((f) => f.endsWith(".idml"));
-    for (const file of templateFiles) {
-      await runCommand("npx", [
-        "wrangler",
-        "r2",
-        "object",
-        "put",
-        `sintlucasmasters/templates/${file}`,
-        `--file=templates/${file}`,
-        "--content-type=application/octet-stream",
-        target,
-      ]);
-    }
   } else {
-    console.log("\n⏭️  Skipping R2 uploads (use --upload-images to upload print images and templates)");
+    console.log("\n⏭️  Skipping print-image population (use --upload-images to backfill from Cloudflare Images)");
+  }
+
+  // Step 5: Upload IDML templates to R2 (always — small in-repo files, required for InDesign export)
+  console.log("\n📦 Step 5: Uploading IDML templates to R2...");
+  const templatesDir = join(PROJECT_ROOT, "templates");
+  const templateFiles = (await readdir(templatesDir)).filter((f) => f.endsWith(".idml"));
+  for (const file of templateFiles) {
+    await runCommand("npx", [
+      "wrangler",
+      "r2",
+      "object",
+      "put",
+      `sintlucasmasters/templates/${file}`,
+      `--file=templates/${file}`,
+      "--content-type=application/octet-stream",
+      target,
+    ]);
   }
 
   console.log(`\n✅ ${targetLabel} database rebuilt successfully!`);
