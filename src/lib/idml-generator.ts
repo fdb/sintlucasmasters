@@ -42,6 +42,75 @@ function xmlEscape(str: string): string {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+// ── Description inline markup ─────────────────────────────────────────
+//
+// IDML has no inline emphasis tags: mixed formatting is expressed as a
+// sequence of sibling <CharacterStyleRange> elements, each with an optional
+// FontStyle override. The postcard body uses CharacterStyle/Tekst (font
+// "Sequel Sans", default FontStyle "Book Body Text"); the bold/oblique
+// variants below are already embedded in the template.
+
+type MarkupSegment = { kind: "text"; value: string; bold: boolean; italic: boolean } | { kind: "break" };
+
+/**
+ * Parse the baseline postcard markup: `*bold*`, `_italic_`, and newlines as
+ * line breaks. No nesting, no escaping — an unmatched marker stays literal.
+ */
+function parseInlineMarkup(text: string): MarkupSegment[] {
+  const segments: MarkupSegment[] = [];
+  const lines = text.split("\n");
+  lines.forEach((line, lineIndex) => {
+    if (lineIndex > 0) segments.push({ kind: "break" });
+    // split() with one capturing group alternates: even index = plain text,
+    // odd index = a matched *bold* / _italic_ token.
+    const parts = line.split(/(\*[^*\n]+\*|_[^_\n]+_)/);
+    parts.forEach((part, i) => {
+      if (part === "") return;
+      if (i % 2 === 1) {
+        const bold = part[0] === "*";
+        segments.push({ kind: "text", value: part.slice(1, -1), bold, italic: !bold });
+      } else {
+        segments.push({ kind: "text", value: part, bold: false, italic: false });
+      }
+    });
+  });
+  return segments;
+}
+
+const TEKST_RANGE_OPEN =
+  '<CharacterStyleRange AppliedCharacterStyle="CharacterStyle/Tekst" AppliedLanguage="$ID/English: UK"';
+
+function fontStyleAttr(bold: boolean, italic: boolean): string {
+  if (bold && italic) return ' FontStyle="Bold Oblique Body Text"';
+  if (bold) return ' FontStyle="Bold Body Text"';
+  if (italic) return ' FontStyle="Book Oblique Body Text"';
+  return "";
+}
+
+/**
+ * Render a postcard description as a sequence of IDML CharacterStyleRange
+ * runs. Plain text with no markup yields a single run identical to the old
+ * raw-substitution behaviour.
+ */
+export function renderDescriptionRuns(description: string): string {
+  const runs: string[] = [];
+  for (const seg of parseInlineMarkup(description)) {
+    if (seg.kind === "break") {
+      runs.push(`${TEKST_RANGE_OPEN}><Br /></CharacterStyleRange>`);
+    } else if (seg.value.length > 0) {
+      runs.push(
+        `${TEKST_RANGE_OPEN}${fontStyleAttr(seg.bold, seg.italic)}><Content>${xmlEscape(
+          seg.value
+        )}</Content></CharacterStyleRange>`
+      );
+    }
+  }
+  if (runs.length === 0) {
+    runs.push(`${TEKST_RANGE_OPEN}><Content></Content></CharacterStyleRange>`);
+  }
+  return runs.join("");
+}
+
 let idCounter = 0xd000;
 
 function nextId(): string {
@@ -391,7 +460,16 @@ export function generateTextIdml(templateZip: Uint8Array, students: PostcardText
         s = s.replace("{{student_name}}", xmlEscape(student.student_name));
         s = s.replace("{{trajectory}}", xmlEscape(student.trajectory));
         s = s.replace("{{title}}", xmlEscape(student.title));
-        s = s.replace("{{description}}", xmlEscape(student.description));
+        // The description supports baseline markup, so replace the whole
+        // enclosing CharacterStyleRange (dropping its XMLElement wrapper)
+        // with one run per formatting span. Matched structurally because
+        // reIdXml has already rewritten the Self ids by this point. A
+        // replacer function avoids `$` in user text being treated as a
+        // replacement pattern.
+        s = s.replace(
+          /<CharacterStyleRange\b[^>]*>\s*<XMLElement\b[^>]*>\s*<Content>\{\{description\}\}<\/Content>\s*(?:<XMLAttribute\b[^>]*\/>\s*)*<\/XMLElement>\s*<\/CharacterStyleRange>/,
+          () => renderDescriptionRuns(student.description)
+        );
         s = s.replace("{{website}}", xmlEscape(student.website));
         s = s.replace("{{instagram}}", xmlEscape(student.instagram));
         return s;
