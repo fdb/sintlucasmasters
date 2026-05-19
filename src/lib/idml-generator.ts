@@ -25,7 +25,6 @@ export interface PostcardImageData {
   image_uri: string;
   image_filename: string;
   portrait: boolean;
-  imageHeight?: number;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -399,28 +398,31 @@ function buildOutput(
  *
  * To rotate the image content 90° CCW (portrait → landscape), we compose
  * the existing transform M with a rotation-and-shift matrix R:
- *   R = | 0  -1  H |    where H = image height in pixels
- *       | 1   0  0 |
- *       | 0   0  1 |
+ *   R = | 0  -1  H |    where H = image height in the SAME coordinate
+ *       | 1   0  0 |        space as the existing translation, i.e. the
+ *       | 0   0  1 |        Image's own <GraphicBounds> (Bottom − Top).
  *
  * Result M×R: new_a=c, new_b=d, new_c=-a, new_d=-b,
  *             new_tx = a*H + tx, new_ty = b*H + ty
+ *
+ * Using a DB pixel height here is the original regression that translated
+ * portrait images onto the pasteboard (tx ≈ 1652 instead of ≈ 90).
  */
-function rotateImageTransform90CCW(spreadXml: string, imageHeight: number): string {
-  return spreadXml.replace(/(<Image\b[^>]*ItemTransform=")([^"]+)(")/, (_match, prefix, transform, suffix) => {
-    const parts = transform.split(/\s+/).map(Number);
-    if (parts.length !== 6 || parts.some(isNaN)) return _match;
+function rotateImageTransform90CCW(spreadXml: string): string {
+  return spreadXml.replace(/<Image\b[^>]*>[\s\S]*?<\/Image>/, (imageBlock) => {
+    const transformMatch = imageBlock.match(/ItemTransform="([^"]+)"/);
+    const boundsMatch = imageBlock.match(/<GraphicBounds\b[^/]*Top="([-\d.]+)"[^/]*Bottom="([-\d.]+)"[^/]*\/>/);
+    if (!transformMatch || !boundsMatch) return imageBlock;
+
+    const parts = transformMatch[1].split(/\s+/).map(Number);
+    if (parts.length !== 6 || parts.some(isNaN)) return imageBlock;
 
     const [a, b, c, d, tx, ty] = parts;
-    const na = c;
-    const nb = d;
-    const nc = -a;
-    const nd = -b;
-    const ntx = a * imageHeight + tx;
-    const nty = b * imageHeight + ty;
+    const H = Number(boundsMatch[2]) - Number(boundsMatch[1]);
+    if (!isFinite(H)) return imageBlock;
 
-    const newTransform = `${na} ${nb} ${nc} ${nd} ${ntx} ${nty}`;
-    return `${prefix}${newTransform}${suffix}`;
+    const newTransform = `${c} ${d} ${-a} ${-b} ${a * H + tx} ${b * H + ty}`;
+    return imageBlock.replace(/ItemTransform="[^"]+"/, `ItemTransform="${newTransform}"`);
   });
 }
 
@@ -525,8 +527,8 @@ export function generateImageIdml(templateZip: Uint8Array, students: PostcardIma
     let modifiedSpreadXml = templateSpreadXml.replace("{{image_uri}}", student.image_uri);
 
     // For portrait images, rotate the Image element 90° CCW so it displays in landscape
-    if (student.portrait && student.imageHeight) {
-      modifiedSpreadXml = rotateImageTransform90CCW(modifiedSpreadXml, student.imageHeight);
+    if (student.portrait) {
+      modifiedSpreadXml = rotateImageTransform90CCW(modifiedSpreadXml);
     }
 
     const { spreadEntry, storyEntries } = cloneSpreadAndStories(

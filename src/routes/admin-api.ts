@@ -1591,7 +1591,6 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
       image_uri: buildImageLinkUri(basePath, encodedFilename),
       image_filename: filename,
       portrait: !!(w && h && h > w),
-      imageHeight: h ?? undefined,
     };
   });
 
