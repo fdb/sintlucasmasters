@@ -499,6 +499,25 @@ function shortenAcademicYear(year: string): string {
   return year.replace(/[^a-z0-9-]/gi, "").substring(0, 10);
 }
 
+// Shared stem for the print-images ZIP filename and the postcards-images.idml
+// default basePath. macOS Archive Utility and Windows "Extract All" both
+// extract `<base>.zip` into a folder named `<base>`, so defaulting the IDML's
+// image link prefix to this same value makes links resolve out of the box.
+export function printImagesArchiveBase(yearShort: string, program: string): string {
+  return `print-images-${yearShort}-${program}`;
+}
+
+// InDesign only creates a Link (and thus places/relinks the image) when
+// LinkResourceURI carries a URI scheme. A bare relative path produces zero
+// links and an empty frame — the regression from commit fbdbb3a. So always
+// emit a `file:` URI. A relative `file:` URI resolves against the .idml's
+// folder; an explicit basePath that is already a file: URI (e.g. the print
+// server's mounted Links path) passes through unchanged.
+export function buildImageLinkUri(basePath: string, encodedFilename: string): string {
+  const path = basePath ? `${basePath}/${encodedFilename}` : encodedFilename;
+  return /^file:/i.test(path) ? path : `file:${path}`;
+}
+
 function getFileExtension(filename: string, mimeType: string): string {
   const extMatch = filename.match(/\.([a-z0-9]+)$/i);
   if (extMatch) {
@@ -1395,10 +1414,11 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
   const zipData = zipSync(zipOptions);
 
   const yearShort = shortenAcademicYear(year);
+  const archiveBase = printImagesArchiveBase(yearShort, program);
   return new Response(zipData, {
     headers: {
       "Content-Type": "application/zip",
-      "Content-Disposition": `attachment; filename="print-images-${yearShort}-${program}.zip"`,
+      "Content-Disposition": `attachment; filename="${archiveBase}.zip"`,
     },
   });
 });
@@ -1521,10 +1541,16 @@ adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
 adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
   const year = c.req.query("year");
   const program = c.req.query("program");
-  const basePath = c.req.query("basePath") || "";
   if (!year || !program) {
     return c.json({ error: "year and program query parameters are required" }, 400);
   }
+
+  // Default the image-link prefix to the ZIP's extracted folder name so links
+  // resolve when the ZIP is unzipped next to the .idml. An explicit basePath
+  // (including empty, for a deliberate flat layout) overrides the default.
+  const yearShort = shortenAcademicYear(year);
+  const explicitBasePath = c.req.query("basePath");
+  const basePath = explicitBasePath !== undefined ? explicitBasePath : printImagesArchiveBase(yearShort, program);
 
   // Load template from R2
   const templateObj = await c.env.FILES.get("templates/postcard-images-template.idml");
@@ -1571,16 +1597,14 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
     const w = row.print_image_width;
     const h = row.print_image_height;
     return {
-      image_uri: basePath ? `${basePath}/${encodedFilename}` : encodedFilename,
+      image_uri: buildImageLinkUri(basePath, encodedFilename),
       image_filename: filename,
       portrait: !!(w && h && h > w),
-      imageHeight: h ?? undefined,
     };
   });
 
   const idmlData = generateImageIdml(templateZip, students);
 
-  const yearShort = shortenAcademicYear(year);
   return new Response(idmlData, {
     headers: {
       "Content-Type": "application/octet-stream",

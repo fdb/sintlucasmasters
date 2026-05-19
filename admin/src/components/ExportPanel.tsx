@@ -154,6 +154,10 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
                 Images IDML
               </button>
             </div>
+            <p className="export-overlay-hint">
+              Unzip the ZIP next to the Images IDML, keeping the <code>print-images-…</code> folder name. If photos
+              still show as missing, in InDesign use Links &rarr; Relink to Folder and pick that folder.
+            </p>
           </>
         )}
       </div>

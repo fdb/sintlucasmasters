@@ -6,7 +6,13 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { unzipSync } from "fflate";
-import { renderDescriptionRuns, generateTextIdml, type PostcardTextData } from "./idml-generator";
+import {
+  renderDescriptionRuns,
+  generateTextIdml,
+  generateImageIdml,
+  type PostcardTextData,
+  type PostcardImageData,
+} from "./idml-generator";
 
 const TEKST = 'AppliedCharacterStyle="CharacterStyle/Tekst"';
 
@@ -96,5 +102,50 @@ describe("generateTextIdml with markup", () => {
     expect(xml).toContain('FontStyle="Bold Body Text"><Content>bold</Content>');
     expect(xml).toContain("<Br />");
     expect(xml).toContain("<Content>Second paragraph.</Content>");
+  });
+});
+
+describe("generateImageIdml portrait rotation", () => {
+  // Regression: portrait images landed on the pasteboard (tx≈1652) because
+  // rotateImageTransform90CCW used the DB pixel height (~1819) as its
+  // rotation pivot. The pivot must be in the Image's own GraphicBounds
+  // coordinate space (~297.6 pt) — that's the height that the existing
+  // ItemTransform's translation is consistent with. Landscape images must
+  // pass through unchanged.
+  const template = new Uint8Array(readFileSync(resolve(__dirname, "../../templates/postcard-images-template.idml")));
+
+  function imageTransformsOf(out: Uint8Array): string[] {
+    const files = unzipSync(out);
+    const decoder = new TextDecoder();
+    return Object.entries(files)
+      .filter(([name]) => name.startsWith("Spreads/"))
+      .map(([, data]) => decoder.decode(data))
+      .map((xml) => xml.match(/<Image\b[^>]*ItemTransform="([^"]+)"/)?.[1] ?? "")
+      .filter(Boolean);
+  }
+
+  it("leaves landscape ItemTransform on the page (template values)", () => {
+    const landscape: PostcardImageData = {
+      image_uri: "file:a.jpg",
+      image_filename: "a.jpg",
+      portrait: false,
+    };
+    const [t] = imageTransformsOf(generateImageIdml(template, [landscape]));
+    const tx = Number(t.split(/\s+/)[4]);
+    expect(Math.abs(tx)).toBeLessThan(500);
+  });
+
+  it("rotates portrait images and keeps them on the page (not the pasteboard)", () => {
+    const portrait: PostcardImageData = {
+      image_uri: "file:b.jpg",
+      image_filename: "b.jpg",
+      portrait: true,
+    };
+    const [t] = imageTransformsOf(generateImageIdml(template, [portrait]));
+    const [a, , , , tx] = t.split(/\s+/).map(Number);
+    // 90° CCW rotation flips the leading scale entry to 0
+    expect(a).toBe(0);
+    // Pasteboard bug put tx ≈ 1652; on-page is ≈ 90
+    expect(Math.abs(tx)).toBeLessThan(500);
   });
 });

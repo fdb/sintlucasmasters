@@ -18,6 +18,11 @@
  *   statements. The sqlite3 CLI defaults to foreign_keys=OFF, which is
  *   exactly the semantics a bulk restore wants.
  *
+ * Also mirrors the matching R2 image backup (backups/images/r2/**, the
+ * other half of a `backup-remote.mjs` run) into the LOCAL R2 bucket, so
+ * InDesign image/print exports work against the restored data. Skipped
+ * with a warning if no image backup is present.
+ *
  * Local only by design. Overwriting production from a backup is a
  * deliberate, dangerous operation and is intentionally not supported here.
  *
@@ -28,12 +33,13 @@
 
 import { spawn } from "node:child_process";
 import { glob, readFile, readdir, rm } from "node:fs/promises";
-import { dirname, isAbsolute, join, resolve } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, "..");
 const BACKUP_DIR = join(PROJECT_ROOT, "backups", "db");
+const R2_BACKUP_DIR = join(PROJECT_ROOT, "backups", "images", "r2");
 const D1_DIR = join(PROJECT_ROOT, ".wrangler", "state", "v3", "d1", "miniflare-D1DatabaseObject");
 
 async function latestBackup() {
@@ -74,6 +80,46 @@ function runSqlite(dbFile, sql) {
   });
 }
 
+function runWrangler(wranglerArgs) {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn("npx", ["wrangler", ...wranglerArgs], {
+      stdio: ["ignore", "ignore", "inherit"],
+      cwd: PROJECT_ROOT,
+    });
+    child.on("close", (code) =>
+      code === 0 ? resolvePromise() : reject(new Error(`wrangler ${wranglerArgs.join(" ")} exited ${code}`))
+    );
+    child.on("error", reject);
+  });
+}
+
+// Mirror backups/images/r2/** into local R2. The on-disk path minus the
+// R2_BACKUP_DIR prefix IS the original R2 key (wrangler r2 object get
+// reconstructs keys as a directory tree on download).
+async function restoreR2() {
+  let entries;
+  try {
+    entries = await readdir(R2_BACKUP_DIR, { recursive: true, withFileTypes: true });
+  } catch {
+    console.warn(
+      `\n⚠️  No R2 image backup at ${R2_BACKUP_DIR} — skipping R2 restore.\n` +
+        `   InDesign image/print exports will 404 locally until you run \`npm run backup:images\`.`
+    );
+    return;
+  }
+  const files = entries.filter((e) => e.isFile()).map((e) => join(e.parentPath, e.name));
+  if (files.length === 0) {
+    console.warn(`\n⚠️  ${R2_BACKUP_DIR} is empty — skipping R2 restore.`);
+    return;
+  }
+  console.log(`\nRestoring ${files.length} R2 object(s) into local R2…`);
+  for (const f of files) {
+    const key = relative(R2_BACKUP_DIR, f).split(/[\\/]/).join("/");
+    await runWrangler(["r2", "object", "put", `sintlucasmasters/${key}`, `--file=${f}`, "--local"]);
+  }
+  console.log(`  ${files.length} object(s) restored.`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   if (args.includes("--remote")) {
@@ -103,6 +149,8 @@ async function main() {
 
   const dropSql = tables.map((t) => `DROP TABLE IF EXISTS "${t}";`).join("\n");
   await runSqlite(dbFile, `PRAGMA foreign_keys=OFF;\n${dropSql}\n${dump}`);
+
+  await restoreR2();
 
   console.log(
     `\n✅ Local database restored from ${argPath ?? "latest backup"}. Restart the dev server if it's running.`
