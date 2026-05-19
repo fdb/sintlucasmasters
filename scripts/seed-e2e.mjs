@@ -239,6 +239,24 @@ export const E2E_PROJECTS = [
     user_id: null,
   },
   {
+    id: "e2e-project-no-context",
+    slug: "no-context-student",
+    student_name: "No Context Student",
+    sort_name: "Student, No Context",
+    project_title: "No Context Project",
+    program: "BA_FO",
+    // BA_FO has no context taxonomy — production rows have NULL context.
+    // Dedicated isolated row so the empty-context save test never races
+    // other edits (mirrors the "Name Edit Student" rationale).
+    context: null,
+    academic_year: "2024-2025",
+    bio: "Dedicated project for the empty-context save regression test.",
+    description: "Reproduces a real BA_FO project with no context.",
+    status: "draft",
+    tags: '["edit-test"]',
+    user_id: null,
+  },
+  {
     id: "e2e-project-translate",
     slug: "translate-student",
     student_name: "Translate Student",
