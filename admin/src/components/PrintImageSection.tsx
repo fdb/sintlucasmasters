@@ -191,6 +191,7 @@ export function PrintImageSection() {
             off — please check that it ends the way you intended.
           </p>
         )}
+        <p className="edit-field-hint">Tip: wrap text in _underscores_ to italicise it — e.g. a work&apos;s title.</p>
       </div>
 
       {!printImagePath && editAllowed && (
