@@ -2753,7 +2753,6 @@ tr.status-draft td:first-child {
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 0.5rem;
 }
 
 .field-meta-row > * {
