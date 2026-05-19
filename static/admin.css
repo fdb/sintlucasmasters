@@ -2755,6 +2755,35 @@ tr.status-draft td:first-child {
   text-align: right;
 }
 
+.field-character-count.at-limit {
+  color: #900;
+  font-weight: 600;
+}
+
+:root[data-theme="dark"] .field-character-count.at-limit {
+  color: #c88;
+}
+
+.edit-textarea.at-limit,
+.edit-textarea.at-limit:focus {
+  border-color: #900;
+}
+
+:root[data-theme="dark"] .edit-textarea.at-limit,
+:root[data-theme="dark"] .edit-textarea.at-limit:focus {
+  border-color: #c88;
+}
+
+.field-limit-warning {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #900;
+}
+
+:root[data-theme="dark"] .field-limit-warning {
+  color: #c88;
+}
+
 /* Print image upload area */
 .print-image-upload {
   display: flex;
