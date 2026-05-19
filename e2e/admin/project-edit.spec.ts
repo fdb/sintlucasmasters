@@ -185,6 +185,29 @@ test.describe("admin project editing", () => {
     await expect(projectDescription).toHaveValue("Custom EN description");
   });
 
+  test("print description shows truncation warning only at the 500 character limit", async ({ page }) => {
+    const targetRow = page.locator("tbody tr", { hasText: "Print Mirror Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    const printDescription = modal.locator("#print-description");
+    const warning = modal.locator(".field-limit-warning");
+
+    await printDescription.fill("a".repeat(499));
+    await expect(warning).toHaveCount(0);
+    await expect(printDescription).not.toHaveClass(/at-limit/);
+
+    await printDescription.fill("a".repeat(500));
+    await expect(warning).toBeVisible();
+    await expect(printDescription).toHaveClass(/at-limit/);
+
+    await printDescription.fill("a".repeat(499));
+    await expect(warning).toHaveCount(0);
+    await expect(printDescription).not.toHaveClass(/at-limit/);
+  });
+
   test("status buttons toggle correctly", async ({ page }) => {
     // Double-click first row
     await page.locator("tbody tr").first().dblclick();

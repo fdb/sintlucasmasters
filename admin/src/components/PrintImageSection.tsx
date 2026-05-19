@@ -63,6 +63,7 @@ export function PrintImageSection() {
 
   const printImagePath = editDraft.print_image_path;
   const printDescriptionLength = editDraft.print_description.length;
+  const printDescriptionAtLimit = printDescriptionLength >= 500;
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -174,14 +175,22 @@ export function PrintImageSection() {
         </label>
         <textarea
           id="print-description"
-          className="edit-textarea"
+          className={`edit-textarea${printDescriptionAtLimit ? " at-limit" : ""}`}
           value={editDraft.print_description}
           onChange={(e) => updateEditField("print_description", e.target.value)}
           placeholder="Description for the printed postcard..."
           maxLength={500}
           disabled={!editAllowed}
         />
-        <div className="field-character-count">{printDescriptionLength}/500</div>
+        <div className={`field-character-count${printDescriptionAtLimit ? " at-limit" : ""}`}>
+          {printDescriptionLength}/500
+        </div>
+        {printDescriptionAtLimit && (
+          <p className="field-limit-warning">
+            The print description has reached the 500 character limit. If you pasted longer text it may have been cut
+            off — please check that it ends the way you intended.
+          </p>
+        )}
       </div>
 
       {!printImagePath && editAllowed && (
