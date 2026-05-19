@@ -26,6 +26,9 @@ static/admin/
 # Temporary files
 tmp/
 
+# Production backups (npm run backup:remote)
+backups/
+
 # Playwright
 /test-results/
 /playwright-report/
