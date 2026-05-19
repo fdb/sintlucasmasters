@@ -1,9 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
 
 // Helper: navigate admin to the Review Student project and set status to "reviewed"
+// CI runners are slow; the admin list and detail panel render async, so these
+// navigation gates need a generous timeout to avoid flaky 5s default timeouts.
+const NAV_TIMEOUT = 15000;
+
 async function setProjectToReviewed(page: Page) {
   await page.goto("/admin");
-  await expect(page.locator(".admin-list table")).toBeVisible();
+  await expect(page.locator(".admin-list table")).toBeVisible({ timeout: NAV_TIMEOUT });
 
   const projectsTab = page.locator(".admin-tabs button", { hasText: "projects" });
   if (await projectsTab.isVisible()) {
@@ -12,12 +16,12 @@ async function setProjectToReviewed(page: Page) {
 
   // Double-click to open edit modal
   const targetRow = page.locator("tbody tr", { hasText: "Review Student" });
-  await expect(targetRow).toBeVisible();
+  await expect(targetRow).toBeVisible({ timeout: NAV_TIMEOUT });
   await targetRow.dblclick();
 
   // Wait for edit modal
   const editModal = page.locator(".edit-modal-overlay.is-open");
-  await expect(editModal).toBeVisible();
+  await expect(editModal).toBeVisible({ timeout: NAV_TIMEOUT });
 
   // Click "reviewed" status button
   const reviewedButton = editModal.locator(".edit-status-option", { hasText: "reviewed" });
@@ -33,7 +37,7 @@ async function setProjectToReviewed(page: Page) {
 // Helper: impersonate Review Student
 async function impersonateReviewStudent(page: Page) {
   await page.goto("/admin");
-  await expect(page.locator(".admin-list table")).toBeVisible();
+  await expect(page.locator(".admin-list table")).toBeVisible({ timeout: NAV_TIMEOUT });
 
   const projectsTab = page.locator(".admin-tabs button", { hasText: "projects" });
   if (await projectsTab.isVisible()) {
@@ -41,18 +45,18 @@ async function impersonateReviewStudent(page: Page) {
   }
 
   const targetRow = page.locator("tbody tr", { hasText: "Review Student" });
-  await expect(targetRow).toBeVisible();
+  await expect(targetRow).toBeVisible({ timeout: NAV_TIMEOUT });
   await targetRow.click();
 
   const detailHeader = page.locator(".detail-header-row h3", { hasText: "Review Student" });
-  await expect(detailHeader).toBeVisible();
+  await expect(detailHeader).toBeVisible({ timeout: NAV_TIMEOUT });
 
   const viewAsButton = page.locator(".detail-action-btn", { hasText: "View as" });
-  await expect(viewAsButton).toBeVisible();
+  await expect(viewAsButton).toBeVisible({ timeout: NAV_TIMEOUT });
   await viewAsButton.click();
 
-  await expect(page.locator(".student-shell")).toBeVisible();
-  await expect(page.locator(".student-split-view")).toBeVisible();
+  await expect(page.locator(".student-shell")).toBeVisible({ timeout: NAV_TIMEOUT });
+  await expect(page.locator(".student-split-view")).toBeVisible({ timeout: NAV_TIMEOUT });
 }
 
 // Use serial to avoid parallel tests interfering with shared DB state

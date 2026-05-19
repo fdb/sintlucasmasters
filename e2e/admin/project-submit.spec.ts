@@ -1,5 +1,9 @@
 import { test, expect, type Page } from "@playwright/test";
 
+// CI runners are slow; the admin list and detail panel render async, so these
+// navigation gates need a generous timeout to avoid flaky 5s default timeouts.
+const NAV_TIMEOUT = 15000;
+
 // Helper to ensure project is in draft state before test
 async function ensureProjectIsDraft(page: Page) {
   // Wait for the preview panel to fully load
@@ -61,7 +65,7 @@ async function impersonateStudentFromProject(page: Page, studentName: string) {
     await page.goto("/admin");
   }
 
-  await expect(page.locator(".admin-list table")).toBeVisible();
+  await expect(page.locator(".admin-list table")).toBeVisible({ timeout: NAV_TIMEOUT });
 
   const projectsTab = page.locator(".admin-tabs button", { hasText: "projects" });
   if (await projectsTab.isVisible()) {
@@ -69,21 +73,21 @@ async function impersonateStudentFromProject(page: Page, studentName: string) {
   }
 
   const targetRow = page.locator("tbody tr", { hasText: studentName });
-  await expect(targetRow).toBeVisible();
+  await expect(targetRow).toBeVisible({ timeout: NAV_TIMEOUT });
   await targetRow.click();
 
   const detailHeader = page.locator(".detail-header-row h3", { hasText: studentName });
-  await expect(detailHeader).toBeVisible();
+  await expect(detailHeader).toBeVisible({ timeout: NAV_TIMEOUT });
 
   const viewAsButton = page.locator(".detail-action-btn", { hasText: "View as" });
-  await expect(viewAsButton).toBeVisible();
+  await expect(viewAsButton).toBeVisible({ timeout: NAV_TIMEOUT });
   await viewAsButton.click();
 
   // Wait for student page to load
-  await expect(page.locator(".student-shell")).toBeVisible();
+  await expect(page.locator(".student-shell")).toBeVisible({ timeout: NAV_TIMEOUT });
 
   // Wait for projects to load
-  await expect(page.locator(".student-split-view")).toBeVisible();
+  await expect(page.locator(".student-split-view")).toBeVisible({ timeout: NAV_TIMEOUT });
 }
 
 // Helper to navigate to student view as Submit Student
