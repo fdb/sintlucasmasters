@@ -2748,6 +2748,23 @@ tr.status-draft td:first-child {
   color: var(--gray);
 }
 
+.field-meta-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.field-meta-row > * {
+  margin-top: 0;
+}
+
+.field-meta-row .field-character-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .field-character-count {
   margin-top: 0.5rem;
   font-size: 0.75rem;

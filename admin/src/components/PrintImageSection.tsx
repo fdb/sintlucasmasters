@@ -182,16 +182,18 @@ export function PrintImageSection() {
           maxLength={500}
           disabled={!editAllowed}
         />
-        <div className={`field-character-count${printDescriptionAtLimit ? " at-limit" : ""}`}>
-          {printDescriptionLength}/500
+        <div className="field-meta-row">
+          {printDescriptionAtLimit ? (
+            <p className="field-limit-warning">500-character limit reached — check your text wasn&apos;t cut off.</p>
+          ) : (
+            <p className="edit-field-hint">
+              Tip: wrap text in _underscores_ to italicise it — e.g. a work&apos;s title.
+            </p>
+          )}
+          <span className={`field-character-count${printDescriptionAtLimit ? " at-limit" : ""}`}>
+            {printDescriptionLength}/500
+          </span>
         </div>
-        {printDescriptionAtLimit && (
-          <p className="field-limit-warning">
-            The print description has reached the 500 character limit. If you pasted longer text it may have been cut
-            off — please check that it ends the way you intended.
-          </p>
-        )}
-        <p className="edit-field-hint">Tip: wrap text in _underscores_ to italicise it — e.g. a work&apos;s title.</p>
       </div>
 
       {!printImagePath && editAllowed && (
