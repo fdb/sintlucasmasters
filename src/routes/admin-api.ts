@@ -284,7 +284,10 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   }
   if (body.context !== undefined) {
     const normalizedContext = normalizeContext(body.context);
-    if (!normalizedContext) {
+    // Empty/cleared context is valid — BA_FO/BA_BK have no context taxonomy
+    // and store NULL. Only a non-empty value that fails to normalize is a 400
+    // (mirrors the print_language handling below).
+    if (body.context !== "" && body.context !== null && !normalizedContext) {
       return c.json({ error: "Invalid context" }, 400);
     }
     updates.push("context = ?");

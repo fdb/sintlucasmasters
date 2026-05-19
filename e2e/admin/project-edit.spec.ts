@@ -386,4 +386,37 @@ test.describe("admin project editing", () => {
     await expect(restoreModal.locator(".save-indicator.saved")).toBeVisible({ timeout: 10000 });
     await expect(restoreModal).not.toBeVisible({ timeout: 5000 });
   });
+
+  test("BA_FO project with no context saves without 'Invalid context' error", async ({ page }) => {
+    // Dedicated isolated BA_FO row whose context is NULL (production scenario):
+    // photography projects have no context taxonomy. The form defaults the
+    // Context select to the empty option and the PUT body carries context: "".
+    const targetRow = page.locator("tbody tr", { hasText: "No Context Student" });
+    await targetRow.dblclick();
+
+    const modal = page.locator(".edit-modal-overlay.is-open");
+    await expect(modal).toBeVisible();
+
+    // Context is empty for this BA_FO project — student leaves it as-is.
+    const contextSelect = modal.locator('.edit-field:has-text("Context") select');
+    await expect(contextSelect).toHaveValue("");
+
+    // Capture the save response so a red failure is unambiguously the
+    // reported bug (400 {"error":"Invalid context"}) and not a flaky selector.
+    const savePromise = page.waitForResponse(
+      (res) => res.request().method() === "PUT" && /\/api\/admin\/projects\//.test(res.url())
+    );
+    await modal.locator('button:has-text("Save Changes")').click();
+    const saveRes = await savePromise;
+    expect(saveRes.status(), await saveRes.text()).toBe(200);
+
+    await expect(modal.locator(".save-indicator.saved")).toBeVisible({ timeout: 10000 });
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
+
+    // Reopen — context stays empty (persisted as NULL).
+    await page.locator("tbody tr", { hasText: "No Context Student" }).dblclick();
+    const reopened = page.locator(".edit-modal-overlay.is-open");
+    await expect(reopened).toBeVisible();
+    await expect(reopened.locator('.edit-field:has-text("Context") select')).toHaveValue("");
+  });
 });
