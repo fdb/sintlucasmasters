@@ -76,7 +76,8 @@ export function StudentHeader() {
           )}
           {!hasMultipleProjects && selectedProject && (
             <p className="student-header-subtitle">
-              {selectedProject.academic_year} - {formatContext(selectedProject.context)}
+              {selectedProject.academic_year}
+              {selectedProject.context && ` - ${formatContext(selectedProject.context)}`}
             </p>
           )}
         </div>

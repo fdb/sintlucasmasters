@@ -875,8 +875,17 @@ adminApiRoutes.delete("/projects/:id/images/:imageId", async (c) => {
 // =====================================================
 
 // Validate project for submission
-function validateProjectForSubmission(project: Project, images: ProjectImage[]): { valid: boolean; errors: string[] } {
+export function validateProjectForSubmission(
+  project: Project,
+  images: ProjectImage[]
+): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
+
+  if (project.program === "MA_BK" || project.program === "PREMA_BK") {
+    if (!project.context || !normalizeContext(project.context)) {
+      errors.push("Context is required for MA BK and PREMA BK programmes");
+    }
+  }
 
   if (!project.project_title_en?.trim()) {
     errors.push("English project title is required");

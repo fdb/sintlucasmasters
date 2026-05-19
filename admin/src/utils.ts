@@ -17,7 +17,7 @@ export function buildProjectUrl(
 }
 
 export function formatContext(value: unknown): string {
-  if (value === null || value === undefined) return "—";
+  if (value === null || value === undefined || String(value).trim() === "") return "—";
   const context = String(value).toLowerCase();
   const map: Record<string, string> = {
     autonomous: "Autonomous",
