@@ -83,10 +83,16 @@ export function ProjectEditForm({
         ...options,
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+          if (selectedProjectId) {
+            // The right-side ProjectDetailPanel reads from useProject(); without
+            // this it keeps showing the pre-edit text until the row is reselected.
+            void queryClient.invalidateQueries({ queryKey: queryKeys.project(selectedProjectId) });
+            void queryClient.invalidateQueries({ queryKey: queryKeys.submitValidation(selectedProjectId) });
+          }
         },
       });
     },
-    [saveProject, queryClient]
+    [saveProject, queryClient, selectedProjectId]
   );
 
   const autosaveEnabled = studentMode && !isLocked;

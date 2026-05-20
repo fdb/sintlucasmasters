@@ -9,6 +9,7 @@ import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
 import { queryKeys } from "../api/queryKeys";
 import { buildProjectUrl } from "../utils";
+import { FormattedText } from "./FormattedText";
 
 export function StudentPreviewPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -270,7 +271,13 @@ export function StudentPreviewPanel() {
           <div className="preview-section">
             <div className="preview-section-label">Bio</div>
             <div className="preview-text">
-              {editLanguage === "nl" ? editDraft?.bio_nl || editDraft?.bio_en : editDraft?.bio_en || editDraft?.bio_nl}
+              <FormattedText
+                text={
+                  editLanguage === "nl"
+                    ? editDraft?.bio_nl || editDraft?.bio_en
+                    : editDraft?.bio_en || editDraft?.bio_nl
+                }
+              />
             </div>
           </div>
         )}
@@ -282,9 +289,13 @@ export function StudentPreviewPanel() {
           <div className="preview-section">
             <div className="preview-section-label">Description</div>
             <div className="preview-text">
-              {editLanguage === "nl"
-                ? editDraft?.description_nl || editDraft?.description_en
-                : editDraft?.description_en || editDraft?.description_nl}
+              <FormattedText
+                text={
+                  editLanguage === "nl"
+                    ? editDraft?.description_nl || editDraft?.description_en
+                    : editDraft?.description_en || editDraft?.description_nl
+                }
+              />
             </div>
           </div>
         )}

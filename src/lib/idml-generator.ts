@@ -9,6 +9,7 @@
  */
 
 import { unzipSync, zipSync } from "fflate";
+import { parseInlineMarkup } from "./inline-markup";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -47,34 +48,8 @@ function xmlEscape(str: string): string {
 // sequence of sibling <CharacterStyleRange> elements, each with an optional
 // FontStyle override. The postcard body uses CharacterStyle/Tekst (font
 // "Sequel Sans", default FontStyle "Book Body Text"); the bold/oblique
-// variants below are already embedded in the template.
-
-type MarkupSegment = { kind: "text"; value: string; bold: boolean; italic: boolean } | { kind: "break" };
-
-/**
- * Parse the baseline postcard markup: `*bold*`, `_italic_`, and newlines as
- * line breaks. No nesting, no escaping — an unmatched marker stays literal.
- */
-function parseInlineMarkup(text: string): MarkupSegment[] {
-  const segments: MarkupSegment[] = [];
-  const lines = text.split("\n");
-  lines.forEach((line, lineIndex) => {
-    if (lineIndex > 0) segments.push({ kind: "break" });
-    // split() with one capturing group alternates: even index = plain text,
-    // odd index = a matched *bold* / _italic_ token.
-    const parts = line.split(/(\*[^*\n]+\*|_[^_\n]+_)/);
-    parts.forEach((part, i) => {
-      if (part === "") return;
-      if (i % 2 === 1) {
-        const bold = part[0] === "*";
-        segments.push({ kind: "text", value: part.slice(1, -1), bold, italic: !bold });
-      } else {
-        segments.push({ kind: "text", value: part, bold: false, italic: false });
-      }
-    });
-  });
-  return segments;
-}
+// variants below are already embedded in the template. The inline grammar
+// itself lives in ./inline-markup so the web renderers can share it.
 
 const TEKST_RANGE_OPEN =
   '<CharacterStyleRange AppliedCharacterStyle="CharacterStyle/Tekst" AppliedLanguage="$ID/English: UK"';

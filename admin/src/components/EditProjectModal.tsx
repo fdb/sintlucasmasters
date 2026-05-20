@@ -74,11 +74,12 @@ export function EditProjectModal() {
 
 function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
   const queryClient = useQueryClient();
-  const { saveStatus, saveProject, canEditProject } = useAdminStore(
+  const { saveStatus, saveProject, canEditProject, selectedProjectId } = useAdminStore(
     useShallow((state) => ({
       saveStatus: state.saveStatus,
       saveProject: state.saveProject,
       canEditProject: state.canEditProject,
+      selectedProjectId: state.selectedProjectId,
     }))
   );
 
@@ -89,6 +90,12 @@ function ProjectEditFormFooter({ onCancel }: { onCancel: () => void }) {
     void saveProject({
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+        if (selectedProjectId) {
+          // The right-side ProjectDetailPanel reads from useProject(); without
+          // this it keeps showing the pre-edit text until the row is reselected.
+          void queryClient.invalidateQueries({ queryKey: queryKeys.project(selectedProjectId) });
+          void queryClient.invalidateQueries({ queryKey: queryKeys.submitValidation(selectedProjectId) });
+        }
       },
     });
   };
