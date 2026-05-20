@@ -1,5 +1,7 @@
 import type { FC } from "hono/jsx";
 
+import { FormattedText } from "./inline-markup";
+
 export type VideoProvider = "youtube" | "vimeo";
 
 export interface ParsedVideo {
@@ -150,7 +152,11 @@ export const RichDescription: FC<{ text: string | null | undefined }> = ({ text 
 
   // If only one text segment with no videos, render as simple paragraph
   if (segments.length === 1 && segments[0].type === "text") {
-    return <p class="description">{segments[0].content}</p>;
+    return (
+      <p class="description">
+        <FormattedText text={segments[0].content} />
+      </p>
+    );
   }
 
   return (
@@ -160,7 +166,7 @@ export const RichDescription: FC<{ text: string | null | undefined }> = ({ text 
           return <VideoEmbed key={index} video={segment.video} />;
         }
         // Render text segments - preserve whitespace with pre-wrap styling
-        return <span key={index}>{segment.content}</span>;
+        return <FormattedText key={index} text={segment.content} />;
       })}
     </div>
   );

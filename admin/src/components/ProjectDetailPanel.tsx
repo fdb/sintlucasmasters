@@ -8,6 +8,7 @@ import { buildProjectUrl, formatDate } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SubmitChecklistSection } from "./SubmitChecklistSection";
 import { ExportButton } from "./ExportPanel";
+import { FormattedText } from "./FormattedText";
 
 export function ProjectDetailPanel() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -320,7 +321,9 @@ export function ProjectDetailPanel() {
             <div className="detail-section">
               <div className="detail-section-label">Description</div>
               <div className="detail-text">
-                {editLanguage === "nl" ? descriptionNl || descriptionEn : descriptionEn || descriptionNl}
+                <FormattedText
+                  text={editLanguage === "nl" ? descriptionNl || descriptionEn : descriptionEn || descriptionNl}
+                />
               </div>
             </div>
           ) : null}
