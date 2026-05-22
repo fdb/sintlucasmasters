@@ -848,7 +848,6 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
   const images = allImages.filter((img) => img.type !== "print");
   const socialLinks: string[] = project.social_links ? JSON.parse(project.social_links) : [];
   const tags: string[] = project.tags ? JSON.parse(project.tags) : [];
-  const vtName = `student-${project.slug}`;
 
   type SocialKind = "instagram" | "youtube" | "linkedin" | "website";
 
@@ -1094,17 +1093,13 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
 
         <header class="detail-header">
           <div class="detail-header-left">
-            <h1 class="detail-project-title" style={`view-transition-name: title-${vtName}`}>
-              {localizedProject.project_title}
-            </h1>
+            <h1 class="detail-project-title">{localizedProject.project_title}</h1>
             <p class="detail-meta">
               {metaLabel} · {project.academic_year}
             </p>
           </div>
           <div class="detail-header-right">
-            <h2 class="detail-name" style={`view-transition-name: name-${vtName}`}>
-              {project.student_name}
-            </h2>
+            <h2 class="detail-name">{project.student_name}</h2>
             {locationLabel && <p class="detail-location">{locationLabel}</p>}
             {(socialItems.length > 0 || privateEmail) && (
               <nav class="detail-links" aria-label={text.studentLinks}>

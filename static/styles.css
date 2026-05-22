@@ -1092,19 +1092,6 @@ body.lightbox-open {
 }
 
 /* ───────────────────────────────────
-   View transitions
-   ─────────────────────────────────── */
-
-@view-transition {
-  navigation: auto;
-}
-
-::view-transition-group(*) {
-  animation-duration: 0.3s;
-  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-/* ───────────────────────────────────
    Responsive
    ─────────────────────────────────── */
 
