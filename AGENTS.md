@@ -55,6 +55,10 @@ http://localhost:8787/nl/?__site=fotografie     # fotografie chrome + filter
 
 The override is **dev-only** — production hosts ignore both the query param and the cookie. E2E tests can also use the `X-Site-Override: masters` header instead of the query string.
 
+### Launch status
+
+`sintlucasfotografie.com/nl/` currently returns 404 — this is expected. No BA_FO projects are published yet; we are just starting up. Projects should start appearing once the site goes live (target: 2026-06-17). The worker itself is healthy on that domain (`/api/health` returns OK and `/` → 301 → `/nl/` routes correctly); the 404 is a content issue, not a routing regression.
+
 ## Design
 
 - Strict black/white palette with mid-gray shades for contrast.
