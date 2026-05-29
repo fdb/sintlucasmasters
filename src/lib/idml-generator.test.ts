@@ -81,6 +81,7 @@ describe("generateTextIdml with markup", () => {
     description: "Plain, then _italic_ and *bold*.\nSecond paragraph.",
     website: "example.com",
     instagram: "@ada",
+    email: "ada@example.com",
   };
 
   it("injects formatted runs into the description story and drops the wrapper", () => {

@@ -20,6 +20,7 @@ export interface PostcardTextData {
   description: string;
   website: string;
   instagram: string;
+  email: string;
 }
 
 export interface PostcardImageData {
@@ -449,6 +450,7 @@ export function generateTextIdml(templateZip: Uint8Array, students: PostcardText
         );
         s = s.replace("{{website}}", xmlEscape(student.website));
         s = s.replace("{{instagram}}", xmlEscape(student.instagram));
+        s = s.replace("{{email}}", xmlEscape(student.email));
         return s;
       }
     );

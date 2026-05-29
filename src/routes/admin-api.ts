@@ -1518,7 +1518,7 @@ adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
       p.student_name, p.program, p.context,
       p.project_title_en, p.project_title_nl,
       p.print_description, p.print_language,
-      p.social_links
+      p.social_links, p.private_email
     FROM projects p
     WHERE p.academic_year = ?
       AND p.program = ?
@@ -1536,6 +1536,7 @@ adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
       print_description: string;
       print_language: "en" | "nl";
       social_links: string | null;
+      private_email: string | null;
     }>();
 
   if (!results || results.length === 0) {
@@ -1552,6 +1553,7 @@ adminApiRoutes.get("/export/postcards-text.idml", requireAdmin, async (c) => {
     description: row.print_description,
     website: extractFromSocialLinks(row.social_links, "website"),
     instagram: extractFromSocialLinks(row.social_links, "instagram"),
+    email: row.private_email?.trim() || "",
   }));
 
   const idmlData = generateTextIdml(templateZip, students);
