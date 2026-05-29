@@ -816,6 +816,33 @@
   text-align: left;
 }
 
+.admin-list th.sortable {
+  cursor: pointer;
+}
+
+.admin-list th.sortable:hover {
+  color: var(--admin-text);
+}
+
+.th-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.th-sort-icon {
+  flex-shrink: 0;
+  opacity: 0.35;
+}
+
+.admin-list th.sortable:hover .th-sort-icon {
+  opacity: 0.6;
+}
+
+.th-sort-icon.active {
+  opacity: 1;
+}
+
 .admin-list td {
   padding: 0.625rem 1rem;
   border-bottom: 1px solid var(--admin-border-light);

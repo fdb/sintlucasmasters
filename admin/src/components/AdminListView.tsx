@@ -199,6 +199,7 @@ const PROJECT_COLUMNS = [
     key: "program",
     label: "Programme",
     formatter: (_value: unknown, row: Record<string, unknown>) => formatProgrammeContext(row),
+    sortValue: (row: Record<string, unknown>) => formatProgrammeContext(row),
   },
   { key: "academic_year", label: "Academic year", formatter: formatAcademicYear },
 ];
