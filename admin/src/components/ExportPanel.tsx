@@ -88,42 +88,44 @@ function ExportOverlay({ open, onClose, year, program }: ExportOverlayProps) {
 
         {data && (
           <>
-            <div className="export-overlay-summary">
-              {readyStudents.length}/{data.total} students ready for print
+            <div className="export-overlay-body">
+              <div className="export-overlay-summary">
+                {readyStudents.length}/{data.total} students ready for print
+              </div>
+
+              {readyStudents.length > 0 && (
+                <div className="export-overlay-section">
+                  <div className="export-overlay-section-label">Ready ({readyStudents.length})</div>
+                  <div className="export-overlay-list">
+                    {readyStudents.map((student) => (
+                      <div key={student.id} className="export-overlay-item">
+                        <span className="export-overlay-name">{student.studentName}</span>
+                        <span className={`export-overlay-status ${getStatusClass(student.status)}`}>
+                          {student.status.replace(/_/g, " ")}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {notReady.length > 0 && (
+                <div className="export-overlay-section">
+                  <div className="export-overlay-section-label">Not ready ({notReady.length})</div>
+                  <div className="export-overlay-list">
+                    {notReady.map((student) => (
+                      <div key={student.id} className="export-overlay-item">
+                        <span className="export-overlay-name">{student.studentName}</span>
+                        <span className={`export-overlay-status ${getStatusClass(student.status)}`}>
+                          {student.status.replace(/_/g, " ")}
+                        </span>
+                        <span className="export-overlay-issues">{getIssues(student).join(" \u00b7 ")}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-
-            {readyStudents.length > 0 && (
-              <div className="export-overlay-section">
-                <div className="export-overlay-section-label">Ready ({readyStudents.length})</div>
-                <div className="export-overlay-list">
-                  {readyStudents.map((student) => (
-                    <div key={student.id} className="export-overlay-item">
-                      <span className="export-overlay-name">{student.studentName}</span>
-                      <span className={`export-overlay-status ${getStatusClass(student.status)}`}>
-                        {student.status.replace(/_/g, " ")}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {notReady.length > 0 && (
-              <div className="export-overlay-section">
-                <div className="export-overlay-section-label">Not ready ({notReady.length})</div>
-                <div className="export-overlay-list">
-                  {notReady.map((student) => (
-                    <div key={student.id} className="export-overlay-item">
-                      <span className="export-overlay-name">{student.studentName}</span>
-                      <span className={`export-overlay-status ${getStatusClass(student.status)}`}>
-                        {student.status.replace(/_/g, " ")}
-                      </span>
-                      <span className="export-overlay-issues">{getIssues(student).join(" \u00b7 ")}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             <div className="export-overlay-actions">
               <button
