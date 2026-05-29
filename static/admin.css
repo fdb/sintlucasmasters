@@ -3582,6 +3582,13 @@ tr.status-draft td:first-child {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.export-overlay-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .export-overlay-header h3 {
@@ -3614,6 +3621,7 @@ tr.status-draft td:first-child {
   font-size: 0.8125rem;
   line-height: 1.65;
   color: var(--gray);
+  flex-shrink: 0;
 }
 
 .export-overlay-hint code {
@@ -3650,8 +3658,6 @@ tr.status-draft td:first-child {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  max-height: 30vh;
-  overflow-y: auto;
 }
 
 .export-overlay-item {
@@ -3706,11 +3712,13 @@ tr.status-draft td:first-child {
 
 .export-overlay-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--admin-border);
+  flex-shrink: 0;
 }
 
 .export-overlay-actions .btn {
