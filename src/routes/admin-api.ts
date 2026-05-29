@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import type { Context } from "hono";
 import Anthropic from "@anthropic-ai/sdk";
-import { zipSync } from "fflate";
+import { Zip, ZipPassThrough } from "fflate";
 import { generateTextIdml, generateImageIdml } from "../lib/idml-generator";
 import type { PostcardTextData, PostcardImageData } from "../lib/idml-generator";
 import { getContextFullLabel, getProgrammeLabel, normalizeContextKey } from "../lib/i18n";
@@ -1375,47 +1375,74 @@ adminApiRoutes.get("/export/print-images.zip", requireAdmin, async (c) => {
     return c.json({ error: "No projects with print images found for this year and program" }, 400);
   }
 
-  const data: Record<string, Uint8Array> = {};
-  const usedSlugs = new Set<string>();
-
-  for (const row of results) {
-    let slug = row.email ? emailSlug(row.email) : row.student_name.toLowerCase().replace(/\s+/g, "_");
-
-    // Handle duplicate slugs
-    if (usedSlugs.has(slug)) {
-      slug = `${slug}-${row.project_id.slice(0, 8)}`;
-    }
-    usedSlugs.add(slug);
-
-    // Fetch image from R2
-    const r2Object = await c.env.FILES.get(row.print_image_path);
-    if (!r2Object) continue;
-
-    // Get extension from R2 key
-    const extMatch = row.print_image_path.match(/\.([a-z0-9]+)$/i);
-    const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
-
-    const imageBytes = new Uint8Array(await r2Object.arrayBuffer());
-    data[`${slug}.${ext}`] = imageBytes;
-
-    const encoder = new TextEncoder();
-    data[`${slug}.txt`] = encoder.encode(`${row.print_caption.trim()}\n\n${row.print_description.trim()}`);
-  }
-
-  if (Object.keys(data).length === 0) {
-    return c.json({ error: "No print images could be retrieved" }, 400);
-  }
-
-  // Create ZIP with store mode (level 0) — images are already compressed
-  const zipOptions: Record<string, [Uint8Array, { level: 0 }]> = {};
-  for (const [filename, bytes] of Object.entries(data)) {
-    zipOptions[filename] = [bytes, { level: 0 }];
-  }
-  const zipData = zipSync(zipOptions);
-
+  // Stream the archive instead of building it in memory. The full archive can
+  // run to hundreds of MB, which blows the Worker's 128 MB memory limit if
+  // assembled with zipSync. Here we add one file at a time and flush its bytes
+  // to the response before fetching the next, keeping peak memory to ~one image.
   const yearShort = shortenAcademicYear(year);
   const archiveBase = printImagesArchiveBase(yearShort, program);
-  return new Response(zipData, {
+
+  const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
+  const writer = writable.getWriter();
+  const encoder = new TextEncoder();
+
+  // fflate's Zip callback is synchronous and fires in archive order; serialize
+  // writes through a promise chain so we honour the writer's backpressure.
+  let writeChain = Promise.resolve();
+  const zip = new Zip((err, chunk, final) => {
+    if (err) {
+      writeChain = writeChain.then(() => writer.abort(err));
+      return;
+    }
+    writeChain = writeChain.then(async () => {
+      await writer.ready;
+      await writer.write(chunk);
+      if (final) await writer.close();
+    });
+  });
+
+  // Add a file to the archive and wait until its bytes have been flushed, so we
+  // never hold more than one image's worth of data at a time.
+  const addFile = async (filename: string, bytes: Uint8Array) => {
+    const file = new ZipPassThrough(filename);
+    zip.add(file);
+    file.push(bytes, true);
+    await writeChain;
+  };
+
+  (async () => {
+    const usedSlugs = new Set<string>();
+    try {
+      for (const row of results) {
+        let slug = row.email ? emailSlug(row.email) : row.student_name.toLowerCase().replace(/\s+/g, "_");
+
+        // Handle duplicate slugs
+        if (usedSlugs.has(slug)) {
+          slug = `${slug}-${row.project_id.slice(0, 8)}`;
+        }
+        usedSlugs.add(slug);
+
+        // Fetch image from R2
+        const r2Object = await c.env.FILES.get(row.print_image_path);
+        if (!r2Object) continue;
+
+        // Get extension from R2 key
+        const extMatch = row.print_image_path.match(/\.([a-z0-9]+)$/i);
+        const ext = extMatch ? extMatch[1].toLowerCase() : "jpg";
+
+        await addFile(`${slug}.${ext}`, new Uint8Array(await r2Object.arrayBuffer()));
+        await addFile(`${slug}.txt`, encoder.encode(`${row.print_caption.trim()}\n\n${row.print_description.trim()}`));
+      }
+      zip.end();
+      await writeChain;
+    } catch (err) {
+      // abort() rejects if the writer is already errored (the usual reason we
+      // land here), so swallow that to avoid an unhandled rejection.
+      await writer.abort(err).catch(() => {});
+    }
+  })();
+
+  return new Response(readable, {
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": `attachment; filename="${archiveBase}.zip"`,
