@@ -1,6 +1,87 @@
 import { describe, expect, it } from "vitest";
 import { buildTrajectory, buildImageLinkUri, printImagesArchiveBase, validateProjectForSubmission } from "./admin-api";
+import { app } from "../index";
+import { AUTH_COOKIE_NAME } from "../middleware/auth";
+import { signToken } from "../lib/jwt";
 import type { Project, ProjectImage } from "../types";
+
+const DEBUG_CRASH_JWT_SECRET = "debug-crash-test-secret";
+
+function createDebugCrashEnv() {
+  return {
+    JWT_SECRET: DEBUG_CRASH_JWT_SECRET,
+    DB: {
+      prepare() {
+        return {
+          bind() {
+            return {
+              async first() {
+                return null;
+              },
+              async run() {
+                return { success: true };
+              },
+            };
+          },
+        };
+      },
+    },
+  };
+}
+
+async function debugCrashCookie(role: "student" | "editor" | "admin") {
+  const token = await signToken(
+    {
+      userId: `${role}-user-001`,
+      email: `${role}@example.com`,
+      role,
+    },
+    DEBUG_CRASH_JWT_SECRET
+  );
+
+  return `${AUTH_COOKIE_NAME}=${token}`;
+}
+
+describe("POST /api/admin/debug/sentry-crash", () => {
+  it("requires authentication", async () => {
+    const response = await app.request(
+      "/api/admin/debug/sentry-crash",
+      {
+        method: "POST",
+      },
+      createDebugCrashEnv() as never
+    );
+
+    expect(response.status).toBe(401);
+  });
+
+  it("forbids non-admin users", async () => {
+    const response = await app.request(
+      "/api/admin/debug/sentry-crash",
+      {
+        method: "POST",
+        headers: { Cookie: await debugCrashCookie("editor") },
+      },
+      createDebugCrashEnv() as never
+    );
+
+    expect(response.status).toBe(403);
+  });
+
+  it("returns a 500 for admins so the Sentry error handler can report it", async () => {
+    const response = await app.request(
+      "/api/admin/debug/sentry-crash",
+      {
+        method: "POST",
+        headers: { Cookie: await debugCrashCookie("admin") },
+      },
+      createDebugCrashEnv() as never
+    );
+
+    expect(response.status).toBe(500);
+    await expect(response.text()).resolves.toBe("Internal Server Error");
+  });
+});
 
 describe("buildImageLinkUri", () => {
   // Regression: commit fbdbb3a stripped the `file:` scheme, emitting bare

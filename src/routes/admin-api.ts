@@ -64,6 +64,15 @@ export const adminApiRoutes = new Hono<{ Bindings: Bindings }>();
 // Apply auth middleware to all routes
 adminApiRoutes.use("*", authMiddleware, requireAuth);
 
+adminApiRoutes.post("/debug/sentry-crash", (c) => {
+  const user = c.get("user");
+  if (user?.role !== "admin") {
+    return c.json({ error: "Forbidden" }, 403);
+  }
+
+  throw new Error("Debug backend Sentry crash");
+});
+
 // =====================================================
 // Permission Helpers
 // =====================================================
