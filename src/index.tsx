@@ -41,6 +41,11 @@ import {
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
+app.onError((err, c) => {
+  Sentry.captureException(err);
+  return c.text("Internal Server Error", 500);
+});
+
 app.use("*", secureHeaders());
 
 type PublicLocale = "nl" | "en";
