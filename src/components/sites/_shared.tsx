@@ -17,6 +17,7 @@ const SHARED_COPY = {
     searchSingular: "result",
     searchPlural: "results",
     localeLabel: "Language",
+    eventDatesShort: "17–21 June 2026",
   },
   nl: {
     searchAria: "Zoek projecten",
@@ -29,12 +30,35 @@ const SHARED_COPY = {
     searchSingular: "resultaat",
     searchPlural: "resultaten",
     localeLabel: "Taal",
+    eventDatesShort: "17–21 juni 2026",
   },
 } as const;
 
 export function getSharedCopy(locale: PublicLocale): (typeof SHARED_COPY)[PublicLocale] {
   return SHARED_COPY[locale];
 }
+
+// The animated brand mark shown in every public header. The static logo is the
+// always-safe base (shown collapsed, on reduced-motion, and on low-power /
+// autoplay failure); /header.js swaps in the animated MP4 only when the header
+// is expanded and motion is allowed. The video's background is baked to the
+// header colour (#f5f5f3) so it blends seamlessly. Decorative — the title text
+// already conveys "Graduation Tour".
+export const SiteEyes: FC = () => (
+  <div class="site-eyes" data-site-eyes aria-hidden="true">
+    <img class="site-eyes-logo" src="/graduation-tour-logo.png" alt="" />
+    <video class="site-eyes-video" data-site-eyes-video muted loop playsinline preload="none">
+      <source src="/graduation-tour-animation.mp4" type="video/mp4" />
+    </video>
+  </div>
+);
+
+// Compact dates-only line shown in place of the full tagline on mobile, where
+// the height-constrained header can't fit the promotional copy. Hidden on
+// desktop via CSS (.site-tagline-dates).
+export const EventDatesShort: FC<{ locale: PublicLocale }> = ({ locale }) => (
+  <p class="site-tagline-dates">{SHARED_COPY[locale].eventDatesShort}</p>
+);
 
 export const SearchBox: FC<{ locale: PublicLocale }> = ({ locale }) => {
   const copy = SHARED_COPY[locale];

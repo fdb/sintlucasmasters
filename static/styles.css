@@ -24,6 +24,11 @@ body {
   font-family: var(--font-sans);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  /* The shrinking header resizes a sticky element at the top of the page.
+     Scroll anchoring would shift scrollY to compensate, which on expand left
+     the tall header pinned while still scrolled — overlapping the sticky nav.
+     Disabling anchoring keeps expand/collapse from moving the scroll position. */
+  overflow-anchor: none;
 }
 
 img {
@@ -92,16 +97,89 @@ a:hover {
 }
 
 .site-header--public {
-  padding: 2.5rem 0 2rem;
+  --header-h: 150px;
+  padding: 0;
+  position: sticky;
+  top: 36px; /* sits directly below the sticky top-bar */
+  /* Above the sub-header so the brief transitional overlap during a
+     collapse/expand is covered by the header's opaque background. */
+  z-index: 95;
+}
+
+.site-header--public.is-collapsed {
+  --header-h: 56px;
 }
 
 .site-header--public .header-inner {
   padding: 0 2rem;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: height 0.3s ease;
 }
 
 .header-inner {
   max-width: 1400px;
   margin: 0 auto;
+}
+
+/* Brand mark — square, scales down as the header collapses. Holds a static
+   logo (the always-safe base) and the animated WebM, cross-faded by .is-animating. */
+.site-eyes {
+  position: relative;
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease;
+}
+
+.site-eyes-logo,
+.site-eyes-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.site-eyes-video {
+  opacity: 0;
+}
+
+.site-eyes.is-animating .site-eyes-video {
+  opacity: 1;
+}
+
+.site-eyes.is-animating .site-eyes-logo {
+  opacity: 0;
+}
+
+.site-header--public.is-collapsed .site-eyes {
+  width: 40px;
+  height: 40px;
+}
+
+.header-text {
+  min-width: 0;
+}
+
+.site-title {
+  transition: font-size 0.3s ease;
+}
+
+.site-header--public.is-collapsed .site-title {
+  font-size: 1.25rem;
+}
+
+.site-header--public.is-collapsed .site-tagline,
+.site-header--public.is-collapsed .site-tagline-dates {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
 }
 
 .site-title-link {
@@ -128,6 +206,26 @@ a:hover {
   color: var(--gray);
   max-width: 40rem;
   line-height: 1.5;
+  overflow: hidden;
+  max-height: 6rem;
+  transition:
+    opacity 0.25s ease,
+    max-height 0.3s ease,
+    margin-top 0.3s ease;
+}
+
+/* Compact dates line — replaces the full tagline on mobile only (see media query). */
+.site-tagline-dates {
+  display: none;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--gray);
+  overflow: hidden;
+  max-height: 3rem;
+  transition:
+    opacity 0.25s ease,
+    max-height 0.3s ease,
+    margin-top 0.3s ease;
 }
 
 /* Header with logo (AdminLayout) */
@@ -180,8 +278,8 @@ a:hover {
 .sub-header {
   border-bottom: 1px solid var(--light-gray);
   position: sticky;
-  top: 36px;
-  z-index: 100;
+  top: 92px; /* top-bar (36px) + collapsed header (56px) */
+  z-index: 90; /* below the header (95) so the header covers it mid-transition */
   background: var(--white);
 }
 
@@ -1109,7 +1207,13 @@ body.lightbox-open {
   }
 
   .site-header--public {
-    padding: 1.75rem 0 1.5rem;
+    --header-h: 112px;
+    padding: 0;
+  }
+
+  .site-header--public .site-eyes {
+    width: 88px;
+    height: 88px;
   }
 
   .site-header:has(.logo) {
@@ -1129,11 +1233,17 @@ body.lightbox-open {
   }
 
   .site-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
+  /* The height-constrained mobile header can't fit the full promotional
+     tagline beside the eyes, so swap it for the compact dates line. */
   .site-tagline {
-    font-size: 0.8125rem;
+    display: none;
+  }
+
+  .site-tagline-dates {
+    display: block;
   }
 
   .sub-header-inner {
@@ -1256,7 +1366,8 @@ body.lightbox-open {
   }
 
   .site-header--public {
-    padding: 1.25rem 0 1.25rem;
+    --header-h: 100px;
+    padding: 0;
   }
 
   .sub-header-inner {
