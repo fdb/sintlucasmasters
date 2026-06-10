@@ -9,7 +9,7 @@
 
 import type { FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
-import { SearchBox } from "./_shared";
+import { SearchBox, SiteEyes, EventDatesShort } from "./_shared";
 
 const PROGRAMME_URL_EN = "https://www.sintlucasantwerpen.be/en/get-to-know-our-study-programmes/photography/";
 const PROGRAMME_URL_NL = "https://www.sintlucasantwerpen.be/opleidingen/fotografie/";
@@ -52,7 +52,7 @@ const Tagline: FC<{ locale: PublicLocale }> = ({ locale }) => {
         <a href={PROGRAMME_URL_NL} target="_blank" rel="noopener noreferrer">
           Bachelor Fotografie
         </a>{" "}
-        2025–2026. Bezoek de Fotografie Expo van 17 t.e.m. 21 juni tijdens{" "}
+        2025–2026. Bezoek de Fotografie Expo van 17 tot en met 21 juni tijdens{" "}
         <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
           GRADUATION TOUR 2026
         </a>
@@ -79,14 +79,18 @@ export const FotografieHeader: FC<{ locale: PublicLocale; hideSubheader?: boolea
   const copy = COPY[locale];
   return (
     <>
-      <header class="site-header site-header--public">
+      <header class="site-header site-header--public" data-site-header>
         <div class="header-inner">
-          <a href={`/${locale}/`} class="site-title-link">
-            <h1 class="site-title">{copy.title}</h1>
-          </a>
-          <p class="site-tagline">
-            <Tagline locale={locale} />
-          </p>
+          <SiteEyes />
+          <div class="header-text">
+            <a href={`/${locale}/`} class="site-title-link">
+              <h1 class="site-title">{copy.title}</h1>
+            </a>
+            <p class="site-tagline">
+              <Tagline locale={locale} />
+            </p>
+            <EventDatesShort locale={locale} />
+          </div>
         </div>
       </header>
       {!hideSubheader && (
@@ -194,7 +198,7 @@ export const FotografieAboutBody: FC<{ locale: PublicLocale }> = ({ locale }) =>
             <a href="https://www.sintlucasantwerpen.be/" target="_blank" rel="noopener noreferrer">
               Sint Lucas Antwerpen
             </a>
-            . Naast dit online platform zijn de werken ook fysiek te bezichtigen van 17 t.e.m. 21 juni tijdens{" "}
+            . Naast dit online platform zijn de werken ook fysiek te bezichtigen van 17 tot en met 21 juni tijdens{" "}
             <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
               GRADUATION TOUR 2026
             </a>

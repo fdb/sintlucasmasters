@@ -12,7 +12,7 @@ import type { FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
 import { CURRENT_YEAR } from "../../config";
 import { type SiteConfig, programmeToSlug } from "../../sites";
-import { SearchBox } from "./_shared";
+import { SearchBox, SiteEyes, EventDatesShort } from "./_shared";
 
 const SCHOOL_URL = "https://www.sintlucasantwerpen.be/";
 // TODO(comms): the school site only publishes a Dutch calendar page for this
@@ -68,7 +68,7 @@ const Tagline: FC<{ locale: PublicLocale }> = ({ locale }) => {
         <a href={SCHOOL_URL} target="_blank" rel="noopener noreferrer">
           Sint Lucas Antwerpen
         </a>
-        . Bezoek van 17 t.e.m. 21 juni tijdens{" "}
+        . Van 17 tot en met 21 juni tijdens{" "}
         <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
           GRADUATION TOUR 2026
         </a>
@@ -82,7 +82,7 @@ const Tagline: FC<{ locale: PublicLocale }> = ({ locale }) => {
       <a href={SCHOOL_URL} target="_blank" rel="noopener noreferrer">
         Sint Lucas Antwerpen
       </a>
-      . Visit from 17 to 21 June during{" "}
+      . From 17 to 21 June during{" "}
       <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
         GRADUATION TOUR 2026
       </a>
@@ -104,14 +104,18 @@ export const GraduatesHeader: FC<HeaderProps> = ({ locale, currentPath, site, hi
   const pathOnly = currentPath.split("?")[0];
   return (
     <>
-      <header class="site-header site-header--public">
+      <header class="site-header site-header--public" data-site-header>
         <div class="header-inner">
-          <a href={`/${locale}/`} class="site-title-link">
-            <h1 class="site-title">{copy.title}</h1>
-          </a>
-          <p class="site-tagline">
-            <Tagline locale={locale} />
-          </p>
+          <SiteEyes />
+          <div class="header-text">
+            <a href={`/${locale}/`} class="site-title-link">
+              <h1 class="site-title">{copy.title}</h1>
+            </a>
+            <p class="site-tagline">
+              <Tagline locale={locale} />
+            </p>
+            <EventDatesShort locale={locale} />
+          </div>
         </div>
       </header>
       {!hideSubheader && (
@@ -235,7 +239,8 @@ export const GraduatesAboutBody: FC<{ locale: PublicLocale }> = ({ locale }) => 
         {locale === "nl" ? (
           <>
             Deze website bevat de afstudeerwerken van de afstuderende Masters Beeldende Kunsten en Bachelors Fotografie
-            2025–2026. Naast dit online platform zijn de werken ook fysiek te bezichtigen van 17 t.e.m. 21 juni tijdens{" "}
+            2025–2026. Naast dit online platform zijn de werken ook fysiek te bezichtigen van 17 tot en met 21 juni
+            tijdens{" "}
             <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
               GRADUATION TOUR 2026
             </a>

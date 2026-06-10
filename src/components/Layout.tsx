@@ -135,6 +135,7 @@ export const Layout: FC<LayoutProps> = ({
 
         <link rel="stylesheet" href="/styles.css" />
         <script src="/search.js" defer />
+        <script src="/header.js" defer />
       </head>
       <body data-site={site.id}>
         <TopBar locale={locale} nlPath={nlPath} enPath={enPath} logo={site.logo} />
