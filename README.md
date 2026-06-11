@@ -33,6 +33,36 @@ npm run typecheck   # Type-check both worker and admin code
 
 ## Production
 
+Production deploys are **automatic**: merging a pull request into `main` triggers a
+Cloudflare Workers Build that applies pending D1 migrations, deploys the Worker, and
+verifies the deployed version via the health endpoint. No local credentials or manual
+steps are needed — anyone who can merge a PR can ship.
+
+The pipeline (configured in the Cloudflare dashboard, Workers & Pages → sintlucasmasters
+→ Settings → Builds):
+
+| Setting                      | Value                                                                                                                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Production branch            | `main`                                                                                                                                                                            |
+| Build command                | `npm run build:admin`                                                                                                                                                             |
+| Deploy command               | `npm run deploy:ci`                                                                                                                                                               |
+| Non-production branch builds | **disabled** (preview versions would share the production D1 binding)                                                                                                             |
+| API token                    | custom token — the auto-generated one lacks D1 permissions. Scopes: Account Settings:Read, Workers Scripts:Edit, **D1:Edit**, Workers R2 Storage:Edit; Zone → Workers Routes:Edit |
+| Build variables              | `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` (secrets — without them sourcemaps are neither uploaded to Sentry nor stripped from the bundle)                               |
+
+`npm run deploy:ci` runs `init:remote` (applies **unapplied** migrations only — never
+drops tables or deletes data), then `wrangler deploy`, then `scripts/verify-deploy.mjs`,
+which polls `/api/health` until the deployed version equals the built commit SHA and
+smoke-tests the public site. A failed migration aborts the deploy; a failed verification
+marks the build red in the dashboard and on the commit.
+
+Branch protection on `main` requires the CI workflow (typecheck, unit tests, e2e) to
+pass on every PR before merge, so a deploy can only start from a commit that passed CI.
+
+### Manual deploy (fallback)
+
+If the Workers Build pipeline is unavailable:
+
 ```bash
 # Apply pending database migrations (non-destructive, safe to run repeatedly)
 npm run init:remote
@@ -65,9 +95,8 @@ npm run db:migration:create -- add_video_url
 npm run init
 npm run test:e2e
 
-# After merge, apply to production
-npm run init:remote
-npm run deploy
+# Merging the PR applies the migration to production automatically
+# (the deploy pipeline runs `init:remote` before `wrangler deploy`)
 ```
 
 Migrations are **append-only** — never edit a migration after it has been applied to production.

@@ -22,8 +22,16 @@ npm run test:e2e
 
 # Production (non-destructive — only applies unapplied migrations)
 npm run init:remote         # Apply pending migrations to production D1
-npm run deploy              # Deploy to Cloudflare (not auto-deployed on push)
+npm run deploy              # Manual deploy to Cloudflare (fallback only)
 ```
+
+## Deployment
+
+Merging a PR into `main` deploys automatically via Cloudflare Workers Builds: it runs
+`npm run build:admin`, then `npm run deploy:ci` (pending D1 migrations → `wrangler deploy`
+→ health-endpoint verification against the built commit SHA). Branch protection requires
+CI (typecheck, unit tests, e2e) to pass before merge. Do not deploy manually unless the
+pipeline is down — see "Production" in README.md.
 
 ## Local workflow
 

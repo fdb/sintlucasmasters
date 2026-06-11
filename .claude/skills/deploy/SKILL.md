@@ -1,9 +1,15 @@
 ---
 name: deploy
-description: Deploy the Sint Lucas Masters app to Cloudflare Workers — verifies main is clean and pushed, applies pending D1 migrations, deploys, and verifies via health endpoint
+description: Manual fallback deploy of the Sint Lucas Masters app to Cloudflare Workers — verifies main is clean and pushed, applies pending D1 migrations, deploys, and verifies via health endpoint. Deploys are normally automatic on merge to main.
 ---
 
-# Deploy — Verify, Migrate & Ship to Cloudflare
+# Deploy — Verify, Migrate & Ship to Cloudflare (manual fallback)
+
+> **Deploys are normally automatic.** Merging a PR into `main` triggers a Cloudflare
+> Workers Build that applies migrations, deploys, and verifies health (`npm run deploy:ci`).
+> Before running this skill, confirm with the user that the automatic pipeline failed or
+> is unavailable — check build status in the Cloudflare dashboard (Workers & Pages →
+> sintlucasmasters → Deployments) first. This skill is the **manual fallback only**.
 
 Safely deploy the Sint Lucas Masters application to production. Verifies the working tree is clean and `main` is pushed, applies pending database migrations, deploys the worker, and verifies the deployment is healthy. **The skill never commits or pushes on the user's behalf — that must already be done.**
 
