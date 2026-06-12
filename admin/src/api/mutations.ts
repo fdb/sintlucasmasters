@@ -3,6 +3,7 @@ import { queryKeys } from "./queryKeys";
 import {
   logout,
   saveProject,
+  batchUpdateProjectStatus,
   deleteProject,
   uploadImage,
   deleteImage,
@@ -53,6 +54,19 @@ export function useSaveProject(projectId: string | null) {
         queryClient.invalidateQueries({ queryKey: queryKeys.project(projectId) });
         queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
       }
+    },
+  });
+}
+
+export function useBatchUpdateProjectStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ ids, status }: { ids: string[]; status: string }) => batchUpdateProjectStatus(ids, status),
+    onSuccess: () => {
+      // Refresh the list and any open project detail to reflect new statuses
+      queryClient.invalidateQueries({ queryKey: queryKeys.table("projects") });
+      queryClient.invalidateQueries({ queryKey: ["project"] });
     },
   });
 }
