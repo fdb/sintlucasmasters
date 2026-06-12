@@ -6,6 +6,7 @@ import { AdminHeader } from "../components/AdminHeader";
 import { AdminTabs } from "../components/AdminTabs";
 import { AdminListView } from "../components/AdminListView";
 import { ProjectDetailPanel } from "../components/ProjectDetailPanel";
+import { BatchOperationsPanel } from "../components/BatchOperationsPanel";
 import { UserDetailPanel } from "../components/UserDetailPanel";
 import { EditProjectModal } from "../components/EditProjectModal";
 import { CreateUserModal } from "../components/CreateUserModal";
@@ -18,6 +19,7 @@ export function AdminPage() {
       setActiveTable: state.setActiveTable,
     }))
   );
+  const hasBatchSelection = useAdminStore((state) => state.selectedProjectIds.size > 0);
 
   const { data: session, isLoading, isError } = useSession();
   const tables = session?.tables ?? [];
@@ -44,7 +46,13 @@ export function AdminPage() {
           <AdminTabs />
           <div className="admin-split">
             <AdminListView />
-            {activeTable === "users" ? <UserDetailPanel /> : <ProjectDetailPanel />}
+            {activeTable === "users" ? (
+              <UserDetailPanel />
+            ) : hasBatchSelection ? (
+              <BatchOperationsPanel />
+            ) : (
+              <ProjectDetailPanel />
+            )}
           </div>
         </div>
       )}

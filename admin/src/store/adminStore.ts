@@ -124,6 +124,9 @@ type AdminState = {
   selectedProjectId: string | null;
   projectDetail: ProjectDetailResponse | null;
   projectStatus: LoadStatus;
+  // Batch selection (multi-select for bulk operations)
+  selectedProjectIds: Set<string>;
+  lastSelectedProjectId: string | null;
   selectedYear: string;
   selectedContext: string;
   selectedProgram: string;
@@ -227,6 +230,10 @@ type AdminState = {
   // Selection setters
   setSelectedProjectId: (id: string | null) => void;
   setSelectedUserId: (id: string | null) => void;
+  // Batch selection actions
+  toggleProjectSelection: (id: string, opts?: { shiftKey?: boolean; orderedIds?: string[] }) => void;
+  setProjectSelection: (ids: string[]) => void;
+  clearProjectSelection: () => void;
 };
 
 const getInitialDarkMode = () => {
@@ -383,6 +390,8 @@ export const useAdminStore = create<AdminState>()(
       selectedProjectId: null,
       projectDetail: null,
       projectStatus: "idle",
+      selectedProjectIds: new Set<string>(),
+      lastSelectedProjectId: null,
       selectedYear: "",
       selectedContext: "",
       selectedProgram: "",
@@ -477,6 +486,8 @@ export const useAdminStore = create<AdminState>()(
           selectedStatus: "",
           searchQuery: "",
           searchExpanded: false,
+          selectedProjectIds: new Set<string>(),
+          lastSelectedProjectId: null,
         });
         get().resetEditSession();
         await get().loadTable(table);
@@ -1395,6 +1406,34 @@ export const useAdminStore = create<AdminState>()(
       // Selection setters
       setSelectedProjectId: (selectedProjectId) => set({ selectedProjectId }),
       setSelectedUserId: (selectedUserId) => set({ selectedUserId }),
+      // Batch selection actions
+      toggleProjectSelection: (id, opts) => {
+        const { selectedProjectIds, lastSelectedProjectId } = get();
+        const next = new Set(selectedProjectIds);
+
+        // Shift-click selects the contiguous range (in visible order) between the
+        // previous anchor and the clicked row, just like Linear/Outlook.
+        if (opts?.shiftKey && lastSelectedProjectId && opts.orderedIds) {
+          const from = opts.orderedIds.indexOf(lastSelectedProjectId);
+          const to = opts.orderedIds.indexOf(id);
+          if (from !== -1 && to !== -1) {
+            const [lo, hi] = from < to ? [from, to] : [to, from];
+            for (let i = lo; i <= hi; i++) next.add(opts.orderedIds[i]);
+            set({ selectedProjectIds: next, lastSelectedProjectId: id });
+            return;
+          }
+        }
+
+        if (next.has(id)) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+        set({ selectedProjectIds: next, lastSelectedProjectId: id });
+      },
+      setProjectSelection: (ids) =>
+        set({ selectedProjectIds: new Set(ids), lastSelectedProjectId: ids[ids.length - 1] ?? null }),
+      clearProjectSelection: () => set({ selectedProjectIds: new Set<string>(), lastSelectedProjectId: null }),
     }),
     {
       name: "admin-ui",

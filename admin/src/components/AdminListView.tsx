@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Search, Plus } from "lucide-react";
 import type { TableResponse } from "../store/adminStore";
 import { useAdminStore } from "../store/adminStore";
-import { useTable } from "../api/queries";
+import { useTable, useSession } from "../api/queries";
 import { DataTable, formatRole } from "./DataTable";
 import { formatAcademicYear, formatContext, formatProgrammeContext, PROGRAM_LABELS } from "../utils";
 
@@ -212,6 +212,7 @@ const USERS_COLUMNS = [
 
 function AdminProjectsTable(): React.ReactNode {
   const { data: tableData, isLoading, isError } = useTable("projects");
+  const { data: session } = useSession();
   const tableStatus: LoadStatus = isLoading ? "loading" : isError ? "error" : tableData ? "ready" : "idle";
 
   const selectedProjectId = useAdminStore((s) => s.selectedProjectId);
@@ -222,6 +223,12 @@ function AdminProjectsTable(): React.ReactNode {
   const searchQuery = useAdminStore((s) => s.searchQuery);
   const selectProject = useAdminStore((s) => s.selectProject);
   const openEditForProject = useAdminStore((s) => s.openEditForProject);
+  const selectedProjectIds = useAdminStore((s) => s.selectedProjectIds);
+  const toggleProjectSelection = useAdminStore((s) => s.toggleProjectSelection);
+  const setProjectSelection = useAdminStore((s) => s.setProjectSelection);
+  const clearProjectSelection = useAdminStore((s) => s.clearProjectSelection);
+
+  const isAdminOrEditor = session?.user.role === "admin" || session?.user.role === "editor";
 
   const rows = tableData?.table === "projects" ? tableData.rows : [];
   const filteredRows = filterProjects(
@@ -245,6 +252,14 @@ function AdminProjectsTable(): React.ReactNode {
     }
   };
 
+  const handleToggleSelectAll = (orderedIds: string[], checked: boolean): void => {
+    if (checked) {
+      setProjectSelection(orderedIds);
+    } else {
+      clearProjectSelection();
+    }
+  };
+
   return (
     <>
       <TableStatusMessages status={tableStatus} hasRows={rows.length > 0} hasFilteredRows={filteredRows.length > 0} />
@@ -256,6 +271,10 @@ function AdminProjectsTable(): React.ReactNode {
           selectedProjectId={selectedProjectId}
           onRowClick={handleRowClick}
           onRowDoubleClick={handleRowDoubleClick}
+          selectable={isAdminOrEditor}
+          selectedIds={selectedProjectIds}
+          onToggleSelect={toggleProjectSelection}
+          onToggleSelectAll={handleToggleSelectAll}
         />
       )}
     </>

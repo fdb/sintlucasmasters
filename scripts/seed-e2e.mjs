@@ -378,6 +378,39 @@ export const E2E_PROJECTS = [
     tags: '["digital", "installation"]',
     user_id: "e2e-student-multi",
   },
+  // Dedicated, isolated rows for the batch status-update test. They live in a
+  // unique academic year so the batch spec can select and mutate them without
+  // colliding with other parallel tests that share the same database.
+  {
+    id: "e2e-project-batch-1",
+    slug: "batch-one",
+    student_name: "Batch One",
+    sort_name: "One, Batch",
+    project_title: "Batch Project One",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2019-2020",
+    bio: "Batch test fixture one.",
+    description: "Used by the batch status-update e2e test.",
+    status: "submitted",
+    tags: '["batch-test"]',
+    user_id: null,
+  },
+  {
+    id: "e2e-project-batch-2",
+    slug: "batch-two",
+    student_name: "Batch Two",
+    sort_name: "Two, Batch",
+    project_title: "Batch Project Two",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2019-2020",
+    bio: "Batch test fixture two.",
+    description: "Used by the batch status-update e2e test.",
+    status: "submitted",
+    tags: '["batch-test"]',
+    user_id: null,
+  },
 ];
 
 export const E2E_PROJECT_IMAGES = [
