@@ -10,15 +10,15 @@ test.describe("layout (masters chrome)", () => {
     await page.goto("/?__site=masters");
     await expect(page).toHaveURL(/\/nl\/(\?__site=masters)?$/);
     await expect(page.locator("header.site-header")).toBeVisible();
-    await expect(page.locator(".site-title")).toBeVisible();
+    await expect(page.locator(".header-brand")).toBeVisible();
     await expect(page.locator("nav.sub-header")).toBeVisible();
     await expect(page.locator('.sub-header a[href="/nl/archive"]')).toBeVisible();
   });
 
-  test("language switch is shown in the black top bar", async ({ page }) => {
+  test("language switch is shown in the header", async ({ page }) => {
     await page.goto("/nl/?__site=masters");
-    await expect(page.locator(".top-bar .locale-switch")).toBeVisible();
-    await expect(page.locator(".top-bar .locale-switch a.active")).toHaveText("NL");
+    await expect(page.locator(".site-header .locale-switch")).toBeVisible();
+    await expect(page.locator(".site-header .locale-switch a.active")).toHaveText("NL");
   });
 
   test("mobile search takes over the sub-header row", async ({ page }) => {

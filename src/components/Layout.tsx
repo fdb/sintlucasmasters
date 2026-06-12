@@ -3,7 +3,6 @@ import type { SiteConfig } from "../sites";
 import { MastersHeader, MastersFooter } from "./sites/MastersTemplate";
 import { FotografieHeader, FotografieFooter } from "./sites/FotografieTemplate";
 import { GraduatesHeader, GraduatesFooter } from "./sites/GraduatesTemplate";
-import { TopBar } from "./sites/_shared";
 
 type PublicLocale = "nl" | "en";
 
@@ -48,19 +47,30 @@ function defaultDescription(siteId: SiteConfig["id"], locale: PublicLocale): str
     : "Presenting the graduation projects of the Masters in Art and Design at Sint Lucas Antwerpen.";
 }
 
-const SiteHeader: FC<{ site: SiteConfig; locale: PublicLocale; currentPath: string; hideSubheader?: boolean }> = ({
-  site,
-  locale,
-  currentPath,
-  hideSubheader,
-}) => {
+const SiteHeader: FC<{
+  site: SiteConfig;
+  locale: PublicLocale;
+  currentPath: string;
+  nlPath: string;
+  enPath: string;
+  hideSubheader?: boolean;
+}> = ({ site, locale, currentPath, nlPath, enPath, hideSubheader }) => {
   switch (site.id) {
     case "masters":
-      return <MastersHeader locale={locale} hideSubheader={hideSubheader} />;
+      return <MastersHeader locale={locale} nlPath={nlPath} enPath={enPath} hideSubheader={hideSubheader} />;
     case "fotografie":
-      return <FotografieHeader locale={locale} hideSubheader={hideSubheader} />;
+      return <FotografieHeader locale={locale} nlPath={nlPath} enPath={enPath} hideSubheader={hideSubheader} />;
     case "graduates":
-      return <GraduatesHeader locale={locale} currentPath={currentPath} site={site} hideSubheader={hideSubheader} />;
+      return (
+        <GraduatesHeader
+          locale={locale}
+          currentPath={currentPath}
+          site={site}
+          nlPath={nlPath}
+          enPath={enPath}
+          hideSubheader={hideSubheader}
+        />
+      );
   }
 };
 
@@ -138,8 +148,14 @@ export const Layout: FC<LayoutProps> = ({
         <script src="/header.js" defer />
       </head>
       <body data-site={site.id}>
-        <TopBar locale={locale} nlPath={nlPath} enPath={enPath} logo={site.logo} />
-        <SiteHeader site={site} locale={locale} currentPath={currentPath} hideSubheader={hideSubheader} />
+        <SiteHeader
+          site={site}
+          locale={locale}
+          currentPath={currentPath}
+          nlPath={nlPath}
+          enPath={enPath}
+          hideSubheader={hideSubheader}
+        />
         <main>{children}</main>
         <SiteFooter site={site} locale={locale} />
       </body>

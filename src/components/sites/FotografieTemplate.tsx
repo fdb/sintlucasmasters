@@ -9,7 +9,7 @@
 
 import type { FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
-import { SearchBox, SiteEyes, EventDatesShort } from "./_shared";
+import { SearchBox, PublicHeader } from "./_shared";
 
 const PROGRAMME_URL_EN = "https://www.sintlucasantwerpen.be/en/get-to-know-our-study-programmes/photography/";
 const PROGRAMME_URL_NL = "https://www.sintlucasantwerpen.be/opleidingen/fotografie/";
@@ -20,6 +20,7 @@ const APPLY_URL = "https://www.kdg.be/inschrijven/nederlandstalige-professionele
 const COPY = {
   en: {
     title: "Graduation Tour Photography",
+    lead: "Discover the graduation projects of the Bachelor Photography graduates 2025–2026.",
     navProjects: "projects",
     navArchive: "archive",
     navAbout: "about",
@@ -32,6 +33,7 @@ const COPY = {
   },
   nl: {
     title: "Graduation Tour Fotografie",
+    lead: "Ontdek de afstudeerwerken van de afstudeerders in de Bachelor Fotografie 2025–2026.",
     navProjects: "projecten",
     navArchive: "archief",
     navAbout: "over",
@@ -44,55 +46,18 @@ const COPY = {
   },
 } as const;
 
-const Tagline: FC<{ locale: PublicLocale }> = ({ locale }) => {
-  if (locale === "nl") {
-    return (
-      <>
-        Ontdek de afstudeerwerken van de afstudeerders in de{" "}
-        <a href={PROGRAMME_URL_NL} target="_blank" rel="noopener noreferrer">
-          Bachelor Fotografie
-        </a>{" "}
-        2025–2026. Bezoek de Fotografie Expo van 17 tot en met 21 juni tijdens{" "}
-        <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
-          GRADUATION TOUR 2026
-        </a>
-        .
-      </>
-    );
-  }
-  return (
-    <>
-      Discover the graduation projects of the{" "}
-      <a href={PROGRAMME_URL_EN} target="_blank" rel="noopener noreferrer">
-        Bachelor Photography graduates
-      </a>{" "}
-      2025–2026. Visit the Photography Expo from 17 to 21 June during{" "}
-      <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
-        GRADUATION TOUR 2026
-      </a>
-      .
-    </>
-  );
-};
-
-export const FotografieHeader: FC<{ locale: PublicLocale; hideSubheader?: boolean }> = ({ locale, hideSubheader }) => {
+export const FotografieHeader: FC<{
+  locale: PublicLocale;
+  nlPath: string;
+  enPath: string;
+  hideSubheader?: boolean;
+}> = ({ locale, nlPath, enPath, hideSubheader }) => {
   const copy = COPY[locale];
   return (
     <>
-      <header class="site-header site-header--public" data-site-header>
-        <div class="header-inner">
-          <SiteEyes />
-          <div class="header-text">
-            <a href={`/${locale}/`} class="site-title-link">
-              <h1 class="site-title">{copy.title}</h1>
-            </a>
-            <p class="site-tagline">
-              <Tagline locale={locale} />
-            </p>
-            <EventDatesShort locale={locale} />
-          </div>
-        </div>
-      </header>
+      <PublicHeader locale={locale} nlPath={nlPath} enPath={enPath} title={copy.title}>
+        {copy.lead}
+      </PublicHeader>
       {!hideSubheader && (
         <nav class="sub-header">
           <div class="sub-header-inner">

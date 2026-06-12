@@ -7,6 +7,8 @@
   --off-white: #f5f5f3;
   --white: #fff;
   --accent: #00c8b4;
+  --brand-red: #e0431f;
+  --brand-green: #2f9e44;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-family: var(--font-sans);
   line-height: 1.6;
@@ -62,34 +64,6 @@ a:hover {
    Header
    ─────────────────────────────────── */
 
-.top-bar {
-  background: var(--black);
-  height: 36px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.top-bar-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.top-bar-logo {
-  display: block;
-}
-
-.top-bar-logo img {
-  display: block;
-  height: 24px;
-  width: auto;
-}
-
 .site-header {
   background: var(--off-white);
   border-bottom: 1px solid var(--light-gray);
@@ -100,14 +74,20 @@ a:hover {
   --header-h: 150px;
   padding: 0;
   position: sticky;
-  top: 36px; /* sits directly below the sticky top-bar */
+  top: 0; /* the top band is the first sticky element now */
   /* Above the sub-header so the brief transitional overlap during a
      collapse/expand is covered by the header's opaque background. */
   z-index: 95;
 }
 
-.site-header--public.is-collapsed {
-  --header-h: 56px;
+/* Only desktop collapses the bar's height (and the brand / headline sizes that
+   go with it). On mobile the bar stays a constant height — see the mobile media
+   queries — and the only visible change on scroll is the brand image swapping to
+   the eyes (that rule is global, below). */
+@media (min-width: 769px) {
+  .site-header--public.is-collapsed {
+    --header-h: 56px;
+  }
 }
 
 .site-header--public .header-inner {
@@ -124,20 +104,24 @@ a:hover {
   margin: 0 auto;
 }
 
-/* Brand mark — square, scales down as the header collapses. Holds a static
-   logo (the always-safe base) and the animated WebM, cross-faded by .is-animating. */
-.site-eyes {
+/* Brand mark — square, scales down as the header collapses. Holds three
+   cross-faded layers: the static squiggle logo (expanded base), its animated
+   video (expanded + motion allowed, via .is-animating), and the eyes mark
+   (shown once collapsed). */
+.header-brand {
   position: relative;
   flex: 0 0 auto;
   width: 120px;
   height: 120px;
+  display: block;
   transition:
     width 0.3s ease,
     height 0.3s ease;
 }
 
-.site-eyes-logo,
-.site-eyes-video {
+.brand-logo,
+.brand-video,
+.brand-eyes {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -146,86 +130,121 @@ a:hover {
   transition: opacity 0.3s ease;
 }
 
-.site-eyes-video {
+.brand-video,
+.brand-eyes {
   opacity: 0;
 }
 
-.site-eyes.is-animating .site-eyes-video {
+.header-brand.is-animating .brand-video {
   opacity: 1;
 }
 
-.site-eyes.is-animating .site-eyes-logo {
+.header-brand.is-animating .brand-logo {
   opacity: 0;
 }
 
-.site-header--public.is-collapsed .site-eyes {
-  width: 40px;
-  height: 40px;
+@media (min-width: 769px) {
+  .site-header--public.is-collapsed .header-brand {
+    width: 40px;
+    height: 40px;
+  }
 }
 
-.header-text {
+/* Collapsed: hide the squiggle (logo + video), reveal the eyes. Global — this
+   is the one collapse change we keep on mobile. */
+.site-header--public.is-collapsed .brand-logo,
+.site-header--public.is-collapsed .brand-video {
+  opacity: 0;
+}
+
+.site-header--public.is-collapsed .brand-eyes {
+  opacity: 1;
+}
+
+/* ── Fluid lead + headline ──────────────────────────────────────────────────
+   The band is a CSS container; both text rows are sized in cqi units (a percent
+   of the band's own inline width). A fixed-length string sized this way keeps a
+   constant text-width : band-width ratio at every viewport, so once a value is
+   tuned to fill, it fills at all sizes — the headline reaches the band's right
+   edge (the year flush, no gap) with zero media queries. */
+.header-band {
+  container-type: inline-size;
+  flex: 1 1 auto;
   min-width: 0;
 }
 
-.site-title {
-  transition: font-size 0.3s ease;
-}
-
-.site-header--public.is-collapsed .site-title {
-  font-size: 1.25rem;
-}
-
-.site-header--public.is-collapsed .site-tagline,
-.site-header--public.is-collapsed .site-tagline-dates {
-  opacity: 0;
-  max-height: 0;
-  margin-top: 0;
-}
-
-.site-title-link {
-  display: block;
-  text-decoration: none;
-}
-
-.site-title-link:hover {
-  text-decoration: none;
-}
-
-.site-title {
-  font-size: 2.25rem;
+.header-lead {
+  margin: 0 0 0.1em;
+  color: var(--brand-red);
   font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  font-size: 2cqi;
+}
+
+.header-headline {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1;
   letter-spacing: -0.02em;
-  line-height: 1.1;
-  text-transform: uppercase;
-  color: var(--black);
+  white-space: nowrap;
+  font-size: 6.05cqi;
 }
 
-.site-tagline {
-  margin-top: 0.5rem;
-  font-size: 0.9375rem;
-  color: var(--gray);
-  max-width: 40rem;
-  line-height: 1.5;
-  overflow: hidden;
-  max-height: 6rem;
-  transition:
-    opacity 0.25s ease,
-    max-height 0.3s ease,
-    margin-top 0.3s ease;
+.hl-title,
+.hl-year {
+  color: var(--brand-red);
 }
 
-/* Compact dates line — replaces the full tagline on mobile only (see media query). */
-.site-tagline-dates {
+.hl-date {
+  color: var(--brand-green);
+}
+
+/* Collapsed (scrolled): drop the lead (also already hidden on mobile by the
+   @container rule below) and, on desktop only, pin the headline to a compact
+   fixed size — cqi is width-based, so it would otherwise stay full height. On
+   mobile the bar height is unchanged, so the headline keeps filling. */
+.site-header--public.is-collapsed .header-lead {
   display: none;
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--gray);
-  overflow: hidden;
-  max-height: 3rem;
-  transition:
-    opacity 0.25s ease,
-    max-height 0.3s ease,
-    margin-top 0.3s ease;
+}
+
+@media (min-width: 769px) {
+  .site-header--public.is-collapsed .header-headline {
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Reverse-importance dropping as the band narrows: the lead goes first (longest,
+   least essential), then the year, then the date — GRADUATION TOUR always wins.
+   Each drop bumps the headline's cqi so the remaining text keeps filling. */
+@container (max-width: 600px) {
+  .header-lead {
+    display: none;
+  }
+}
+
+@container (max-width: 380px) {
+  .hl-year {
+    display: none;
+  }
+
+  /* cqi values measured to fill ~97% of the band (the remaining text is a fixed
+     string, so the ratio holds across the whole tier) — kept just under 100% so
+     the headline never spills past the band into the language switch. */
+  .header-headline {
+    font-size: 7.1cqi;
+  }
+}
+
+@container (max-width: 250px) {
+  .hl-date {
+    display: none;
+  }
+
+  .header-headline {
+    font-size: 10.3cqi;
+  }
 }
 
 /* Header with logo (AdminLayout) */
@@ -278,7 +297,7 @@ a:hover {
 .sub-header {
   border-bottom: 1px solid var(--light-gray);
   position: sticky;
-  top: 92px; /* top-bar (36px) + collapsed header (56px) */
+  top: 56px; /* sits below the collapsed header (56px) */
   z-index: 90; /* below the header (95) so the header covers it mid-transition */
   background: var(--white);
 }
@@ -317,18 +336,11 @@ a:hover {
 }
 
 .locale-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
   font-size: 0.75rem;
   font-weight: 700;
 }
 
 .locale-switch a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 34px;
   padding: 0.1rem 0.4rem;
   color: var(--mid-gray);
   border-bottom: 1px solid transparent;
@@ -341,25 +353,6 @@ a:hover {
 .locale-switch a.active {
   color: var(--black);
   border-bottom-color: currentColor;
-}
-
-.locale-switch--top {
-  align-self: stretch;
-}
-
-.locale-switch--top a {
-  align-self: stretch;
-  color: rgba(255, 255, 255, 0.72);
-  border-bottom-width: 2px;
-}
-
-.locale-switch--top a:hover {
-  color: var(--white);
-}
-
-.locale-switch--top a.active {
-  color: var(--white);
-  border-bottom-color: var(--white);
 }
 
 .site-search {
@@ -1194,12 +1187,9 @@ body.lightbox-open {
    ─────────────────────────────────── */
 
 @media (max-width: 768px) {
-  .top-bar-inner {
-    padding: 0 1.25rem;
-  }
-
   .site-header--public .header-inner {
     padding: 0 1.25rem;
+    gap: 1rem;
   }
 
   .site-header {
@@ -1207,13 +1197,19 @@ body.lightbox-open {
   }
 
   .site-header--public {
-    --header-h: 112px;
+    --header-h: 84px;
     padding: 0;
   }
 
-  .site-header--public .site-eyes {
-    width: 88px;
-    height: 88px;
+  .site-header--public .header-brand {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* The mobile bar is a constant height (it never collapses), so the sticky
+     sub-header sits below the full header height, not the desktop 56px. */
+  .sub-header {
+    top: 84px;
   }
 
   .site-header:has(.logo) {
@@ -1230,20 +1226,6 @@ body.lightbox-open {
 
   .site-nav a {
     font-size: 0.8125rem;
-  }
-
-  .site-title {
-    font-size: 1.5rem;
-  }
-
-  /* The height-constrained mobile header can't fit the full promotional
-     tagline beside the eyes, so swap it for the compact dates line. */
-  .site-tagline {
-    display: none;
-  }
-
-  .site-tagline-dates {
-    display: block;
   }
 
   .sub-header-inner {
@@ -1353,10 +1335,6 @@ body.lightbox-open {
 }
 
 @media (max-width: 480px) {
-  .top-bar-inner {
-    padding: 0 1rem;
-  }
-
   .site-header--public .header-inner {
     padding: 0 1rem;
   }
@@ -1366,8 +1344,17 @@ body.lightbox-open {
   }
 
   .site-header--public {
-    --header-h: 100px;
+    --header-h: 72px;
     padding: 0;
+  }
+
+  .site-header--public .header-brand {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sub-header {
+    top: 72px;
   }
 
   .sub-header-inner {
@@ -1377,10 +1364,6 @@ body.lightbox-open {
   .sub-header--search-open .sub-header-right {
     right: 1rem;
     left: 1rem;
-  }
-
-  .site-title {
-    font-size: 1.5rem;
   }
 
   main {
