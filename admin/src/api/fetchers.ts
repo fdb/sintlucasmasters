@@ -110,6 +110,24 @@ export async function saveProject(projectId: string, data: SaveProjectData): Pro
   }
 }
 
+export type BatchUpdateStatusResult = {
+  updated: number;
+  status: string;
+};
+
+export async function batchUpdateProjectStatus(ids: string[], status: string): Promise<BatchUpdateStatusResult> {
+  const res = await fetch("/api/admin/projects/batch-status", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids, status }),
+  });
+  if (!res.ok) {
+    const error = (await res.json().catch(() => ({}))) as { error?: string };
+    throw new Error(error.error || "Failed to update projects");
+  }
+  return (await res.json()) as BatchUpdateStatusResult;
+}
+
 export async function deleteProject(projectId: string): Promise<void> {
   const res = await fetch(`/api/admin/projects/${projectId}`, {
     method: "DELETE",

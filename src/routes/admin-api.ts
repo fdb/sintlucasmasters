@@ -39,6 +39,36 @@ const TABLES: Record<string, TableConfig> = {
 
 const MAX_LIMIT = 1000;
 
+// Valid project status values (mirrors the DB CHECK constraint on projects.status)
+export const PROJECT_STATUSES = ["draft", "submitted", "reviewed", "ready_for_print", "published"] as const;
+export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
+
+// Maximum number of projects that can be updated in a single batch request
+const MAX_BATCH_SIZE = 1000;
+
+// Validate the body of a batch status-update request. Pure so it can be unit
+// tested without a DB. Returns the cleaned ids/status or an error message.
+export function validateBatchStatusInput(body: unknown): { ids: string[]; status: ProjectStatus } | { error: string } {
+  const data = (body ?? {}) as { ids?: unknown; status?: unknown };
+
+  if (!Array.isArray(data.ids)) {
+    return { error: "ids must be an array" };
+  }
+  const ids = [...new Set(data.ids.filter((id): id is string => typeof id === "string" && id.length > 0))];
+  if (ids.length === 0) {
+    return { error: "No project ids provided" };
+  }
+  if (ids.length > MAX_BATCH_SIZE) {
+    return { error: `Cannot update more than ${MAX_BATCH_SIZE} projects at once` };
+  }
+
+  if (typeof data.status !== "string" || !PROJECT_STATUSES.includes(data.status as ProjectStatus)) {
+    return { error: "Invalid status" };
+  }
+
+  return { ids, status: data.status as ProjectStatus };
+}
+
 // Fields that students are allowed to edit
 const STUDENT_EDITABLE_FIELDS = [
   "student_name",
@@ -430,6 +460,30 @@ adminApiRoutes.put("/projects/:id", async (c) => {
   const updatedProject = await c.env.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(id).first<Project>();
 
   return c.json({ project: updatedProject });
+});
+
+// Batch-update the status of multiple projects at once (admin/editor only).
+// Deliberately does NOT send review-notification emails the way the single-project
+// PUT does — a bulk status change should not fire a flood of student emails.
+adminApiRoutes.post("/projects/batch-status", async (c) => {
+  const user = c.get("user");
+  if (!isAdminOrEditor(user)) {
+    return c.json({ error: "Forbidden" }, 403);
+  }
+
+  const parsed = validateBatchStatusInput(await c.req.json().catch(() => null));
+  if ("error" in parsed) {
+    return c.json({ error: parsed.error }, 400);
+  }
+
+  const { ids, status } = parsed;
+  const statements = ids.map((id) =>
+    c.env.DB.prepare("UPDATE projects SET status = ?, updated_at = datetime('now') WHERE id = ?").bind(status, id)
+  );
+  const results = await c.env.DB.batch(statements);
+  const updated = results.reduce((sum, r) => sum + (r.meta?.changes ?? 0), 0);
+
+  return c.json({ updated, status });
 });
 
 // Reorder project images and update captions

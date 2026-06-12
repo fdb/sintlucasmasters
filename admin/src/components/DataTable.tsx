@@ -35,6 +35,12 @@ interface DataTableProps {
   onRowClick?: (row: Record<string, unknown>) => void;
   onRowDoubleClick?: (row: Record<string, unknown>) => void;
   getRowClassName?: (row: Record<string, unknown>) => string;
+  // Multi-select (opt-in). When `selectable` is set a leading checkbox column
+  // is rendered; selection is tracked by the parent via `selectedIds`.
+  selectable?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string, opts: { shiftKey: boolean; orderedIds: string[] }) => void;
+  onToggleSelectAll?: (orderedIds: string[], checked: boolean) => void;
 }
 
 export function DataTable({
@@ -46,6 +52,10 @@ export function DataTable({
   onRowClick,
   onRowDoubleClick,
   getRowClassName,
+  selectable = false,
+  selectedIds,
+  onToggleSelect,
+  onToggleSelectAll,
 }: DataTableProps) {
   const isProjectsTable = activeTable === "projects";
   const isClickable = !!onRowClick;
@@ -63,11 +73,34 @@ export function DataTable({
     return [...rows].sort((a, b) => compareValues(accessor(a), accessor(b)) * factor);
   }, [rows, sort, columns]);
 
+  // Ids of the currently visible rows, in display order — the basis for both
+  // "select all" and shift-click range selection.
+  const orderedIds = useMemo(
+    () => sortedRows.map((row) => (typeof row.id === "string" ? row.id : null)).filter((id): id is string => !!id),
+    [sortedRows]
+  );
+  const selectedCount = selectable && selectedIds ? orderedIds.filter((id) => selectedIds.has(id)).length : 0;
+  const allSelected = selectedCount > 0 && selectedCount === orderedIds.length;
+  const someSelected = selectedCount > 0 && !allSelected;
+
   return (
     <div className="admin-list-scroll">
       <table>
         <thead>
           <tr>
+            {selectable && (
+              <th className="select-col">
+                <input
+                  type="checkbox"
+                  aria-label="Select all"
+                  checked={allSelected}
+                  ref={(el) => {
+                    if (el) el.indeterminate = someSelected;
+                  }}
+                  onChange={() => onToggleSelectAll?.(orderedIds, !allSelected)}
+                />
+              </th>
+            )}
             {columns.map((column) => {
               const isActive = sort?.key === column.key;
               const ariaSort = isActive ? (sort.dir === "asc" ? "ascending" : "descending") : "none";
@@ -94,6 +127,7 @@ export function DataTable({
           {sortedRows.map((row, rowIndex) => {
             const rowId = typeof row.id === "string" ? row.id : null;
             const isSelected = rowId === selectedProjectId || rowId === selectedRowId;
+            const isChecked = !!(selectable && rowId && selectedIds?.has(rowId));
             const baseClassName = isProjectsTable
               ? `row-clickable status-${String(row.status || "draft").toLowerCase()}`
               : isClickable
@@ -105,10 +139,26 @@ export function DataTable({
             return (
               <tr
                 key={rowKey}
-                className={`${baseClassName} ${customClassName} ${isSelected ? "row-selected" : ""}`}
+                className={`${baseClassName} ${customClassName} ${isSelected ? "row-selected" : ""} ${isChecked ? "row-checked" : ""}`}
                 onClick={() => onRowClick?.(row)}
                 onDoubleClick={() => onRowDoubleClick?.(row)}
               >
+                {selectable && (
+                  <td className="select-col" onClick={(e) => e.stopPropagation()}>
+                    {rowId && (
+                      <input
+                        type="checkbox"
+                        aria-label="Select row"
+                        checked={isChecked}
+                        onChange={() => {}}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleSelect?.(rowId, { shiftKey: e.shiftKey, orderedIds });
+                        }}
+                      />
+                    )}
+                  </td>
+                )}
                 {columns.map((column) => (
                   <td key={column.key}>
                     {column.formatter ? column.formatter(row[column.key], row) : formatCell(row[column.key])}

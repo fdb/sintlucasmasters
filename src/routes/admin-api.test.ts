@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { buildTrajectory, buildImageLinkUri, printImagesArchiveBase, validateProjectForSubmission } from "./admin-api";
+import {
+  buildTrajectory,
+  buildImageLinkUri,
+  printImagesArchiveBase,
+  validateProjectForSubmission,
+  validateBatchStatusInput,
+} from "./admin-api";
 import { app } from "../index";
 import { AUTH_COOKIE_NAME } from "../middleware/auth";
 import { signToken } from "../lib/jwt";
@@ -223,5 +229,35 @@ describe("validateProjectForSubmission", () => {
     const res = validateProjectForSubmission(project, webImages);
     expect(res.valid).toBe(true);
     expect(res.errors).toHaveLength(0);
+  });
+});
+
+describe("validateBatchStatusInput", () => {
+  it("accepts a valid ids array and status", () => {
+    const res = validateBatchStatusInput({ ids: ["a", "b"], status: "reviewed" });
+    expect(res).toEqual({ ids: ["a", "b"], status: "reviewed" });
+  });
+
+  it("deduplicates ids and drops non-string/empty entries", () => {
+    const res = validateBatchStatusInput({ ids: ["a", "a", "", 5, null, "b"], status: "published" });
+    expect(res).toEqual({ ids: ["a", "b"], status: "published" });
+  });
+
+  it("rejects a missing or non-array ids field", () => {
+    expect(validateBatchStatusInput({ status: "reviewed" })).toEqual({ error: "ids must be an array" });
+    expect(validateBatchStatusInput({ ids: "a", status: "reviewed" })).toEqual({ error: "ids must be an array" });
+  });
+
+  it("rejects an empty ids array", () => {
+    expect(validateBatchStatusInput({ ids: [], status: "reviewed" })).toEqual({ error: "No project ids provided" });
+  });
+
+  it("rejects an invalid status", () => {
+    expect(validateBatchStatusInput({ ids: ["a"], status: "archived" })).toEqual({ error: "Invalid status" });
+    expect(validateBatchStatusInput({ ids: ["a"] })).toEqual({ error: "Invalid status" });
+  });
+
+  it("rejects null/garbage bodies", () => {
+    expect(validateBatchStatusInput(null)).toEqual({ error: "ids must be an array" });
   });
 });

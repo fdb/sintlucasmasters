@@ -3758,3 +3758,143 @@ tr.status-draft td:first-child {
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+/* =========================================================
+   Multi-select + batch operations
+   ========================================================= */
+
+/* Leading checkbox column in the projects table */
+.admin-list th.select-col,
+.admin-list td.select-col {
+  width: 36px;
+  padding-left: 1rem;
+  padding-right: 0;
+  text-align: center;
+}
+
+.admin-list .select-col input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gray);
+  /* Invisible by default; revealed on row hover, focus, or when checked. */
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+/* Reveal: hovering the row (body) or the header row, keyboard focus, or
+   whenever the box carries a selection state. */
+.admin-list tbody tr:hover .select-col input[type="checkbox"],
+.admin-list thead:hover .select-col input[type="checkbox"],
+.admin-list .select-col input[type="checkbox"]:focus-visible,
+.admin-list .select-col input[type="checkbox"]:checked,
+.admin-list .select-col input[type="checkbox"]:indeterminate {
+  opacity: 1;
+}
+
+.admin-list .select-col input[type="checkbox"]:focus-visible {
+  outline: 1px solid var(--black);
+  outline-offset: 1px;
+}
+
+/* Checked / indeterminate: filled box using the theme's foreground colour. */
+.admin-list .select-col input[type="checkbox"]:checked,
+.admin-list .select-col input[type="checkbox"]:indeterminate {
+  background: var(--black);
+  border-color: var(--black);
+}
+
+.admin-list .select-col input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--admin-bg);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.admin-list .select-col input[type="checkbox"]:indeterminate::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 6px;
+  width: 9px;
+  height: 2px;
+  background: var(--admin-bg);
+}
+
+.admin-list tbody tr.row-checked {
+  background: var(--admin-bg-alt);
+}
+
+.admin-list tbody tr.row-checked:hover {
+  background: var(--admin-bg-hover);
+}
+
+/* Batch operations panel (right sidebar when rows are selected) */
+.batch-status-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.batch-status-select {
+  flex: 1;
+  height: 28px;
+}
+
+.batch-apply-btn {
+  border: 1px solid var(--admin-border);
+}
+
+.batch-apply-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.batch-apply-btn:disabled:hover {
+  background: var(--admin-bg);
+}
+
+.batch-error {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #d32f2f;
+}
+
+:root[data-theme="dark"] .batch-error {
+  color: #ef5350;
+}
+
+.batch-project-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.batch-project-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  border-bottom: 1px solid var(--admin-border-light);
+  font-size: 0.8125rem;
+}
+
+.batch-project-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

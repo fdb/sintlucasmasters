@@ -15,28 +15,29 @@ test.describe("admin projects table", () => {
   });
 
   test("has expected columns and no id column", async ({ page }) => {
-    // Should have exactly 4 columns
+    // The four data columns are present (a leading select-all checkbox column
+    // also exists for admins, so we assert by header text rather than by index).
     const headers = page.locator("thead th");
-    await expect(headers).toHaveCount(4);
+    await expect(headers.filter({ hasText: "Student name" })).toBeVisible();
+    await expect(headers.filter({ hasText: "Project title" })).toBeVisible();
+    await expect(headers.filter({ hasText: "Programme" })).toBeVisible();
+    await expect(headers.filter({ hasText: "Academic year" })).toBeVisible();
 
-    // Verify each expected column header
-    await expect(headers.nth(0)).toHaveText("Student name");
-    await expect(headers.nth(1)).toHaveText("Project title");
-    await expect(headers.nth(2)).toHaveText("Programme");
-    await expect(headers.nth(3)).toHaveText("Academic year");
+    // No raw ID column should be exposed
+    await expect(headers.filter({ hasText: /^ID$/i })).toHaveCount(0);
   });
 
   test("shows merged programme and context labels", async ({ page }) => {
     await page.locator(".filter-select").first().selectOption("");
 
     const aliceRow = page.locator("tbody tr", { hasText: "Alice Smith" });
-    await expect(aliceRow.locator("td").nth(2)).toHaveText("MA Digital");
+    await expect(aliceRow).toContainText("MA Digital");
 
     const fridaRow = page.locator("tbody tr", { hasText: "Frida Lens" });
-    await expect(fridaRow.locator("td").nth(2)).toHaveText("BA Photography");
+    await expect(fridaRow).toContainText("BA Photography");
 
     const miloRow = page.locator("tbody tr", { hasText: "Milo Thread" });
-    await expect(miloRow.locator("td").nth(2)).toHaveText("PreMA Autonomous");
+    await expect(miloRow).toContainText("PreMA Autonomous");
   });
 
   test("year filter works", async ({ page }) => {
