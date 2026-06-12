@@ -1242,15 +1242,28 @@ body.lightbox-open {
     font-size: 0.8125rem;
   }
 
+  /* The nav can be wider than a phone (the graduates umbrella has six items).
+     Let it scroll inside its own row rather than widening the page — clipping
+     the body instead would break the sticky header. The search button keeps its
+     natural width at the right. */
   .sub-header-left {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding-right: 0.5rem;
     transition:
       opacity 0.2s ease,
       transform 0.2s ease;
   }
 
+  .sub-header-left::-webkit-scrollbar {
+    display: none;
+  }
+
   .sub-header-right {
-    flex: 1;
-    justify-content: flex-end;
+    flex: 0 0 auto;
   }
 
   .sub-header--search-open .sub-header-left {
