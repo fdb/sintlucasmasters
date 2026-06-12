@@ -23,7 +23,6 @@ export interface SiteConfig {
   programmes: ProgrammeCode[];
   nav?: SiteNavLink[];
   emailFrom?: string;
-  logo?: string;
   ogImage?: string;
 }
 

@@ -2,7 +2,7 @@
 // pieces of UI copy that don't differ between sites. Per-site copy (titles,
 // taglines, nav labels, footer text) lives inside each template file.
 
-import type { FC } from "hono/jsx";
+import type { Child, FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
 
 const SHARED_COPY = {
@@ -17,7 +17,6 @@ const SHARED_COPY = {
     searchSingular: "result",
     searchPlural: "results",
     localeLabel: "Language",
-    eventDatesShort: "17–21 June 2026",
   },
   nl: {
     searchAria: "Zoek projecten",
@@ -30,35 +29,20 @@ const SHARED_COPY = {
     searchSingular: "resultaat",
     searchPlural: "resultaten",
     localeLabel: "Taal",
-    eventDatesShort: "17–21 juni 2026",
   },
 } as const;
+
+// Event identity shown big in the public header. All three are locale- and
+// site-independent — same glyphs everywhere — so they live here, not in the
+// per-site copy. Ordered by importance (title > dates > year); the header drops
+// them right-to-left as the band narrows (see @container rules in styles.css).
+const EVENT_TITLE = "GRADUATION TOUR";
+const EVENT_DATE = "17–21.06";
+const EVENT_YEAR = "2026";
 
 export function getSharedCopy(locale: PublicLocale): (typeof SHARED_COPY)[PublicLocale] {
   return SHARED_COPY[locale];
 }
-
-// The animated brand mark shown in every public header. The static logo is the
-// always-safe base (shown collapsed, on reduced-motion, and on low-power /
-// autoplay failure); /header.js swaps in the animated MP4 only when the header
-// is expanded and motion is allowed. The video's background is baked to the
-// header colour (#f5f5f3) so it blends seamlessly. Decorative — the title text
-// already conveys "Graduation Tour".
-export const SiteEyes: FC = () => (
-  <div class="site-eyes" data-site-eyes aria-hidden="true">
-    <img class="site-eyes-logo" src="/graduation-tour-logo.png" alt="" />
-    <video class="site-eyes-video" data-site-eyes-video muted loop playsinline preload="none">
-      <source src="/graduation-tour-animation.mp4" type="video/mp4" />
-    </video>
-  </div>
-);
-
-// Compact dates-only line shown in place of the full tagline on mobile, where
-// the height-constrained header can't fit the promotional copy. Hidden on
-// desktop via CSS (.site-tagline-dates).
-export const EventDatesShort: FC<{ locale: PublicLocale }> = ({ locale }) => (
-  <p class="site-tagline-dates">{SHARED_COPY[locale].eventDatesShort}</p>
-);
 
 export const SearchBox: FC<{ locale: PublicLocale }> = ({ locale }) => {
   const copy = SHARED_COPY[locale];
@@ -106,26 +90,54 @@ export const SearchBox: FC<{ locale: PublicLocale }> = ({ locale }) => {
   );
 };
 
-export const TopBar: FC<{ locale: PublicLocale; nlPath: string; enPath: string; logo?: string }> = ({
-  locale,
-  nlPath,
-  enPath,
-  logo,
-}) => {
+// The shared top band for every public site. Layout is one horizontal row:
+//
+//   [brand]  <lead description>                          NL EN
+//            GRADUATION TOUR  17–21.06            2026
+//
+// The brand mark holds three stacked layers, cross-faded by CSS on the header's
+// collapse state and by /header.js for the animation:
+//   • brand-logo  — static "Graduation Tour" squiggle (expanded, the always-safe base)
+//   • brand-video — animated version, swapped in only when expanded + motion allowed
+//   • brand-eyes  — the eyes mark, shown once collapsed (small, recognisable)
+// header.js drives the animation via the data-site-eyes / data-site-eyes-video hooks.
+//
+// The "band" is a CSS container (container-type: inline-size). Both text rows
+// are sized in cqi units so they scale to fill the band's width at any viewport
+// — the headline reaches the right edge with no gap before the year. @container
+// breakpoints in styles.css drop the lead, then the year, then the date as the
+// band narrows, in reverse importance order.
+//
+// Only the lead sentence differs per site (passed as children); title/date/year
+// and the language switch are identical everywhere. The sr-only <h1> carries the
+// site title for SEO/AT, since the visible heading is split across coloured spans.
+export const PublicHeader: FC<{
+  locale: PublicLocale;
+  nlPath: string;
+  enPath: string;
+  title: string;
+  children?: Child;
+}> = ({ locale, nlPath, enPath, title, children }) => {
   const copy = SHARED_COPY[locale];
   return (
-    <div class="top-bar">
-      <div class="top-bar-inner">
-        <a
-          href="https://www.sintlucasantwerpen.be/"
-          class="top-bar-logo"
-          aria-label="Sint Lucas Antwerpen Website"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src={logo ?? "/logo-white.svg"} alt="Sint Lucas Antwerpen" />
+    <header class="site-header site-header--public" data-site-header>
+      <div class="header-inner">
+        <a href={`/${locale}/`} class="header-brand" data-site-eyes aria-label={title}>
+          <img class="brand-logo" src="/graduation-tour-logo.png" alt="" />
+          <video class="brand-video" data-site-eyes-video muted loop playsinline preload="none">
+            <source src="/graduation-tour-animation.mp4" type="video/mp4" />
+          </video>
+          <img class="brand-eyes" src="/graduation-tour-eyes.png" alt="" />
         </a>
-        <div class="locale-switch locale-switch--top" aria-label={copy.localeLabel}>
+        <div class="header-band">
+          <h1 class="site-title sr-only">{title}</h1>
+          <p class="header-lead">{children}</p>
+          <p class="header-headline" aria-hidden="true">
+            <span class="hl-title">{EVENT_TITLE}</span> <span class="hl-date">{EVENT_DATE}</span>{" "}
+            <span class="hl-year">{EVENT_YEAR}</span>
+          </p>
+        </div>
+        <div class="locale-switch header-locale" aria-label={copy.localeLabel}>
           <a href={nlPath} class={locale === "nl" ? "active" : ""}>
             NL
           </a>
@@ -134,6 +146,6 @@ export const TopBar: FC<{ locale: PublicLocale; nlPath: string; enPath: string; 
           </a>
         </div>
       </div>
-    </div>
+    </header>
   );
 };

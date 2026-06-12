@@ -12,9 +12,8 @@ import type { FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
 import { CURRENT_YEAR } from "../../config";
 import { type SiteConfig, programmeToSlug } from "../../sites";
-import { SearchBox, SiteEyes, EventDatesShort } from "./_shared";
+import { SearchBox, PublicHeader } from "./_shared";
 
-const SCHOOL_URL = "https://www.sintlucasantwerpen.be/";
 // TODO(comms): the school site only publishes a Dutch calendar page for this
 // event right now; comms is checking whether an EN counterpart can be added.
 // Until then both locales link to the Dutch event page.
@@ -32,6 +31,7 @@ const PHOTOGRAPHY_APPLY_URL = "https://www.kdg.be/inschrijven/nederlandstalige-p
 const COPY = {
   en: {
     title: "Graduation Tour",
+    lead: "Discover the new generation of artists, designers and photographers from Sint Lucas Antwerpen.",
     navAll: "all",
     navArchive: "archive",
     navAbout: "about",
@@ -46,6 +46,7 @@ const COPY = {
   },
   nl: {
     title: "Graduation Tour",
+    lead: "Ontdek de nieuwe generatie kunstenaars, ontwerpers en fotografen van Sint Lucas Antwerpen.",
     navAll: "alle",
     navArchive: "archief",
     navAbout: "over",
@@ -60,64 +61,24 @@ const COPY = {
   },
 } as const;
 
-const Tagline: FC<{ locale: PublicLocale }> = ({ locale }) => {
-  if (locale === "nl") {
-    return (
-      <>
-        Ontdek de nieuwe generatie kunstenaars, ontwerpers en fotografen van{" "}
-        <a href={SCHOOL_URL} target="_blank" rel="noopener noreferrer">
-          Sint Lucas Antwerpen
-        </a>
-        . Van 17 tot en met 21 juni tijdens{" "}
-        <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
-          GRADUATION TOUR 2026
-        </a>
-        .
-      </>
-    );
-  }
-  return (
-    <>
-      Discover the new generation of artists, designers and photographers from{" "}
-      <a href={SCHOOL_URL} target="_blank" rel="noopener noreferrer">
-        Sint Lucas Antwerpen
-      </a>
-      . From 17 to 21 June during{" "}
-      <a href={EVENT_URL} target="_blank" rel="noopener noreferrer">
-        GRADUATION TOUR 2026
-      </a>
-      .
-    </>
-  );
-};
-
 type HeaderProps = {
   locale: PublicLocale;
   currentPath: string;
   site: SiteConfig;
+  nlPath: string;
+  enPath: string;
   hideSubheader?: boolean;
 };
 
-export const GraduatesHeader: FC<HeaderProps> = ({ locale, currentPath, site, hideSubheader }) => {
+export const GraduatesHeader: FC<HeaderProps> = ({ locale, currentPath, site, nlPath, enPath, hideSubheader }) => {
   const copy = COPY[locale];
   // currentPath without query, lowercased — used to flag which programme chip is active.
   const pathOnly = currentPath.split("?")[0];
   return (
     <>
-      <header class="site-header site-header--public" data-site-header>
-        <div class="header-inner">
-          <SiteEyes />
-          <div class="header-text">
-            <a href={`/${locale}/`} class="site-title-link">
-              <h1 class="site-title">{copy.title}</h1>
-            </a>
-            <p class="site-tagline">
-              <Tagline locale={locale} />
-            </p>
-            <EventDatesShort locale={locale} />
-          </div>
-        </div>
-      </header>
+      <PublicHeader locale={locale} nlPath={nlPath} enPath={enPath} title={copy.title}>
+        {copy.lead}
+      </PublicHeader>
       {!hideSubheader && (
         <nav class="sub-header">
           <div class="sub-header-inner">
