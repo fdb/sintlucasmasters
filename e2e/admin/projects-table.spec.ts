@@ -62,7 +62,7 @@ test.describe("admin projects table", () => {
   test("all years option stays selected", async ({ page }) => {
     const yearSelect = page.locator(".filter-select").first();
 
-    await expect(yearSelect).toHaveValue("2024-2025");
+    await expect(yearSelect).toHaveValue("2025-2026");
     const defaultRowsCount = await page.locator("tbody tr").count();
 
     await yearSelect.selectOption("");

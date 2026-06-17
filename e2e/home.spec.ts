@@ -48,9 +48,9 @@ test.describe("locale routing", () => {
   });
 
   test("language switch preserves path and query", async ({ page }) => {
-    await page.goto("/nl/archive?year=2024-2025&context=digital");
+    await page.goto("/nl/archive?year=2025-2026&context=digital");
     await page.locator(".locale-switch a", { hasText: "EN" }).click();
-    await expect(page).toHaveURL("/en/archive?year=2024-2025&context=digital");
+    await expect(page).toHaveURL("/en/archive?year=2025-2026&context=digital");
   });
 
   test("legacy public routes redirect to /nl", async ({ page }) => {
@@ -59,19 +59,19 @@ test.describe("locale routing", () => {
 
     // Bare-year project URL → first redirects to /nl/, then again to the
     // programme-aware canonical URL once the project's programme is known.
-    await page.goto("/2024-2025/students/alice-smith/");
-    await expect(page).toHaveURL("/nl/2024-2025/ma-bk/students/alice-smith/");
+    await page.goto("/2025-2026/students/alice-smith/");
+    await expect(page).toHaveURL("/nl/2025-2026/ma-bk/students/alice-smith/");
   });
 
   test("pre-programme project URL redirects to programme-aware canonical", async ({ page }) => {
-    await page.goto("/nl/2024-2025/students/alice-smith/");
-    await expect(page).toHaveURL("/nl/2024-2025/ma-bk/students/alice-smith/");
+    await page.goto("/nl/2025-2026/students/alice-smith/");
+    await expect(page).toHaveURL("/nl/2025-2026/ma-bk/students/alice-smith/");
   });
 
   test("URL with wrong programme redirects to canonical programme", async ({ page }) => {
     // Frida Lens is BA_FO; visiting under ma-bk should 301 to ba-fo.
-    await page.goto("/nl/2024-2025/ma-bk/students/frida-lens/");
-    await expect(page).toHaveURL("/nl/2024-2025/ba-fo/students/frida-lens/");
+    await page.goto("/nl/2025-2026/ma-bk/students/frida-lens/");
+    await expect(page).toHaveURL("/nl/2025-2026/ba-fo/students/frida-lens/");
   });
 });
 
@@ -93,7 +93,7 @@ test.describe("localized content (masters chrome)", () => {
   });
 
   test("NL programme page shows Dutch context filter labels", async ({ page }) => {
-    await page.goto("/nl/2024-2025/ma-bk/?__site=masters");
+    await page.goto("/nl/2025-2026/ma-bk/?__site=masters");
     const filters = page.locator(".context-nav");
     await expect(filters.locator("a").first()).toHaveText("alle");
     await expect(filters.locator("a", { hasText: "digitaal" })).toBeVisible();
@@ -101,7 +101,7 @@ test.describe("localized content (masters chrome)", () => {
   });
 
   test("EN programme page shows English context filter labels", async ({ page }) => {
-    await page.goto("/en/2024-2025/ma-bk/?__site=masters");
+    await page.goto("/en/2025-2026/ma-bk/?__site=masters");
     const filters = page.locator(".context-nav");
     await expect(filters.locator("a").first()).toHaveText("all");
     await expect(filters.locator("a", { hasText: "digital" })).toBeVisible();
@@ -109,13 +109,13 @@ test.describe("localized content (masters chrome)", () => {
   });
 
   test("NL project detail shows Dutch title and description", async ({ page }) => {
-    await page.goto("/nl/2024-2025/ma-bk/students/alice-smith/");
+    await page.goto("/nl/2025-2026/ma-bk/students/alice-smith/");
     await expect(page.locator(".detail-project-title")).toHaveText("Digitale Dromen");
     await expect(page.locator(".detail-location")).toHaveText("Antwerpen, België");
   });
 
   test("EN project detail shows English title and description", async ({ page }) => {
-    await page.goto("/en/2024-2025/ma-bk/students/alice-smith/");
+    await page.goto("/en/2025-2026/ma-bk/students/alice-smith/");
     await expect(page.locator(".detail-project-title")).toHaveText("Digital Dreams");
     await expect(page.locator(".detail-location")).toHaveText("Antwerp, Belgium");
   });
@@ -131,12 +131,12 @@ test.describe("localized content (masters chrome)", () => {
   });
 
   test("switching language updates labels and content", async ({ page }) => {
-    await page.goto("/nl/2024-2025/ma-bk/students/alice-smith/?__site=masters");
+    await page.goto("/nl/2025-2026/ma-bk/students/alice-smith/?__site=masters");
     await expect(page.locator(".detail-project-title")).toHaveText("Digitale Dromen");
     await expect(page.locator("nav.sub-header a").first()).toHaveText("projecten");
 
     await page.locator(".locale-switch a", { hasText: "EN" }).click();
-    await expect(page).toHaveURL("/en/2024-2025/ma-bk/students/alice-smith/?__site=masters");
+    await expect(page).toHaveURL("/en/2025-2026/ma-bk/students/alice-smith/?__site=masters");
     await expect(page.locator(".detail-project-title")).toHaveText("Digital Dreams");
     await expect(page.locator("nav.sub-header a").first()).toHaveText("projects");
   });
@@ -167,35 +167,35 @@ test.describe("homepage (masters chrome)", () => {
 
 test.describe("programme listing pages", () => {
   test("MA_BK listing shows context filters and only masters projects", async ({ page }) => {
-    await page.goto("/nl/2024-2025/ma-bk/");
+    await page.goto("/nl/2025-2026/ma-bk/");
     const filters = page.locator(".context-nav");
     await expect(filters).toBeVisible();
     await expect(filters.locator("a")).toHaveCount(6); // All + 5 contexts
   });
 
   test("MA_BK + context page filters to that context", async ({ page }) => {
-    await page.goto("/nl/2024-2025/ma-bk/digital/");
+    await page.goto("/nl/2025-2026/ma-bk/digital/");
     // Active context chip should be "digitaal" (NL).
     await expect(page.locator(".context-nav a.active")).toHaveText("digitaal");
   });
 
   test("BA_FO listing has no context filter (no taxonomy)", async ({ page }) => {
-    await page.goto("/nl/2024-2025/ba-fo/");
+    await page.goto("/nl/2025-2026/ba-fo/");
     await expect(page.locator(".context-nav")).toHaveCount(0);
   });
 
   test("Invalid programme slug returns 404", async ({ page }) => {
-    const response = await page.goto("/nl/2024-2025/not-a-programme/");
+    const response = await page.goto("/nl/2025-2026/not-a-programme/");
     expect(response?.status()).toBe(404);
   });
 
   test("Invalid context slug returns 404", async ({ page }) => {
-    const response = await page.goto("/nl/2024-2025/ma-bk/not-a-context/");
+    const response = await page.goto("/nl/2025-2026/ma-bk/not-a-context/");
     expect(response?.status()).toBe(404);
   });
 
   test("Context route under non-context programme returns 404", async ({ page }) => {
-    const response = await page.goto("/nl/2024-2025/ba-fo/digital/");
+    const response = await page.goto("/nl/2025-2026/ba-fo/digital/");
     expect(response?.status()).toBe(404);
   });
 });
@@ -211,7 +211,7 @@ test.describe("site routing (host / __site override)", () => {
 
   test("?__site=fotografie homepage shows only photography projects", async ({ page }) => {
     await page.goto("/nl/?__site=fotografie");
-    // Frida Lens (BA_FO) is the only published photography project for 2024-2025.
+    // Frida Lens (BA_FO) is the only published photography project for 2025-2026.
     await expect(page.locator(".grid .card", { hasText: "Frida Lens" })).toBeVisible();
     // Alice Smith is MA_BK and must NOT show.
     await expect(page.locator(".grid .card", { hasText: "Alice Smith" })).toHaveCount(0);
@@ -235,7 +235,7 @@ test.describe("site routing (host / __site override)", () => {
   test("project URL works on a non-primary domain (cross-domain access)", async ({ page }) => {
     // Frida Lens is BA_FO — primary site is fotografie. Access via masters
     // using the canonical programme-aware URL.
-    await page.goto("/nl/2024-2025/ba-fo/students/frida-lens/?__site=masters");
+    await page.goto("/nl/2025-2026/ba-fo/students/frida-lens/?__site=masters");
     await expect(page.locator(".detail-project-title")).toHaveText("Lange Schaduwen");
     // Canonical must point to the primary (fotografie) domain.
     const canonical = page.locator('link[rel="canonical"]');
@@ -247,7 +247,7 @@ test.describe("site routing (host / __site override)", () => {
     // only the chrome (header/footer/nav) does.
     const expected = "Master Digitale context"; // /nl/ → Dutch context label
     for (const site of ["graduates", "masters", "fotografie"]) {
-      await page.goto(`/nl/2024-2025/ma-bk/students/alice-smith/?__site=${site}`);
+      await page.goto(`/nl/2025-2026/ma-bk/students/alice-smith/?__site=${site}`);
       await expect(page.locator(".detail-meta")).toContainText(expected);
     }
   });
@@ -255,11 +255,11 @@ test.describe("site routing (host / __site override)", () => {
   test("BA_FO project meta uses the programme label and drops spurious context", async ({ page }) => {
     // Frida Lens is BA_FO. The schema's `context` column has no taxonomy for
     // photography — we show the programme label everywhere.
-    await page.goto("/nl/2024-2025/ba-fo/students/frida-lens/?__site=graduates");
+    await page.goto("/nl/2025-2026/ba-fo/students/frida-lens/?__site=graduates");
     await expect(page.locator(".detail-meta")).toContainText("Professionele bachelor fotografie");
     await expect(page.locator(".detail-meta")).not.toContainText("Autonoom");
 
-    await page.goto("/en/2024-2025/ba-fo/students/frida-lens/?__site=fotografie");
+    await page.goto("/en/2025-2026/ba-fo/students/frida-lens/?__site=fotografie");
     await expect(page.locator(".detail-meta")).toContainText("Professional Bachelor Photography");
     await expect(page.locator(".detail-meta")).not.toContainText("Autonomous");
   });
