@@ -8,6 +8,7 @@
 import type { FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
 import { SearchBox, PublicHeader } from "./_shared";
+import { CURRENT_YEAR } from "../../config";
 
 const PROGRAMME_URL_EN = "https://www.sintlucasantwerpen.be/en/get-to-know-our-study-programmes/master-of-visual-arts/";
 const PROGRAMME_URL_NL = "https://www.sintlucasantwerpen.be/opleidingen/master/";
@@ -20,6 +21,7 @@ const COPY = {
     title: "Graduation Tour Masters",
     lead: "Discover the graduation projects of the Master of Visual Arts 2025–2026.",
     navProjects: "projects",
+    navPremasters: "premasters",
     navArchive: "archive",
     navAbout: "about",
     footerProgramme: "Our Master's programme",
@@ -33,6 +35,7 @@ const COPY = {
     title: "Graduation Tour Masters",
     lead: "Ontdek de afstudeerwerken van de Masters Beeldende Kunsten 2025–2026.",
     navProjects: "projecten",
+    navPremasters: "premasters",
     navArchive: "archief",
     navAbout: "over",
     footerProgramme: "Onze masteropleiding",
@@ -61,6 +64,7 @@ export const MastersHeader: FC<{ locale: PublicLocale; nlPath: string; enPath: s
           <div class="sub-header-inner">
             <div class="sub-header-left">
               <a href={`/${locale}/`}>{copy.navProjects}</a>
+              <a href={`/${locale}/${CURRENT_YEAR}/prema-bk/`}>{copy.navPremasters}</a>
               <a href={`/${locale}/archive`}>{copy.navArchive}</a>
               <a href={`/${locale}/about`}>{copy.navAbout}</a>
             </div>

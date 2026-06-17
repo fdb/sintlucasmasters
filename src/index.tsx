@@ -573,6 +573,7 @@ app.get("/:locale/", async (c) => {
   return renderListing(c, {
     locale,
     year: CURRENT_YEAR,
+    programme: site.id === "masters" ? "MA_BK" : undefined,
     title: CURRENT_YEAR,
     canonicalUrl: `${siteUrlFor(site)}/${locale}/`,
   });
@@ -600,6 +601,7 @@ app.get("/:locale/:year/", async (c) => {
   return renderListing(c, {
     locale,
     year,
+    programme: site.id === "masters" ? "MA_BK" : undefined,
     title: year,
     canonicalUrl,
   });
@@ -754,7 +756,12 @@ app.get("/:locale/archive", async (c) => {
       </div>
       <div class="grid" data-project-grid data-show-year="true">
         {localizedProjects.map((project) => (
-          <ProjectCard project={project} localePrefix={locale} showYear />
+          <ProjectCard
+            project={project}
+            localePrefix={locale}
+            showYear
+            showProgramme={site.programmes.includes("MA_BK") && site.programmes.includes("PREMA_BK")}
+          />
         ))}
       </div>
       {localizedProjects.length === 0 && <p class="empty-state">{text.noProjects}</p>}
