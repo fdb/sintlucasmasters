@@ -21,7 +21,7 @@ export const E2E_PROJECTS = [
     student_name: "Alice Smith",
     project_title: "Digital Dreams",
     context: "digital",
-    academic_year: "2024-2025",
+    academic_year: "2025-2026",
     status: "published",
   },
   {
@@ -30,7 +30,7 @@ export const E2E_PROJECTS = [
     student_name: "Bob Jones",
     project_title: "Autonomous Sculptures",
     context: "autonomous",
-    academic_year: "2024-2025",
+    academic_year: "2025-2026",
     status: "draft",
   },
   {
@@ -58,4 +58,4 @@ export const E2E_TRANSLATE_PROJECT = {
 
 export const CONTEXTS = ["All", "autonomous", "applied", "digital", "sociopolitical", "jewelry"];
 
-export const YEARS = ["All", "2024-2025", "2023-2024"];
+export const YEARS = ["All", "2025-2026", "2023-2024"];

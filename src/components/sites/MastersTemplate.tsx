@@ -1,10 +1,9 @@
 // Masters site (sintlucasmasters.com) — header, footer, and About body.
 // Edit this file to change the chrome on the masters domain.
 //
-// The 2025–2026 year is hard-coded in the tagline and About copy. The
-// CURRENT_YEAR constant is intentionally not interpolated here — it still
-// reads "2024-2025" until the June 2026 cutover, but the comms-approved copy
-// references the upcoming year.
+// The 2025–2026 year is hard-coded in the tagline and About copy rather than
+// interpolated from CURRENT_YEAR, because the comms-approved copy is phrased
+// specifically and does not always match the raw "YYYY-YYYY" constant.
 
 import type { FC } from "hono/jsx";
 import type { PublicLocale } from "../../lib/i18n";
