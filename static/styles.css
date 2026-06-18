@@ -533,7 +533,10 @@ a:hover {
 }
 
 @media (min-width: 980px) {
-  .filter-row .year-nav,
+  .filter-row .year-nav {
+    grid-template-columns: repeat(8, minmax(var(--filter-cell-width), max-content));
+  }
+
   .filter-row .context-nav {
     grid-template-columns: repeat(6, minmax(var(--filter-cell-width), max-content));
   }
