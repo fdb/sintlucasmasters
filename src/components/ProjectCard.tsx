@@ -1,17 +1,25 @@
 import type { FC } from "hono/jsx";
 import type { ProjectWithMainImage } from "../types";
 import { getImageUrl, getStudentUrl } from "../types";
+import type { ProgrammeCode } from "../sites";
+import { PROGRAMME_CODES } from "../sites";
+import { getProgrammeLabel } from "../lib/i18n";
 
 type ProjectCardProps = {
   project: ProjectWithMainImage;
   localePrefix: "en" | "nl";
   showYear?: boolean;
+  showProgramme?: boolean;
 };
 
-export const ProjectCard: FC<ProjectCardProps> = ({ project, localePrefix, showYear }) => {
+export const ProjectCard: FC<ProjectCardProps> = ({ project, localePrefix, showYear, showProgramme }) => {
   const imageId = project.thumb_image_id || project.main_image_id;
   const imageUrl = getImageUrl(imageId, "thumb");
   const title = project.project_title || project.project_title_nl || project.project_title_en;
+  const programmeCode =
+    showProgramme && project.program && (PROGRAMME_CODES as readonly string[]).includes(project.program)
+      ? (project.program as ProgrammeCode)
+      : null;
 
   return (
     <a href={getStudentUrl(project, localePrefix)} class="card">
@@ -21,7 +29,12 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, localePrefix, showY
         <div class="card-image card-image-placeholder" />
       )}
       <div class="card-body">
-        <h2 class="card-title">{project.student_name}</h2>
+        <div class="card-name-row">
+          <h2 class="card-title">{project.student_name}</h2>
+          {programmeCode && (
+            <span class="card-programme">{getProgrammeLabel(programmeCode, localePrefix).toUpperCase()}</span>
+          )}
+        </div>
         <p class="card-subtitle">{title}</p>
         {showYear && <span class="card-year">{project.academic_year}</span>}
       </div>

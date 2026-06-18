@@ -80,6 +80,7 @@ test.describe("localized content (masters chrome)", () => {
     await page.goto("/nl/?__site=masters");
     const nav = page.locator("nav.sub-header");
     await expect(nav.locator('a[href="/nl/"]')).toHaveText("projecten");
+    await expect(nav.locator('a[href="/nl/2025-2026/prema-bk/"]')).toHaveText("premasters");
     await expect(nav.locator('a[href="/nl/archive"]')).toHaveText("archief");
     await expect(nav.locator('a[href="/nl/about"]')).toHaveText("over");
   });
@@ -88,6 +89,7 @@ test.describe("localized content (masters chrome)", () => {
     await page.goto("/en/?__site=masters");
     const nav = page.locator("nav.sub-header");
     await expect(nav.locator('a[href="/en/"]')).toHaveText("projects");
+    await expect(nav.locator('a[href="/en/2025-2026/prema-bk/"]')).toHaveText("premasters");
     await expect(nav.locator('a[href="/en/archive"]')).toHaveText("archive");
     await expect(nav.locator('a[href="/en/about"]')).toHaveText("about");
   });
@@ -217,12 +219,20 @@ test.describe("site routing (host / __site override)", () => {
     await expect(page.locator(".grid .card", { hasText: "Alice Smith" })).toHaveCount(0);
   });
 
-  test("?__site=masters homepage shows masters and premasters mixed", async ({ page }) => {
+  test("?__site=masters homepage shows only MA_BK projects", async ({ page }) => {
     await page.goto("/nl/?__site=masters");
+    // Alice Smith is MA_BK — must appear on homepage.
     await expect(page.locator(".grid .card", { hasText: "Alice Smith" })).toBeVisible();
-    await expect(page.locator(".grid .card", { hasText: "Milo Thread" })).toBeVisible();
+    // Milo Thread is PREMA_BK — must NOT appear on homepage (only on /prema-bk/ listing).
+    await expect(page.locator(".grid .card", { hasText: "Milo Thread" })).toHaveCount(0);
     // Frida Lens is BA_FO and must NOT show on masters.
     await expect(page.locator(".grid .card", { hasText: "Frida Lens" })).toHaveCount(0);
+  });
+
+  test("?__site=masters premasters listing shows only PREMA_BK projects", async ({ page }) => {
+    await page.goto("/nl/2025-2026/prema-bk/?__site=masters");
+    await expect(page.locator(".grid .card", { hasText: "Milo Thread" })).toBeVisible();
+    await expect(page.locator(".grid .card", { hasText: "Alice Smith" })).toHaveCount(0);
   });
 
   test("graduates homepage shows all programmes", async ({ page }) => {
