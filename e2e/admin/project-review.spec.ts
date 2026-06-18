@@ -46,7 +46,15 @@ async function impersonateReviewStudent(page: Page) {
 
   const targetRow = page.locator("tbody tr", { hasText: "Review Student" });
   await expect(targetRow).toBeVisible({ timeout: NAV_TIMEOUT });
-  await targetRow.click();
+
+  // Clicking the row sets selectedProjectId, which fires the detail query.
+  // Under CI load the table can refetch and re-render between resolving the
+  // row and the click, swallowing it so selection never happens and the
+  // header never renders. Retry the click until the row reports selected.
+  await expect(async () => {
+    await targetRow.click();
+    await expect(targetRow).toHaveClass(/row-selected/, { timeout: 2000 });
+  }).toPass({ timeout: NAV_TIMEOUT });
 
   const detailHeader = page.locator(".detail-header-row h3", { hasText: "Review Student" });
   await expect(detailHeader).toBeVisible({ timeout: NAV_TIMEOUT });

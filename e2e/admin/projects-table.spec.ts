@@ -132,13 +132,17 @@ test.describe("admin projects table", () => {
     // First, select "All years" to see all projects
     await page.locator(".filter-select").first().selectOption("");
 
-    // Bob Jones is draft status
+    // The filter change refetches the table; wait for the rows to re-render
+    // before asserting their class, so a slow CI refetch isn't read as a
+    // missing element against the default 5s timeout.
     const draftRow = page.locator("tbody tr", { hasText: "Bob Jones" });
-    await expect(draftRow).toHaveClass(/status-draft/);
+    await expect(draftRow).toBeVisible({ timeout: 15000 });
+    await expect(draftRow).toHaveClass(/status-draft/, { timeout: 15000 });
 
     // Alice Smith is published
     const publishedRow = page.locator("tbody tr", { hasText: "Alice Smith" });
-    await expect(publishedRow).toHaveClass(/status-published/);
+    await expect(publishedRow).toBeVisible({ timeout: 15000 });
+    await expect(publishedRow).toHaveClass(/status-published/, { timeout: 15000 });
   });
 
   test("deletes a project", async ({ page }) => {
