@@ -46,7 +46,11 @@ app.onError((err, c) => {
   return c.text("Internal Server Error", 500);
 });
 
-app.use("*", secureHeaders());
+// `strict-origin-when-cross-origin` (instead of secureHeaders' `no-referrer`
+// default) sends the embedding origin to cross-origin players. YouTube's
+// youtube-nocookie.com embed needs it to validate the origin, otherwise it
+// fails with error 153 (player configuration error).
+app.use("*", secureHeaders({ referrerPolicy: "strict-origin-when-cross-origin" }));
 
 type PublicLocale = "nl" | "en";
 
