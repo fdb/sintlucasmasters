@@ -91,7 +91,7 @@ export function StudentPreviewPanel() {
     applied: "Applied",
     digital: "Digital",
     sociopolitical: "Socio-Political",
-    jewelry: "Jewelry",
+    jewelry: "Jewellery",
   };
 
   // Validation checklist using live editDraft values

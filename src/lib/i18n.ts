@@ -21,14 +21,14 @@ const CONTEXT_LABELS = {
     applied: { short: "Applied", full: "Applied Context" },
     digital: { short: "Digital", full: "Digital Context" },
     sociopolitical: { short: "Socio-Political", full: "Socio-Political Context" },
-    jewelry: { short: "Jewelry", full: "Jewelry Context" },
+    jewelry: { short: "Jewellery", full: "Jewellery Context" },
   },
   nl: {
     autonomous: { short: "Autonoom", full: "Autonome context" },
     applied: { short: "Toegepast", full: "Toegepaste context" },
     digital: { short: "Digitaal", full: "Digitale context" },
     sociopolitical: { short: "Socio-politiek", full: "Socio-politieke context" },
-    jewelry: { short: "Juwelen", full: "Juwelencontext" },
+    jewelry: { short: "Sieraad", full: "Sieraadcontext" },
   },
 } satisfies Record<PublicLocale, Record<ContextKey, { short: string; full: string }>>;
 
@@ -66,7 +66,7 @@ export function getProgrammeLabel(programme: ProgrammeCode, locale: PublicLocale
 // - BA_FO / BA_BK: programme label only. The schema's `context` column has
 //   no real taxonomy for these programmes, so we ignore it.
 // - MA_BK / PREMA_BK: programme label + context full label
-//   ("Master Jewelry Context"). Falls back to programme alone if context
+//   ("Master Jewellery Context"). Falls back to programme alone if context
 //   is missing, or to context alone if programme is missing.
 export function getProjectMetaLabel(
   programme: ProgrammeCode | null,
@@ -93,8 +93,12 @@ const CONTEXT_ALIASES: Record<string, ContextKey> = {
   "sociopolitical context": "sociopolitical",
   "socio-political": "sociopolitical",
   "socio-political context": "sociopolitical",
+  jewellery: "jewelry",
+  "jewellery context": "jewelry",
   jewelry: "jewelry",
   "jewelry context": "jewelry",
+  sieraad: "jewelry",
+  "sieraad context": "jewelry",
   juwelen: "jewelry",
   "juwelen context": "jewelry",
 };

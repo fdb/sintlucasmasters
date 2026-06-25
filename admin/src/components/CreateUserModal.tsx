@@ -240,7 +240,7 @@ export function CreateUserModal() {
                   {contextRequired ? (
                     <>
                       Header row required: <strong>name</strong>, <strong>email</strong>, <strong>context</strong>.
-                      Context values: autonomous, applied, digital, socio-political, jewelry.
+                      Context values: autonomous, applied, digital, socio-political, jewellery.
                     </>
                   ) : (
                     <>

@@ -143,7 +143,7 @@ describe("buildTrajectory", () => {
   });
 
   it("keeps the Premaster + context format for PREMA_BK", () => {
-    expect(buildTrajectory("PREMA_BK", "jewelry")).toBe("Premaster Juwelencontext / Jewelry Context");
+    expect(buildTrajectory("PREMA_BK", "jewelry")).toBe("Premaster Sieraadcontext / Jewellery Context");
   });
 });
 

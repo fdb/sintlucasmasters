@@ -24,7 +24,7 @@ export function formatContext(value: unknown): string {
     applied: "Applied",
     digital: "Digital",
     sociopolitical: "Socio-Political",
-    jewelry: "Jewelry",
+    jewelry: "Jewellery",
   };
   return map[context] || String(value);
 }
