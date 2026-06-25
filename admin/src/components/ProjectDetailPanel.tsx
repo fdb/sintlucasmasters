@@ -78,7 +78,7 @@ export function ProjectDetailPanel() {
     applied: "Applied",
     digital: "Digital",
     sociopolitical: "Socio-Political",
-    jewelry: "Jewelry",
+    jewelry: "Jewellery",
   };
   const contextLabel = contextLabels[projectContext] || projectContext;
 

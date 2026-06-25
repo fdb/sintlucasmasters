@@ -1818,7 +1818,7 @@ adminApiRoutes.post("/users/bulk-create", async (c) => {
         if (!context) {
           results.errors.push(
             `Row ${i + 1}: Invalid context "${rawContext}". ` +
-              `Valid values: autonomous, applied, digital, socio-political, jewelry ` +
+              `Valid values: autonomous, applied, digital, socio-political, jewellery ` +
               `(with or without "Context" suffix, case-insensitive)`
           );
           continue;

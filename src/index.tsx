@@ -91,7 +91,8 @@ const TEXT = {
     aboutTitle: "About",
     yearDescriptionPrefix: "Discover",
     yearDescriptionMiddle: "graduation projects from Sint Lucas Masters",
-    yearDescriptionSuffix: "Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewelry contexts.",
+    yearDescriptionSuffix:
+      "Explore works across Autonomous, Applied, Digital, Socio-Political, and Jewellery contexts.",
     archiveDescriptionPrefix: "Browse",
     archiveDescriptionMiddle: "master thesis projects from Sint Lucas Antwerpen spanning",
     localeCode: "en",
@@ -120,7 +121,7 @@ const TEXT = {
     aboutTitle: "Over",
     yearDescriptionPrefix: "Ontdek",
     yearDescriptionMiddle: "afstudeerprojecten van Sint Lucas Masters",
-    yearDescriptionSuffix: "Verken werk binnen autonome, toegepaste, digitale, socio-politieke en juwelencontexten.",
+    yearDescriptionSuffix: "Verken werk binnen autonome, toegepaste, digitale, socio-politieke en sieraadcontexten.",
     archiveDescriptionPrefix: "Bekijk",
     archiveDescriptionMiddle: "masterprojecten van Sint Lucas Antwerpen van",
     localeCode: "nl",

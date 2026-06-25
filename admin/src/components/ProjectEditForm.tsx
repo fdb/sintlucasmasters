@@ -14,7 +14,7 @@ const CONTEXTS = [
   { value: "applied", label: "Applied" },
   { value: "digital", label: "Digital" },
   { value: "sociopolitical", label: "Socio-Political" },
-  { value: "jewelry", label: "Jewelry" },
+  { value: "jewelry", label: "Jewellery" },
 ];
 
 import { PROGRAM_LABELS } from "../utils";
