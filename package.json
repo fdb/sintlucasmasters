@@ -2,6 +2,9 @@
   "name": "sintlucasmasters",
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "concurrently -k -n worker,admin -c blue,magenta \"npm run dev:worker\" \"npm run dev:admin\"",
     "dev:worker": "wrangler dev",
@@ -43,32 +46,32 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@sentry/cloudflare": "^10.38.0",
-    "@sentry/react": "^10.38.0",
+    "@sentry/cloudflare": "^10.68.0",
+    "@sentry/react": "^10.68.0",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-devtools": "^5.91.3",
     "fflate": "^0.8.2",
-    "hono": "^4.11.9",
+    "hono": "^4.12.32",
     "lucide-react": "^0.564.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260213.0",
+    "@cloudflare/workers-types": "^5.20260728.1",
     "@playwright/test": "^1.58.2",
-    "@sentry/vite-plugin": "^4.9.1",
+    "@sentry/vite-plugin": "^5.4.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",
-    "concurrently": "^9.2.1",
+    "concurrently": "^9.2.4",
     "dotenv": "^17.3.1",
     "gray-matter": "^4.0.3",
     "prettier": "^3.8.1",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.3",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18",
-    "wrangler": "^4.65.0"
+    "vite": "^7.3.6",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.114.0"
   }
 }
