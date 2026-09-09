@@ -27,6 +27,7 @@ npm run deploy              # Deploy to Cloudflare (not auto-deployed on push)
 
 ## Local workflow
 
+- `main` is protected: never commit or push directly to it. Create a `codex/` feature branch before the first commit, push that branch, and submit changes through a pull request targeting `main`.
 - Before starting a feature check if we have a clean slate: run all tests to verify. If not, tell me.
 - Before hand-off, make sure tests all pass (`npm run format`, `npm run typecheck`, `npm run test`, `npm run test:e2e`)
 - When fixing a bug using TDD with red/green workflow.
