@@ -65,6 +65,22 @@ export const E2E_MULTI_STUDENT = {
 
 export const E2E_PROJECTS = [
   {
+    id: "e2e-project-search-accents",
+    slug: "renee-search",
+    student_name: "Renée Search",
+    sort_name: "Search, Renée",
+    project_title_en: "Café Studies",
+    project_title_nl: "Café Studies",
+    program: "MA_BK",
+    context: "digital",
+    academic_year: "2025-2026",
+    description_en: "Studies of light.",
+    description_nl: "Studies van licht.",
+    status: "published",
+    tags: '[]',
+    user_id: null,
+  },
+  {
     id: "e2e-project-001",
     slug: "alice-smith",
     student_name: "Alice Smith",
@@ -414,6 +430,14 @@ export const E2E_PROJECTS = [
 ];
 
 export const E2E_PROJECT_IMAGES = [
+  {
+    id: "e2e-image-search-accents",
+    project_id: "e2e-project-search-accents",
+    cloudflare_id: "slam/testing/e2e-test-image",
+    sort_order: 0,
+    caption: "Search test image",
+    type: "web",
+  },
   {
     id: "e2e-pimg-001",
     project_id: "e2e-project-001",

@@ -9,6 +9,7 @@ import { FotografieAboutBody } from "./components/sites/FotografieTemplate";
 import { GraduatesAboutBody } from "./components/sites/GraduatesTemplate";
 import { ProjectCard } from "./components/ProjectCard";
 import { RichDescription } from "./lib/video-embed";
+import { normalizeSearchText, SEARCH_FIELDS } from "./lib/search";
 import type { Bindings, ContextKey, Project, ProjectImage, ProjectWithMainImage } from "./types";
 import { CONTEXT_KEYS, getImageUrl, getStudentUrl } from "./types";
 import { CURRENT_YEAR } from "./config";
@@ -171,8 +172,6 @@ app.route("/admin", adminPageRoutes);
 // from the Host header (or ?__site=/X-Site-Override in dev). Admin and auth
 // routes above are intentionally site-agnostic.
 app.use("*", siteMiddleware);
-
-const escapeLikeValue = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
 function organizationSchemaFor(site: SiteConfig) {
   return {
@@ -446,21 +445,33 @@ app.get("/api/search", async (c) => {
   }
 
   const site = c.var.site;
-  const like = `%${escapeLikeValue(rawQuery)}%`;
+  const query = normalizeSearchText(rawQuery);
   const programmePlaceholders = site.programmes.map(() => "?").join(",");
 
   // Search is scoped to the visiting site's programmes. On graduates this
   // covers all visible programmes (the umbrella view); on masters/fotografie
   // it restricts results to that domain's content.
-  const conditions = [
-    "status = 'published'",
-    `program IN (${programmePlaceholders})`,
-    "(student_name LIKE ? ESCAPE '\\' OR project_title_en LIKE ? ESCAPE '\\' OR project_title_nl LIKE ? ESCAPE '\\' OR description_en LIKE ? ESCAPE '\\' OR description_nl LIKE ? ESCAPE '\\' OR tags LIKE ? ESCAPE '\\')",
-  ];
-  const params: string[] = [...site.programmes, like, like, like, like, like, like];
+  const conditions = ["status = 'published'", `program IN (${programmePlaceholders})`];
+  // SQLite LIKE does not fold accents or Unicode case. Match the searchable
+  // fields in JS, then load full cards/images only for the first 60 matches.
+  const { results: candidates } = await c.env.DB.prepare(
+    `SELECT id, ${SEARCH_FIELDS.join(", ")} FROM projects
+     WHERE ${conditions.join(" AND ")} ORDER BY sort_name`
+  )
+    .bind(...site.programmes)
+    .all<Pick<Project, "id" | (typeof SEARCH_FIELDS)[number]>>();
+  const ids = candidates
+    .filter(
+      (project) => query && SEARCH_FIELDS.some((field) => normalizeSearchText(project[field] ?? "").includes(query))
+    )
+    .slice(0, 60)
+    .map((project) => project.id);
+  const params: string[] = [...site.programmes, ...ids];
+  conditions.push(`projects.id IN (${ids.map(() => "?").join(",")})`);
 
-  const { results } = await c.env.DB.prepare(
-    `SELECT
+  const { results } = ids.length
+    ? await c.env.DB.prepare(
+        `SELECT
        projects.*,
        (
          SELECT cloudflare_id
@@ -474,9 +485,10 @@ app.get("/api/search", async (c) => {
      WHERE ${conditions.join(" AND ")}
      ORDER BY sort_name
      LIMIT 60`
-  )
-    .bind(...params)
-    .all<ProjectWithMainImage>();
+      )
+        .bind(...params)
+        .all<ProjectWithMainImage>()
+    : { results: [] };
 
   const localizedResults = results.map((project) => localizeProject(project, locale));
 
