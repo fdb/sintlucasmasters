@@ -2,10 +2,15 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { useAdminStore } from "./adminStore";
 
 vi.hoisted(() => {
-  vi.stubGlobal("localStorage", {
+  const storage = {
     getItem: () => null,
     setItem: () => {},
     removeItem: () => {},
+  };
+  vi.stubGlobal("localStorage", storage);
+  vi.stubGlobal("window", {
+    localStorage: storage,
+    matchMedia: () => ({ matches: false }),
   });
 });
 

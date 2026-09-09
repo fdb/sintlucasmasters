@@ -494,7 +494,17 @@ export const useAdminStore = create<AdminState>()(
       },
       loadTable: async (table) => {
         if (!table) return;
-        set({ tableStatus: "loading" });
+        // Clear the previous selection before fetching: cached rows remain
+        // clickable, so the response must preserve selections made meanwhile.
+        set({
+          tableStatus: "loading",
+          selectedProjectId: null,
+          projectDetail: null,
+          projectStatus: "idle",
+          selectedUserId: null,
+          userDetail: null,
+          userDetailStatus: "idle",
+        });
         try {
           const res = await fetch(`/api/admin/table/${table}?limit=1000`);
           if (!res.ok) {
@@ -505,12 +515,6 @@ export const useAdminStore = create<AdminState>()(
           set({
             tableData: data,
             tableStatus: "ready",
-            selectedProjectId: null,
-            projectDetail: null,
-            projectStatus: "idle",
-            selectedUserId: null,
-            userDetail: null,
-            userDetailStatus: "idle",
           });
         } catch {
           set({ tableStatus: "error" });
