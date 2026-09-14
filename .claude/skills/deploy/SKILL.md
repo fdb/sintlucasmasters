@@ -5,7 +5,7 @@ description: Deploy the Sint Lucas Masters app to Cloudflare Workers — verifie
 
 # Deploy — Verify, Migrate & Ship to Cloudflare
 
-Safely deploy the Sint Lucas Masters application to production. Verifies the working tree is clean and `main` is pushed, applies pending database migrations, deploys the worker, and verifies the deployment is healthy. **The skill never commits or pushes on the user's behalf — that must already be done.**
+Manual fallback for the CI deploy job in `.github/workflows/ci.yml`, which deploys every push to `main` after tests pass. Use this skill only when CI cannot deploy. Safely deploy the Sint Lucas Masters application to production. Verifies the working tree is clean and `main` is pushed, applies pending database migrations, deploys the worker, and verifies the deployment is healthy. **The skill never commits or pushes on the user's behalf — that must already be done.**
 
 **CRITICAL SAFETY RULES:**
 - This skill NEVER drops, rebuilds, or re-initializes the database. It only applies *pending* migrations via `npm run init:remote`. The production database contains live student data.
