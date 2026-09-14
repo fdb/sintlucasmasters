@@ -22,12 +22,12 @@ npm run test:e2e
 
 # Production (non-destructive — only applies unapplied migrations)
 npm run init:remote         # Apply pending migrations to production D1
-npm run deploy              # Deploy to Cloudflare (not auto-deployed on push)
+npm run deploy              # Manual deploy; CI deploys every push to main (.github/workflows/ci.yml)
 ```
 
 ## Local workflow
 
-- `main` is protected: never commit or push directly to it. Create a `codex/` feature branch before the first commit, push that branch, and submit changes through a pull request targeting `main`.
+- `main` is protected: never commit or push directly to it. Create a feature branch before the first commit, push that branch, and submit changes through a pull request targeting `main`.
 - Before starting a feature check if we have a clean slate: run all tests to verify. If not, tell me.
 - Before hand-off, make sure tests all pass (`npm run format`, `npm run typecheck`, `npm run test`, `npm run test:e2e`)
 - When fixing a bug using TDD with red/green workflow.

@@ -59,3 +59,65 @@ jobs:
           path: |
             playwright-report/
             test-results/
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build admin
+        run: npm run build:admin
+
+      - name: Backup production database
+        run: npm run backup:db
+
+      - name: Upload database backup
+        uses: actions/upload-artifact@v6
+        with:
+          name: db-backup-${{ github.sha }}
+          path: backups/db/
+          retention-days: 30
+
+      - name: Apply pending D1 migrations
+        run: npm run init:remote
+
+      - name: Deploy worker
+        run: npx wrangler deploy --env='' --define GIT_HASH:"\"${{ github.sha }}\""
+
+      - name: Verify health
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 12); do
+            body="$(curl -sf https://sintlucasmasters.com/api/health || true)"
+            if [[ "$body" == *"\"version\":\"${{ github.sha }}\""* ]]; then
+              echo "$body"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Health endpoint did not report ${{ github.sha }} within 60s: $body"
+          exit 1
+
+      - name: Smoke test public site
+        run: test "$(curl -s -o /dev/null -w '%{http_code}' https://sintlucasmasters.com/nl/)" = "200"
