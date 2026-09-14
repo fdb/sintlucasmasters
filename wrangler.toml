@@ -1,7 +1,7 @@
 name = "sintlucasmasters"
 main = "src/index.tsx"
 compatibility_date = "2024-01-01"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat", "rpc"]
 
 [version_metadata]
 binding = "CF_VERSION_METADATA"
@@ -18,17 +18,21 @@ database_id = "4227d715-382f-416a-aa9c-c5da32847400"
 migrations_dir = "migrations"
 migrations_table = "d1_migrations"
 
+# Transactional email (magic links, review notifications) via Cloudflare Email
+# Service. The sender domain must be onboarded under Compute > Email Service >
+# Email Sending. `wrangler dev` simulates the binding and logs messages instead
+# of sending them.
+[[send_email]]
+name = "EMAIL"
+allowed_sender_addresses = ["info@sintlucasmasters.com"]
+
 # Environment variables (secrets set via `wrangler secret put`)
 # JWT_SECRET - Secret for signing JWT tokens
-# AWS_ACCESS_KEY_ID - AWS IAM access key for SES
-# AWS_SECRET_ACCESS_KEY - AWS IAM secret key for SES
-# AWS_REGION - AWS region for SES (e.g., eu-west-1)
 # CLOUDFLARE_ACCOUNT_ID - Cloudflare account ID for Images API
 # CLOUDFLARE_API_TOKEN - Cloudflare API token with Images permissions
 
 [vars]
 APP_BASE_URL = "https://sintlucasmasters.com"
-SES_CONFIGURATION_SET = "sintlucasmasters-events"
 SENTRY_DSN = "https://940c808bee865bc2ba2d24da4101ef17@o4510688180568064.ingest.de.sentry.io/4510832618831952"
 SENTRY_HOST = "o4510688180568064.ingest.de.sentry.io"
 SENTRY_PROJECT_ID = "4510832618831952"
@@ -39,7 +43,6 @@ SENTRY_PROJECT_ID = "4510832618831952"
 # central inbox across all three sites). Per-request site URLs are derived
 # from the Host header — see src/sites.ts.
 APP_BASE_URL = "https://sintlucasmasters.com"
-SES_CONFIGURATION_SET = "sintlucasmasters-events"
 SENTRY_DSN = "https://940c808bee865bc2ba2d24da4101ef17@o4510688180568064.ingest.de.sentry.io/4510832618831952"
 SENTRY_HOST = "o4510688180568064.ingest.de.sentry.io"
 SENTRY_PROJECT_ID = "4510832618831952"

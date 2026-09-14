@@ -1,8 +1,6 @@
-// Email sending via AWS SES
+// Email sending via the Cloudflare Email Service `send_email` binding
 
-import { sendEmail, type SESConfig } from "./aws-ses";
-
-const FROM_EMAIL = "Sint Lucas Masters <info@sintlucasmasters.com>";
+const FROM_ADDRESS: EmailAddress = { name: "Sint Lucas Masters", email: "info@sintlucasmasters.com" };
 
 /** Escape user-provided strings before interpolating into HTML email templates. */
 function escapeHtml(str: string): string {
@@ -16,20 +14,38 @@ export interface SendMagicLinkResult {
   messageId?: string;
 }
 
+interface OutgoingEmail {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}
+
+/** Send through the binding; the binding throws an Error with a `code` property on failure. */
+async function sendEmail(mailer: SendEmail, message: OutgoingEmail): Promise<SendMagicLinkResult> {
+  try {
+    // `wrangler dev` simulates the binding and may resolve without a result object.
+    const result: EmailSendResult | undefined = await mailer.send({ from: FROM_ADDRESS, ...message });
+    return { success: true, messageId: result?.messageId };
+  } catch (err) {
+    const error = err instanceof Error ? err.message : "Unknown error";
+    const errorCode = err instanceof Error && "code" in err ? String(err.code) : "Unknown";
+    console.error("Email send failed:", { error, errorCode, to: message.to });
+    return { success: false, error, errorCode };
+  }
+}
+
 export async function sendMagicLink(
-  sesConfig: SESConfig,
+  mailer: SendEmail,
   email: string,
   token: string,
-  baseUrl: string,
-  configurationSetName?: string
+  baseUrl: string
 ): Promise<SendMagicLinkResult> {
   const loginUrl = `${baseUrl}/auth/verify?token=${token}`;
 
-  const result = await sendEmail(sesConfig, {
-    from: FROM_EMAIL,
+  return sendEmail(mailer, {
     to: email,
     subject: "Sign in to Sint Lucas Masters",
-    configurationSetName,
     html: `
 <!DOCTYPE html>
 <html>
@@ -63,37 +79,21 @@ ${loginUrl}
 
 If you didn't request this email, you can safely ignore it.`,
   });
-
-  if (result.success) {
-    return {
-      success: true,
-      messageId: result.messageId,
-    };
-  }
-
-  return {
-    success: false,
-    error: result.error,
-    errorCode: result.errorCode,
-  };
 }
 
 export async function sendReviewNotification(
-  sesConfig: SESConfig,
+  mailer: SendEmail,
   email: string,
   loginUrl: string,
   studentName: string,
-  projectTitle: string,
-  configurationSetName?: string
+  projectTitle: string
 ): Promise<SendMagicLinkResult> {
   const safeName = escapeHtml(studentName);
   const safeTitle = escapeHtml(projectTitle);
 
-  const result = await sendEmail(sesConfig, {
-    from: FROM_EMAIL,
+  return sendEmail(mailer, {
     to: email,
     subject: "Your project is ready for your review",
-    configurationSetName,
     html: `
 <!DOCTYPE html>
 <html>
@@ -128,10 +128,4 @@ You can still edit the text if needed. Once you're satisfied, click "Approve for
 
 ${loginUrl}`,
   });
-
-  if (result.success) {
-    return { success: true, messageId: result.messageId };
-  }
-
-  return { success: false, error: result.error, errorCode: result.errorCode };
 }

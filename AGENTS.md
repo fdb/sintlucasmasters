@@ -79,7 +79,7 @@ Schema changes use Wrangler D1 migrations. Migration files live in `migrations/`
 
 Regular local development does not require 1Password or live service secrets. `npm run init` writes a local-only `.dev.vars` with localhost auth, a deterministic dev JWT secret, and fake translation enabled.
 
-Use `npm run setup-secrets` only when you intentionally want local dev backed by live services (SES, Cloudflare account/API credentials for Images/R2/D1-related operations, and Anthropic). Use `npm run setup-secrets:remote` to upload production Worker secrets. `.env.template` documents the live-service values and is not needed for normal local dev.
+Use `npm run setup-secrets` only when you intentionally want local dev backed by live services (Cloudflare account/API credentials for Images/R2/D1-related operations, and Anthropic). Use `npm run setup-secrets:remote` to upload production Worker secrets. `.env.template` documents the live-service values and is not needed for normal local dev.
 
 ## Admin State Management
 

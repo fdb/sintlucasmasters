@@ -5,12 +5,9 @@ export type Bindings = {
   DB: D1Database;
   JWT_SECRET: string;
   APP_BASE_URL: string;
-  SES_CONFIGURATION_SET: string;
   ASSETS: Fetcher;
-  // AWS SES credentials
-  AWS_ACCESS_KEY_ID: string;
-  AWS_SECRET_ACCESS_KEY: string;
-  AWS_REGION: string;
+  // Cloudflare Email Service (send_email binding)
+  EMAIL: SendEmail;
   // Cloudflare Images
   CLOUDFLARE_ACCOUNT_ID: string;
   CLOUDFLARE_API_TOKEN: string;

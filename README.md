@@ -21,7 +21,7 @@ npm run dev         # Start dev server on http://localhost:8787
 
 Regular local development does not require 1Password or live service secrets. `npm run init` writes `.dev.vars` with localhost auth, a deterministic dev JWT secret, and fake translation enabled.
 
-Run `npm run setup-secrets` only when you intentionally want local dev to use live-service credentials from 1Password, such as SES email, Cloudflare Images/account credentials, and Anthropic translation.
+Run `npm run setup-secrets` only when you intentionally want local dev to use live-service credentials from 1Password, such as Cloudflare Images/account credentials, and Anthropic translation.
 
 `npm run dev` runs `wrangler dev` and a Vite build watcher that outputs admin assets to `static/admin`. Refresh `/admin` to see changes.
 

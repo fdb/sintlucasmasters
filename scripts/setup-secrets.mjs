@@ -8,9 +8,8 @@ const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const envPath = resolve(projectRoot, '.env');
 dotenv.config({ path: envPath });
 
-const requiredKeys = ['JWT_SECRET', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION', 'CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_API_TOKEN', 'ANTHROPIC_API_KEY'];
-const optionalKeysLocal = ['APP_BASE_URL', 'SES_CONFIGURATION_SET', 'DEV_ADMIN_EMAIL'];
-const optionalKeysRemote = ['SES_CONFIGURATION_SET'];
+const requiredKeys = ['JWT_SECRET', 'CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_API_TOKEN', 'ANTHROPIC_API_KEY'];
+const optionalKeysLocal = ['APP_BASE_URL', 'DEV_ADMIN_EMAIL'];
 
 const missing = requiredKeys.filter((key) => !process.env[key]);
 if (missing.length > 0) {
@@ -58,11 +57,6 @@ if (runLocal) {
 if (runRemote) {
   for (const key of requiredKeys) {
     await runWranglerSecretPut(key, process.env[key]);
-  }
-  for (const key of optionalKeysRemote) {
-    if (process.env[key]) {
-      await runWranglerSecretPut(key, process.env[key]);
-    }
   }
   console.log('Uploaded secrets to Cloudflare.');
 }

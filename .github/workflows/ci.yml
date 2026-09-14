@@ -40,10 +40,6 @@ jobs:
           JWT_SECRET=$JWT_SECRET
           CLOUDFLARE_ACCOUNT_ID=dummy
           CLOUDFLARE_API_TOKEN=dummy
-          AWS_ACCESS_KEY_ID=dummy
-          AWS_SECRET_ACCESS_KEY=dummy
-          AWS_REGION=eu-west-1
-          SES_CONFIGURATION_SET=dummy
           EOF
 
       - name: E2E tests

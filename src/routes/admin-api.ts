@@ -14,7 +14,6 @@ import { getImageDimensions } from "../lib/image-dimensions";
 import { normalizeSocialLinksValue } from "../lib/socialLinks";
 import { generateMagicToken, storeMagicToken } from "../lib/tokens";
 import { sendReviewNotification } from "../lib/email";
-import type { SESConfig } from "../lib/aws-ses";
 
 type TableConfig = {
   select: string;
@@ -432,11 +431,6 @@ adminApiRoutes.put("/projects/:id", async (c) => {
         });
       }
 
-      const sesConfig: SESConfig = {
-        accessKeyId: c.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: c.env.AWS_SECRET_ACCESS_KEY,
-        region: c.env.AWS_REGION,
-      };
       const token = generateMagicToken();
       await storeMagicToken(c.env.DB, studentUser.email, token);
       const loginUrl = `${c.env.APP_BASE_URL}/auth/verify?token=${token}`;
@@ -444,14 +438,9 @@ adminApiRoutes.put("/projects/:id", async (c) => {
       const projectTitle = project.project_title_en || project.project_title_nl;
 
       c.executionCtx.waitUntil(
-        sendReviewNotification(
-          sesConfig,
-          studentUser.email,
-          loginUrl,
-          studentName,
-          projectTitle,
-          c.env.SES_CONFIGURATION_SET
-        ).catch((err) => console.error("Failed to send review notification:", err))
+        sendReviewNotification(c.env.EMAIL, studentUser.email, loginUrl, studentName, projectTitle).catch((err) =>
+          console.error("Failed to send review notification:", err)
+        )
       );
     }
   }

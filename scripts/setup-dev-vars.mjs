@@ -10,7 +10,6 @@ const localDevVars = {
   APP_BASE_URL: "http://localhost:8787",
   DEV_ADMIN_EMAIL: "dev-admin@sintlucasmasters.local",
   JWT_SECRET: "local-dev-only-jwt-secret",
-  SES_CONFIGURATION_SET: "sintlucasmasters-events",
   FAKE_TRANSLATION: "true",
 };
 

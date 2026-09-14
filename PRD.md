@@ -13,15 +13,15 @@ A greenfield rewrite of the Sint Lucas Antwerpen Masters graduation showcase web
 
 ## Tech Stack
 
-| Component      | Technology                                   |
-| -------------- | -------------------------------------------- |
-| Platform       | Cloudflare Pages + Workers                   |
-| Framework      | Hono (SSR with JSX)                          |
-| Database       | Cloudflare D1 (SQLite)                       |
-| Media Storage  | Cloudflare Images                            |
-| Authentication | Magic link (email-based) via AWS SES         |
-| Admin UI       | React + TypeScript SPA (Vite)                |
-| CSS            | Minimal system font stack, dark mode support |
+| Component      | Technology                                            |
+| -------------- | ----------------------------------------------------- |
+| Platform       | Cloudflare Pages + Workers                            |
+| Framework      | Hono (SSR with JSX)                                   |
+| Database       | Cloudflare D1 (SQLite)                                |
+| Media Storage  | Cloudflare Images                                     |
+| Authentication | Magic link (email-based) via Cloudflare Email Service |
+| Admin UI       | React + TypeScript SPA (Vite)                         |
+| CSS            | Minimal system font stack, dark mode support          |
 
 ---
 
@@ -154,7 +154,6 @@ src/
     ├── jwt.ts          # JWT utilities
     ├── tokens.ts       # Magic token utilities
     ├── email.ts        # Email sending
-    ├── aws-ses.ts      # AWS SES client
     └── names.ts        # Name normalization
 ```
 
@@ -413,7 +412,7 @@ npm run create-admin:remote <email>  # Create admin user on production
 ## Domain Configuration
 
 - **Production URL**: `https://sintlucasmasters.com`
-- **Email domain**: `sintlucasmasters.com` (verified in AWS SES)
+- **Email domain**: `sintlucasmasters.com` (onboarded in Cloudflare Email Service)
 - **From address**: `info@sintlucasmasters.com`
 
 ---
