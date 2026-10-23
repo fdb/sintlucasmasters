@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import type { Context } from "hono";
 import { setCookie } from "hono/cookie";
 import { secureHeaders } from "hono/secure-headers";
+import { HTTPException } from "hono/http-exception";
 import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
 import { MastersAboutBody } from "./components/sites/MastersTemplate";
@@ -43,6 +44,8 @@ import {
 export const app = new Hono<{ Bindings: Bindings }>();
 
 app.onError((err, c) => {
+  // Deliberate HTTP errors from middleware (e.g. csrf's 403) are responses, not crashes.
+  if (err instanceof HTTPException) return err.getResponse();
   Sentry.captureException(err);
   return c.text("Internal Server Error", 500);
 });

@@ -2,6 +2,7 @@
 
 import { Hono } from "hono";
 import { setCookie, deleteCookie } from "hono/cookie";
+import { csrf } from "hono/csrf";
 import type { Bindings, User } from "../types";
 import { generateMagicToken, storeMagicToken, checkMagicToken, verifyMagicToken } from "../lib/tokens";
 import { sendMagicLink } from "../lib/email";
@@ -279,8 +280,10 @@ authPageRoutes.get("/verify", async (c) => {
   );
 });
 
-// POST /auth/verify - Actually verify and consume the token
-authPageRoutes.post("/verify", async (c) => {
+// POST /auth/verify - Actually verify and consume the token.
+// csrf() rejects form posts from other origins, so another site cannot sign a
+// visitor into the attacker's account (login CSRF).
+authPageRoutes.post("/verify", csrf(), async (c) => {
   const token = c.req.query("token");
 
   if (!token) {
