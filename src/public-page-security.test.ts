@@ -73,4 +73,19 @@ describe("JSON-LD on project pages", () => {
       expect(blocks.some((block) => JSON.stringify(JSON.parse(block)).includes(JSON.stringify(PAYLOAD)))).toBe(true);
     }
   );
+
+  it("sends a Content-Security-Policy that blocks inline scripts", async () => {
+    const response = await get("/nl/2025-2026/ma-bk/students/xss/");
+    const csp = response.headers.get("content-security-policy") ?? "";
+    const scriptSrc = csp.split(";").find((directive) => directive.trim().startsWith("script-src"));
+    expect(scriptSrc?.trim()).toBe("script-src 'self'");
+    expect(csp).toContain("object-src 'none'");
+    expect(csp).toContain("frame-ancestors 'none'");
+  });
+
+  it("serves the sign-in page without inline scripts", async () => {
+    const html = await (await get("/auth/login")).text();
+    expect(html).not.toMatch(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>/);
+    expect(html).toContain('<script src="/auth-login.js"');
+  });
 });
