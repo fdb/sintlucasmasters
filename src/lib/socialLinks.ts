@@ -72,8 +72,10 @@ export const normalizeSocialLink = (input: string): string => {
     return `https://www.instagram.com/${handleMatch[1]}`;
   }
 
+  // Only web links: anything else (javascript:, data:, text that is not a URL)
+  // would end up in an href on the public site.
   const parsed = parseUrl(trimmed);
-  if (!parsed) return trimmed;
+  if (!parsed || (parsed.protocol !== "https:" && parsed.protocol !== "http:")) return "";
 
   const host = parsed.hostname.toLowerCase();
 

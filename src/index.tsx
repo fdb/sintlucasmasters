@@ -880,9 +880,11 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
 
   type SocialKind = "instagram" | "youtube" | "linkedin" | "website";
 
-  const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } => {
+  // Returns null for anything that is not an http(s) link, including links
+  // stored before saving started rejecting them.
+  const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } | null => {
     const trimmed = rawLink.trim();
-    if (!trimmed) return { kind: "website", label: "Website", href: rawLink };
+    if (!trimmed) return null;
 
     const parsedUrl = (() => {
       try {
@@ -896,8 +898,8 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
       }
     })();
 
-    if (!parsedUrl) {
-      return { kind: "website", label: trimmed, href: rawLink };
+    if (!parsedUrl || (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:")) {
+      return null;
     }
 
     const host = parsedUrl.hostname.replace(/^www\./, "");
@@ -927,7 +929,10 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
     return { kind: "website", label: host, href: parsedUrl.toString() };
   };
 
-  const socialItems = socialLinks.filter(Boolean).map(parseSocialLink);
+  const socialItems = socialLinks
+    .filter(Boolean)
+    .map(parseSocialLink)
+    .filter((item): item is NonNullable<typeof item> => item !== null);
   const locationLabel = localizedProject.location?.trim();
   const privateEmail = project.private_email?.trim();
 
