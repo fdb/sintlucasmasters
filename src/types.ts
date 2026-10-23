@@ -22,6 +22,10 @@ export type Bindings = {
   DEV_ADMIN_EMAIL?: string;
   // AI Translation
   ANTHROPIC_API_KEY: string;
+  // Workers Rate Limiting bindings (wrangler.toml [[ratelimits]]). Optional so
+  // tests and scripts can run without them.
+  LOGIN_IP_LIMITER?: RateLimit;
+  TRANSLATE_LIMITER?: RateLimit;
   // Sentry
   SENTRY_DSN: string;
   SENTRY_HOST: string;

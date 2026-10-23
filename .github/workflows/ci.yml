@@ -84,16 +84,9 @@ jobs:
       - name: Build admin
         run: npm run build:admin
 
-      - name: Backup production database
-        run: npm run backup:db
-
-      - name: Upload database backup
-        uses: actions/upload-artifact@v6
-        with:
-          name: db-backup-${{ github.sha }}
-          path: backups/db/
-          retention-days: 30
-
+      # No database backup here: this repo is public, so workflow artifacts are
+      # downloadable by any GitHub user. D1 Time Travel covers rollback after a bad
+      # migration (wrangler d1 time-travel restore).
       - name: Apply pending D1 migrations
         run: npm run init:remote
 

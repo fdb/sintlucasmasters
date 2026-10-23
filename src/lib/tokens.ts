@@ -32,6 +32,16 @@ export async function storeMagicToken(db: D1Database, email: string, token: stri
     .run();
 }
 
+// Sign-in links still valid for this email. Each link lives 15 minutes, so
+// capping this caps how many emails one address can receive per 15 minutes.
+export async function countActiveMagicTokens(db: D1Database, email: string): Promise<number> {
+  const row = await db
+    .prepare(`SELECT COUNT(*) AS count FROM auth_tokens WHERE email = ? AND expires_at > ?`)
+    .bind(email.toLowerCase(), new Date().toISOString())
+    .first<{ count: number }>();
+  return row?.count ?? 0;
+}
+
 export interface VerifyTokenResult {
   valid: boolean;
   email?: string;

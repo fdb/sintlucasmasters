@@ -2,7 +2,7 @@
 
 import type { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
-import { verifyToken, type JWTPayload } from "../lib/jwt";
+import { verifyToken } from "../lib/jwt";
 import { isProductionHost } from "../sites";
 
 export const AUTH_COOKIE_NAME = "auth_token";
@@ -80,6 +80,21 @@ async function getDevAdminUser(c: Context<{ Bindings: AuthBindings }>): Promise<
   };
 }
 
+// The JWT proves who signed in; the users table decides what they may do now.
+// Looking the user up on every request means deleting an account or changing
+// its role takes effect immediately, without shortening sessions.
+async function loadSessionUser(c: Context<{ Bindings: AuthBindings }>, token: string): Promise<AuthUser | null> {
+  const payload = await verifyToken(token, c.env.JWT_SECRET);
+  if (!payload) return null;
+
+  const dbUser = await c.env.DB.prepare("SELECT id, email, role FROM users WHERE id = ?")
+    .bind(payload.userId)
+    .first<Pick<User, "id" | "email" | "role">>();
+  if (!dbUser) return null;
+
+  return { userId: dbUser.id, email: dbUser.email, role: dbUser.role as UserRole };
+}
+
 // Parse JWT from cookie and attach user to context (does not enforce auth)
 export async function authMiddleware(c: Context<{ Bindings: AuthBindings }>, next: Next): Promise<Response | void> {
   // Safety: never allow dev/test auth bypasses on a registered production
@@ -111,20 +126,7 @@ export async function authMiddleware(c: Context<{ Bindings: AuthBindings }>, nex
 
   const token = getCookie(c, AUTH_COOKIE_NAME);
 
-  if (token) {
-    const payload = await verifyToken(token, c.env.JWT_SECRET);
-    if (payload) {
-      c.set("user", {
-        userId: payload.userId,
-        email: payload.email,
-        role: payload.role,
-      });
-    } else {
-      c.set("user", null);
-    }
-  } else {
-    c.set("user", null);
-  }
+  c.set("user", token ? await loadSessionUser(c, token) : null);
 
   await next();
 }
