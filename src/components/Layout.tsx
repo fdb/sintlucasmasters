@@ -85,6 +85,16 @@ const SiteFooter: FC<{ site: SiteConfig; locale: PublicLocale }> = ({ site, loca
   }
 };
 
+// JSON-LD is written raw into a <script> element, so student text containing
+// "</script>" or "<!--" could end the element early. Escaping "<" (and the
+// line separators JS treats as newlines) keeps the JSON valid and inert.
+export function serializeJsonLd(data: object): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
 export const Layout: FC<LayoutProps> = ({
   site,
   title,
@@ -133,7 +143,7 @@ export const Layout: FC<LayoutProps> = ({
 
         {jsonLd &&
           (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((data, i) => (
-            <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
+            <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }} />
           ))}
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
