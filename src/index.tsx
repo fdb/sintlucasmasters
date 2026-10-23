@@ -54,7 +54,30 @@ app.onError((err, c) => {
 // default) sends the embedding origin to cross-origin players. YouTube's
 // youtube-nocookie.com embed needs it to validate the origin, otherwise it
 // fails with error 153 (player configuration error).
-app.use("*", secureHeaders({ referrerPolicy: "strict-origin-when-cross-origin" }));
+//
+// The CSP allows scripts only from this origin, so injected markup cannot run
+// script even if escaping fails somewhere. JSON-LD blocks are data, not script,
+// and are unaffected. Inline styles stay allowed: pages use style attributes.
+app.use(
+  "*",
+  secureHeaders({
+    referrerPolicy: "strict-origin-when-cross-origin",
+    contentSecurityPolicy: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "blob:", "https://imagedelivery.net", "https://files.sintlucasmasters.com"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["https://www.youtube-nocookie.com", "https://player.vimeo.com"],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+    },
+  })
+);
 
 type PublicLocale = "nl" | "en";
 
