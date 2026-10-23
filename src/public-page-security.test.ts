@@ -47,6 +47,16 @@ describe("JSON-LD on project pages", () => {
 
   const get = (path: string) => app.request(path, { headers: { "X-Site-Override": "masters" } }, { DB: db } as never);
 
+  it("does not render stored non-web social links", async () => {
+    await db
+      .prepare("UPDATE projects SET social_links = ? WHERE id = 'xss'")
+      .bind(JSON.stringify(["javascript:alert(1)", "https://example.com/"]))
+      .run();
+    const html = await (await get("/nl/2025-2026/ma-bk/students/xss/")).text();
+    expect(html).not.toContain("javascript:");
+    expect(html).toContain('href="https://example.com/"');
+  });
+
   it.each(["/nl/2025-2026/ma-bk/students/xss/", "/nl/2025-2026/ma-bk/"])(
     "escapes student text inside ld+json on %s",
     async (path) => {
