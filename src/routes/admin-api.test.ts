@@ -13,16 +13,21 @@ import type { Project, ProjectImage } from "../types";
 
 const DEBUG_CRASH_JWT_SECRET = "debug-crash-test-secret";
 
+// The auth middleware looks the user up by id; answer with a user whose role
+// matches the id that debugCrashCookie() puts in the token.
 function createDebugCrashEnv() {
   return {
     JWT_SECRET: DEBUG_CRASH_JWT_SECRET,
     DB: {
       prepare() {
         return {
-          bind() {
+          bind(id: unknown) {
             return {
               async first() {
-                return null;
+                const role = typeof id === "string" ? id.replace(/-user-001$/, "") : "";
+                return ["student", "editor", "admin"].includes(role)
+                  ? { id, email: `${role}@example.com`, role }
+                  : null;
               },
               async run() {
                 return { success: true };
