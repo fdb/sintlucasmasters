@@ -64,6 +64,21 @@ describe("admin API access control", () => {
     expect(response.status).toBe(status);
   });
 
+  it("rejects a valid token once the user is deleted", async () => {
+    await db.exec("DELETE FROM users WHERE id = 'zoe'");
+    const response = await request("/api/admin/projects/mine", ["zoe", "student"]);
+    expect(response.status).toBe(401);
+  });
+
+  it("uses the current role from the database, not the one in the token", async () => {
+    await db.exec("UPDATE users SET role = 'student' WHERE id = 'ada'");
+    const response = await request("/api/admin/users/create", ["ada", "admin"], {
+      method: "POST",
+      body: JSON.stringify({ email: "new@kdg.be", name: "New", role: "admin" }),
+    });
+    expect(response.status).toBe(403);
+  });
+
   it("still lets editors read users", async () => {
     const response = await request("/api/admin/users/bob", ["ed", "editor"]);
     expect(response.status).toBe(200);
