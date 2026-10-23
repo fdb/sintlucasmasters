@@ -4,17 +4,31 @@ import { Hono } from "hono";
 import { setCookie, deleteCookie } from "hono/cookie";
 import { csrf } from "hono/csrf";
 import type { Bindings, User } from "../types";
-import { generateMagicToken, storeMagicToken, checkMagicToken, verifyMagicToken } from "../lib/tokens";
+import {
+  generateMagicToken,
+  storeMagicToken,
+  checkMagicToken,
+  verifyMagicToken,
+  countActiveMagicTokens,
+} from "../lib/tokens";
 import { sendMagicLink } from "../lib/email";
 import { signToken } from "../lib/jwt";
 import { authMiddleware, AUTH_COOKIE_NAME } from "../middleware/auth";
 import { AdminLayout } from "../components/AdminLayout";
+
+// At most this many unexpired sign-in links per email (links live 15 minutes).
+const MAX_ACTIVE_LINKS_PER_EMAIL = 5;
 
 // API routes for auth (JSON responses)
 export const authApiRoutes = new Hono<{ Bindings: Bindings }>();
 
 // POST /api/auth/login - Send magic link email
 authApiRoutes.post("/login", async (c) => {
+  const ip = c.req.header("cf-connecting-ip") ?? "unknown";
+  if (c.env.LOGIN_IP_LIMITER && !(await c.env.LOGIN_IP_LIMITER.limit({ key: ip })).success) {
+    return c.json({ error: "Too many sign-in requests. Please wait a minute and try again." }, 429);
+  }
+
   const body = await c.req.json<{ email: string }>();
   const email = body.email?.toLowerCase().trim();
 
@@ -33,6 +47,13 @@ authApiRoutes.post("/login", async (c) => {
       status: "account_not_found",
       message: "No account exists for this email address",
     });
+  }
+
+  if ((await countActiveMagicTokens(c.env.DB, email)) >= MAX_ACTIVE_LINKS_PER_EMAIL) {
+    return c.json(
+      { error: "Several sign-in links were already sent to this address. Use the latest one, or try again later." },
+      429
+    );
   }
 
   const token = generateMagicToken();

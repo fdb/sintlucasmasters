@@ -1075,6 +1075,8 @@ adminApiRoutes.post("/projects/:id/approve", async (c) => {
 // =====================================================
 
 const TRANSLATE_FIELDS = ["bio", "description"] as const;
+// Bios and descriptions are far shorter; this only stops abuse of the API key.
+const MAX_TRANSLATE_CHARS = 10_000;
 type TranslateField = (typeof TRANSLATE_FIELDS)[number];
 type TranslateDirection = "nl-to-en" | "en-to-nl";
 
@@ -1110,8 +1112,16 @@ adminApiRoutes.post("/projects/:id/translate", async (c) => {
   if (direction !== "nl-to-en" && direction !== "en-to-nl") {
     return c.json({ error: "Invalid direction" }, 400);
   }
-  if (!text || !text.trim()) {
+  if (!text || typeof text !== "string" || !text.trim()) {
     return c.json({ error: "No text to translate" }, 400);
+  }
+  if (text.length > MAX_TRANSLATE_CHARS) {
+    return c.json({ error: `Text is too long to translate (max ${MAX_TRANSLATE_CHARS} characters)` }, 400);
+  }
+
+  const user = c.get("user");
+  if (c.env.TRANSLATE_LIMITER && !(await c.env.TRANSLATE_LIMITER.limit({ key: user?.userId ?? "anonymous" })).success) {
+    return c.json({ error: "Too many translation requests. Please wait a minute and try again." }, 429);
   }
 
   if (c.env.FAKE_TRANSLATION === "true") {
