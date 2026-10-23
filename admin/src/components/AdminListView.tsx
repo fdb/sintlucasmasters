@@ -148,6 +148,10 @@ function AdminProjectsHeader(): React.ReactNode {
 
 function AdminUsersHeader(): React.ReactNode {
   const openUserModal = useAdminStore((s) => s.openUserModal);
+  const { data: session } = useSession();
+
+  // Only admins manage accounts; editors review content.
+  if (session?.user.role !== "admin") return null;
 
   return (
     <div className="detail-action-group">

@@ -110,6 +110,11 @@ function isAdminOrEditor(user: AuthUser | null): boolean {
   return user?.role === "admin" || user?.role === "editor";
 }
 
+// Editors review content; only admins manage accounts.
+function isAdmin(user: AuthUser | null): boolean {
+  return user?.role === "admin";
+}
+
 async function checkProjectAccess(c: Context<{ Bindings: Bindings }>, projectId: string): Promise<Project | null> {
   const user = c.get("user");
   if (!user) return null;
@@ -195,8 +200,7 @@ adminApiRoutes.get("/table/:name", async (c) => {
 
   // For students viewing projects, filter to only their projects
   if (!isAdminOrEditor(user) && name === "projects") {
-    const forUserId = c.req.query("forUserId");
-    const userId = forUserId || user?.userId;
+    const userId = user?.userId;
     const query = `SELECT ${config.select} FROM ${name} WHERE user_id = ?${orderClause} LIMIT ?`;
     const countQuery = `SELECT COUNT(*) as count FROM ${name} WHERE user_id = ?`;
 
@@ -1227,12 +1231,12 @@ function normalizeContext(input: unknown): ContextKey | null {
 }
 
 // =====================================================
-// User Management Routes (admin/editor only)
+// User Management Routes (editors can read, only admins can change)
 // =====================================================
 
 adminApiRoutes.post("/users/create", async (c) => {
   const user = c.get("user");
-  if (!isAdminOrEditor(user)) {
+  if (!isAdmin(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 
@@ -1296,7 +1300,7 @@ adminApiRoutes.get("/users/:id", async (c) => {
 
 adminApiRoutes.delete("/users/:id", async (c) => {
   const user = c.get("user");
-  if (!isAdminOrEditor(user)) {
+  if (!isAdmin(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 
@@ -1697,7 +1701,7 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
 // Bulk create users and projects from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const user = c.get("user");
-  if (!isAdminOrEditor(user)) {
+  if (!isAdmin(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 
