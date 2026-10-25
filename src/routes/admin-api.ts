@@ -110,6 +110,11 @@ function isAdminOrEditor(user: AuthUser | null): boolean {
   return user?.role === "admin" || user?.role === "editor";
 }
 
+// Editors review content; only admins manage accounts.
+function isAdmin(user: AuthUser | null): boolean {
+  return user?.role === "admin";
+}
+
 async function checkProjectAccess(c: Context<{ Bindings: Bindings }>, projectId: string): Promise<Project | null> {
   const user = c.get("user");
   if (!user) return null;
@@ -195,8 +200,7 @@ adminApiRoutes.get("/table/:name", async (c) => {
 
   // For students viewing projects, filter to only their projects
   if (!isAdminOrEditor(user) && name === "projects") {
-    const forUserId = c.req.query("forUserId");
-    const userId = forUserId || user?.userId;
+    const userId = user?.userId;
     const query = `SELECT ${config.select} FROM ${name} WHERE user_id = ?${orderClause} LIMIT ?`;
     const countQuery = `SELECT COUNT(*) as count FROM ${name} WHERE user_id = ?`;
 
@@ -1071,6 +1075,8 @@ adminApiRoutes.post("/projects/:id/approve", async (c) => {
 // =====================================================
 
 const TRANSLATE_FIELDS = ["bio", "description"] as const;
+// Bios and descriptions are far shorter; this only stops abuse of the API key.
+const MAX_TRANSLATE_CHARS = 10_000;
 type TranslateField = (typeof TRANSLATE_FIELDS)[number];
 type TranslateDirection = "nl-to-en" | "en-to-nl";
 
@@ -1106,8 +1112,16 @@ adminApiRoutes.post("/projects/:id/translate", async (c) => {
   if (direction !== "nl-to-en" && direction !== "en-to-nl") {
     return c.json({ error: "Invalid direction" }, 400);
   }
-  if (!text || !text.trim()) {
+  if (!text || typeof text !== "string" || !text.trim()) {
     return c.json({ error: "No text to translate" }, 400);
+  }
+  if (text.length > MAX_TRANSLATE_CHARS) {
+    return c.json({ error: `Text is too long to translate (max ${MAX_TRANSLATE_CHARS} characters)` }, 400);
+  }
+
+  const user = c.get("user");
+  if (c.env.TRANSLATE_LIMITER && !(await c.env.TRANSLATE_LIMITER.limit({ key: user?.userId ?? "anonymous" })).success) {
+    return c.json({ error: "Too many translation requests. Please wait a minute and try again." }, 429);
   }
 
   if (c.env.FAKE_TRANSLATION === "true") {
@@ -1227,12 +1241,12 @@ function normalizeContext(input: unknown): ContextKey | null {
 }
 
 // =====================================================
-// User Management Routes (admin/editor only)
+// User Management Routes (editors can read, only admins can change)
 // =====================================================
 
 adminApiRoutes.post("/users/create", async (c) => {
   const user = c.get("user");
-  if (!isAdminOrEditor(user)) {
+  if (!isAdmin(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 
@@ -1296,7 +1310,7 @@ adminApiRoutes.get("/users/:id", async (c) => {
 
 adminApiRoutes.delete("/users/:id", async (c) => {
   const user = c.get("user");
-  if (!isAdminOrEditor(user)) {
+  if (!isAdmin(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 
@@ -1697,7 +1711,7 @@ adminApiRoutes.get("/export/postcards-images.idml", requireAdmin, async (c) => {
 // Bulk create users and projects from CSV
 adminApiRoutes.post("/users/bulk-create", async (c) => {
   const user = c.get("user");
-  if (!isAdminOrEditor(user)) {
+  if (!isAdmin(user)) {
     return c.json({ error: "Forbidden" }, 403);
   }
 

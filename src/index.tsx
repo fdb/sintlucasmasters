@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import type { Context } from "hono";
 import { setCookie } from "hono/cookie";
 import { secureHeaders } from "hono/secure-headers";
+import { HTTPException } from "hono/http-exception";
 import * as Sentry from "@sentry/cloudflare";
 import { Layout } from "./components/Layout";
 import { MastersAboutBody } from "./components/sites/MastersTemplate";
@@ -43,6 +44,8 @@ import {
 export const app = new Hono<{ Bindings: Bindings }>();
 
 app.onError((err, c) => {
+  // Deliberate HTTP errors from middleware (e.g. csrf's 403) are responses, not crashes.
+  if (err instanceof HTTPException) return err.getResponse();
   Sentry.captureException(err);
   return c.text("Internal Server Error", 500);
 });
@@ -51,7 +54,30 @@ app.onError((err, c) => {
 // default) sends the embedding origin to cross-origin players. YouTube's
 // youtube-nocookie.com embed needs it to validate the origin, otherwise it
 // fails with error 153 (player configuration error).
-app.use("*", secureHeaders({ referrerPolicy: "strict-origin-when-cross-origin" }));
+//
+// The CSP allows scripts only from this origin, so injected markup cannot run
+// script even if escaping fails somewhere. JSON-LD blocks are data, not script,
+// and are unaffected. Inline styles stay allowed: pages use style attributes.
+app.use(
+  "*",
+  secureHeaders({
+    referrerPolicy: "strict-origin-when-cross-origin",
+    contentSecurityPolicy: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "blob:", "https://imagedelivery.net", "https://files.sintlucasmasters.com"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["https://www.youtube-nocookie.com", "https://player.vimeo.com"],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+    },
+  })
+);
 
 type PublicLocale = "nl" | "en";
 
@@ -880,9 +906,11 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
 
   type SocialKind = "instagram" | "youtube" | "linkedin" | "website";
 
-  const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } => {
+  // Returns null for anything that is not an http(s) link, including links
+  // stored before saving started rejecting them.
+  const parseSocialLink = (rawLink: string): { kind: SocialKind; label: string; href: string } | null => {
     const trimmed = rawLink.trim();
-    if (!trimmed) return { kind: "website", label: "Website", href: rawLink };
+    if (!trimmed) return null;
 
     const parsedUrl = (() => {
       try {
@@ -896,8 +924,8 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
       }
     })();
 
-    if (!parsedUrl) {
-      return { kind: "website", label: trimmed, href: rawLink };
+    if (!parsedUrl || (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:")) {
+      return null;
     }
 
     const host = parsedUrl.hostname.replace(/^www\./, "");
@@ -927,7 +955,10 @@ app.get("/:locale/:year/:programme/students/:slug/", async (c) => {
     return { kind: "website", label: host, href: parsedUrl.toString() };
   };
 
-  const socialItems = socialLinks.filter(Boolean).map(parseSocialLink);
+  const socialItems = socialLinks
+    .filter(Boolean)
+    .map(parseSocialLink)
+    .filter((item): item is NonNullable<typeof item> => item !== null);
   const locationLabel = localizedProject.location?.trim();
   const privateEmail = project.private_email?.trim();
 

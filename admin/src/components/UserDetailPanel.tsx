@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { useAdminStore } from "../store/adminStore";
-import { useUser } from "../api/queries";
+import { useSession, useUser } from "../api/queries";
 import { useDeleteUser } from "../api/mutations";
 import { formatDate, formatContext, formatProgram, formatAcademicYear } from "../utils";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -18,6 +18,8 @@ export function UserDetailPanel() {
   const setSelectedUserId = useAdminStore((s) => s.setSelectedUserId);
 
   const { data: userDetail, isLoading, isError } = useUser(selectedUserId);
+  const { data: session } = useSession();
+  const isAdmin = session?.user.role === "admin";
   const userDetailStatus = isLoading ? "loading" : isError ? "error" : userDetail ? "ready" : "idle";
 
   const deleteUserMutation = useDeleteUser();
@@ -68,17 +70,19 @@ export function UserDetailPanel() {
             <h3>{userDetail.user.name || userDetail.user.email}</h3>
             <div className="detail-header-actions">
               <div className={`role-pill role-${userDetail.user.role}`}>{formatRole(userDetail.user.role)}</div>
-              <div className="detail-action-group">
-                <button
-                  type="button"
-                  className="detail-action-btn has-label danger"
-                  onClick={openDeleteConfirm}
-                  title="Delete user"
-                >
-                  <Trash2 size={14} />
-                  Delete
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="detail-action-group">
+                  <button
+                    type="button"
+                    className="detail-action-btn has-label danger"
+                    onClick={openDeleteConfirm}
+                    title="Delete user"
+                  >
+                    <Trash2 size={14} />
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

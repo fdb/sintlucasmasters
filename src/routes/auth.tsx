@@ -2,18 +2,33 @@
 
 import { Hono } from "hono";
 import { setCookie, deleteCookie } from "hono/cookie";
+import { csrf } from "hono/csrf";
 import type { Bindings, User } from "../types";
-import { generateMagicToken, storeMagicToken, checkMagicToken, verifyMagicToken } from "../lib/tokens";
+import {
+  generateMagicToken,
+  storeMagicToken,
+  checkMagicToken,
+  verifyMagicToken,
+  countActiveMagicTokens,
+} from "../lib/tokens";
 import { sendMagicLink } from "../lib/email";
 import { signToken } from "../lib/jwt";
 import { authMiddleware, AUTH_COOKIE_NAME } from "../middleware/auth";
 import { AdminLayout } from "../components/AdminLayout";
+
+// At most this many unexpired sign-in links per email (links live 15 minutes).
+const MAX_ACTIVE_LINKS_PER_EMAIL = 5;
 
 // API routes for auth (JSON responses)
 export const authApiRoutes = new Hono<{ Bindings: Bindings }>();
 
 // POST /api/auth/login - Send magic link email
 authApiRoutes.post("/login", async (c) => {
+  const ip = c.req.header("cf-connecting-ip") ?? "unknown";
+  if (c.env.LOGIN_IP_LIMITER && !(await c.env.LOGIN_IP_LIMITER.limit({ key: ip })).success) {
+    return c.json({ error: "Too many sign-in requests. Please wait a minute and try again." }, 429);
+  }
+
   const body = await c.req.json<{ email: string }>();
   const email = body.email?.toLowerCase().trim();
 
@@ -32,6 +47,13 @@ authApiRoutes.post("/login", async (c) => {
       status: "account_not_found",
       message: "No account exists for this email address",
     });
+  }
+
+  if ((await countActiveMagicTokens(c.env.DB, email)) >= MAX_ACTIVE_LINKS_PER_EMAIL) {
+    return c.json(
+      { error: "Several sign-in links were already sent to this address. Use the latest one, or try again later." },
+      429
+    );
   }
 
   const token = generateMagicToken();
@@ -177,70 +199,7 @@ authPageRoutes.get("/login", (c) => {
           </p>
         </div>
 
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-					document.getElementById('login-form').addEventListener('submit', async (e) => {
-						e.preventDefault();
-						const form = e.target;
-						const email = form.email.value;
-						const button = form.querySelector('button');
-
-						button.disabled = true;
-						button.textContent = 'Sending...';
-
-						try {
-							const res = await fetch('/api/auth/login', {
-								method: 'POST',
-								headers: { 'Content-Type': 'application/json' },
-								body: JSON.stringify({ email })
-							});
-
-							const data = await res.json();
-
-							if (res.ok) {
-								form.style.display = 'none';
-								if (data.status === 'account_not_found') {
-									document.getElementById('missing-email').textContent = email;
-									document.getElementById('not-found-message').style.display = 'block';
-								} else {
-									document.getElementById('sent-email').textContent = email;
-									document.getElementById('success-message').style.display = 'block';
-								}
-							} else {
-								alert(data.error || 'Failed to send email');
-								button.disabled = false;
-								button.textContent = 'Send sign-in link';
-							}
-						} catch (err) {
-							alert('Network error. Please try again.');
-							button.disabled = false;
-							button.textContent = 'Send sign-in link';
-						}
-					});
-
-					document.getElementById('try-again-link').addEventListener('click', (e) => {
-						e.preventDefault();
-						document.getElementById('success-message').style.display = 'none';
-						const form = document.getElementById('login-form');
-						form.style.display = '';
-						const button = form.querySelector('button');
-						button.disabled = false;
-						button.textContent = 'Send sign-in link';
-					});
-
-					document.getElementById('not-found-try-again-link').addEventListener('click', (e) => {
-						e.preventDefault();
-						document.getElementById('not-found-message').style.display = 'none';
-						const form = document.getElementById('login-form');
-						form.style.display = '';
-						const button = form.querySelector('button');
-						button.disabled = false;
-						button.textContent = 'Send sign-in link';
-					});
-				`,
-          }}
-        />
+        <script src="/auth-login.js" defer />
       </div>
     </AdminLayout>
   );
@@ -279,8 +238,10 @@ authPageRoutes.get("/verify", async (c) => {
   );
 });
 
-// POST /auth/verify - Actually verify and consume the token
-authPageRoutes.post("/verify", async (c) => {
+// POST /auth/verify - Actually verify and consume the token.
+// csrf() rejects form posts from other origins, so another site cannot sign a
+// visitor into the attacker's account (login CSRF).
+authPageRoutes.post("/verify", csrf(), async (c) => {
   const token = c.req.query("token");
 
   if (!token) {
