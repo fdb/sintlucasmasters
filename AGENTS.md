@@ -23,6 +23,9 @@ npm run test:e2e
 # Production (non-destructive — only applies unapplied migrations)
 npm run init:remote         # Apply pending migrations to production D1
 npm run deploy              # Manual deploy; CI deploys every push to main (.github/workflows/ci.yml)
+
+# Backups (need `npm run setup-secrets` first)
+npm run backup:archive      # Full D1 dump + all images → one dated zip in backups/archives/ (personal data: store privately)
 ```
 
 ## Local workflow
