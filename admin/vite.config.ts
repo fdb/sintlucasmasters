@@ -26,5 +26,6 @@ export default defineConfig(() => ({
     outDir: resolve(__dirname, "../static/admin"),
     emptyOutDir: true,
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
   },
 }));
