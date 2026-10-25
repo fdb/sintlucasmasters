@@ -7,7 +7,7 @@
  *   --db      Timestamped D1 dump → backups/db/<UTC-timestamp>.sql
  *             Cheap; keep a long history of these.
  *
- *   --images  Mirror of every image into backups/images/
+ *   --images  Mirror of every image D1 references into backups/images/
  *               r2/<key>                 R2 objects (original bytes)
  *               cloudflare-images/<id>   Cloudflare Images originals
  *               manifest.json            Last run's counts + failures
@@ -190,16 +190,31 @@ async function backupImages() {
     await runCommand("npx", ["wrangler", "r2", "object", "get", `${R2_BUCKET}/${key}`, "--remote", `--file=${dest}`]);
   });
 
-  // --- Cloudflare Images: skip ones already mirrored (IDs are immutable) ---
-  console.log("Cloudflare Images: listing account…");
-  const cfImages = await listAllCloudflareImages();
+  // --- Cloudflare Images: only IDs D1 references (the account also holds other
+  // projects' images); skip ones already mirrored (IDs are immutable) ---
+  console.log("Cloudflare Images: collecting referenced IDs…");
+  const idRows = await queryD1(
+    "SELECT cloudflare_id AS id FROM project_images UNION SELECT thumb_image_id FROM projects WHERE thumb_image_id IS NOT NULL AND thumb_image_id != ''"
+  );
+  const referenced = new Set(idRows.map((r) => r.id));
+  const inAccount = new Set((await listAllCloudflareImages()).map((img) => img.id));
+  const cfImages = [...referenced].filter((id) => inAccount.has(id)).map((id) => ({ id }));
+  // A D1 row pointing at a deleted image: report it, but the backup can't recover it.
+  const missingFromAccount = [...referenced].filter((id) => !inAccount.has(id));
   const onDisk = new Set((await readdir(cfDir)).map((f) => f.slice(0, f.lastIndexOf(".")).replace(/__/g, "/")));
   const toFetch = cfImages.filter((img) => !onDisk.has(img.id));
-  console.log(`Cloudflare Images: ${cfImages.length} total, ${toFetch.length} new to download…`);
+  console.log(`Cloudflare Images: ${cfImages.length} referenced, ${toFetch.length} new to download…`);
   const cfFailures = await pool(toFetch, DOWNLOAD_CONCURRENCY, async (img) => {
-    const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/images/v1/${img.id}/blob`, {
-      headers: { Authorization: `Bearer ${CF_API_TOKEN}` },
-    });
+    const url = `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/images/v1/${img.id}/blob`;
+    let res;
+    for (let attempt = 0; ; attempt++) {
+      res = await fetch(url, { headers: { Authorization: `Bearer ${CF_API_TOKEN}` } });
+      const retryable = res.status === 429 || res.status >= 500;
+      if (!retryable || attempt >= 6) break;
+      await res.arrayBuffer();
+      const retryAfter = Number(res.headers.get("retry-after"));
+      await new Promise((r) => setTimeout(r, (retryAfter > 0 ? retryAfter : 2 ** attempt) * 1000));
+    }
     if (!res.ok) throw new Error(`blob HTTP ${res.status} for ${img.id}`);
     const ext = EXT_BY_MIME[res.headers.get("content-type")] || "bin";
     const buf = Buffer.from(await res.arrayBuffer());
@@ -217,8 +232,15 @@ async function backupImages() {
       skipped: cfImages.length - toFetch.length,
       failed: cfFailures.length,
       failures: cfFailures.map((f) => ({ id: f.item.id, error: f.error })),
+      missingFromAccount,
     },
   };
+  if (missingFromAccount.length) {
+    console.warn(
+      `\n  ${missingFromAccount.length} image ID(s) in D1 no longer exist in Cloudflare Images ` +
+        `(listed under missingFromAccount in manifest.json): ${missingFromAccount.join(", ")}`
+    );
+  }
   await writeFile(join(imagesDir, "manifest.json"), JSON.stringify(manifest, null, 2));
 
   const totalFailed = r2Failures.length + cfFailures.length;
