@@ -44,8 +44,8 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@sentry/cloudflare": "^10.38.0",
-    "@sentry/react": "^10.38.0",
+    "@sentry/cloudflare": "^10.76.2",
+    "@sentry/react": "^10.76.2",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-devtools": "^5.91.3",
     "fflate": "^0.8.2",
@@ -56,7 +56,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260213.0",
+    "@cloudflare/workers-types": "^5.20261025.1",
     "@playwright/test": "^1.58.2",
     "@sentry/vite-plugin": "^4.9.1",
     "@types/node": "^20.19.43",
@@ -66,12 +66,16 @@
     "concurrently": "^9.2.1",
     "dotenv": "^17.3.1",
     "gray-matter": "^4.0.3",
-    "miniflare": "^4.20260317.2",
+    "miniflare": "^4.20260730.0",
     "prettier": "^3.8.1",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.5",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vitest": "^4.0.18",
-    "wrangler": "^4.65.0"
+    "wrangler": "^4.152.0"
+  },
+  "overrides": {
+    "undici": "^7.30.1",
+    "sharp": "^0.35.5"
   }
 }
